@@ -1,38 +1,30 @@
 
 # Including packages
-
+import Pkg; 
+Pkg.add("HTTP")
+Pkg.add("JSON")
 using HTTP
 using JSON
 
 """
 pdg_pion_masses() gets the masses of pion from Particle Data Group.
-It returns the mass of pion 0, pion +, pion - in order as a tuple, the unit is eV/c^2
+It returns the mass of pion 0, pion +- in order as a tuple, the unit is eV/c^2
 """
 function download_pdg_pion_masses()
-    # extracting informations from the S009 json file
-    url = "https://pdgapi.lbl.gov/summaries/S009"
-    response = HTTP.get(url)
-    info = JSON.parse(String(response.body))
-
-    # the dictionary that maps the name of the particle to the mass unit is eV/c^2
-    mass = Dict{String, Float64}()
-
-    # the information of the mass is only at 1
-    for i in [1]
-        mass[info["summaries"]["properties"][i]["description"]] = info["summaries"]["properties"][i]["pdg_values"][1]["value"]*10^6
-    end
-
-    # extracting informations from the S008 json file
-    url = "https://pdgapi.lbl.gov/summaries/S008"
-    response = HTTP.get(url)
-    info= JSON.parse(String(response.body))
-
-    # the information of the mass is only at 1
-    for i in [1]
-        mass[info["summaries"]["properties"][i]["description"]] = info["summaries"]["properties"][i]["pdg_values"][1]["value"]*10^6
-    end
-
-    # return the mass of pion 0, pion +, pion -
-    return [mass["pi0 MASS"],mass["pi+- MASS"]] 
+    # data of pi0, pi+- mass are stored in S009M, S008M json file
+    # return the mass of pion 0, pion +-, converting the units to eV/c^2
+    return [download_values("S009M")*10^6,download_values("S009M")*10^6] 
 
 end
+
+"""
+download_values() downloads the value stores in 'pdgid' jason file from Particle Data Group
+"""
+function download_values(pdgid::AbstractString)
+    url = "https://pdgapi.lbl.gov/summaries/"*pdgid
+    response = HTTP.get(url)
+    info = JSON.parse(String(response.body))
+    return info["pdg_values"][1]["value"]
+end
+
+export download_pdg_pion_masses
