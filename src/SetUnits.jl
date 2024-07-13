@@ -131,7 +131,7 @@ end
     ### Description:
     > return nothing<
     > prints the units for each dimensions<
-    > prints the units of constants with speical dimenisions<
+    > prints the units of constants with special dimenisions<
  
 """ printunits
 
