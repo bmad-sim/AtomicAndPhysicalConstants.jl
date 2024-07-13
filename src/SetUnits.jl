@@ -1,14 +1,13 @@
-
 # include("PhysicalConstants.jl")
 # include("ParticleTypes.jl")
+
 """
     Unit
 
     ### Description:
     > abstract type for storing units <
 
-"""
-Unit
+""" Unit
 
 abstract type Unit end
 
@@ -16,18 +15,19 @@ abstract type Unit end
 
 Base.print(io::IO, unit::T) where {T<:Unit} = print(io, rpad(" \"" * unit.name * "\"", 10), " \t where ", rpad(string(unit.conversion) * " " * unit.name, 30), "\t = 1 ")
 
+
 """
     scale
 
     ### Description:
     > return scaled units that has prefix 'prefix' and is scaled by 'factor' <
 
-"""
-scale
+""" scale
 
 function scale(unit::T, prefix::AbstractString, factor::Float64) where {T<:Unit}
   return T(prefix * unit.name, unit.conversion / factor)
 end
+
 
 """
     Mass<:Unit
@@ -40,8 +40,7 @@ end
 	- `name`                        -- type:AbstractString, name of the unit
 	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 eV/c^2
 
-"""
-Mass
+""" Mass
 
 struct Mass <: Unit
   name::AbstractString
@@ -60,13 +59,13 @@ end
 	- `name`                        -- type:AbstractString, name of the unit
 	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 meter
 
-"""
-Length
+""" Length
 
 struct Length <: Unit
   name::AbstractString
   conversion::Float64
 end
+
 
 """
     Time_<:Unit
@@ -87,6 +86,7 @@ struct Time_ <: Unit
   conversion::Float64
 end
 
+
 """
     Energy<:Unit
 
@@ -98,13 +98,13 @@ end
 	- `name`                        -- type:AbstractString, name of the unit
 	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 eV
 
-"""
-Energy
+""" Energy
 
 struct Energy <: Unit
   name::AbstractString
   conversion::Float64
 end
+
 
 """
     Charge<:Unit
@@ -117,8 +117,7 @@ end
 	- `name`                        -- type:AbstractString, name of the unit
 	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 e
 
-"""
-Charge
+""" Charge
 
 struct Charge <: Unit
   name::AbstractString
@@ -134,8 +133,7 @@ end
     > prints the units for each dimensions<
     > prints the units of constants with speical dimenisions<
  
-"""
-printunits
+""" printunits
 
 function printunits()
   if !@isdefined current_units
@@ -150,14 +148,14 @@ function printunits()
   return
 end
 
+
 """
     prefix
 
     ### Description:
     > dictionary that store how scaling factors relate to prefixs<
 
-"""
-prefix
+""" prefix
 
 prefix::Dict{AbstractString,Float64} = Dict(
   "k" => 10^3,
@@ -232,8 +230,7 @@ end
   - `charge`                  -- type:Charge, stores the unit for charge
 
 
-"""
-UnitSystem
+""" UnitSystem
 
 struct UnitSystem
   mass::Mass
@@ -247,6 +244,7 @@ PARTICLE_PHYSICS = UnitSystem(UNIT["eV / c ^ 2"], UNIT["m"], UNIT["s"], UNIT["eV
 MKS = UnitSystem(UNIT["kg"], UNIT["m"], UNIT["s"], UNIT["J"], UNIT["C"])
 CGS = UnitSystem(UNIT["g"], UNIT["cm"], UNIT["s"], UNIT["J"], UNIT["C"])
 
+
 """
     current_units :: UnitSystem
 
@@ -256,8 +254,7 @@ CGS = UnitSystem(UNIT["g"], UNIT["cm"], UNIT["s"], UNIT["J"], UNIT["C"])
     ### Note:
     it is initialized when setunits() is called
 
-"""
-current_units
+""" current_units
 
 
 """
@@ -299,8 +296,7 @@ current_units
     - unit for Avogadro's number is mol^-1
     - unit for classical radius factor is 'length'*'mass'
 
-"""
-setunits
+""" setunits
 
 function setunits(unitsystem::Union{Symbol,Expr}=:default;
   mass::Union{Symbol,Expr}=:default,
@@ -415,6 +411,7 @@ function setunits(unitsystem::Union{Symbol,Expr}=:default;
   return
 end
 
+
 """
     function massof(particle::Particle, unit::Union{Symbol,Expr}=:default)
 
@@ -425,8 +422,7 @@ end
 	  - 'particle`                        -- type:particle, the particle whose mass you want to know
     - `unit`                            -- type:Symbol or Expr, default to the unit set from setunits(), the unit of the mass variable
 
-"""
-massof
+""" massof
 
 function massof(particle::Particle, unit::Union{Symbol,Expr}=:default)
   if (unit == :default)
@@ -441,6 +437,7 @@ function massof(particle::Particle, unit::Union{Symbol,Expr}=:default)
   end
 end
 
+
 """
     function chargeof(particle::Particle, unit::Union{Symbol,Expr}=:default)
 
@@ -451,8 +448,7 @@ end
 	- 'particle`                  -- type:particle, the particle whose charge you want to know
     - `unit`                      -- type:Symbol or Expr, default to the unit set from setunits(), the unit of the charge variable
 
-"""
-chargeof
+""" chargeof
 
 function chargeof(particle::Particle, unit::Union{Symbol,Expr}=:default)
   if (unit == :default)
@@ -473,3 +469,4 @@ export c_light, m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron, m
 export r_e, e_charge, h_planck, mu_0_vac, eps_0_vac
 export gyromagnetic_anomaly_electron, gyromagnetic_anomaly_muon, gyromagnetic_anomaly_proton, gyromagnetic_anomaly_deuteron, gyromagnetic_anomaly_neutron, gyromagnetic_anomaly_He3
 export kg_per_amu, eV_per_amu, N_avogadro, fine_structure, classical_radius_factor, r_p, h_bar_planck, kg_per_eV, eps_0_vac
+
