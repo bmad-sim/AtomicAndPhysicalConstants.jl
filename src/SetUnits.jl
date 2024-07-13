@@ -158,6 +158,12 @@ end
 """ prefix
 
 prefix::Dict{AbstractString,Float64} = Dict(
+  "Q" => 10^30,
+  "R" => 10^27,
+  "Y" => 10^24,
+  "Z" => 10^21,
+  "E" => 10^18,
+  "P" => 10^15,
   "T" => 10^12,
   "G" => 10^9,
   "M" => 10^6,
@@ -167,7 +173,11 @@ prefix::Dict{AbstractString,Float64} = Dict(
   "n" => 10^-9,
   "p" => 10^-12,
   "f" => 10^-15,
-  "a" => 10^-18
+  "a" => 10^-18,
+  "z" => 10^-21,
+  "y" => 10^-24,
+  "r" => 10^-27,
+  "q" => 10^-30
 )
 
 UNIT::Dict{AbstractString,Unit} = Dict(
