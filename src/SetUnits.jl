@@ -174,6 +174,7 @@ prefix::Dict{AbstractString,Float64} = Dict(
   "c"  => 10^-2,   # centi
   "m"  => 10^-3,   # milli
   "u"  => 10^-6,   # micro
+  "μ"  => 10^-6,   # micro
   "n"  => 10^-9,   # nano
   "p"  => 10^-12,  # pico
   "f"  => 10^-15,  # femto
