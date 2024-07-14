@@ -12,7 +12,6 @@
 abstract type Unit end
 
 # overriding how Units are printed
-
 Base.print(io::IO, unit::T) where {T<:Unit} = print(io, rpad(" \"" * unit.name * "\"", 10), " \t where ", rpad(string(unit.conversion) * " " * unit.name, 30), "\t = 1 ")
 
 
@@ -140,11 +139,11 @@ function printunits()
     throw(ErrorException("units are not set, call setunits() to initalize units and constants"))
   end
   # prints the units for each dimensions
-  println("mass:\t", current_units.mass, "amu")
-  println("length:\t", current_units.length, "m")
-  println("time:\t", current_units.time, "s")
-  println("energy:\t", current_units.energy, "eV")
-  println("charge:\t", current_units.charge, "e")
+  println("mass:\t",   current_units.mass,   "amu")
+  println("length:\t", current_units.length, "m"  )
+  println("time:\t",   current_units.time,   "s"  )
+  println("energy:\t", current_units.energy, "eV" )
+  println("charge:\t", current_units.charge, "e"  )
   return
 end
 
@@ -170,6 +169,7 @@ prefix::Dict{AbstractString,Float64} = Dict(
   "k"  => 10^3,    # kilo
   "h"  => 10^2,    # hecto
   "da" => 10^1,    # deka
+                   # ---
   "d"  => 10^-1,   # deci
   "c"  => 10^-2,   # centi
   "m"  => 10^-3,   # milli
@@ -185,22 +185,24 @@ prefix::Dict{AbstractString,Float64} = Dict(
   "q"  => 10^-30   # quecto
 )
 
+
 UNIT::Dict{AbstractString,Unit} = Dict(
-  "amu" => Mass("amu", 1 / __b_eV_per_amu),
+  "amu" => Mass("amu",  1 / __b_eV_per_amu),
   "eV / c ^ 2" => Mass("eV/c^2", 1.0),
-  "g" => Mass("g", __b_kg_per_amu * 10^3 / __b_eV_per_amu),
-  "kg" => Mass("kg", __b_kg_per_amu / __b_eV_per_amu),
-  "C" => Charge("C", __b_e_charge),
-  "e" => Charge("e", 1.0),
-  "m" => Length("m", 1.0),
-  "cm" => Length("cm", 100.0),
-  "A" => Length("Å", 10^10),
-  "s" => Time_("s", 1.0),
+  "g"   => Mass("g",    __b_kg_per_amu * 10^3 / __b_eV_per_amu),
+  "kg"  => Mass("kg",   __b_kg_per_amu / __b_eV_per_amu),
+  "C"   => Charge("C",  __b_e_charge),
+  "e"   => Charge("e",  1.0),
+  "m"   => Length("m",  1.0),
+  "cm"  => Length("cm", 100.0),
+  "A"   => Length("Å",  10^10),
+  "s"   => Time_("s",   1.0),
   "min" => Time_("min", 1 / 60),
-  "h" => Time_("h", 1 / 3600),
-  "J" => Energy("J", __b_e_charge),
-  "eV" => Energy("eV", 1.0)
+  "h"   => Time_("h",   1 / 3600),
+  "J"   => Energy("J",  __b_e_charge),
+  "eV"  => Energy("eV", 1.0)
 )
+
 
 """
     function tounit(unit::Union{Symbol,Expr})
@@ -212,8 +214,7 @@ UNIT::Dict{AbstractString,Unit} = Dict(
 	- `unit`                        -- type: Symbol or Expr , name of the unit
 
 
-"""
-tounit
+""" tounit
 
 function tounit(unit::Union{Symbol,Expr})
   name = string(unit)
@@ -230,6 +231,7 @@ function tounit(unit::Union{Symbol,Expr})
   end
   throw(ArgumentError("unit \"" * name * "\" does not exist"))
 end
+
 
 """
     UnitSystem
