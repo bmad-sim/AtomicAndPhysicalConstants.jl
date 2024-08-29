@@ -11,8 +11,12 @@
 
 abstract type Unit end
 
-# overriding how Units are printed
-Base.print(io::IO, unit::T) where {T<:Unit} = print(io, rpad(" \"" * unit.name * "\"", 10), " \t where ", rpad(string(unit.conversion) * " " * unit.name, 30), "\t = 1 ")
+# override printing of Units
+Base.print(io::IO, unit::T) where {T<:Unit} =
+  print(io, rpad(" \"" * unit.name * "\"", 5),
+            " \t where ",
+            rpad(string(unit.conversion) * " " * unit.name, 30),
+            "\t = 1 ")
 
 
 """
