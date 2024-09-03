@@ -153,11 +153,15 @@ end
 
 
 """
-    prefix
+`prefix`
 
-    ### Description:
-    > dictionary that store how scaling factors relate to prefixs<
+### Description:
+This dictionary relates the standard SI prefixes (see
+https://www.bipm.org/en/measurement-units/si-prefixes)
+to their corresponding scale factors.
 
+Note that for `micro` one may use either `μ` or `u`
+as the prefix.
 """ prefix
 
 prefix::Dict{AbstractString,Float64} = Dict(
@@ -189,22 +193,40 @@ prefix::Dict{AbstractString,Float64} = Dict(
   "q"  => 10^-30   # quecto
 )
 
+"""
+`UNIT`
+
+### Description:
+This dictionary relates the various units used here,
+as denoted by the inidividual keys, to a `Unit` that
+gives the conversion factor from the desired unit to
+one in the standard set:
+  - mass, eV/c^2
+  - charge, e (elementary charge)
+  - length, m (meter)
+  - time, s (second)
+  - energy, eV (electron-volt)
+
+As an example, the line `"h" => Time_("h", 1 / 3600)`
+tells us that the conversion factor from h (hour) to
+s (second) equals `1 / 3600`.
+""" UNIT
 
 UNIT::Dict{AbstractString,Unit} = Dict(
-  "amu"    => Mass("amu",  1 / __b_eV_per_amu),
   "eV/c^2" => Mass("eV/c^2", 1.0),
-  "g"      => Mass("g",    __b_kg_per_amu * 10^3 / __b_eV_per_amu),
+  "amu"    => Mass("amu",  1 / __b_eV_per_amu),
   "kg"     => Mass("kg",   __b_kg_per_amu / __b_eV_per_amu),
-  "C"      => Charge("C",  __b_e_charge),
+  "g"      => Mass("g",    __b_kg_per_amu / __b_eV_per_amu * 10^3),
   "e"      => Charge("e",  1.0),
+  "C"      => Charge("C",  __b_e_charge),
   "m"      => Length("m",  1.0),
   "cm"     => Length("cm", 100.0),
   "A"      => Length("Å",  10^10),
   "s"      => Time_("s",   1.0),
   "min"    => Time_("min", 1 / 60),
   "h"      => Time_("h",   1 / 3600),
-  "J"      => Energy("J",  __b_e_charge),
-  "eV"     => Energy("eV", 1.0)
+  "eV"     => Energy("eV", 1.0),
+  "J"      => Energy("J",  __b_e_charge)
 )
 
 
@@ -510,4 +532,5 @@ export gyromagnetic_anomaly_electron, gyromagnetic_anomaly_proton, gyromagnetic_
 export gyromagnetic_anomaly_deuteron, gyromagnetic_anomaly_neutron, gyromagnetic_anomaly_He3
 export kg_per_amu, eV_per_amu, kg_per_eV, N_avogadro
 export fine_structure, classical_radius_factor, r_p, h_bar_planck
+export prefix, UNIT
 
