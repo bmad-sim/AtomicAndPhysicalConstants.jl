@@ -504,8 +504,9 @@ end
 
 export setunits, printunits
 export massof, chargeof
-export c_light, m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron, m_pion_0, m_pion_charged
-export r_e, e_charge, h_planck, mu_0_vac, eps_0_vac
-export gyromagnetic_anomaly_electron, gyromagnetic_anomaly_muon, gyromagnetic_anomaly_proton, gyromagnetic_anomaly_deuteron, gyromagnetic_anomaly_neutron, gyromagnetic_anomaly_He3
+export m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron, m_pion_0, m_pion_charged
+export c_light, r_e, e_charge, h_planck, mu_0_vac, eps_0_vac
+export gyromagnetic_anomaly_electron, gyromagnetic_anomaly_proton, gyromagnetic_anomaly_muon
+export gyromagnetic_anomaly_deuteron, gyromagnetic_anomaly_neutron, gyromagnetic_anomaly_He3
 export kg_per_amu, eV_per_amu, N_avogadro, fine_structure, classical_radius_factor, r_p, h_bar_planck, kg_per_eV, eps_0_vac
 
