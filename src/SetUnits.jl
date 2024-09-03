@@ -191,20 +191,20 @@ prefix::Dict{AbstractString,Float64} = Dict(
 
 
 UNIT::Dict{AbstractString,Unit} = Dict(
-  "amu" => Mass("amu",  1 / __b_eV_per_amu),
-  "eV / c ^ 2" => Mass("eV/c^2", 1.0),
-  "g"   => Mass("g",    __b_kg_per_amu * 10^3 / __b_eV_per_amu),
-  "kg"  => Mass("kg",   __b_kg_per_amu / __b_eV_per_amu),
-  "C"   => Charge("C",  __b_e_charge),
-  "e"   => Charge("e",  1.0),
-  "m"   => Length("m",  1.0),
-  "cm"  => Length("cm", 100.0),
-  "A"   => Length("Å",  10^10),
-  "s"   => Time_("s",   1.0),
-  "min" => Time_("min", 1 / 60),
-  "h"   => Time_("h",   1 / 3600),
-  "J"   => Energy("J",  __b_e_charge),
-  "eV"  => Energy("eV", 1.0)
+  "amu"    => Mass("amu",  1 / __b_eV_per_amu),
+  "eV/c^2" => Mass("eV/c^2", 1.0),
+  "g"      => Mass("g",    __b_kg_per_amu * 10^3 / __b_eV_per_amu),
+  "kg"     => Mass("kg",   __b_kg_per_amu / __b_eV_per_amu),
+  "C"      => Charge("C",  __b_e_charge),
+  "e"      => Charge("e",  1.0),
+  "m"      => Length("m",  1.0),
+  "cm"     => Length("cm", 100.0),
+  "A"      => Length("Å",  10^10),
+  "s"      => Time_("s",   1.0),
+  "min"    => Time_("min", 1 / 60),
+  "h"      => Time_("h",   1 / 3600),
+  "J"      => Energy("J",  __b_e_charge),
+  "eV"     => Energy("eV", 1.0)
 )
 
 
@@ -262,7 +262,7 @@ struct UnitSystem
 end
 
 PARTICLE_PHYSICS = UnitSystem(
-  UNIT["eV / c ^ 2"],
+  UNIT["eV/c^2"],
   UNIT["m"],
   UNIT["s"],
   UNIT["eV"],
@@ -508,5 +508,6 @@ export m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron, m_pion_0, 
 export c_light, r_e, e_charge, h_planck, mu_0_vac, eps_0_vac
 export gyromagnetic_anomaly_electron, gyromagnetic_anomaly_proton, gyromagnetic_anomaly_muon
 export gyromagnetic_anomaly_deuteron, gyromagnetic_anomaly_neutron, gyromagnetic_anomaly_He3
-export kg_per_amu, eV_per_amu, N_avogadro, fine_structure, classical_radius_factor, r_p, h_bar_planck, kg_per_eV, eps_0_vac
+export kg_per_amu, eV_per_amu, kg_per_eV, N_avogadro
+export fine_structure, classical_radius_factor, r_p, h_bar_planck
 
