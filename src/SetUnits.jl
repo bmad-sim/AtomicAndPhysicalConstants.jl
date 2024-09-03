@@ -13,10 +13,10 @@ abstract type Unit end
 
 # override printing of Units
 Base.print(io::IO, unit::T) where {T<:Unit} =
-  print(io, rpad(" \"" * unit.name * "\"", 5),
-            " \t where ",
-            rpad(string(unit.conversion) * " " * unit.name, 30),
-            "\t = 1 ")
+  print(io, rpad(unit.name, 6),
+            " where ",
+            rpad(string(unit.conversion) * " " * unit.name, 25),
+            " = 1 ")
 
 
 """
@@ -135,7 +135,7 @@ end
     > return nothing<
     > prints the units for each dimensions<
     > prints the units of constants with special dimenisions<
- 
+
 """ printunits
 
 function printunits()
@@ -143,11 +143,11 @@ function printunits()
     throw(ErrorException("units are not set, call setunits() to initalize units and constants"))
   end
   # prints the units for each dimensions
-  println("mass:\t",   current_units.mass,   "amu")
-  println("length:\t", current_units.length, "m"  )
-  println("time:\t",   current_units.time,   "s"  )
-  println("energy:\t", current_units.energy, "eV" )
-  println("charge:\t", current_units.charge, "e"  )
+  println("mass:\t",   current_units.mass,   "eV/c^2")
+  println("length:\t", current_units.length, "m"     )
+  println("time:\t",   current_units.time,   "s"     )
+  println("energy:\t", current_units.energy, "eV"    )
+  println("charge:\t", current_units.charge, "e"     )
   return
 end
 
@@ -261,9 +261,27 @@ struct UnitSystem
   charge::Charge
 end
 
-PARTICLE_PHYSICS = UnitSystem(UNIT["eV / c ^ 2"], UNIT["m"], UNIT["s"], UNIT["eV"], UNIT["e"])
-MKS = UnitSystem(UNIT["kg"], UNIT["m"], UNIT["s"], UNIT["J"], UNIT["C"])
-CGS = UnitSystem(UNIT["g"], UNIT["cm"], UNIT["s"], UNIT["J"], UNIT["C"])
+PARTICLE_PHYSICS = UnitSystem(
+  UNIT["eV / c ^ 2"],
+  UNIT["m"],
+  UNIT["s"],
+  UNIT["eV"],
+  UNIT["e"]
+)
+MKS = UnitSystem(
+  UNIT["kg"],
+  UNIT["m"],
+  UNIT["s"],
+  UNIT["J"],
+  UNIT["C"]
+)
+CGS = UnitSystem(
+  UNIT["g"],
+  UNIT["cm"],
+  UNIT["s"],
+  UNIT["J"],
+  UNIT["C"]
+)
 
 
 """
@@ -291,7 +309,7 @@ CGS = UnitSystem(UNIT["g"], UNIT["cm"], UNIT["s"], UNIT["J"], UNIT["C"])
     > return nothing<
     > users can specify the unit system and modify units in the system by keyword parameters<
     > sets global unit and store them in current units<
-    
+
     ### default units
     mass: eV/c^2
     length: m
@@ -306,7 +324,7 @@ CGS = UnitSystem(UNIT["g"], UNIT["cm"], UNIT["s"], UNIT["J"], UNIT["C"])
     ### keyword parameters
 	- `mass`                        -- type:Symbol or Expr, unit for mass, default to the mass unit in 'unitsystem'
 	- `length`                      -- type:Symbol or Expr, unit for length, default to the length unit in 'unitsystem'
-    - `time`                        -- type:Symbol or Expr, unit for time, default to the time unit in 'unitsystem' 
+    - `time`                        -- type:Symbol or Expr, unit for time, default to the time unit in 'unitsystem'
     - `energy`                      -- type:Symbol or Expr, unit for energy, default to the energy unit in 'unitsystem'
     - `charge`                      -- type:Symbol or Expr, unit for charge, default to the charge unit in 'unitsystem'
 
@@ -378,13 +396,13 @@ function setunits(unitsystem::Union{Symbol,Expr}=:default;
   global current_units = UnitSystem(mass_unit, length_unit, time_unit, energy_unit, charge_unit)
 
   # convert all the variables with dimension mass
-  global m_electron = mass_unit.conversion * __b_m_electron        # Electron Mass 
-  global m_proton = mass_unit.conversion * __b_m_proton            # Proton Mass 
-  global m_neutron = mass_unit.conversion * __b_m_neutron          # Neutron Mass 
-  global m_muon = mass_unit.conversion * __b_m_muon               # Muon Mass 
-  global m_helion = mass_unit.conversion * __b_m_helion            # Helion Mass He3 nucleus 
-  global m_deuteron = mass_unit.conversion * __b_m_deuteron        # Deuteron Mass 
-  global m_pion_0 = mass_unit.conversion * __b_m_pion_0            # Pion 0 Mass                              
+  global m_electron = mass_unit.conversion * __b_m_electron        # Electron Mass
+  global m_proton = mass_unit.conversion * __b_m_proton            # Proton Mass
+  global m_neutron = mass_unit.conversion * __b_m_neutron          # Neutron Mass
+  global m_muon = mass_unit.conversion * __b_m_muon               # Muon Mass
+  global m_helion = mass_unit.conversion * __b_m_helion            # Helion Mass He3 nucleus
+  global m_deuteron = mass_unit.conversion * __b_m_deuteron        # Deuteron Mass
+  global m_pion_0 = mass_unit.conversion * __b_m_pion_0            # Pion 0 Mass
   global m_pion_charged = mass_unit.conversion * __b_m_pion_charged    # Pion+- Mass
 
   # convert all the variables with dimension length
@@ -402,15 +420,15 @@ function setunits(unitsystem::Union{Symbol,Expr}=:default;
 
   # constants with special dimenisions
   # convert Planck's constant with dimension energy * time
-  global h_planck = __b_h_planck * energy_unit.conversion * time_unit.conversion        # Planck's constant 
+  global h_planck = __b_h_planck * energy_unit.conversion * time_unit.conversion        # Planck's constant
   # convert Vacuum permeability with dimension force / (current)^2
   global mu_0_vac = __b_mu_0_vac
   # convert Vacuum permeability with dimension capacitance / distance
   global eps_0_vac = __b_eps_0_vac
 
   # convert anomous magnet moments dimension: unitless
-  global gyromagnetic_anomaly_electron = __b_gyromagnetic_anomaly_electron           # anomalous mag. mom. of the electron 
-  global gyromagnetic_anomaly_muon = __b_gyromagnetic_anomaly_muon               #        
+  global gyromagnetic_anomaly_electron = __b_gyromagnetic_anomaly_electron           # anomalous mag. mom. of the electron
+  global gyromagnetic_anomaly_muon = __b_gyromagnetic_anomaly_muon               #
   global gyromagnetic_anomaly_proton = __b_gyromagnetic_anomaly_proton             # μ_p/μ_N - 1
   global gyromagnetic_anomaly_deuteron = __b_gyromagnetic_anomaly_deuteron           # μ_{deuteron}/μ_N - 1
   global gyromagnetic_anomaly_neutron = __b_gyromagnetic_anomaly_neutron            # μ_{neutron}/μ_N - 1
