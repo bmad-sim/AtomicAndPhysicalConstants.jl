@@ -23,5 +23,9 @@ docs/site/
 # environment.
 Manifest.toml
 
+# Mac-specific files
+.DS_Store
+
 # temporary files
 *.swp
+*~
