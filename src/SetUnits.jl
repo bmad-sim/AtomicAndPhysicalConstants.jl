@@ -196,16 +196,15 @@ prefix::Dict{AbstractString,Float64} = Dict(
 """
 `UNIT`
 
-### Description:
 This dictionary relates the various units used here,
 as denoted by the inidividual keys, to a `Unit` that
 gives the conversion factor from the desired unit to
 one in the standard set:
   - mass, eV/c^2
-  - charge, e (elementary charge)
   - length, m (meter)
   - time, s (second)
   - energy, eV (electron-volt)
+  - charge, e (elementary charge)
 
 As an example, the line `"h" => Time_("h", 1 / 3600)`
 tells us that the conversion factor from h (hour) to
@@ -231,14 +230,13 @@ UNIT::Dict{AbstractString,Unit} = Dict(
 
 
 """
-    function tounit(unit::Union{Symbol,Expr})
+function tounit(unit::Union{Symbol,Expr})
 
-    ### Description:
-    > return the correponding unit for the given symbol<
+### Description:
+> return the correponding unit for the given symbol<
 
-    ### parameters:
-	- `unit`                        -- type: Symbol or Expr , name of the unit
-
+### parameters:
+- `unit`                        -- type: Symbol or Expr , name of the unit
 
 """ tounit
 
