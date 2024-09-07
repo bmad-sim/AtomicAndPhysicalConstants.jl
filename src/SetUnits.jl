@@ -67,7 +67,6 @@ Here the default unit of length is the meter, "m".
 - `conversion` -- type:FLoat64, `conversion` `name`= 1 m, which
                   makes `conversion` the factor that converts
                   *from* m *to* the length unit `name`.
-
 """ Length
 
 struct Length <: Unit
@@ -88,7 +87,6 @@ Here the default unit of time is the second, "s".
 - `conversion` -- type:FLoat64, `conversion` `name`= 1 s, which
                   makes `conversion` the factor that converts
                   *from* s *to* the time unit `name`.
-
 """ Time_
 
 struct Time_ <: Unit
@@ -109,7 +107,6 @@ Here the default unit of energy is the electron-volt, "eV".
 - `conversion` -- type:FLoat64, `conversion` `name`= 1 eV, which
                   makes `conversion` the factor that converts
                   *from* eV *to* the energy unit `name`.
-
 """ Energy
 
 struct Energy <: Unit
@@ -130,7 +127,6 @@ Here the default unit of charge is the elementary charge, "e".
 - `conversion` -- type:FLoat64, `conversion` `name`= 1 e, which
                   makes `conversion` the factor that converts
                   *from* e *to* the charge unit `name`.
-
 """ Charge
 
 struct Charge <: Unit
@@ -147,11 +143,16 @@ end
     > prints the units for each dimensions<
     > prints the units of constants with special dimenisions<
 
+### Description:
+This function returns nothing. It simply prints the set of units
+in current use, along with the associated conversion factors
+*from* each of the noted units *to* the corresponding one in the
+standard set: `eV/c^2`, `m`, `s`, `eV`, `e`.
 """ printunits
 
 function printunits()
   if !@isdefined current_units
-    throw(ErrorException("units are not set, call setunits() to initalize units and constants"))
+    throw(ErrorException("No units have been set! Call setunits() to initalize units and constants."))
   end
   # prints the units for each dimensions
   println("mass:\t",   current_units.mass,   "eV/c^2")
