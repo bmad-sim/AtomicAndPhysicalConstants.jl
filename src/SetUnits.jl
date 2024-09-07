@@ -36,16 +36,17 @@ end
 
 
 """
-    Mass<:Unit
+`Mass<:Unit`
 
-    ### Description:
-    > immutable struct for storing mass units<
-    > the basis for conversion is amu<
+### Description:
+This type defines an immutable struct for storing units of mass.
+Here the default unit of mass is "eV/c^2".
 
-    ### Fields:
-	- `name`                        -- type:AbstractString, name of the unit
-	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 eV/c^2
-
+### Fields:
+- `name`       -- type:AbstractString, unit name
+- `conversion` -- type:FLoat64, `conversion` `name` = 1 eV/c^2, which
+                  makes `conversion` the factor that converts
+                  *from* eV/c^2 *to* the mass unit `name`.
 """ Mass
 
 struct Mass <: Unit
@@ -55,15 +56,17 @@ end
 
 
 """
-    Length<:Unit
+`Length<:Unit`
 
-    ### Description:
-    > immutable struct for storing length units<
-    > the basis for conversion is meter<
+### Description:
+This type defines an immutable struct for storing units of length.
+Here the default unit of length is the meter, "m".
 
-    ### Fields:
-	- `name`                        -- type:AbstractString, name of the unit
-	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 meter
+### Fields:
+- `name`       -- type:AbstractString, unit name
+- `conversion` -- type:FLoat64, `conversion` `name`= 1 m, which
+                  makes `conversion` the factor that converts
+                  *from* m *to* the length unit `name`.
 
 """ Length
 
@@ -74,18 +77,19 @@ end
 
 
 """
-    Time_<:Unit
+`Time_<:Unit`
 
-    ### Description:
-    > immutable struct to be used for storing time units<
-    > the basis for conversion is second<
+### Description:
+This type defines an immutable struct for storing units of time.
+Here the default unit of time is the second, "s".
 
-    ### Fields:
-	- `name`                        -- type:AbstractString, name of the unit
-	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 second
+### Fields:
+- `name`       -- type:AbstractString, unit name
+- `conversion` -- type:FLoat64, `conversion` `name`= 1 s, which
+                  makes `conversion` the factor that converts
+                  *from* s *to* the time unit `name`.
 
-"""
-Time_
+""" Time_
 
 struct Time_ <: Unit
   name::AbstractString
@@ -94,15 +98,17 @@ end
 
 
 """
-    Energy<:Unit
+`Energy<:Unit`
 
-    ### Description:
-    > immutable struct to be used for storing energy units<
-    > the basis for conversion is electric volts<
+### Description:
+This type defines an immutable struct for storing units of energy.
+Here the default unit of energy is the electron-volt, "eV".
 
-    ### Fields:
-	- `name`                        -- type:AbstractString, name of the unit
-	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 eV
+### Fields:
+- `name`       -- type:AbstractString, unit name
+- `conversion` -- type:FLoat64, `conversion` `name`= 1 eV, which
+                  makes `conversion` the factor that converts
+                  *from* eV *to* the energy unit `name`.
 
 """ Energy
 
@@ -113,15 +119,17 @@ end
 
 
 """
-    Charge<:Unit
+`Charge<:Unit`
 
-    ### Description:
-    > immutable struct to be used for storing charge units<
-    > the basis for conversion is elementary charge<
+### Description:
+This type defines an immutable struct for storing units of charge.
+Here the default unit of charge is the elementary charge, "e".
 
-    ### Fields:
-	- `name`                        -- type:AbstractString, name of the unit
-	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 e
+### Fields:
+- `name`       -- type:AbstractString, unit name
+- `conversion` -- type:FLoat64, `conversion` `name`= 1 e, which
+                  makes `conversion` the factor that converts
+                  *from* e *to* the charge unit `name`.
 
 """ Charge
 
