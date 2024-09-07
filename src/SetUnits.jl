@@ -2,10 +2,13 @@
 # include("ParticleTypes.jl")
 
 """
-    Unit
+`Unit`
 
-    ### Description:
-    > abstract type for storing units <
+### Definition
+This defines an abstract type for storing units,
+meaning a `name` and a factor `conversion` that
+converts the named unit to the corresponding
+unit in our standard set.
 
 """ Unit
 
@@ -200,9 +203,9 @@ This dictionary relates the various units used here,
 as denoted by the inidividual keys, to a `Unit` that
 gives the conversion factor from the desired unit to
 one in the standard set:
-  - mass, eV/c^2
+  - mass,   eV/c^2
   - length, m (meter)
-  - time, s (second)
+  - time,   s (second)
   - energy, eV (electron-volt)
   - charge, e (elementary charge)
 
