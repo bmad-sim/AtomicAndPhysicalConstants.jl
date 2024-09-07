@@ -199,10 +199,10 @@ prefix::Dict{AbstractString,Float64} = Dict(
 """
 `UNIT`
 
-This dictionary relates the various units used here,
-as denoted by the inidividual keys, to a `Unit` that
-gives the conversion factor from the desired unit to
-one in the standard set:
+This dictionary relates the various units listed here,
+as denoted by the inidividual keys, to a `Unit` struct
+that scontains the conversion factor *to* the desired
+unit *from* the corresponding one in the standard set:
   - mass,   eV/c^2
   - length, m (meter)
   - time,   s (second)
@@ -210,8 +210,8 @@ one in the standard set:
   - charge, e (elementary charge)
 
 As an example, the line `"h" => Time_("h", 1 / 3600)`
-tells us that the conversion factor from h (hour) to
-s (second) equals `1 / 3600`.
+tells us that the conversion factor from s (second)
+to h(hour) equals `1 / 3600`.
 """ UNIT
 
 UNIT::Dict{AbstractString,Unit} = Dict(
