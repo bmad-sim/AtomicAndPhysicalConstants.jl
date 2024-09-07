@@ -136,12 +136,7 @@ end
 
 
 """
-    printunits
-
-    ### Description:
-    > return nothing<
-    > prints the units for each dimensions<
-    > prints the units of constants with special dimenisions<
+`printunits`
 
 ### Description:
 This function returns nothing. It simply prints the set of units
