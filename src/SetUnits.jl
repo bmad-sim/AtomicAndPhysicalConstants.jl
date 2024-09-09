@@ -45,7 +45,7 @@ Here the default unit of mass is "eV/c^2".
 - `name`       -- type:AbstractString, unit name
 - `conversion` -- type:FLoat64, `conversion` `name` = 1 eV/c^2, which
                   makes `conversion` the factor that converts
-                  *from* eV/c^2 *to* the mass unit `name`.
+                  *from* "eV/c^2" *to* the mass unit `name`.
 """ Mass
 
 struct Mass <: Unit
@@ -65,7 +65,7 @@ Here the default unit of length is the meter, "m".
 - `name`       -- type:AbstractString, unit name
 - `conversion` -- type:FLoat64, `conversion` `name`= 1 m, which
                   makes `conversion` the factor that converts
-                  *from* m *to* the length unit `name`.
+                  *from* "m" *to* the length unit `name`.
 """ Length
 
 struct Length <: Unit
@@ -85,7 +85,7 @@ Here the default unit of time is the second, "s".
 - `name`       -- type:AbstractString, unit name
 - `conversion` -- type:FLoat64, `conversion` `name`= 1 s, which
                   makes `conversion` the factor that converts
-                  *from* s *to* the time unit `name`.
+                  *from* "s" *to* the time unit `name`.
 """ Time_
 
 struct Time_ <: Unit
@@ -105,7 +105,7 @@ Here the default unit of energy is the electron-volt, "eV".
 - `name`       -- type:AbstractString, unit name
 - `conversion` -- type:FLoat64, `conversion` `name`= 1 eV, which
                   makes `conversion` the factor that converts
-                  *from* eV *to* the energy unit `name`.
+                  *from* "eV" *to* the energy unit `name`.
 """ Energy
 
 struct Energy <: Unit
@@ -125,7 +125,7 @@ Here the default unit of charge is the elementary charge, "e".
 - `name`       -- type:AbstractString, unit name
 - `conversion` -- type:FLoat64, `conversion` `name`= 1 e, which
                   makes `conversion` the factor that converts
-                  *from* e *to* the charge unit `name`.
+                  *from* "e" *to* the charge unit `name`.
 """ Charge
 
 struct Charge <: Unit
@@ -209,8 +209,8 @@ unit *from* the corresponding one in the standard set:
   - mass,   eV/c^2
   - length, m (meter)
   - time,   s (second)
-  - energy, eV (electron-volt)
   - charge, e (elementary charge)
+  - energy, eV (electron-volt)
 
 As an example, the line `"h" => Time_("h", 1 / 3600)`
 tells us that the conversion factor from seconds ("s")
