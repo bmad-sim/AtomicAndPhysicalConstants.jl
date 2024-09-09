@@ -22,11 +22,16 @@ Base.print(io::IO, unit::T) where {T<:Unit} =
 
 
 """
-    scale
+`function scale(unit::T, prefix::AbstractString, factor::Float64) where {T<:Unit}`
 
-    ### Description:
-    > return scaled units that has prefix 'prefix' and is scaled by 'factor' <
+### Description:
+For a given `unit`, `prefix`, and associated `factor` return the
+corresponding `Unit`.
 
+### Arguments:
+  - `unit`    -- the unit to modify
+  - `prefix`  -- the prefix to use
+  - `factor`  -- the corresponding factor
 """ scale
 
 function scale(unit::T, prefix::AbstractString, factor::Float64) where {T<:Unit}
@@ -135,7 +140,7 @@ end
 
 
 """
-`printunits`
+`printunits()`
 
 ### Description:
 This function returns nothing. It simply prints the set of units
@@ -202,6 +207,7 @@ prefix::Dict{AbstractString,Float64} = Dict(
 """
 `UNIT`
 
+### Description:
 This dictionary relates the various units listed here,
 as denoted by the inidividual keys, to a `Unit` struct
 that contains the conversion factor *to* the desired
@@ -236,17 +242,17 @@ UNIT::Dict{AbstractString,Unit} = Dict(
 
 
 """
-function tounit(unit::Union{Symbol,Expr})
+`function tounit(unit::Union{Symbol,Expr,AbstractString})`
 
 ### Description:
-> return the correponding unit for the given symbol<
+For the given `unit`, return the correponding Unit struct.
 
-### parameters:
-- `unit`                        -- type: Symbol or Expr , name of the unit
+### Argument:
+  - `unit`  -- Symbol, Expr, or AbstractString: name of the unit
 
 """ tounit
 
-function tounit(unit::Union{Symbol,Expr})
+function tounit(unit::Union{Symbol,Expr,AbstractString})
   name = string(unit)
   if haskey(UNIT, name)
     return UNIT[name]
@@ -264,19 +270,18 @@ end
 
 
 """
-    UnitSystem
+UnitSystem
 
-    ### Description:
-    > immutable struct for storing unit systems<
+### Description:
+This defines an immutable struct for storing a specific
+system of units.
 
-    ### Fields:
-	- `mass`                    -- type:Mass, stores the unit for mass
-	- `length`                  -- type:Length, stores the unit for length
-  - `time`                    -- type:Time, stores the unit for time
-  - `energy`                  -- type:Energy, stores the unit for energy
-  - `charge`                  -- type:Charge, stores the unit for charge
-
-
+### Fields:
+- `mass`    -- type:Mass, stores the unit for mass
+- `length`  -- type:Length, stores the unit for length
+- `time`    -- type:Time, stores the unit for time
+- `energy`  -- type:Energy, stores the unit for energy
+- `charge`  -- type:Charge, stores the unit for charge
 """ UnitSystem
 
 struct UnitSystem
@@ -287,6 +292,8 @@ struct UnitSystem
   charge::Charge
 end
 
+# Declare specific systems of units
+#   for particle physics (:default)
 PARTICLE_PHYSICS = UnitSystem(
   UNIT["eV/c^2"],
   UNIT["m"],
@@ -294,6 +301,7 @@ PARTICLE_PHYSICS = UnitSystem(
   UNIT["eV"],
   UNIT["e"]
 )
+#   MKS
 MKS = UnitSystem(
   UNIT["kg"],
   UNIT["m"],
@@ -301,6 +309,7 @@ MKS = UnitSystem(
   UNIT["J"],
   UNIT["C"]
 )
+#   quasi-CGS
 CGS = UnitSystem(
   UNIT["g"],
   UNIT["cm"],
@@ -311,14 +320,13 @@ CGS = UnitSystem(
 
 
 """
-    current_units :: UnitSystem
+current_units :: UnitSystem
 
-    ### Description:
-    > a UnitSystem that stores currently using units<
+### Description:
+This declares a UnitSystem that stores the units in current use.
 
-    ### Note:
-    it is initialized when setunits() is called
-
+### Note:
+It is initialized when setunits() is called.
 """ current_units
 
 
@@ -504,7 +512,7 @@ end
 
 
 """
-    function chargeof(particle::Particle, unit::Union{Symbol,Expr}=:default)
+`function chargeof(particle::Particle, unit::Union{Symbol,Expr}=:default)`
 
     ### Description:
     > return charge of 'particle' in current unit or unit of the user's choice<
