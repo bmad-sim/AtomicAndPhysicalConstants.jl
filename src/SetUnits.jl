@@ -493,7 +493,7 @@ end
 function massof(particle::Particle, unit::Union{Symbol,Expr}=:default)
   if (unit == :default)
     if !@isdefined current_units
-      throw(ErrorException("units are not set, call setunits() to initalize units and constants"))
+      throw(ErrorException("No units have been set! Call setunits() to initalize units and constants."))
     else
       return particle.mass * current_units.mass.conversion
     end
@@ -519,7 +519,7 @@ end
 function chargeof(particle::Particle, unit::Union{Symbol,Expr}=:default)
   if (unit == :default)
     if !@isdefined current_units
-      throw(ErrorException("units are not set, call setunits() to initalize units and constants"))
+      throw(ErrorException("No units have been set! Call setunits() to initalize units and constants."))
     else
       return particle.charge * current_units.charge.conversion
     end
