@@ -8,7 +8,7 @@
 
 Dependence of Particle(name, charge=0, iso=-1)
 Create a particle struct for a subatomic particle with name=name
-"""
+""" subatomic_particle
 
 function subatomic_particle(name::AbstractString)
 		# write the particle out directly
@@ -28,16 +28,16 @@ Create a particle struct for tracking and simulation.
 If an anti-particle (subatomic or otherwise) prepend "anti-" to the name.
 
 # Arguments
-1. `name::AbstractString`: the name of the particle 
+1. `name::AbstractString': the name of the particle 
 		* subatomic particle names must be given exactly,
 		* Atomic symbols may include charge and isotope eg Li#9+1
 		* where #[1-999] specifies the isotope and (+/-)[0-999] specifies charge
-2. `charge::Int=0`: the charge of the particle.
+2. `charge::Int=0': the charge of the particle.
 		* only affects atoms 
 		* overwritten if charge given in the name
-3. `iso::Int` the mass number of the atom
+3. `iso::Int' the mass number of the atom
 		* only affects atoms 
-		* overwritten if charge given in the name
+		* overwritten if mass given in the name
 """ Particle
 
 function Particle(name::AbstractString, charge::Int=0, iso::Int=-1)
@@ -65,8 +65,8 @@ function Particle(name::AbstractString, charge::Int=0, iso::Int=-1)
 
 		rgas = r"[A-Z][a-z]|[A-Z]" # atomic symbol regex
 		rgm = r"#[0-9][0-9][0-9]|#[0-9][0-9]|#[0-9]" # atomic mass regex
-		rgcp = r"\+[0-9][0-9][0-9]|\+[0-9][0-9]|\+[0-9]" # positive charge regex
-		rgcm = r"\-[0-9][0-9][0-9]|\-[0-9][0-9]|\-[0-9]" # negative charge regex
+		rgcp = r"\+[0-9][0-9][0-9]|\+[0-9][0-9]|\+[0-9]|\+\+|\+" # positive charge regex
+		rgcm = r"\-[0-9][0-9][0-9]|\-[0-9][0-9]|\-[0-9]|\-\-|\-" # negative charge regex
 
 		anti_atom = false
 
@@ -84,10 +84,22 @@ function Particle(name::AbstractString, charge::Int=0, iso::Int=-1)
 		end
 		if occursin(rgcp, name) == true
 			chstr = match(rgcp, name)
-			charge = tryparse(Int, strip(chstr.match, '+'))
+			if chstr == '+'
+				charge = 1
+			elseif chstr == "++"
+				charge = 2
+			else 
+				charge = tryparse(Int, chstr)
+			end
 		elseif occursin(rgcm, name) == true
 			chstr = match(rgcm, name)
-			charge = tryparse(Int, chstr.match)
+			if chstr == '-'
+				charge = -1
+			elseif chstr == "--"
+				charge = -2
+			else 
+				charge = tryparse(Int, chstr)
+			end
 		end
 		
 
@@ -117,9 +129,9 @@ function Particle(name::AbstractString, charge::Int=0, iso::Int=-1)
 				spin = 0.5*__b_h_bar_planck*iso
 			end
 			if anti_atom == false
-				return Particle(name, charge, mass, spin, 0) # return the object to track
+				return Particle(AS, charge, mass, spin, 0) # return the object to track
 			elseif anti_atom == true
-				return Particle("anti-"*name, charge, mass, spin, 0)
+				return Particle("anti-"*AS, charge, mass, spin, 0)
 			end
 
 
@@ -170,3 +182,36 @@ function atomicnumber(particle::Particle)
 		return
 	end
 end; export atomicnumber
+
+
+
+# ------------------------------------------------------------------------------------------------------------
+
+"""
+		gyromagnetic_anomaly(gs::Float64)
+
+Compute and deliver the gyromagnetic anomaly for a lepton given its g factor
+
+# Arguments:
+1. `gs::Float64': the g_factor for the particle
+""" gyromagnetic_anomaly
+
+function gyromagnetic_anomaly(gs::Float64)
+	return (gs-2)/2
+end
+
+
+"""
+		g_nucleon(gs::Float64, Z::Int, mass::Float64)
+
+Compute and deliver the gyromagnetic anomaly for a baryon given its g factor
+
+# Arguments:
+1. `gs::Float64': the g_factor for the particle
+2. `Z::Int': the charge (in units of +e) of the particle
+3. `mass::Float64': the mass of the particle
+""" g_nucleon
+
+function g_nucleon(gs::Float64, Z::Int, mass::Float64)
+	return Z*(m_proton/mass)*gs
+end
