@@ -224,6 +224,7 @@ to hours ("h") equals `1 / 3600`.
 """ UNIT
 
 UNIT::Dict{AbstractString,Unit} = Dict(
+  "eV / c ^ 2" => Mass("eV/c^2", 1.0),
   "eV/c^2" => Mass("eV/c^2", 1.0),
   "amu"    => Mass("amu",  1 / __b_eV_per_amu),
   "kg"     => Mass("kg",   __b_kg_per_amu / __b_eV_per_amu),
