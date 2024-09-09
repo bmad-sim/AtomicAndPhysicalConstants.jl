@@ -5,11 +5,10 @@
 `Unit`
 
 ### Definition
-This defines an abstract type for storing units,
-meaning a `name` and a factor `conversion` that
-converts the named unit to the corresponding
-unit in our standard set.
-
+This defines an abstract type for storing units, meaning a
+unit name `name` and a conversion factor `conversion` that
+converts *to* the named unit *from* the corresponding unit
+in our standard set: "eV/c^2", "m", "s", "e", and "eV".
 """ Unit
 
 abstract type Unit end
