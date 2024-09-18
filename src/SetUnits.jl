@@ -1,47 +1,57 @@
-
 # include("PhysicalConstants.jl")
 # include("ParticleTypes.jl")
-"""
-    Unit
-
-    ### Description:
-    > abstract type for storing units <
 
 """
-Unit
+`Unit`
+
+### Definition
+This defines an abstract type for storing units, meaning a
+unit name `name` and a conversion factor `conversion` that
+converts *to* the named unit *from* the corresponding unit
+in our standard set: "eV/c^2", "m", "s", "e", and "eV".
+""" Unit
 
 abstract type Unit end
 
-# overriding how Units are printed
+# override printing of Units
+Base.print(io::IO, unit::T) where {T<:Unit} =
+  print(io, rpad(unit.name, 6),
+            " where ",
+            rpad(string(unit.conversion) * " " * unit.name, 25),
+            " = 1 ")
 
-Base.print(io::IO, unit::T) where {T<:Unit} = print(io, rpad(" \"" * unit.name * "\"", 10), " \t where ", rpad(string(unit.conversion) * " " * unit.name, 30), "\t = 1 ")
-
-"""
-    scale
-
-    ### Description:
-    > return scaled units that has prefix 'prefix' and is scaled by 'factor' <
 
 """
-scale
+`function scale(unit::T, prefix::AbstractString, factor::Float64) where {T<:Unit}`
+
+### Description:
+For a given `unit`, `prefix`, and associated `factor` return the
+corresponding `Unit`.
+
+### Arguments:
+  - `unit`    -- the unit to modify
+  - `prefix`  -- the prefix to use
+  - `factor`  -- the corresponding factor
+""" scale
 
 function scale(unit::T, prefix::AbstractString, factor::Float64) where {T<:Unit}
   return T(prefix * unit.name, unit.conversion / factor)
 end
 
-"""
-    Mass<:Unit
-
-    ### Description:
-    > immutable struct for storing mass units<
-    > the basis for conversion is amu<
-
-    ### Fields:
-	- `name`                        -- type:AbstractString, name of the unit
-	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 eV/c^2
 
 """
-Mass
+`Mass<:Unit`
+
+### Description:
+This type defines an immutable struct for storing units of mass.
+Here the default unit of mass is "eV/c^2".
+
+### Fields:
+- `name`       -- type:AbstractString, unit name
+- `conversion` -- type:FLoat64, `conversion` `name` = 1 eV/c^2, which
+                  makes `conversion` the factor that converts
+                  *from* "eV/c^2" *to* the mass unit `name`.
+""" Mass
 
 struct Mass <: Unit
   name::AbstractString
@@ -50,75 +60,78 @@ end
 
 
 """
-    Length<:Unit
+`Length<:Unit`
 
-    ### Description:
-    > immutable struct for storing length units<
-    > the basis for conversion is meter<
+### Description:
+This type defines an immutable struct for storing units of length.
+Here the default unit of length is the meter, "m".
 
-    ### Fields:
-	- `name`                        -- type:AbstractString, name of the unit
-	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 meter
-
-"""
-Length
+### Fields:
+- `name`       -- type:AbstractString, unit name
+- `conversion` -- type:FLoat64, `conversion` `name`= 1 m, which
+                  makes `conversion` the factor that converts
+                  *from* "m" *to* the length unit `name`.
+""" Length
 
 struct Length <: Unit
   name::AbstractString
   conversion::Float64
 end
 
-"""
-    Time_<:Unit
-
-    ### Description:
-    > immutable struct to be used for storing time units<
-    > the basis for conversion is second<
-
-    ### Fields:
-	- `name`                        -- type:AbstractString, name of the unit
-	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 second
 
 """
-Time_
+`Time_<:Unit`
+
+### Description:
+This type defines an immutable struct for storing units of time.
+Here the default unit of time is the second, "s".
+
+### Fields:
+- `name`       -- type:AbstractString, unit name
+- `conversion` -- type:FLoat64, `conversion` `name`= 1 s, which
+                  makes `conversion` the factor that converts
+                  *from* "s" *to* the time unit `name`.
+""" Time_
 
 struct Time_ <: Unit
   name::AbstractString
   conversion::Float64
 end
 
-"""
-    Energy<:Unit
-
-    ### Description:
-    > immutable struct to be used for storing energy units<
-    > the basis for conversion is electric volts<
-
-    ### Fields:
-	- `name`                        -- type:AbstractString, name of the unit
-	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 eV
 
 """
-Energy
+`Energy<:Unit`
+
+### Description:
+This type defines an immutable struct for storing units of energy.
+Here the default unit of energy is the electron-volt, "eV".
+
+### Fields:
+- `name`       -- type:AbstractString, unit name
+- `conversion` -- type:FLoat64, `conversion` `name`= 1 eV, which
+                  makes `conversion` the factor that converts
+                  *from* "eV" *to* the energy unit `name`.
+""" Energy
 
 struct Energy <: Unit
   name::AbstractString
   conversion::Float64
 end
 
-"""
-    Charge<:Unit
-
-    ### Description:
-    > immutable struct to be used for storing charge units<
-    > the basis for conversion is elementary charge<
-
-    ### Fields:
-	- `name`                        -- type:AbstractString, name of the unit
-	- `conversion`                  -- type:FLoat, 'conversion' unit = 1 e
 
 """
-Charge
+`Charge<:Unit`
+
+### Description:
+This type defines an immutable struct for storing units of charge.
+Here the default unit of charge is the elementary charge, "e".
+
+### Fields:
+- `name`       -- type:AbstractString, unit name
+- `conversion` -- type:FLoat64, `conversion` `name`= 1 e, which
+                  makes `conversion` the factor that converts
+                  *from* "e" *to* the charge unit `name`.
+""" Charge
 
 struct Charge <: Unit
   name::AbstractString
@@ -127,82 +140,120 @@ end
 
 
 """
-    printunits
+`printunits()`
 
-    ### Description:
-    > return nothing<
-    > prints the units for each dimensions<
-    > prints the units of constants with speical dimenisions<
- 
-"""
-printunits
+### Description:
+This function returns nothing. It simply prints the set of units
+in current use, along with the associated conversion factors
+*from* each of the noted units *to* the corresponding one in the
+standard set: `eV/c^2`, `m`, `s`, `eV`, `e`.
+""" printunits
 
 function printunits()
   if !@isdefined current_units
-    throw(ErrorException("units are not set, call setunits() to initalize units and constants"))
+    throw(ErrorException("No units have been set! Call setunits() to initalize units and constants."))
   end
   # prints the units for each dimensions
-  println("mass:\t", current_units.mass, "amu")
-  println("length:\t", current_units.length, "m")
-  println("time:\t", current_units.time, "s")
-  println("energy:\t", current_units.energy, "eV")
-  println("charge:\t", current_units.charge, "e")
+  println("mass:\t",   current_units.mass,   "eV/c^2")
+  println("length:\t", current_units.length, "m"     )
+  println("time:\t",   current_units.time,   "s"     )
+  println("energy:\t", current_units.energy, "eV"    )
+  println("charge:\t", current_units.charge, "e"     )
   return
 end
 
-"""
-    prefix
-
-    ### Description:
-    > dictionary that store how scaling factors relate to prefixs<
 
 """
-prefix
+`prefix`
+
+### Description:
+This dictionary relates the standard SI prefixes (see
+https://www.bipm.org/en/measurement-units/si-prefixes)
+to their corresponding scale factors.
+
+Note that for `micro` one may use either `μ` or `u`
+as the prefix.
+""" prefix
 
 prefix::Dict{AbstractString,Float64} = Dict(
-  "k" => 10^3,
-  "M" => 10^6,
-  "G" => 10^9,
-  "T" => 10^12,
-  "m" => 10^-3,
-  "u" => 10^-6,
-  "n" => 10^9,
-  "p" => 10^-12,
-  "f" => 10^-15,
-  "a" => 10^-18
+  "Q"  => 10^30,   # quetta
+  "R"  => 10^27,   # ronna
+  "Y"  => 10^24,   # yotta
+  "Z"  => 10^21,   # zetta
+  "E"  => 10^18,   # exa
+  "P"  => 10^15,   # peta
+  "T"  => 10^12,   # tera
+  "G"  => 10^9,    # giga
+  "M"  => 10^6,    # mega
+  "k"  => 10^3,    # kilo
+  "h"  => 10^2,    # hecto
+  "da" => 10^1,    # deka
+                   # ---
+  "d"  => 10^-1,   # deci
+  "c"  => 10^-2,   # centi
+  "m"  => 10^-3,   # milli
+  "u"  => 10^-6,   # micro
+  "μ"  => 10^-6,   # micro
+  "n"  => 10^-9,   # nano
+  "p"  => 10^-12,  # pico
+  "f"  => 10^-15,  # femto
+  "a"  => 10^-18,  # atto
+  "z"  => 10^-21,  # zepto
+  "y"  => 10^-24,  # yocto
+  "r"  => 10^-27,  # ronto
+  "q"  => 10^-30   # quecto
 )
+
+"""
+`UNIT`
+
+### Description:
+This dictionary relates the various units listed here,
+as denoted by the inidividual keys, to a `Unit` struct
+that contains the conversion factor *to* the desired
+unit *from* the corresponding one in the standard set:
+  - mass,   eV/c^2
+  - length, m (meter)
+  - time,   s (second)
+  - charge, e (elementary charge)
+  - energy, eV (electron-volt)
+
+As an example, the line `"h" => Time_("h", 1 / 3600)`
+tells us that the conversion factor from seconds ("s")
+to hours ("h") equals `1 / 3600`.
+""" UNIT
 
 UNIT::Dict{AbstractString,Unit} = Dict(
-  "amu" => Mass("amu", 1 / __b_eV_per_amu),
   "eV / c ^ 2" => Mass("eV/c^2", 1.0),
-  "g" => Mass("g", __b_kg_per_amu * 10^3 / __b_eV_per_amu),
-  "kg" => Mass("kg", __b_kg_per_amu / __b_eV_per_amu),
-  "C" => Charge("C", __b_e_charge),
-  "e" => Charge("e", 1.0),
-  "m" => Length("m", 1.0),
-  "cm" => Length("cm", 100.0),
-  "A" => Length("Å", 10^10),
-  "s" => Time_("s", 1.0),
-  "min" => Time_("min", 1 / 60),
-  "h" => Time_("h", 1 / 3600),
-  "J" => Energy("J", __b_e_charge),
-  "eV" => Energy("eV", 1.0)
+  "eV/c^2" => Mass("eV/c^2", 1.0),
+  "amu"    => Mass("amu",  1 / __b_eV_per_amu),
+  "kg"     => Mass("kg",   __b_kg_per_amu / __b_eV_per_amu),
+  "g"      => Mass("g",    __b_kg_per_amu / __b_eV_per_amu * 10^3),
+  "e"      => Charge("e",  1.0),
+  "C"      => Charge("C",  __b_e_charge),
+  "m"      => Length("m",  1.0),
+  "cm"     => Length("cm", 100.0),
+  "A"      => Length("Å",  10^10),
+  "s"      => Time_("s",   1.0),
+  "min"    => Time_("min", 1 / 60),
+  "h"      => Time_("h",   1 / 3600),
+  "eV"     => Energy("eV", 1.0),
+  "J"      => Energy("J",  __b_e_charge)
 )
 
-"""
-    function tounit(unit::Union{Symbol,Expr})
-
-    ### Description:
-    > return the correponding unit for the given symbol<
-
-    ### parameters:
-	- `unit`                        -- type: Symbol or Expr , name of the unit
-
 
 """
-tounit
+`function tounit(unit::Union{Symbol,Expr,AbstractString})`
 
-function tounit(unit::Union{Symbol,Expr})
+### Description:
+For the given `unit`, return the correponding Unit struct.
+
+### Argument:
+  - `unit`  -- Symbol, Expr, or AbstractString: name of the unit
+
+""" tounit
+
+function tounit(unit::Union{Symbol,Expr,AbstractString})
   name = string(unit)
   if haskey(UNIT, name)
     return UNIT[name]
@@ -218,22 +269,21 @@ function tounit(unit::Union{Symbol,Expr})
   throw(ArgumentError("unit \"" * name * "\" does not exist"))
 end
 
-"""
-    UnitSystem
-
-    ### Description:
-    > immutable struct for storing unit systems<
-
-    ### Fields:
-	- `mass`                    -- type:Mass, stores the unit for mass
-	- `length`                  -- type:Length, stores the unit for length
-  - `time`                    -- type:Time, stores the unit for time
-  - `energy`                  -- type:Energy, stores the unit for energy
-  - `charge`                  -- type:Charge, stores the unit for charge
-
 
 """
 UnitSystem
+
+### Description:
+This defines an immutable struct for storing a specific
+system of units.
+
+### Fields:
+- `mass`    -- type:Mass, stores the unit for mass
+- `length`  -- type:Length, stores the unit for length
+- `time`    -- type:Time, stores the unit for time
+- `energy`  -- type:Energy, stores the unit for energy
+- `charge`  -- type:Charge, stores the unit for charge
+""" UnitSystem
 
 struct UnitSystem
   mass::Mass
@@ -243,21 +293,42 @@ struct UnitSystem
   charge::Charge
 end
 
-PARTICLE_PHYSICS = UnitSystem(UNIT["eV / c ^ 2"], UNIT["m"], UNIT["s"], UNIT["eV"], UNIT["e"])
-MKS = UnitSystem(UNIT["kg"], UNIT["m"], UNIT["s"], UNIT["J"], UNIT["C"])
-CGS = UnitSystem(UNIT["g"], UNIT["cm"], UNIT["s"], UNIT["J"], UNIT["C"])
+# Declare specific systems of units
+#   for particle physics (:default)
+PARTICLE_PHYSICS = UnitSystem(
+  UNIT["eV/c^2"],
+  UNIT["m"],
+  UNIT["s"],
+  UNIT["eV"],
+  UNIT["e"]
+)
+#   MKS
+MKS = UnitSystem(
+  UNIT["kg"],
+  UNIT["m"],
+  UNIT["s"],
+  UNIT["J"],
+  UNIT["C"]
+)
+#   quasi-CGS
+CGS = UnitSystem(
+  UNIT["g"],
+  UNIT["cm"],
+  UNIT["s"],
+  UNIT["J"],
+  UNIT["C"]
+)
+
 
 """
-    current_units :: UnitSystem
+current_units :: UnitSystem
 
-    ### Description:
-    > a UnitSystem that stores currently using units<
+### Description:
+This declares a UnitSystem that stores the units in current use.
 
-    ### Note:
-    it is initialized when setunits() is called
-
-"""
-current_units
+### Note:
+It is initialized when setunits() is called.
+""" current_units
 
 
 """
@@ -273,7 +344,7 @@ current_units
     > return nothing<
     > users can specify the unit system and modify units in the system by keyword parameters<
     > sets global unit and store them in current units<
-    
+
     ### default units
     mass: eV/c^2
     length: m
@@ -288,7 +359,7 @@ current_units
     ### keyword parameters
 	- `mass`                        -- type:Symbol or Expr, unit for mass, default to the mass unit in 'unitsystem'
 	- `length`                      -- type:Symbol or Expr, unit for length, default to the length unit in 'unitsystem'
-    - `time`                        -- type:Symbol or Expr, unit for time, default to the time unit in 'unitsystem' 
+    - `time`                        -- type:Symbol or Expr, unit for time, default to the time unit in 'unitsystem'
     - `energy`                      -- type:Symbol or Expr, unit for energy, default to the energy unit in 'unitsystem'
     - `charge`                      -- type:Symbol or Expr, unit for charge, default to the charge unit in 'unitsystem'
 
@@ -299,8 +370,7 @@ current_units
     - unit for Avogadro's number is mol^-1
     - unit for classical radius factor is 'length'*'mass'
 
-"""
-setunits
+""" setunits
 
 function setunits(unitsystem::Union{Symbol,Expr}=:default;
   mass::Union{Symbol,Expr}=:default,
@@ -361,13 +431,13 @@ function setunits(unitsystem::Union{Symbol,Expr}=:default;
   global current_units = UnitSystem(mass_unit, length_unit, time_unit, energy_unit, charge_unit)
 
   # convert all the variables with dimension mass
-  global m_electron = mass_unit.conversion * __b_m_electron        # Electron Mass 
-  global m_proton = mass_unit.conversion * __b_m_proton            # Proton Mass 
-  global m_neutron = mass_unit.conversion * __b_m_neutron          # Neutron Mass 
-  global m_muon = mass_unit.conversion * __b_m_muon               # Muon Mass 
-  global m_helion = mass_unit.conversion * __b_m_helion            # Helion Mass He3 nucleus 
-  global m_deuteron = mass_unit.conversion * __b_m_deuteron        # Deuteron Mass 
-  global m_pion_0 = mass_unit.conversion * __b_m_pion_0            # Pion 0 Mass                              
+  global m_electron = mass_unit.conversion * __b_m_electron        # Electron Mass
+  global m_proton = mass_unit.conversion * __b_m_proton            # Proton Mass
+  global m_neutron = mass_unit.conversion * __b_m_neutron          # Neutron Mass
+  global m_muon = mass_unit.conversion * __b_m_muon               # Muon Mass
+  global m_helion = mass_unit.conversion * __b_m_helion            # Helion Mass He3 nucleus
+  global m_deuteron = mass_unit.conversion * __b_m_deuteron        # Deuteron Mass
+  global m_pion_0 = mass_unit.conversion * __b_m_pion_0            # Pion 0 Mass
   global m_pion_charged = mass_unit.conversion * __b_m_pion_charged    # Pion+- Mass
 
   # convert all the variables with dimension length
@@ -385,15 +455,15 @@ function setunits(unitsystem::Union{Symbol,Expr}=:default;
 
   # constants with special dimenisions
   # convert Planck's constant with dimension energy * time
-  global h_planck = __b_h_planck * energy_unit.conversion * time_unit.conversion        # Planck's constant 
+  global h_planck = __b_h_planck * energy_unit.conversion * time_unit.conversion        # Planck's constant
   # convert Vacuum permeability with dimension force / (current)^2
   global mu_0_vac = __b_mu_0_vac
   # convert Vacuum permeability with dimension capacitance / distance
   global eps_0_vac = __b_eps_0_vac
 
   # convert anomous magnet moments dimension: unitless
-  global gyromagnetic_anomaly_electron = __b_gyromagnetic_anomaly_electron           # anomalous mag. mom. of the electron 
-  global gyromagnetic_anomaly_muon = __b_gyromagnetic_anomaly_muon               #        
+  global gyromagnetic_anomaly_electron = __b_gyromagnetic_anomaly_electron           # anomalous mag. mom. of the electron
+  global gyromagnetic_anomaly_muon = __b_gyromagnetic_anomaly_muon               #
   global gyromagnetic_anomaly_proton = __b_gyromagnetic_anomaly_proton             # μ_p/μ_N - 1
   global gyromagnetic_anomaly_deuteron = __b_gyromagnetic_anomaly_deuteron           # μ_{deuteron}/μ_N - 1
   global gyromagnetic_anomaly_neutron = __b_gyromagnetic_anomaly_neutron            # μ_{neutron}/μ_N - 1
@@ -415,6 +485,7 @@ function setunits(unitsystem::Union{Symbol,Expr}=:default;
   return
 end
 
+
 """
     function massof(particle::Particle, unit::Union{Symbol,Expr}=:default)
 
@@ -425,13 +496,12 @@ end
 	  - 'particle`                        -- type:particle, the particle whose mass you want to know
     - `unit`                            -- type:Symbol or Expr, default to the unit set from setunits(), the unit of the mass variable
 
-"""
-massof
+""" massof
 
 function massof(particle::Particle, unit::Union{Symbol,Expr}=:default)
   if (unit == :default)
     if !@isdefined current_units
-      throw(ErrorException("units are not set, call setunits() to initalize units and constants"))
+      throw(ErrorException("No units have been set! Call setunits() to initalize units and constants."))
     else
       return particle.mass * current_units.mass.conversion
     end
@@ -441,8 +511,9 @@ function massof(particle::Particle, unit::Union{Symbol,Expr}=:default)
   end
 end
 
+
 """
-    function chargeof(particle::Particle, unit::Union{Symbol,Expr}=:default)
+`function chargeof(particle::Particle, unit::Union{Symbol,Expr}=:default)`
 
     ### Description:
     > return charge of 'particle' in current unit or unit of the user's choice<
@@ -451,13 +522,12 @@ end
 	- 'particle`                  -- type:particle, the particle whose charge you want to know
     - `unit`                      -- type:Symbol or Expr, default to the unit set from setunits(), the unit of the charge variable
 
-"""
-chargeof
+""" chargeof
 
 function chargeof(particle::Particle, unit::Union{Symbol,Expr}=:default)
   if (unit == :default)
     if !@isdefined current_units
-      throw(ErrorException("units are not set, call setunits() to initalize units and constants"))
+      throw(ErrorException("No units have been set! Call setunits() to initalize units and constants."))
     else
       return particle.charge * current_units.charge.conversion
     end
@@ -469,7 +539,11 @@ end
 
 export setunits, printunits
 export massof, chargeof
-export c_light, m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron, m_pion_0, m_pion_charged
-export r_e, e_charge, h_planck, mu_0_vac, eps_0_vac
-export gyromagnetic_anomaly_electron, gyromagnetic_anomaly_muon, gyromagnetic_anomaly_proton, gyromagnetic_anomaly_deuteron, gyromagnetic_anomaly_neutron, gyromagnetic_anomaly_He3
-export kg_per_amu, eV_per_amu, N_avogadro, fine_structure, classical_radius_factor, r_p, h_bar_planck, kg_per_eV, eps_0_vac
+export m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron, m_pion_0, m_pion_charged
+export c_light, r_e, e_charge, h_planck, mu_0_vac, eps_0_vac
+export gyromagnetic_anomaly_electron, gyromagnetic_anomaly_proton, gyromagnetic_anomaly_muon
+export gyromagnetic_anomaly_deuteron, gyromagnetic_anomaly_neutron, gyromagnetic_anomaly_He3
+export kg_per_amu, eV_per_amu, kg_per_eV, N_avogadro
+export fine_structure, classical_radius_factor, r_p, h_bar_planck
+export prefix, UNIT
+
