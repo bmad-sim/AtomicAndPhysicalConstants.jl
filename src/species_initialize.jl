@@ -5,23 +5,6 @@
 
 
 
-
-
-struct Species
-  name::String # name of the particle to track
-  charge::Int32 # charge of the particle (important to consider ionized atoms) in [e]
-  mass::Float64 # mass of the particle in [eV/c^2]
-  spin::Float64 # spin of the particle in [eV*s]
-  mu::Float64 # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
-	iso::Int # if the particle is an atomic isotope, this is the mass number, otherwise 0
-end;
-export Species
-
-
-
-
-# ------------------------------------------------------------------------------------------------------------
-
 """
 		subatomic_particle(name::String)
 
@@ -39,6 +22,23 @@ function subatomic_particle(name::String)
 	end
 
 # -----------------------------------------------------------------------------------------------
+
+
+struct Species
+  name::String # name of the particle to track
+  charge::Int # charge of the particle (important to consider ionized atoms) in [e]
+  mass::Float64 # mass of the particle in [eV/c^2]
+  spin::Float64 # spin of the particle in [eV*s]
+  mu::Float64 # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
+	iso::Int # if the particle is an atomic isotope, this is the mass number, otherwise 0
+end;
+export Species
+
+
+
+
+# ------------------------------------------------------------------------------------------------------------
+
 
 
 """
@@ -177,14 +177,13 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
 		else # handle the case where the given name is garbage
 			println("The specified particle name does not exist in this library.")
 			println("Available subatomic particles are: ")
-			for p in keys(subatomic_particles)
+			for p::String in keys(subatomic_particles::Dict)
 				println(p)
 			end
 			println("Available atomic elements are")
-			for p in keys(atomic_particles)
+			for p::String in keys(atomic_particles::Dict)
 				println(p)
 			end
-			return
 		end
 	end
 end; export Species
