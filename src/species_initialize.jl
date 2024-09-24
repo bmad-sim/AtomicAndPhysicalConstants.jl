@@ -149,7 +149,7 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
 		end
 		if occursin(rgcp, name) == true
 			chstr = match(rgcp, name).match
-			if chstr == '+'
+			if chstr == "+"
 				charge = 1
 			elseif chstr == "++"
 				charge = 2
@@ -158,7 +158,7 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
 			end
 		elseif occursin(rgcm, name) == true
 			chstr = match(rgcm, name).match
-			if chstr == '-'
+			if chstr == "-"
 				charge = -1
 			elseif chstr == "--"
 				charge = -2
