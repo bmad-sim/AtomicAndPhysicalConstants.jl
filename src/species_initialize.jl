@@ -82,19 +82,36 @@ If an anti-particle (subatomic or otherwise) prepend "anti-" to the name.
 
 function Species(name::String, charge::Int=0, iso::Int=-1)
 
-	anti = r"Anti\-|anti\-"
+	anti = r"Anti\-|Anti|anti\-|anti"
 	# is the anti-particle in the Subatomic_Particles dictionary?
 	if occursin(anti, name) && haskey(subatomic_particles, name[6:end])
-		if name[6:end] != "electron"
-			return subatomic_particle("positron")
+		if name[6:end] == "electron"
+			if charge != 0 || iso != -1
+				println("Subatomic particles accept no optional charge or mass arguments.")
+				println("For a list of subatomic particles available, see the documentation.")
+				return
+			else
+				return subatomic_particle("positron")
+			end
 		else
-			return subatomic_particle("anti_"*name[6:end])
+			if charge != 0 || iso != -1
+				println("Subatomic particles accept no optional charge or mass arguments.")
+				println("For a list of subatomic particles available, see the documentation.")
+				return
+			else
+				return subatomic_particle("anti_"*name[6:end])
+			end
 		end
 
 	# check subatomics first so we don't accidentally strip a name
-	elseif haskey(subatomic_particles, name) # is the particle in the Subatomic_Particles dictionary?
-		# write the particle out directly
+	elseif haskey(subatomic_particles, name) 
+		if charge != 0 || iso != -1
+			println("Subatomic particles accept no optional charge or mass arguments.")
+			println("For a list of subatomic particles available, see the documentation.")
+			return
+		else
 			return subatomic_particle(name)
+		end
 		
 	else
 		# make sure to use the optional arguments
@@ -107,8 +124,16 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
 		rgm = r"#[0-9][0-9][0-9]|#[0-9][0-9]|#[0-9]" # atomic mass regex
 		rgcp = r"\+[0-9][0-9][0-9]|\+[0-9][0-9]|\+[0-9]|\+\+|\+" # positive charge regex
 		rgcm = r"\-[0-9][0-9][0-9]|\-[0-9][0-9]|\-[0-9]|\-\-|\-" # negative charge regex
+		errreg = r"\+[A-Z]|\+[a-z]|\-[A-Z]|\-[a-z]|#[A-Z]|#[a-z]"
 
 		anti_atom = false
+
+		# handle bad atomic names
+		if occursin(errreg, name) == true
+			println("\nBad characters appear in your atom specification;")
+			println("no species has been set.")
+			return
+		end
 
 		if occursin(anti, name)
 			name = name[6:end]
@@ -123,7 +148,7 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
 			iso = tryparse(Int, isostr)
 		end
 		if occursin(rgcp, name) == true
-			chstr = match(rgcp, name)
+			chstr = match(rgcp, name).match
 			if chstr == '+'
 				charge = 1
 			elseif chstr == "++"
@@ -132,7 +157,7 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
 				charge = tryparse(Int, chstr)
 			end
 		elseif occursin(rgcm, name) == true
-			chstr = match(rgcm, name)
+			chstr = match(rgcm, name).match
 			if chstr == '-'
 				charge = -1
 			elseif chstr == "--"
@@ -141,6 +166,7 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
 				charge = tryparse(Int, chstr)
 			end
 		end
+		
 		
 
 		if haskey(atomic_particles, AS) # is the particle in the Atomic_Particles dictionary?
