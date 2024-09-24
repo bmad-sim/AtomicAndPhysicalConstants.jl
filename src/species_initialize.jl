@@ -162,12 +162,11 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
 				charge = -1
 			elseif chstr == "--"
 				charge = -2
-			else 
+			else
 				charge = tryparse(Int, chstr)
 			end
 		end
-		
-		
+	
 
 		if haskey(atomic_particles, AS) # is the particle in the Atomic_Particles dictionary?
 			if iso ∉ keys(atomic_particles[AS].mass) # error handling if the isotope isn't available
