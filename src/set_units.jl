@@ -309,7 +309,7 @@ function mass(species::Species, unit::Union{Unitful.FreeUnits,AbstractString}=ge
   if dimension(unit) != dimension(u"kg")
     throw(ErrorException("unit have proper dimension"))
   end
-  return (species.mass_in_eV * u"eV/c^2" |> unit).val
+  return (species.mass_in_eV |> unit).val
 end
 
 """
@@ -335,6 +335,6 @@ function charge(species::Species, unit::Union{Unitful.FreeUnits,AbstractString}=
   if dimension(unit) != dimension(u"C")
     throw(ErrorException("unit have proper dimension"))
   end
-  return (species.charge * u"e" |> unit).val
+  return (species.charge |> unit).val
 end
 
