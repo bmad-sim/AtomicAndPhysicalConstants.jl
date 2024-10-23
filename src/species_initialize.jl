@@ -2,10 +2,10 @@
 
 struct Species
     name::String # name of the particle to track
-    charge::Int32 # charge of the particle (important to consider ionized atoms) in [e]
-    mass_in_eV::Float64 # mass of the particle in [eV/c^2]
-    spin::Float64 # spin of the particle in [ħ]
-    mu::Float64 # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
+    charge::typeof(1.0u"q") # charge of the particle (important to consider ionized atoms) in [e]
+    mass_in_eV::typeof(1.0u"eV/c^2") # mass of the particle in [eV/c^2]
+    spin::typeof(1.0u"ħ") # spin of the particle in [ħ]
+    mu::typeof(1.0u"eV/T") # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
     iso::Int # if the particle is an atomic isotope, this is the mass number, otherwise 0
 end;
 export Species
@@ -25,10 +25,10 @@ subatomic_particle
 
 function subatomic_particle(name::String)
     # write the particle out directly
-    return Species(name, SUBATOMIC_SPECIES[name].charge,
-        SUBATOMIC_SPECIES[name].mass_in_eV,
-        SUBATOMIC_SPECIES[name].spin,
-        SUBATOMIC_SPECIES[name].mu,
+    return Species(name, SUBATOMIC_SPECIES[name].charge*u"q",
+        SUBATOMIC_SPECIES[name].mass_in_eV*u"eV/c^2",
+        SUBATOMIC_SPECIES[name].spin*u"ħ",
+        SUBATOMIC_SPECIES[name].mu*u"eV/T",
         0)
 end
 
@@ -44,22 +44,22 @@ of information specifice to the chosen particle.
 # Fields:
 1. `name::String': 				the name of the particle 
 
-2. `charge::Int32': 			the net charge of the particle in units of |e|
-													- bookkeeping only, thus in internal units
-													- use the 'charge()' function to get the charge 
-													- in the desired units
+2. `charge::typeof(1.0u"q")': 				 the net charge of the particle in units of |e|
+																		 	 - bookkeeping only, thus in internal units
+																			 - use the 'charge()' function to get the charge 
+																			 - in the desired units
 
-3. `mass_in_eV::Float64': the mass of the particle in eV/c^2
-													- bookkeeping only, thus in internal units
-													- use the 'mass()' function to get the mass 
-													- in the desired units
+3. `mass_in_eV::typeof(1.0u"eV/c^2")': the mass of the particle in eV/c^2
+																			 - bookkeeping only, thus in internal units
+																		 	 - use the 'mass()' function to get the mass 
+																			 - in the desired units
 
-4. `spin::Float64': 			the spin of the particle in eV⋅s 
-													- (half/integer multiplied with ħ)
+4. `spin::typeof(1.0u"ħ")': 					 the spin of the particle in ħ
 
-5. `mu::Float64': 				the magnetic moment of the particle in eV/T.
-5. `iso::Int': 						if the particle is an atomic isotope, this is the 
-													- mass number, otherwise -1
+5. `mu::typeof(1.0u"eV/T")': 					 the magnetic moment of the particle in eV/T
+
+6. `iso::Int': 												 if the particle is an atomic isotope, this is the 
+																			 - mass number, otherwise -1
 
 The Species Struct also has a constructor called Species, 
 documentation for which follows.
@@ -173,9 +173,9 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
                 spin = 0.5 * iso
             end
             if anti_atom == false
-                return Species(AS, charge, mass_in_eV, spin, 0, iso) # return the object to track
+                return Species(AS, charge*u"q", mass_in_eV*u"eV/c^2", spin*u"ħ", 0*u"eV/T", iso) # return the object to track
             elseif anti_atom == true
-                return Species("anti-" * AS, charge, mass_in_eV, spin, 0, iso)
+                return Species("anti-" * AS, charge*u"q", mass_in_eV*u"eV/c^2", spin*u"ħ", 0u"eV/T", iso)
             end
 
 
