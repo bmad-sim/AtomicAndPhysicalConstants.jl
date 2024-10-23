@@ -2,10 +2,10 @@
 
 struct Species
     name::String # name of the particle to track
-    charge::typeof(1.0u"q") # charge of the particle (important to consider ionized atoms) in [e]
+    int_charge::typeof(1u"q") # charge of the particle (important to consider ionized atoms) in [e]
     mass_in_eV::typeof(1.0u"eV/c^2") # mass of the particle in [eV/c^2]
-    spin::typeof(1.0u"ħ") # spin of the particle in [ħ]
-    mu::typeof(1.0u"eV/T") # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
+    planck_spin::typeof(1.0u"ħ") # spin of the particle in [ħ]
+    moment::typeof(1.0u"eV/T") # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
     iso::Int # if the particle is an atomic isotope, this is the mass number, otherwise 0
 end;
 export Species
@@ -44,7 +44,7 @@ of information specifice to the chosen particle.
 # Fields:
 1. `name::String': 				the name of the particle 
 
-2. `charge::typeof(1.0u"q")': 				 the net charge of the particle in units of |e|
+2. `int_charge::typeof(1u"q")': 				 the net charge of the particle in units of |e|
 																		 	 - bookkeeping only, thus in internal units
 																			 - use the 'charge()' function to get the charge 
 																			 - in the desired units
@@ -54,9 +54,9 @@ of information specifice to the chosen particle.
 																		 	 - use the 'mass()' function to get the mass 
 																			 - in the desired units
 
-4. `spin::typeof(1.0u"ħ")': 					 the spin of the particle in ħ
+4. `planck_spin::typeof(1.0u"ħ")': 					 the spin of the particle in ħ
 
-5. `mu::typeof(1.0u"eV/T")': 					 the magnetic moment of the particle in eV/T
+5. `moment::typeof(1.0u"eV/T")': 					 the magnetic moment of the particle in eV/T
 
 6. `iso::Int': 												 if the particle is an atomic isotope, this is the 
 																			 - mass number, otherwise -1

@@ -52,16 +52,16 @@ const SUBATOMIC_SPECIES = Dict{String,SubatomicSpecies}(
   "neutron" => SubatomicSpecies("neutron", 0, __b_m_neutron.val, __b_mu_neutron.val, 0.5),
   "deuteron" => SubatomicSpecies("deuteron", 1, __b_m_deuteron.val, __b_mu_deuteron.val, 1.0),
   "pion+" => SubatomicSpecies("pion+", 1, __b_m_pion_charged.val, 0.0, 0.0),
-  "anti_muon" => SubatomicSpecies("anti-muon", 1, __b_m_muon.val, __b_mu_muon.val, 0.5),
+  "anti-muon" => SubatomicSpecies("anti-muon", 1, __b_m_muon.val, __b_mu_muon.val, 0.5),
   "proton" => SubatomicSpecies("proton", 1, __b_m_proton.val, __b_mu_proton.val, 0.5),
   "positron" => SubatomicSpecies("positron", 1, __b_m_electron.val, __b_mu_electron.val, 0.5),
   "photon" => SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0),
   "electron" => SubatomicSpecies("electron", -1, __b_m_electron.val, __b_mu_electron.val, 0.5),
-  "anti_proton" => SubatomicSpecies("anti-proton", -1, __b_m_proton.val, __b_mu_proton.val, 0.5),
+  "anti-proton" => SubatomicSpecies("anti-proton", -1, __b_m_proton.val, __b_mu_proton.val, 0.5),
   "muon" => SubatomicSpecies("muon", -1, __b_m_muon.val, __b_mu_muon.val, 0.5),
   "pion-" => SubatomicSpecies("pion-", -1, __b_m_pion_charged.val, 0.0, 0.0),
-  "anti_deuteron" => SubatomicSpecies("anti-deuteron", -1, __b_m_deuteron.val, __b_mu_deuteron.val, 1.0),
-  "anti_neutron" => SubatomicSpecies("anti-neutron", 0, __b_m_neutron.val, __b_mu_neutron.val, 0.5)
+  "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, __b_m_deuteron.val, __b_mu_deuteron.val, 1.0),
+  "anti-neutron" => SubatomicSpecies("anti-neutron", 0, __b_m_neutron.val, __b_mu_neutron.val, 0.5)
 )
 
 
