@@ -23,37 +23,6 @@ end
     #setunits to default units
     setunits()
 
-    #users should not have access to base values and helper variables
-
-    @test !@isdefined current_units
-
-    @test !@isdefined __b_m_electron
-    @test !@isdefined __b_m_electron
-    @test !@isdefined __b_m_proton
-    @test !@isdefined __b_m_neutron
-    @test !@isdefined __b_m_muon
-    @test !@isdefined __b_m_helion
-    @test !@isdefined __b_m_deuteron
-    @test !@isdefined __b_c_light
-    @test !@isdefined __b_h_planck
-    @test !@isdefined __b_r_e
-    @test !@isdefined __b_mu_0_vac
-    @test !@isdefined __b_eps_0_vac
-
-    @test !@isdefined __b_e_charge
-    @test !@isdefined __b_fine_structure
-
-    @test !@isdefined __b_kg_per_amu
-    @test !@isdefined __b_eV_per_amu
-    @test !@isdefined __b_N_avogadro
-
-    @test !@isdefined __b_classical_radius_factor
-    @test !@isdefined __b_r_p
-    @test !@isdefined __b_h_bar_planck
-
-    @test !@isdefined __b_m_pion_0
-    @test !@isdefined __b_m_pion_charged
-
     #when setunits is runned all constants should be initialized to default units
 
     @test m_electron ≈ 0.51099895000e6

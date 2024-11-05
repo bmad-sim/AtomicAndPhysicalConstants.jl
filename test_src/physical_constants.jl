@@ -2,24 +2,6 @@
 # Constants pulled from the NIST table of
 # the 2022 CODATA release
 
-const __b_e_charge = 1.602176634e-19 * u"C"
-# elementary charge [C]
-const __b_N_avogadro = 6.02214076e23
-# Avogadro's constant: Number / mole (exact)
-
-module NewUnits
-using Unitful
-AA = parentmodule(NewUnits)
-@unit e "e" elementary_charge AA.__b_e_charge false
-@unit amu "amu" Amu (1 / (AA.__b_N_avogadro)) * u"g" false
-end
-
-Unitful.register(NewUnits);
-using .NewUnits
-
-function __init__()
-    Unitful.register(NewUnits)
-end
 
 
 # Format is:
@@ -49,6 +31,10 @@ const __b_mu_0_vac = 1.25663706127e-6 * u"N/A^2"
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 
+const __b_e_charge = 1.602176634e-19 * u"C"
+# elementary charge [C]
+const __b_N_avogadro = 6.02214076e23
+# Avogadro's constant: Number / mole (exact)
 
 
 

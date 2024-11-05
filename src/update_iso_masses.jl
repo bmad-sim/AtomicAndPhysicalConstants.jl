@@ -66,16 +66,20 @@ function buildIsoDict(List::Vector{Any})
 				Dict(-1 => 0, isotope["Mass Number"] => isotope["Relative Atomic Mass"])))
       # update the average mass entry
 		  if typeof(isotope["Isotopic Composition"]) == Float64
-			  (Elements[isotope["Atomic Number"]].mass[-1] += 
-			  isotope["Isotopic Composition"] * isotope["Relative Atomic Mass"])
+				Elements[isotope["Atomic Number"]].mass[-1] = begin
+					Elements[isotope["Atomic Number"]].mass[-1] +
+					isotope["Isotopic Composition"] * isotope["Relative Atomic Mass"]
 		  end
+		end
 		
 		else # if the element exists, update the list of isotopes
 			(Elements[isotope["Atomic Number"]].mass[isotope["Mass Number"]] = 
 			isotope["Relative Atomic Mass"])
 		  if typeof(isotope["Isotopic Composition"]) == Float64
-			  (Elements[isotope["Atomic Number"]].mass[-1] += 
-			  isotope["Isotopic Composition"] * isotope["Relative Atomic Mass"])
+			  Elements[isotope["Atomic Number"]].mass[-1] = begin
+					Elements[isotope["Atomic Number"]].mass[-1] + 
+			  	isotope["Isotopic Composition"] * isotope["Relative Atomic Mass"]
+				end
 		  end
     end
 	end
@@ -117,7 +121,13 @@ function writeIsos(Elements::Dict{Int64, AtomicSpecies})
     nlen = length(sym)
     space = repeat(" ", 7-nlen)
     
-    atom_entry = qs*Elements[Z].species_name*qs*space*f"=>    {Elements[Z]}"
+    atom_entry = qs*Elements[Z].species_name*qs*space
+		atom_entry*="=>    AtomicSpecies(" * f"{Z}, "
+		atom_entry*=f"{Elements[Z].species_name}, Dict("
+		for (k, v) in Elements[Z].mass
+			atom_entry*=f"""{k} => {v}*u"amu", """
+		end
+		atom_entry*="))"
     write(f, atom_entry)
 
     if Z < 118

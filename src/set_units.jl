@@ -1,50 +1,26 @@
-"""
-    UnitSystem
-
-## Description:
-This defines an immutable struct for storing a specific
-system of units.
-
-## Fields:
-- `mass`    -- type:`Unitful.FreeUnits`, stores the unit for mass
-- `length`  -- type:`Unitful.FreeUnits`, stores the unit for length
-- `time`    -- type:`Unitful.FreeUnits`, stores the unit for time
-- `energy`  -- type:`Unitful.FreeUnits`, stores the unit for energy
-- `charge`  -- type:`Unitful.FreeUnits`, stores the unit for charge
-"""
-UnitSystem
-
-struct UnitSystem
-  mass::Unitful.FreeUnits
-  length::Unitful.FreeUnits
-  time::Unitful.FreeUnits
-  energy::Unitful.FreeUnits
-  charge::Unitful.FreeUnits
-end
-
 # Declare specific systems of units
 #   for particle physics
 """
-    PARTICLE_PHYSICS::UnitSystem
-## PARTICLE_PHYSICS units:
+    ACCELERATOR
+## ACCELERATOR units:
 - `mass`: eV/c^2
 - `length`: m
 - `time`: s
 - `energy`: eV
 - `charge`: elementary charge
 """
-PARTICLE_PHYSICS
+ACCELERATOR
 
-const PARTICLE_PHYSICS = UnitSystem(
+const ACCELERATOR = [
   u"eV/c^2",
   u"m",
   u"s",
   u"eV",
-  u"e")
+  u"e"]
 
 #   MKS
 """
-    MKS::UnitSystem
+    MKS
 ## MKS units:
 - `mass`: kg
 - `length`: m
@@ -54,15 +30,15 @@ const PARTICLE_PHYSICS = UnitSystem(
 """
 MKS
 
-const MKS = UnitSystem(
+const MKS = [
   u"kg",
   u"m",
   u"s",
   u"J",
-  u"C")
+  u"C"]
 #   quasi-CGS
 """
-    CGS::UnitSystem
+    CGS
 ## CGS units:
 - `mass`: g
 - `length`: cm
@@ -72,68 +48,15 @@ const MKS = UnitSystem(
 """
 CGS
 
-const CGS = UnitSystem(
+const CGS = [
   u"g",
   u"cm",
   u"s",
   u"J",
-  u"C")
+  u"C"]
 
 """
-    current_units :: UnitSystem
-
-## Description:
-This declares a `UnitSystem` that stores the units in current use.
-
-## Note:
-It is initialized when setunits() is called.
-"""
-current_units
-
-"""
-    getunits(unit::Symbol)
-
-## Description:
-return the unit with the corresponding field `unit` in `current_units`
-
-## parameters:
-- `unit`  -- type:`Symbol`, the name of the field in current_units.
-
-"""
-getunit
-
-function getunit(unit::Symbol)
-  if !@isdefined current_units
-    throw(ErrorException("units are not set, call setunits() to initalize units and constants"))
-  else
-    return getfield(current_units, unit)
-  end
-end
-
-"""
-    printunits()
-
-## Description:
-This function returns nothing. It simply prints the set of units
-in current use.
-"""
-printunits
-
-function printunits()
-  if !@isdefined current_units
-    throw(ErrorException("units are not set, call setunits() to initalize units and constants"))
-  end
-  # prints the units for each dimensions
-  println("mass unit:\t", current_units.mass)
-  println("length unit:\t", current_units.length)
-  println("time unit:\t", current_units.time)
-  println("energy unit:\t", current_units.energy)
-  println("charge unit:\t", current_units.charge)
-  return
-end
-
-"""
-    setunits(unitsystem::UnitSystem=PARTICLE_PHYSICS;
+    setunits(unitsystem::UnitSystem=ACCELERATOR;
       mass_unit::Union{Unitful.FreeUnits,AbstractString}=unitsystem.mass,
       length_unit::Union{Unitful.FreeUnits,AbstractString}=unitsystem.length,
       time_unit::Union{Unitful.FreeUnits,AbstractString}=unitsystem.time,
@@ -176,30 +99,13 @@ Prints current units at the end (optional).
 """
 setunits
 
-function setunits(unitsystem::UnitSystem=PARTICLE_PHYSICS;
-  mass_unit::Union{Unitful.FreeUnits,AbstractString}=unitsystem.mass,
-  length_unit::Union{Unitful.FreeUnits,AbstractString}=unitsystem.length,
-  time_unit::Union{Unitful.FreeUnits,AbstractString}=unitsystem.time,
-  energy_unit::Union{Unitful.FreeUnits,AbstractString}=unitsystem.energy,
-  charge_unit::Union{Unitful.FreeUnits,AbstractString}=unitsystem.charge,
-  print_units::Bool=true
+function setunits(unitsystem=ACCELERATOR;
+  mass_unit::Unitful.FreeUnits=unitsystem[1],
+  length_unit::Unitful.FreeUnits=unitsystem[2],
+  time_unit::Unitful.FreeUnits=unitsystem[3],
+  energy_unit::Unitful.FreeUnits=unitsystem[4],
+  charge_unit::Unitful.FreeUnits=unitsystem[5],
 )
-  # convert types to Unitful.FreeUnits
-  if mass_unit isa AbstractString
-    mass_unit = uparse(mass_unit)
-  end
-  if length_unit isa AbstractString
-    length_unit = uparse(length_unit)
-  end
-  if time_unit isa AbstractString
-    time_unit = uparse(time_unit)
-  end
-  if energy_unit isa AbstractString
-    energy_unit = uparse(energy_unit)
-  end
-  if charge_unit isa AbstractString
-    charge_unit = uparse(charge_unit)
-  end
   # check dimensions of units
   if dimension(mass_unit) != dimension(u"kg")
     throw(ErrorException("unit for mass does not have proper dimension"))
@@ -216,78 +122,21 @@ function setunits(unitsystem::UnitSystem=PARTICLE_PHYSICS;
   if dimension(charge_unit) != dimension(u"C")
     throw(ErrorException("unit for charge does not have proper dimension"))
   end
-  # record what units is currently being used
-  global current_units = UnitSystem(mass_unit, length_unit, time_unit, energy_unit, charge_unit)
 
-  # convert all the variables with dimension mass
-  global m_electron = (__b_m_electron |> mass_unit).val         # Electron Mass 
-  global m_proton = (__b_m_proton |> mass_unit).val             # Proton Mass 
-  global m_neutron = (__b_m_neutron |> mass_unit).val           # Neutron Mass 
-  global m_muon = (__b_m_muon |> mass_unit).val                 # Muon Mass 
-  global m_helion = (__b_m_helion |> mass_unit).val             # Helion Mass He3 nucleus 
-  global m_deuteron = (__b_m_deuteron |> mass_unit).val         # Deuteron Mass 
-  global m_pion_0 = (__b_m_pion_0 |> mass_unit).val             # Pion 0 mass
-  global m_pion_charged = (__b_m_pion_charged |> mass_unit).val # Pion+- Mass 
+  eval(:(c_light() = uconvert($length_unit / $time_unit, __b_c_light)))
+  eval(:(h_planck() = uconvert($energy_unit * $time_unit, __b_h_planck)))
+  eval(:(h_bar_planck() = uconvert($energy_unit * $time_unit, __b_h_bar_planck)))
+  eval(:(r_e() = uconvert($length_unit, __b_r_e)))
+  eval(:(r_p() = uconvert($length_unit, __b_r_p)))
+  eval(:(e_charge() = uconvert($charge_unit, __b_e_charge)))
+  eval(:(massof(species::Species) = uconvert($mass_unit, species.mass_in_eV * u"eV/c^2")))
+  eval(:(chargeof(species::Species) = uconvert($charge_unit, species.charge * u"e")))
+  return [mass_unit, length_unit, time_unit, energy_unit, charge_unit]
 
-  # convert all the variables with dimension length
-  global r_e = (__b_r_e |> length_unit).val                     # classical electron radius
-
-  # convert all the variables with dimension time
-
-  # convert all the variables with dimension speed
-  global c_light = (__b_c_light |> length_unit / time_unit).val          # speed of light
-
-  # convert all the variables with dimension energy
-
-  # convert all the variables with dimension charge
-  global e_charge = (__b_e_charge |> charge_unit).val                                # elementary charge
-
-  # constants with special dimenisions
-  # convert Planck's constant with dimension energy * time
-  global h_planck = (__b_h_planck |> energy_unit * time_unit).val        # Planck's constant 
-  # convert Vacuum permeability with dimension force / (current)^2
-  global mu_0_vac = __b_mu_0_vac.val
-  # convert Vacuum permeability with dimension capacitance / distance
-  global eps_0_vac = __b_eps_0_vac.val
-
-  # convert anomous magnet moments dimension: unitless
-  #global gyromagnetic_anomaly_electron = __b_gyromagnetic_anomaly_electron           # anomalous mag. mom. of the electron 
-  #global gyromagnetic_anomaly_muon = __b_gyromagnetic_anomaly_muon               #        
-  #global gyromagnetic_anomaly_proton = __b_gyromagnetic_anomaly_proton             # μ_p/μ_N - 1
-  #global gyromagnetic_anomaly_deuteron = __b_gyromagnetic_anomaly_deuteron           # μ_{deuteron}/μ_N - 1
-  #global gyromagnetic_anomaly_neutron = __b_gyromagnetic_anomaly_neutron            # μ_{neutron}/μ_N - 1
-  #global gyromagnetic_anomaly_He3 = __b_gyromagnetic_anomaly_He3                # μ_{He3}/μ_N - 2
-
-  # convert magnet moments dimension: energy / magnetic field strength
-  global mu_deuteron = (__b_mu_deuteron |> energy_unit / u"T").val    # deuteron magnetic moment
-  global mu_electron = (__b_mu_electron |> energy_unit / u"T").val    # electron magnetic moment
-  global mu_helion = (__b_mu_helion |> energy_unit / u"T").val        # helion magnetic moment
-  global mu_muon = (__b_mu_muon |> energy_unit / u"T").val            # muon magnetic moment
-  global mu_neutron = (__b_mu_neutron |> energy_unit / u"T").val      # neutron magnetic moment
-  global mu_proton = (__b_mu_proton |> energy_unit / u"T").val        # proton magnetic moment
-  global mu_triton = (__b_mu_triton |> energy_unit / u"T").val        # triton magnetic moment
-
-  # convert unitless variables
-  global kg_per_amu = __b_kg_per_amu.val               # kg per standard atomic mass unit (dalton)
-  global eV_per_amu = __b_eV_per_amu.val                  # eV per standard atomic mass unit (dalton)
-  global N_avogadro = __b_N_avogadro                # Number / mole  (exact)
-  global fine_structure = __b_fine_structure                # fine structure constant
-
-  # values calculated from other constants
-  global classical_radius_factor = r_e * m_electron                 # e^2 / (4 pi eps_0) = classical_radius * mass * c^2. Is same for all particles of charge +/- 1.
-  global r_p = r_e * m_electron / m_proton      # proton radius
-  global h_bar_planck = h_planck / 2pi                   # h_planck/twopi
-  global kg_per_eV = kg_per_amu / eV_per_amu
-  global eps_0_vac = 1 / (c_light^2 * mu_0_vac)       # Permeability of free space
-  if print_units
-    printunits()
-  end
-
-  return
 end
 
 """
-    mass(
+    massof(
       species::Species,
       unit::Union{Unitful.FreeUnits,AbstractString}=current_units.mass
     )
@@ -300,20 +149,21 @@ return mass of 'species' in current unit or unit of the user's choice
 - `unit`        -- type:`Union{Unitful.FreeUnits,AbstractString}`, default to the unit set from setunits(), the unit of the mass variable
 
 """
-mass
+massof
 
-function mass(species::Species, unit::Union{Unitful.FreeUnits,AbstractString}=getunit(:mass))
+function massof(species::Species, unit::Union{Unitful.FreeUnits,AbstractString})
   if unit isa AbstractString
     unit = uparse(unit)
   end
   if dimension(unit) != dimension(u"kg")
-    throw(ErrorException("unit have proper dimension"))
+    error("mass unit doesn't have proper dimension")
   end
   return (species.mass_in_eV |> unit).val
 end
 
+
 """
-    charge(
+    chargeof(
       species::Species,
       unit::Union{Unitful.FreeUnits,AbstractString}=current_units.charge
     )
@@ -326,15 +176,73 @@ return charge of 'species' in current unit or unit of the user's choice
 - `unit`        -- type:`Union{Unitful.FreeUnits,AbstractString}`, default to the unit set from setunits(), the unit of the charge variable
 
 """
-charge
+chargeof
 
-function charge(species::Species, unit::Union{Unitful.FreeUnits,AbstractString}=getunit(:charge))
+function chargeof(species::Species, unit::Union{Unitful.FreeUnits,AbstractString})
   if unit isa AbstractString
     unit = uparse(unit)
   end
   if dimension(unit) != dimension(u"C")
-    throw(ErrorException("unit have proper dimension"))
+    throw(ErrorException("charge unit doesn't have proper dimension"))
   end
   return (species.charge |> unit).val
 end
 
+
+
+
+function c_light(unit::Unitful.FreeUnits)
+  return __b_c_light |> unit
+end
+
+function h_planck(unit::Unitful.FreeUnits)
+  return __b_h_planck |> unit
+end
+
+
+function h_bar_planck(unit::Unitful.FreeUnits)
+  return __b_h_bar_planck |> unit
+end
+
+
+function r_e(unit::Unitful.FreeUnits)
+  return __b_r_e |> unit
+end
+
+function r_p(unit::Unitful.FreeUnits)
+  return __b_r_p |> unit
+end
+
+function e_charge(unit::Unitful.FreeUnits)
+  return __b_e_charge |> unit
+end
+
+
+function mu_0_vac()
+  return __b_mu_0_vac
+end
+
+function mu_0_vac(unit::Unitful.FreeUnits)
+  return __b_mu_0_vac |> unit
+end
+
+
+function eps_0_vac()
+  return __b_eps_0_vac
+end
+
+function eps_0_vac(unit::Unitful.FreeUnits)
+  return __b_eps_0_vac |> unit
+end
+
+function classical_radius_factor()
+  return __b_classical_radius_factor
+end
+
+function fine_structure()
+  return __b_classical_radius_factor
+end
+
+function N_avogadro()
+  return __b_N_avogadro
+end

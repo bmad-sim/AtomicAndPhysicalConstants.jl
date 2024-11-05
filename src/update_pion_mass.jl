@@ -14,7 +14,7 @@ function download_pdg_pion_masses()
 
     # the information of the mass is only at 1
     for i in [1]
-        mass[info["summaries"]["properties"][i]["description"]] = info["summaries"]["properties"][i]["pdg_values"][1]["value"]*10^6
+        mass[info["summaries"]["properties"][i]["description"]] = info["summaries"]["properties"][i]["pdg_values"][1]["value"]
     end
 
     # extracting informations from the S008 json file
@@ -24,10 +24,10 @@ function download_pdg_pion_masses()
 
     # the information of the mass is only at 1
     for i in [1]
-        mass[info["summaries"]["properties"][i]["description"]] = info["summaries"]["properties"][i]["pdg_values"][1]["value"]*10^6
+        mass[info["summaries"]["properties"][i]["description"]] = info["summaries"]["properties"][i]["pdg_values"][1]["value"]
     end
 
     # return the mass of pion 0, pion +, pion -
-    return [mass["pi0 MASS"],mass["pi+- MASS"]] 
+    return [mass["pi0 MASS"]*u"MeV/c^2",mass["pi+- MASS"]*u"MeV/c^2"] 
 
 end

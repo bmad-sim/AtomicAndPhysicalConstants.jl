@@ -1,7 +1,7 @@
 name = "AtomicAndPhysicalConstants"
 uuid = "5c0d271c-5419-4163-b387-496237733d8b"
 authors = ["David Sagan <david.sagan@gmail.com> and contributors"]
-version = "0.2.0"
+version = "0.2.1"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"

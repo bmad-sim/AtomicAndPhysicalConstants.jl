@@ -7,7 +7,8 @@ using JSON
 using Reexport
 @reexport using Unitful
 
-include("physical_constants.jl")
+include("units_definition.jl")
+include("constants.jl")
 include("atomic_isotopes.jl")
 include("subatomic_species.jl")
 include("species_initialize.jl")
@@ -17,13 +18,10 @@ include("update_iso_masses.jl")
 include("particle_functions.jl")
 include("set_units.jl")
 
-export setunits, printunits
-export PARTICLE_PHYSICS, MKS, CGS
-export mass, charge
-export c_light, m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron, m_pion_0, m_pion_charged
-export r_e, e_charge, h_planck, mu_0_vac, eps_0_vac
-export kg_per_amu, eV_per_amu, N_avogadro, fine_structure, classical_radius_factor, r_p, h_bar_planck, kg_per_eV, eps_0_vac
-export mu_deuteron, mu_electron, mu_helion, mu_muon, mu_neutron, mu_proton, mu_triton
+export setunits
+export ACCELERATOR, MKS, CGS
+export massof, chargeof
+export C_LIGHT, H_PLANCK, H_BAR_PLANCK, R_E, R_P, E_CHARGE, MU_0_VAC, EPS_0_VAC, CLASSICAL_RADIUS_FACTOR, FINE_STRUCTURE, N_AVOGADRO
 export SubatomicSpecies
 export AtomicSpecies
 export SUBATOMIC_SPECIES
