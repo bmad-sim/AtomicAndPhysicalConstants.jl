@@ -1,33 +1,4 @@
 
-"""
-SubtomicSpecies 
-
-### Description:
-> mutable struct to store all (possibly degenerate) information about a subatomic particle<
-
-### Fields:
-- `species_name`      -- String common name for (anti) baryon
-- `charge`            -- electric charge on the given particle in units of [e+]
-- `mass_in_eV`              -- mass of the given particle in [eV/c^2]
-- `mu`  							-- magnetic moment of particle in [eV/T]
-- `spin`              -- spin of the particle in [ħ]
-
-### Notes:
-some parameters in this struct are likely named constants from PhysicalConstants.jl
-
-### Examples:
-- `SubatomicSpecies("neutron", 0, m_neutron, anom_mag_moment_neutron, 0.5)`
-- `SubatomicSpecies("pion-", -1, m_pion_charged, 0.0, 0.0)`
-"""
-SubatomicSpecies
-
-struct SubatomicSpecies
-  species_name::String              # common species_name of the particle
-  charge::typeof(1u"q")                     # charge on the particle in units of e+
-  mass::typeof(1.0*u"MeV/c^2")                   # mass of the particle in [eV/c^2]
-  mu::typeof(1.0u"J/T")        # anomalous magnetic moment 
-  spin::typeof(1.0u"ħ")                     # spin magnetic moment in [ħ]
-end;
 
 
 # -----------------------------------------------------------------------------------------------

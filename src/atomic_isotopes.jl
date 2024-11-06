@@ -5,11 +5,8 @@
 
 
 
-# -------------------------------------------------------
 
-
-
-"""Atomic_Particles 
+"""ATOMIC_SPECIES 
 Isotopes from NIST data 2024-11-05 
 a dictionary of all the available atomic species, 
 with all the NIST isotopes included; 
@@ -19,7 +16,7 @@ AtomicSpecies struct, _eg_
 
 Atomic_Particles["He"] = AtomicSpecies(2, "He", ...)""" Atomic_Particles 
 
-Atomic_Particles = Dict{String, AtomicSpecies}(
+const ATOMIC_SPECIES = Dict{String, AtomicSpecies}(
 "H"      =>    AtomicSpecies(1, H, Dict(5 => 5.035311*u"amu", 4 => 4.02643*u"amu", 6 => 6.04496*u"amu", 7 => 7.0527*u"amu", -1 => 1.0079407540557772*u"amu", 2 => 2.01410177812*u"amu", 3 => 3.0160492779*u"amu", 1 => 1.00782503223*u"amu", )),
 
 "He"     =>    AtomicSpecies(2, He, Dict(5 => 5.012057*u"amu", 4 => 4.00260325413*u"amu", 6 => 6.018885891*u"amu", 7 => 7.0279907*u"amu", -1 => 4.002601932120929*u"amu", 10 => 10.05279*u"amu", 9 => 9.043946*u"amu", 8 => 8.03393439*u"amu", 3 => 3.0160293201*u"amu", )),

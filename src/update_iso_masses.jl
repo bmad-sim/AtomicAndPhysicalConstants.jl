@@ -100,7 +100,7 @@ function writeIsos(Elements::Dict{Int64, AtomicSpecies})
   topmat = """# AtomicAndPhysicalConstants.jl/src/AtomicIsotopes.jl\n\n\n\n"""
   brek = """\n\n\n# -------------------------------------------------------\n\n\n\n"""
   qs = '"'
-  docplus = qs*qs*qs*"""Atomic_Particles \n\
+  docplus = qs*qs*qs*"""ATOMIC_SPECIES \n\
   Isotopes from NIST data $date \n\
   a dictionary of all the available atomic species, \n\
   with all the NIST isotopes included; \n\
@@ -108,11 +108,11 @@ function writeIsos(Elements::Dict{Int64, AtomicSpecies})
   n the periodic table, and the value is the relevant \n\
   AtomicSpecies struct, _eg_  \n\
     \n\
-  Atomic_Particles["He"] = AtomicSpecies(2, "He", ...)"""*qs*qs*qs*" Atomic_Particles \n\
+  ATOMIC_SPECIES["He"] = AtomicSpecies(2, "He", ...)"""*qs*qs*qs*" ATOMIC_SPECIES \n\
   \n\
-  Atomic_Particles = Dict{String, AtomicSpecies}(\n"
+  ATOMIC_SPECIES = Dict{String, AtomicSpecies}(\n"
 	
-  f = open(pwd() * f"/src/{date}_AtomicIsotopes.jl", "w")
+  f = open(pwd() * f"/src/{date}_atomic_isotopes.jl", "w")
   write(f, topmat)
   write(f, brek)
   write(f, docplus)

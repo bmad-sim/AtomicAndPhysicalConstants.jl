@@ -1,5 +1,9 @@
 
 
+#####################################################################
+#####################################################################
+
+
 struct Species
     name::String # name of the particle to track
     charge::typeof(1u"q") # charge of the particle (important to consider ionized atoms) in [e]
@@ -13,7 +17,8 @@ export Species
 
 
 
-# ------------------------------------------------------------------------------------------------------------
+#####################################################################
+#####################################################################
 
 """
 		subatomic_particle(name::String)
@@ -32,7 +37,10 @@ function subatomic_particle(name::String)
         0)
 end
 
-# -----------------------------------------------------------------------------------------------
+
+
+#####################################################################
+#####################################################################
 
 
 """
@@ -103,6 +111,8 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
         return subatomic_particle(name)
 
     else
+
+
         # make sure to use the optional arguments
         charge = charge
         iso = iso
@@ -147,55 +157,51 @@ function Species(name::String, charge::Int=0, iso::Int=-1)
                 charge = tryparse(Int, chstr)
             end
         end
-				if count('+', name) != 0 && count('-', name) != 0
-					error(f"""You made a typo in "{name}". You have both a + and a - in the name. """)
-					return
-				end
         if haskey(ATOMIC_SPECIES, AS) # is the particle in the Atomic_Particles dictionary?
             if iso ∉ keys(ATOMIC_SPECIES[AS].mass_in_amu) # error handling if the isotope isn't available
                 error("The isotope you specified is not available: Isotopes are specified by the atomic symbol and integer mass number.")
                 return
             end
-            mass_in_eV = begin
-                if anti_atom == false
-                    nmass = uconvert(u"eV/c^2", ATOMIC_SPECIES[AS].mass_in_amu[iso]u"amu"); # mass of the positively charged isotope in eV/c^2
-                    nmass.val + __b_m_electron.val * (ATOMIC_SPECIES[AS].Z - charge) # put it in eV/c^2 and remove the electrons
-                elseif anti_atom == true
-                    nmass = uconvert(u"eV/c^2", ATOMIC_SPECIES[AS].mass_in_amu[iso]u"amu"); # mass of the positively charged isotope in amu
-                    nmass.val + __b_m_electron.val * (-ATOMIC_SPECIES[AS].Z + charge) # put it in eV/c^2 and remove the positrons
-                end
+            mass = begin
+							if anti_atom == false
+								nmass = uconvert(u"eV/c^2", ATOMIC_SPECIES[AS].mass[iso]); # mass of the positively charged isotope in eV/c^2
+								nmass.val + __b_m_electron.val * (ATOMIC_SPECIES[AS].Z - charge) # put it in eV/c^2 and remove the electrons
+							elseif anti_atom == true
+								nmass = uconvert(u"eV/c^2", ATOMIC_SPECIES[AS].mass[iso]); # mass of the positively charged isotope in amu
+								nmass.val + __b_m_electron.val * (-ATOMIC_SPECIES[AS].Z + charge) # put it in eV/c^2 and remove the positrons
+							end
             end
             if iso == -1 # if it's the average, make an educated guess at the spin
-                partonum = round(ATOMIC_SPECIES[AS].mass_in_amu[iso])
-                if anti_atom == false
-                    spin = 0.5 * (partonum + (ATOMIC_SPECIES[AS].Z - charge))
-                elseif anti_atom == true
-                    spin = 0.5 * (partonum + (ATOMIC_SPECIES[AS].Z + charge))
-                end
+							partonum = round(ATOMIC_SPECIES[AS].mass_in_amu[iso])
+							if anti_atom == false
+								spin = 0.5 * (partonum + (ATOMIC_SPECIES[AS].Z - charge))
+							elseif anti_atom == true
+								spin = 0.5 * (partonum + (ATOMIC_SPECIES[AS].Z + charge))
+							end
             else # otherwise, use the sum of proton and neutron spins
-                spin = 0.5 * iso
+							spin = 0.5 * iso
             end
             if anti_atom == false
-                return Species(AS, charge*u"q", mass_in_eV*u"eV/c^2", spin*u"ħ", 0*u"eV/T", iso) # return the object to track
+							return Species(AS, charge*u"q", mass*u"MeV/c^2", spin*u"ħ", 0*u"eV/T", iso) # return the object to track
             elseif anti_atom == true
-                return Species("anti-" * AS, charge*u"q", mass_in_eV*u"eV/c^2", spin*u"ħ", 0u"eV/T", iso)
+							return Species("anti-" * AS, charge*u"q", mass*u"MeV/c^2", spin*u"ħ", 0u"eV/T", iso)
             end
 
 
-        else # handle the case where the given name is garbage
-            error("The specified particle name does not exist in this library.")
-            #=
-            println("Available subatomic particles are: ")
-            for p in keys(SUBATOMIC_SPECIES)
-            	println(p)
-            end
-            println("Available atomic elements are")
-            for p in keys(ATOMIC_SPECIES)
-            	println(p)
-            end
-            =#
-            return
-        end
+			else # handle the case where the given name is garbage
+				error("The specified particle name does not exist in this library.")
+				#=
+				println("Available subatomic particles are: ")
+				for p in keys(SUBATOMIC_SPECIES)
+					println(p)
+				end
+				println("Available atomic elements are")
+				for p in keys(ATOMIC_SPECIES)
+					println(p)
+				end
+				=#
+				return
+			end
     end
 end;
 export Species
@@ -243,3 +249,44 @@ end;
 
 #####################################################################
 #####################################################################
+
+
+"""
+Struct AtomicSpecies
+
+### Description:
+> mutable struct to store all (possibly degenerate) information about a particular element<
+
+### Fields:
+- `Z`            -- Integer atomic number (i.e. protons in the nucleus)
+- `species_name` -- String periodic table symbol for element
+- `mass`   -- > Dict{Int, Float64}(isotope::Int, mass::Float64) isotope masses
+									 > key -1 refers to the average common atomic mass, other keys refer to 
+									 > the number of nucleons present in the isotope <
+
+### Examples:
+- `AtomicSpeciesData(3, "Li", Dict(Int64, Float64)(-1 => 6.9675, 3 => 3.0308, 4 => 4.02719, 
+		5 => 5.012538, 6 => 6.0151228874, 7 => 7.0160034366, 8 => 8.022486246, 9 => 9.02679019, 
+		10 => 10.035483, 11 => 11.04372358, 12 => 12.052517, 13 => 13.06263))`
+- `AtomicSpeciesData(47, "Ag", Dict(Int64, Float64)(-1 => 107.8682, 92 => 92.95033, 
+		93 => 93.94373, 94 => 94.93602, 95 => 95.930744, 96 => 96.92397, 97 => 97.92156, 
+		98 => 98.9176458, 99 => 99.9161154, 100 => 100.912684, 101 => 101.9117047, 
+		102 => 102.9089631, 103 => 103.9086239, 104 => 104.9065256, 105 => 105.9066636, 
+		106 => 106.9050916, 107 => 107.9059503, 108 => 108.9047553, 109 => 109.9061102, 
+		110 => 110.9052959, 111 => 111.9070486, 112 => 112.906573, 113 => 113.908823, 
+		114 => 114.908767, 115 => 115.9113868, 116 => 116.911774, 117 => 117.9145955, 
+		118 => 118.91557, 119 => 119.9187848, 120 => 120.920125, 121 => 121.923664, 
+		122 => 122.925337, 123 => 123.92893, 124 => 124.93105, 125 => 125.93475, 
+		126 => 126.93711, 127 => 127.94106, 128 => 128.94395, 129 => 129.9507))`
+"""
+AtomicSpecies
+
+struct AtomicSpecies
+  Z::Int                      		# number of protons
+  species_name::String    # periodic table element symbol
+  mass::Dict{}					# a dict to store the masses, keyed by isotope
+  #=
+  keyvalue -1 => average mass of common isotopes,
+  keyvalue n ∈ {0} ∪ N is the mass number of the isotope
+  =#
+end
