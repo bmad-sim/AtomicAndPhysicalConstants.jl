@@ -44,8 +44,7 @@ export g_spin
 
 Compute and deliver the gyromagnetic anomaly for a lepton given its g factor
 
-# Arguments:
-1. `gs::Float64': the g_factor for the particle
+
 """
 gyromagnetic_anomaly
 
@@ -110,4 +109,55 @@ function full_name(species::Species)
 	end
 end;
 export full_name
- 
+
+
+#####################################################################
+
+
+"""
+    massof(species::Species(), units=false)
+
+retrieve the mass of a given species, with or without units.
+Arguments:
+1. species::Species   - the particle whose mass is to be retrieved
+2. units::Bool        - whether or not to return a unitful quantity; 
+                        default is false (no units)
+"""
+massof
+
+function massof(species::Species; units::Bool=false)
+  if species.kind == Kind.NULL
+    error("The function 'massof' has requested the mass of an empty 
+          species, which is meaningless.")
+  elseif units==false
+    return species.mass.val
+  else
+    return species.mass
+  end
+end; 
+export massof
+
+
+"""
+    chargeof(species::Species(), units=false)
+
+retrieve the charge of a given species, with or without units.
+Arguments:
+1. species::Species   - the particle whose charge is to be retrieved
+2. units::Bool        - whether or not to return a unitful quantity; 
+                        default is false (no units)
+"""
+chargeof
+
+function chargeof(species::Species; units::Bool=false)
+  if species.kind == Kind.NULL
+    error("The function 'chargeof' has requested the mass of an empty 
+          species, which is meaningless.")
+  elseif units==false
+    return species.charge.val
+  else
+    return species.mass
+  end
+  
+end; 
+export chargeof

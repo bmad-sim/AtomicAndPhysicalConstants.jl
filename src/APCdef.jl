@@ -118,45 +118,45 @@ macro APCdef(exs...)
     const $(esc(:FINE_STRUCTURE)) = $__b_fine_structure
     const $(esc(:N_AVOGADRO)) = $__b_N_avogadro
 
-    const $(esc(:massof)) = (species::Species) -> unitful ? uconvert(mass_unit, species.mass) : uconvert(mass_unit, species.mass).val
-    const $(esc(:chargeof)) = (species::Species) -> unitful ? uconvert(charge_unit, species.charge) : uconvert(charge_unit, species.charge).val
-    const $(esc(:chargeof2)) = begin
-      (species::Species) -> if species.populated == IsDef.Full
-        (unitful ? uconvert(charge_unit, species.charge) : uconvert(charge_unit, species.charge).val)
+    # const $(esc(:massof)) = (species::Species) -> unitful ? uconvert(mass_unit, species.mass) : uconvert(mass_unit, species.mass).val
+    # const $(esc(:chargeof)) = (species::Species) -> unitful ? uconvert(charge_unit, species.charge) : uconvert(charge_unit, species.charge).val
+    # const $(esc(:chargeof2)) = begin
+    #   (species::Species) -> if species.populated == IsDef.Full
+    #     (unitful ? uconvert(charge_unit, species.charge) : uconvert(charge_unit, species.charge).val)
         # else
         # 	error("""Can't get the charge of an undefined particle; 
         # 	the Species constructor for this object was called with no arguments.""")
-      end
-    end
+      # end
+    # end
   end
 
 end
 
 
-"""
-    massof(
-      species::Species,
-    )
+# """
+#     massof(
+#       species::Species,
+#     )
 
-## Description:
-return mass of 'species' in current unit.
+# ## Description:
+# return mass of 'species' in current unit.
 
-## parameters:
-- `species`     -- type:`Species`, the species whose mass you want to know
-"""
-massof
+# ## parameters:
+# - `species`     -- type:`Species`, the species whose mass you want to know
+# """
+# massof
 
 
-"""
-    chargeof(
-      species::Species,
-    )
+# """
+#     chargeof(
+#       species::Species,
+#     )
 
-## Description:
-return charge of 'species' in current unit.
+# ## Description:
+# return charge of 'species' in current unit.
 
-## parameters:
-- `species`     -- type:`Species`, the species whose charge you want to know
+# ## parameters:
+# - `species`     -- type:`Species`, the species whose charge you want to know
 
-"""
-chargeof
+# """
+# chargeof
