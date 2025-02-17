@@ -21,23 +21,23 @@ function subatomic_particle(name::String)
     # write the particle out directly
     leptons = ["electron", "positron", "muon", "anti-muon"]
     if lowercase(name) == "photon"
-        return Species(name, SUBATOMIC_SPECIES[name].charge,
-            SUBATOMIC_SPECIES[name].mass,
-            SUBATOMIC_SPECIES[name].spin,
-            SUBATOMIC_SPECIES[name].mu,
-            0.0, Kind.PHOTON)
+        return Species(name, eval(SUBATOMIC_SPECIES[name].charge),
+          eval(SUBATOMIC_SPECIES[name].mass),
+          eval(SUBATOMIC_SPECIES[name].spin),
+          eval(SUBATOMIC_SPECIES[name].mu),
+          0.0, Kind.PHOTON)
     elseif lowercase(name) in leptons
-        return Species(name, SUBATOMIC_SPECIES[name].charge,
-            SUBATOMIC_SPECIES[name].mass,
-            SUBATOMIC_SPECIES[name].spin,
-            SUBATOMIC_SPECIES[name].mu,
-            0.0, Kind.LEPTON)
+        return Species(name, eval(SUBATOMIC_SPECIES[name].charge),
+          eval(SUBATOMIC_SPECIES[name].mass),
+          eval(SUBATOMIC_SPECIES[name].spin),
+          eval(SUBATOMIC_SPECIES[name].mu),
+          0.0, Kind.LEPTON)
     else
-        return Species(name, SUBATOMIC_SPECIES[name].charge,
-            SUBATOMIC_SPECIES[name].mass,
-            SUBATOMIC_SPECIES[name].spin,
-            SUBATOMIC_SPECIES[name].mu,
-            0.0, Kind.HADRON)
+        return Species(name, eval(SUBATOMIC_SPECIES[name].charge),
+          eval(SUBATOMIC_SPECIES[name].mass),
+          eval(SUBATOMIC_SPECIES[name].spin),
+          eval(SUBATOMIC_SPECIES[name].mu),
+          0.0, Kind.HADRON)
     end
 end
 
