@@ -14,7 +14,7 @@
 
 __b_m_electron::typeof(1.0*u"MeV/c^2") = 0.51099895069 * u"MeV/c^2"
 # Electron Mass [MeV]/c^2
-__b_m_proton::typeof(1.0*u"MeV/c^2") = 9.382720894300001e2 * u"eV/c^2"
+__b_m_proton::typeof(1.0*u"MeV/c^2") = 9.382720894300001e2 * u"MeV/c^2"
 # Proton Mass [MeV]/c^2
 __b_m_neutron::typeof(1.0*u"MeV/c^2") = 9.395654219399999e2 * u"MeV/c^2"
 # Neutron Mass [MeV]/c^2

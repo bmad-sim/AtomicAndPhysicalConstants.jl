@@ -102,7 +102,7 @@ __b_e_charge::typeof(1.0*u"C") = 1.602176634e-19 * u"C";
 # elementary charge [C]
 __b_r_e::typeof(1.0*u"m") = 2.8179403205e-15 * u"m";
 # classical electron radius [m]
-__b_r_p::typeof(1.0*u"m") = __b_r_e * __b_m_electron / __b_m_proton;
+__b_r_p::typeof(1.0*u"m") = __b_r_e * __b_m_electron / __b_m_proton ;
 # classical proton radius [m]
 __b_c_light::typeof(1.0*u"m/s") = 2.99792458e8 * u"m/s";
 # speed of light [m/s]
