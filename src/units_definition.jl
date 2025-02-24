@@ -18,4 +18,3 @@ using .NewUnits
 function __init__()
     Unitful.register(NewUnits)
 end
-

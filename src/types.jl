@@ -10,13 +10,13 @@ export ATOM, HADRON, LEPTON, PHOTON, NULL
 # src/constructors.jl
 
 struct Species
-  name::String # name of the particle to track
-  charge::typeof(1u"e") # charge of the particle (important to consider ionized atoms) in [e]
-  mass::typeof(1.0u"MeV/c^2") # mass of the particle in [eV/c^2]
-  spin::typeof(1.0u"h_bar") # spin of the particle in [ħ]
-  moment::typeof(1.0u"J/T") # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
-  iso::Float64 # if the particle is an atomic isotope, this is the mass number, otherwise 0
-  kind::Kind.T
+    name::String # name of the particle to track
+    charge::typeof(1u"e") # charge of the particle (important to consider ionized atoms) in [e]
+    mass::typeof(1.0u"MeV/c^2") # mass of the particle in [eV/c^2]
+    spin::typeof(1.0u"h_bar") # spin of the particle in [ħ]
+    moment::typeof(1.0u"J/T") # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
+    iso::Float64 # if the particle is an atomic isotope, this is the mass number, otherwise 0
+    kind::Kind.T
 end
 
 export Species
@@ -50,11 +50,11 @@ some parameters in this struct are likely named constants from PhysicalConstants
 SubatomicSpecies
 
 struct SubatomicSpecies
-  species_name::String              # common species_name of the particle
-  charge::typeof(1.0u"e")                     # charge on the particle in units of e+
-  mass::typeof(1.0u"MeV/c^2")                    # mass of the particle in [eV/c^2]
-  mu::typeof(1.0u"J/T")       # magnetic moment 
-  spin::typeof(1.0u"h_bar")                    # spin magnetic moment in [ħ]
+    species_name::String              # common species_name of the particle
+    charge::typeof(1.0u"e")                     # charge on the particle in units of e+
+    mass::typeof(1.0u"MeV/c^2")                    # mass of the particle in [eV/c^2]
+    mu::typeof(1.0u"J/T")       # magnetic moment 
+    spin::typeof(1.0u"h_bar")                    # spin magnetic moment in [ħ]
 end;
 
 
@@ -93,12 +93,12 @@ Struct AtomicSpecies
 AtomicSpecies
 
 struct AtomicSpecies
-  Z::Int                      		# number of protons
-  species_name::String    # periodic table element symbol
-  mass::Dict				# a dict to store the masses, keyed by isotope
-  #=
-  keyvalue -1 => average mass of common isotopes [amu],
-  keyvalue n ∈ {0} ∪ N is the mass number of the isotope
-			=> mass of that isotope [amu]
-  =#
+    Z::Int                      # number of protons
+    species_name::String    # periodic table element symbol
+    mass::Dict# a dict to store the masses, keyed by isotope
+    #=
+    keyvalue -1 => average mass of common isotopes [amu],
+    keyvalue n ∈ {0} ∪ N is the mass number of the isotope
+    	=> mass of that isotope [amu]
+    =#
 end
