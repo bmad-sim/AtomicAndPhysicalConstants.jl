@@ -11,12 +11,14 @@ file"""
 CODATA_Consts
 
 CODATA_Consts = Dict{AbstractString,Dict}(
-    "electron mass energy equivalent in MeV" => Dict("__b_m_electron" => __b_m_electron),
+    "electron mass energy equivalent in MeV" =>
+        Dict("__b_m_electron" => __b_m_electron),
     "proton mass energy equivalent in MeV" => Dict("__b_m_proton" => __b_m_proton),
     "neutron mass energy equivalent in MeV" => Dict("__b_m_neutron" => __b_m_neutron),
     "muon mass energy equivalent in MeV" => Dict("__b_m_muon" => __b_m_muon),
     "helion mass energy equivalent in MeV" => Dict("__b_m_helion" => __b_m_helion),
-    "deuteron mass energy equivalent in MeV" => Dict("__b_m_deuteron" => __b_m_deuteron),
+    "deuteron mass energy equivalent in MeV" =>
+        Dict("__b_m_deuteron" => __b_m_deuteron),
     "deuteron mag. mom." => Dict("__b_mu_deuteron" => __b_mu_deuteron),
     "electron mag. mom." => Dict("__b_mu_electron" => __b_mu_electron),
     "helion mag. mom." => Dict("__b_mu_helion" => __b_mu_helion),
@@ -32,9 +34,11 @@ CODATA_Consts = Dict{AbstractString,Dict}(
     "vacuum mag. permeability" => Dict("__b_mu_0_vac" => __b_mu_0_vac),
     "fine-structure constant" => Dict("__b_fine_structure" => __b_fine_structure),
     "elementary charge" => Dict("__b_e_charge" => __b_e_charge),
-    "atomic mass unit-kilogram relationship" => Dict("__b_kg_per_amu" => __b_kg_per_amu),
-    "atomic mass unit-electron volt relationship" => Dict("__b_eV_per_amu" => __b_eV_per_amu),
-    "electron volt-joule relationship" => Dict("__b_J_per_eV" => __b_J_per_eV)
+    "atomic mass unit-kilogram relationship" =>
+        Dict("__b_kg_per_amu" => __b_kg_per_amu),
+    "atomic mass unit-electron volt relationship" =>
+        Dict("__b_eV_per_amu" => __b_eV_per_amu),
+    "electron volt-joule relationship" => Dict("__b_J_per_eV" => __b_J_per_eV),
 )
 
 
@@ -48,21 +52,24 @@ returns the path to the local copy"""
 downloadCODATA
 
 function downloadCODATA(year::Int)
-  NIST_releases = [2002, 2006, 2010, 2014, 2018, 2022]
-  if year ∉ NIST_releases
-    println("The CODATA release years are:")
-    for y in NIST_releases
-      println(y)
+    NIST_releases = [2002, 2006, 2010, 2014, 2018, 2022]
+    if year ∉ NIST_releases
+        println("The CODATA release years are:")
+        for y in NIST_releases
+            println(y)
+        end
+        error(f"The year requested isn't available, please select a valid year.")
     end
-    error(f"The year requested isn't available, please select a valid year.")
-  end
-  if year != 2022
-    url = "https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_" * string(year) * ".txt"
-  else
-    url = "https://physics.nist.gov/cuu/Constants/Table/allascii.txt"
-  end
-  path = download(url)
-  return path
+    if year != 2022
+        url =
+            "https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_" *
+            string(year) *
+            ".txt"
+    else
+        url = "https://physics.nist.gov/cuu/Constants/Table/allascii.txt"
+    end
+    path = download(url)
+    return path
 end
 
 
@@ -94,40 +101,52 @@ function getCODATA(path::String, CODATA_Consts::Dict)
 
 
                 if occursin("mag. mom.", line[1]) == true
-                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"J/T"
+                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                        parse(Float64, line[2]) * u"J/T"
 
                 elseif occursin("MeV", line[1])
-                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"MeV/c^2"
+                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                        parse(Float64, line[2]) * u"MeV/c^2"
 
                 elseif occursin("relationship", line[1])
-									if occursin("joule") == true
-                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"J/eV"
-									elseif occursin("kilogram") == true
-                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"kg/amu"
-									else
-                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"(eV/c^2)/amu"
-									end
+                    if occursin("joule") == true
+                        CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                            parse(Float64, line[2]) * u"J/eV"
+                    elseif occursin("kilogram") == true
+                        CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                            parse(Float64, line[2]) * u"kg/amu"
+                    else
+                        CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                            parse(Float64, line[2]) * u"(eV/c^2)/amu"
+                    end
 
-								elseif occursin("radius", line[1])
-									CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"m"
-								
-								elseif occursin("light", line[1])
-									CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"m/s"
-								
-								elseif occursin("Planck", line[1])
-									CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"eV/Hz"
-								
-								elseif occursin("permittivity", line[1])
-									CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"F/m"
-								
-								elseif occursin("permeability", line[1])
-									CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"N/A^2"
-								
-								elseif occursin("elementary", line[1])
-									CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2]) * u"C"
-							
+                elseif occursin("radius", line[1])
+                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                        parse(Float64, line[2]) * u"m"
+
+                elseif occursin("light", line[1])
+                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                        parse(Float64, line[2]) * u"m/s"
+
+                elseif occursin("Planck", line[1])
+                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                        parse(Float64, line[2]) * u"eV/Hz"
+
+                elseif occursin("permittivity", line[1])
+                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                        parse(Float64, line[2]) * u"F/m"
+
+                elseif occursin("permeability", line[1])
+                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                        parse(Float64, line[2]) * u"N/A^2"
+
+                elseif occursin("elementary", line[1])
+                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                        parse(Float64, line[2]) * u"C"
+
                 else
-                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] = parse(Float64, line[2])
+                    CODATA_Consts[line[1]][first(keys(CODATA_Consts[line[1]]))] =
+                        parse(Float64, line[2])
                 end
             end
         end
@@ -151,7 +170,7 @@ writeCODATA
 
 function writeCODATA(year::Int, new_consts)
     yearregex = r"[1-2][0-9][0-9][-0-9]"
-    f = open(pwd() * "/src/constants.jl", "r")
+    f = open(pwd() * "/src/2002_constants.jl", "r")
     everyline = readlines(f)
     newf = open(pwd() * f"/src/{year}_constants.jl", "a+")
     newlines = []
@@ -198,7 +217,7 @@ function writeCODATA(year::Int, new_consts)
             if line == "\n"
                 println(newf, "\n")
             elseif line[1] == "#"
-							line = join(line, " ")
+                line = join(line, " ")
                 println(newf, line)
             else
                 newl = join(line, " ")
@@ -230,7 +249,3 @@ function setCODATA(year::Int)
     writeCODATA(year, new_consts)
 
 end;
-
-
-
-
