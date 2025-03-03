@@ -19,6 +19,7 @@ include("update_constants.jl")
 include("update_isos.jl")
 include("functions.jl")
 include("APCdef.jl")
+include("showconst.jl")
 
 export @APCdef
 export ACCELERATOR, MKS, CGS
@@ -28,5 +29,6 @@ export SUBATOMIC_SPECIES
 export ATOMIC_SPECIES
 export useCODATA
 export @u_str, NewUnits
+export showconst
 
 end
