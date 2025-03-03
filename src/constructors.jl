@@ -3,7 +3,7 @@
 # purpose: define constructors
 
 
-
+using AtomicAndPhysicalConstants.ParticleTypes
 
 #####################################################################
 #####################################################################
@@ -21,8 +21,7 @@ function subatomic_particle(name::String)
     # write the particle out directly
     leptons = ["electron", "positron", "muon", "anti-muon"]
     if lowercase(name) == "photon"
-        return Species(
-            name,
+        return ParticleTypes.Species(name,
             eval(SUBATOMIC_SPECIES[name].charge),
             eval(SUBATOMIC_SPECIES[name].mass),
             eval(SUBATOMIC_SPECIES[name].spin),
@@ -31,7 +30,7 @@ function subatomic_particle(name::String)
             Kind.PHOTON,
         )
     elseif lowercase(name) in leptons
-        return Species(
+        return ParticleTypes.Species(
             name,
             eval(SUBATOMIC_SPECIES[name].charge),
             eval(SUBATOMIC_SPECIES[name].mass),
@@ -41,7 +40,7 @@ function subatomic_particle(name::String)
             Kind.LEPTON,
         )
     else
-        return Species(
+        return ParticleTypes.Species(
             name,
             eval(SUBATOMIC_SPECIES[name].charge),
             eval(SUBATOMIC_SPECIES[name].mass),
@@ -108,7 +107,7 @@ If an anti-particle (subatomic or otherwise) prepend "anti-" to the name.
 Species
 
 
-Species() = Species("Null", 0.0u"e", 0.0u"MeV/c^2", 0.0u"h_bar", 0.0u"J/T", 0, Kind.NULL)
+Species() = ParticleTypes.Species("Null", 0.0u"e", 0.0u"MeV/c^2", 0.0u"h_bar", 0.0u"J/T", 0, Kind.NULL)
 
 function Species(name::String; charge::Int = 0, iso::Int = -1)
     if name == "Null"
@@ -230,7 +229,7 @@ function Species(name::String; charge::Int = 0, iso::Int = -1)
                 end
                 # return the object to track
                 if anti_atom == false
-                    return Species(
+                    return ParticleTypes.Species(
                         AS,
                         charge * u"e",
                         mass * u"MeV/c^2",
@@ -240,7 +239,7 @@ function Species(name::String; charge::Int = 0, iso::Int = -1)
                         Kind.ATOM,
                     )
                 else
-                    return Species(
+                    return ParticleTypes.Species(
                         "anti-" * AS,
                         charge * u"e",
                         mass * u"MeV/c^2",

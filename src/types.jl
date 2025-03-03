@@ -1,6 +1,11 @@
 # types.Julia
 
+module ParticleTypes
 
+using EnumX
+using Reexport
+@reexport using Unitful
+using AtomicAndPhysicalConstants.NewUnits
 
 @enumx Kind ATOM HADRON LEPTON PHOTON NULL
 export Kind
@@ -17,9 +22,7 @@ struct Species
     moment::typeof(1.0u"J/T") # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
     iso::Float64 # if the particle is an atomic isotope, this is the mass number, otherwise 0
     kind::Kind.T
-end
-
-export Species
+end; export Species
 
 kindof(species::Species) = species.kind
 
@@ -55,7 +58,7 @@ struct SubatomicSpecies
     mass::typeof(1.0u"MeV/c^2")                    # mass of the particle in [eV/c^2]
     mu::typeof(1.0u"J/T")       # magnetic moment 
     spin::typeof(1.0u"h_bar")                    # spin magnetic moment in [ħ]
-end;
+end; export SubatomicSpecies
 
 
 #####################################################################
@@ -101,4 +104,7 @@ struct AtomicSpecies
     keyvalue n ∈ {0} ∪ N is the mass number of the isotope
     	=> mass of that isotope [amu]
     =#
+end; export AtomicSpecies
+
+
 end

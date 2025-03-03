@@ -1,6 +1,6 @@
 
 # AtomicAndPhysicalConstants.jl/src/2024-11-06_isotopes.jl
-
+using AtomicAndPhysicalConstants.ParticleTypes
 
 #########################################################
 

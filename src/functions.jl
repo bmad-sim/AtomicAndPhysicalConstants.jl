@@ -13,7 +13,7 @@ Get the atomic number (positive nuclear charge) of a tracked particle.
 """
 atomicnumber
 
-function atomicnumber(particle::Species)
+function atomicnumber(particle::ParticleTypes.Species)
     if haskey(ATOMIC_SPECIES, particle.name)
         return ATOMIC_SPECIES[name].Z
     else
@@ -33,7 +33,7 @@ Compute and return the value of g_s for a particle in [1/(T*s)] == [C/kg]
 For atomic particles, will currently return 0. Will be updated in a future patch
 """
 
-function g_spin(species::Species)
+function g_spin(species::ParticleTypes.Species)
     return 2 * species.mass * species.mu / (species.spin * species.charge)
 end;
 
@@ -49,7 +49,7 @@ Compute and deliver the gyromagnetic anomaly for a lepton given its g factor
 """
 gyromagnetic_anomaly
 
-function gyromagnetic_anomaly(species::Species)
+function gyromagnetic_anomaly(species::ParticleTypes.Species)
     gs = g_spin(species)
     return (gs - 2) / 2
 end;
@@ -65,7 +65,7 @@ Compute and deliver the gyromagnetic anomaly for a baryon given its g factor
 """
 g_nucleon
 
-function g_nucleon(species::Species)
+function g_nucleon(species::ParticleTypes.Species)
     Z = species.charge
     m = species.mass
     gs = g_spin(species)
@@ -86,7 +86,7 @@ get the full name of a tracked species:
 
 
 
-function full_name(species::Species)
+function full_name(species::ParticleTypes.Species)
     if haskey(SUBATOMIC_SPECIES, species.name)
         return species.name
     else

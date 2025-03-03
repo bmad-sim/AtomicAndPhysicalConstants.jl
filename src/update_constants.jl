@@ -1,4 +1,4 @@
-
+using AtomicAndPhysicalConstants.CODATA2002
 
 """
     CODATA_Consts
@@ -10,35 +10,35 @@ fetched values so they can be written to
 file"""
 CODATA_Consts
 
-CODATA_Consts = Dict{AbstractString,Dict}(
+CODATA_Consts = Dict{String, Dict}(
     "electron mass energy equivalent in MeV" =>
-        Dict("__b_m_electron" => __b_m_electron),
-    "proton mass energy equivalent in MeV" => Dict("__b_m_proton" => __b_m_proton),
-    "neutron mass energy equivalent in MeV" => Dict("__b_m_neutron" => __b_m_neutron),
-    "muon mass energy equivalent in MeV" => Dict("__b_m_muon" => __b_m_muon),
-    "helion mass energy equivalent in MeV" => Dict("__b_m_helion" => __b_m_helion),
+        Dict("__b_m_electron" => CODATA2002.__b_m_electron),
+    "proton mass energy equivalent in MeV" => Dict("__b_m_proton" => CODATA2002.__b_m_proton),
+    "neutron mass energy equivalent in MeV" => Dict("__b_m_neutron" => CODATA2002.__b_m_neutron),
+    "muon mass energy equivalent in MeV" => Dict("__b_m_muon" => CODATA2002.__b_m_muon),
+    "helion mass energy equivalent in MeV" => Dict("__b_m_helion" => CODATA2002.__b_m_helion),
     "deuteron mass energy equivalent in MeV" =>
-        Dict("__b_m_deuteron" => __b_m_deuteron),
-    "deuteron mag. mom." => Dict("__b_mu_deuteron" => __b_mu_deuteron),
-    "electron mag. mom." => Dict("__b_mu_electron" => __b_mu_electron),
-    "helion mag. mom." => Dict("__b_mu_helion" => __b_mu_helion),
-    "muon mag. mom." => Dict("__b_mu_muon" => __b_mu_muon),
-    "neutron mag. mom." => Dict("__b_mu_neutron" => __b_mu_neutron),
-    "proton mag. mom." => Dict("__b_mu_proton" => __b_mu_proton),
-    "triton mag. mom." => Dict("__b_mu_triton" => __b_mu_triton),
-    "classical electron radius" => Dict("__b_r_e" => __b_r_e),
-    "speed of light in vacuum" => Dict("__b_c_light" => __b_c_light),
-    "Planck constant in eV/Hz" => Dict("__b_h_planck" => __b_h_planck),
-    "Avogadro constant" => Dict("__b_N_avogadro" => __b_N_avogadro),
-    "vacuum electric permittivity" => Dict("__b_eps_0_vac" => __b_eps_0_vac),
-    "vacuum mag. permeability" => Dict("__b_mu_0_vac" => __b_mu_0_vac),
-    "fine-structure constant" => Dict("__b_fine_structure" => __b_fine_structure),
-    "elementary charge" => Dict("__b_e_charge" => __b_e_charge),
+        Dict("__b_m_deuteron" => CODATA2002.__b_m_deuteron),
+    "deuteron mag. mom." => Dict("__b_mu_deuteron" => CODATA2002.__b_mu_deuteron),
+    "electron mag. mom." => Dict("__b_mu_electron" => CODATA2002.__b_mu_electron),
+    "helion mag. mom." => Dict("__b_mu_helion" => CODATA2002.__b_mu_helion),
+    "muon mag. mom." => Dict("__b_mu_muon" => CODATA2002.__b_mu_muon),
+    "neutron mag. mom." => Dict("__b_mu_neutron" => CODATA2002.__b_mu_neutron),
+    "proton mag. mom." => Dict("__b_mu_proton" => CODATA2002.__b_mu_proton),
+    "triton mag. mom." => Dict("__b_mu_triton" => CODATA2002.__b_mu_triton),
+    "classical electron radius" => Dict("__b_r_e" => CODATA2002.__b_r_e),
+    "speed of light in vacuum" => Dict("__b_c_light" => CODATA2002.__b_c_light),
+    "Planck constant in eV/Hz" => Dict("__b_h_planck" => CODATA2002.__b_h_planck),
+    "Avogadro constant" => Dict("__b_N_avogadro" => CODATA2002.__b_N_avogadro),
+    "vacuum electric permittivity" => Dict("__b_eps_0_vac" => CODATA2002.__b_eps_0_vac),
+    "vacuum mag. permeability" => Dict("__b_mu_0_vac" => CODATA2002.__b_mu_0_vac),
+    "fine-structure constant" => Dict("__b_fine_structure" => CODATA2002.__b_fine_structure),
+    "elementary charge" => Dict("__b_e_charge" => CODATA2002.__b_e_charge),
     "atomic mass unit-kilogram relationship" =>
-        Dict("__b_kg_per_amu" => __b_kg_per_amu),
+        Dict("__b_kg_per_amu" => CODATA2002.__b_kg_per_amu),
     "atomic mass unit-electron volt relationship" =>
-        Dict("__b_eV_per_amu" => __b_eV_per_amu),
-    "electron volt-joule relationship" => Dict("__b_J_per_eV" => __b_J_per_eV),
+        Dict("__b_eV_per_amu" => CODATA2002.__b_eV_per_amu),
+    "electron volt-joule relationship" => Dict("__b_J_per_eV" => CODATA2002.__b_J_per_eV),
 )
 
 
