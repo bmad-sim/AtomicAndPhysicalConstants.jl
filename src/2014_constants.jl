@@ -125,14 +125,25 @@ const __b_mu_0_vac::typeof(1.0 * u"N/A^2") = 1.25663706127e-6 * u"N/A^2";
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 
-
-
-
+#####################################################################
+# sub-module includes
+#####################################################################
 
 include("subatomic_species.jl")
 include("constructors.jl")
+include("functions.jl")
+include("APCdef.jl")
 
+##################################
+# sub-module exports
+##################################
 
+export @APCdef
+export SUBATOMIC_SPECIES
+export Species
+export full_name, atomicnumber, g_spin, g_nucleon, gyromagnetic_anomaly
+
+#####################################################################
 end
 
 

@@ -21,7 +21,7 @@ function atomicnumber(particle::Species)
         return
     end
 end;
-export atomicnumber
+
 
 
 
@@ -36,7 +36,7 @@ For atomic particles, will currently return 0. Will be updated in a future patch
 function g_spin(species::Species)
     return 2 * species.mass * species.mu / (species.spin * species.charge)
 end;
-export g_spin
+
 
 
 """
@@ -53,7 +53,7 @@ function gyromagnetic_anomaly(species::Species)
     gs = g_spin(species)
     return (gs - 2) / 2
 end;
-export gyromagnetic_anomaly
+
 
 
 """
@@ -72,7 +72,7 @@ function g_nucleon(species::Species)
 
     return gs * Z * __b_m_proton.val / m
 end;
-export g_nucleon
+
 
 
 """
@@ -106,27 +106,8 @@ function full_name(species::Species)
         return isostring * species.name * chargestring
     end
 end;
-export full_name
 
 
 
-"""
-    useCODATA(year::Int)
 
-Sets the values of the base constants to those of a particular CODATA 
-release. Valid only in the current scope."""
-useCODATA
 
-function useCODATA(year::Int)
-    NIST_releases = [2002, 2006, 2010, 2014, 2018, 2022]
-    if year ∈ NIST_releases
-        include(f"src/{year}_constants.jl")
-        include("src/subatomic_species.jl")
-    else
-        println("The available CODATA release years are:")
-        for y in NIST_releasesexit()
-            println(y)
-        end
-        error(f"The year requested isn't available, please select a valid year.")
-    end
-end
