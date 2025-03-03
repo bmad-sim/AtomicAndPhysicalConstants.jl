@@ -6,6 +6,13 @@
 
 module CODATA2006
 
+using PyFormattedStrings
+using Dates
+using HTTP
+using JSON
+using EnumX
+using Reexport
+@reexport using Unitful
 
 #####################################################################
 # constants with dimension [mass]
