@@ -40,6 +40,8 @@ in units you prefer. See [this page](constants.md) for more information.
 
 Construct the particle with the constructor `Species(name)`.
 
+**Species names correspond to the OpenPMD standard.**
+
 ### Constructing a Null species
 
 The `Null` species is usful for bookkeeping purposes. For example, as a place holder for a struct
