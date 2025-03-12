@@ -118,15 +118,29 @@ release. Valid only in the current scope."""
 useCODATA
 
 function useCODATA(year::Int)
-  NIST_releases = [2002, 2006, 2010, 2014, 2018, 2022]
-  if year ∈ NIST_releases
-    include(f"src/{year}_constants.jl")
-    include("src/subatomic_species.jl")
-  else
-    println("The available CODATA release years are:")
-    for y in NIST_releasesexit()
-      println(y)
+    NIST_releases = [2002, 2006, 2010, 2014, 2018, 2022]
+    if year ∈ NIST_releases
+        include(f"src/{year}_constants.jl")
+        include("src/subatomic_species.jl")
+    else
+        println("The available CODATA release years are:")
+        for y in NIST_releasesexit()
+            println(y)
+        end
+        error(f"The year requested isn't available, please select a valid year.")
     end
-    error(f"The year requested isn't available, please select a valid year.")
-  end
 end
+
+
+const SUPERSCRIPT_MAP = Dict{Char,Int64}(
+    '⁰' => 0,
+    '¹' => 1,
+    '²' => 2,
+    '³' => 3,
+    '⁴' => 4,
+    '⁵' => 5,
+    '⁶' => 6,
+    '⁷' => 7,
+    '⁸' => 8,
+    '⁹' => 9,
+)

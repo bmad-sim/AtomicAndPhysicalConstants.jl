@@ -93,12 +93,12 @@ Struct AtomicSpecies
 AtomicSpecies
 
 struct AtomicSpecies
-  Z::Int                      		# number of protons
-  species_name::String    # periodic table element symbol
-  mass::Dict				# a dict to store the masses, keyed by isotope
+  Z::Int64                                # number of protons
+  species_name::String                  # periodic table element symbol
+  mass::Dict{Int64,typeof(1.0 * u"amu")}  # a dict to store the masses, keyed by isotope
   #=
   keyvalue -1 => average mass of common isotopes [amu],
   keyvalue n ∈ {0} ∪ N is the mass number of the isotope
-			=> mass of that isotope [amu]
+  	=> mass of that isotope [amu]
   =#
 end
