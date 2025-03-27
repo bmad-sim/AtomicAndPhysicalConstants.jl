@@ -1,5 +1,5 @@
 
-# AtomicAndPhysicalConstants.jl/src/2024-11-06_isotopes.jl
+# AtomicAndPhysicalConstants.jl/src/isotopes.jl
 
 
 #########################################################

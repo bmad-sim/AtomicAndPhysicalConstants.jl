@@ -1,5 +1,5 @@
 module DefaultAPCDef
-using AtomicAndPhysicalConstants
+using AtomicAndPhysicalConstants.CODATA2022
 using Test
 
 # test default APCdef settings
@@ -21,7 +21,7 @@ using Test
   #test massof() and chargeof()
   H = Species("H")
 
-  @test massof(H) ≈ 9.394018682512946e8
+  @test massof(H) ≈ 9.388908693006046e8
   @test chargeof(H) ≈ 0
 
   e = Species("electron")
@@ -105,7 +105,7 @@ end
 end
 
 module APCdefWithChangedName
-using AtomicAndPhysicalConstants
+using AtomicAndPhysicalConstants.CODATA2022
 using Test
 
 # test default APCdef settings
@@ -128,7 +128,7 @@ end
 end
 
 module APCdefWithDifferentUnitSystem
-using AtomicAndPhysicalConstants
+using AtomicAndPhysicalConstants.CODATA2022
 using Test
 
 # test default APCdef settings

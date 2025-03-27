@@ -151,7 +151,7 @@ macro APCdef(kwargs...)
       startswith(string(x), "__b_") && # the name starts with __b_
       !occursin("_m_", string(x)) && # the name does not contain _m_, so that it is not a mass
       (!occursin("_mu_", string(x)) || occursin("__b_mu_0_vac", string(x)))  # the name does not contain _mu_, so that it is not a magnetic moment
-    ), names(AtomicAndPhysicalConstants, all=true))
+    ), names(parentmodule(@__MODULE__).CODATA2022, all=true))
 
   if unittype == :Unitful #suppose the user demand unitful quantity
 
@@ -209,7 +209,7 @@ macro APCdef(kwargs...)
     end
 
     return quote
-      #massof and charge of
+      #massof and chargeof
       function $(esc(:massof))(species::Species)::Float64
         @assert species.kind != Kind.NULL "Can't call massof() on a null Species object"
         return uconvert($mass_unit, species.mass).val

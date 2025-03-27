@@ -113,11 +113,11 @@ function Species(name::String, charge::Int, iso::Int)
   mass::Float64 = begin
     if anti_atom == false
       # ^ mass of the positively charged isotope in eV/c^2
-      nmass + __b_m_electron.val * (atom.Z - charge)
+      nmass + __b_m_electron.val * ( - charge)
       # ^ put it in eV/c^2 and remove the electrons
     else
       # ^ mass of the positively charged isotope in amu
-      nmass + __b_m_electron.val * (-atom.Z + charge)
+      nmass + __b_m_electron.val * ( + charge)
       # ^ put it in eV/c^2 and remove the positrons
     end
   end
