@@ -54,7 +54,7 @@ end
 """
 	Species Struct:
 
-The Particle struct is used for keeping track 
+The Species struct is used for keeping track 
 of information specifice to the chosen particle.
 
 ## Fields:

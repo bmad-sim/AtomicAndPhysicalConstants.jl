@@ -10,6 +10,7 @@
 - `time`: s
 - `energy`: eV
 - `charge`: elementary charge
+- `spin`: h_bar (ħ)
 """
 ACCELERATOR
 
@@ -18,7 +19,8 @@ const ACCELERATOR = (
   u"m",
   u"s",
   u"eV",
-  u"e")
+  u"e",
+  u"h_bar")
 
 #---------------------------------------------------------------------------------------------------
 #   MKS
@@ -31,6 +33,7 @@ const ACCELERATOR = (
 - `time`: s
 - `energy`: J
 - `charge`: C
+- `spin`: h_bar (ħ)
 """
 MKS
 
@@ -39,7 +42,8 @@ const MKS = (
   u"m",
   u"s",
   u"J",
-  u"C")
+  u"C",
+  u"h_bar")
 
 #---------------------------------------------------------------------------------------------------
 # CGS
@@ -52,6 +56,7 @@ const MKS = (
 - `time`: s
 - `energy`: J
 - `charge`: C
+- `spin`: h_bar (ħ)
 """
 CGS
 
@@ -60,7 +65,8 @@ const CGS = (
   u"cm",
   u"s",
   u"J",
-  u"C")
+  u"C",
+  u"h_bar")
 
 #---------------------------------------------------------------------------------------------------
 # @APCdef
@@ -87,7 +93,7 @@ It defines the physical constants and getter functions for species mass and char
 - `time`: s
 - `energy`: eV
 - `charge`: elementary charge
-
+- `spin`: h_bar (ħ)
 """
 macro APCdef(kwargs...)
 
@@ -99,7 +105,7 @@ macro APCdef(kwargs...)
 
   # Defualt parameters
   unittype::Symbol = :Float
-  unitsystem::NTuple{5,Unitful.FreeUnits} = ACCELERATOR
+  unitsystem::NTuple{6,Unitful.FreeUnits} = ACCELERATOR
   name::Symbol = :APC
   tupleflag::Bool = true # whether return the constants in a tuple or not
 
@@ -143,6 +149,7 @@ macro APCdef(kwargs...)
   time_unit::Unitful.FreeUnits = unitsystem[3]
   energy_unit::Unitful.FreeUnits = unitsystem[4]
   charge_unit::Unitful.FreeUnits = unitsystem[5]
+  spin_unit::Unitful.FreeUnits = unitsystem[6]
 
   # check dimensions of units?
   if dimension(mass_unit) != dimension(u"kg")
@@ -160,8 +167,13 @@ macro APCdef(kwargs...)
   if dimension(charge_unit) != dimension(u"C")
     error("unit for charge does not have proper dimension")
   end
+  if dimension(spin_unit) != dimension(u"h_bar")
+    error("unit for spin does not have proper dimension")
+  end
 
-  spin_unit::Unitful.FreeUnits = energy_unit * time_unit # spin unit is energy * time, which is the same as h_bar
+  # spin_unit::Unitful.FreeUnits = energy_unit * time_unit # spin unit is energy * time, which is the same as h_bar
+  # doing it that way is faster, but the unit scaling is not the same. thus if you're using unittype = Float, you don't 
+  # get half/integers for the spin
 
   # this dictionary maps the dimension of the unit to the target unit that it should convert to
   conversion = Dict(
@@ -175,6 +187,7 @@ macro APCdef(kwargs...)
     dimension(u"kg*m") => mass_unit * length_unit,
     dimension(u"m") => length_unit,
     dimension(u"C") => charge_unit,
+    dimension(u"h_bar") => spin_unit,
   )
   unit_names::Dict{Symbol,Unitful.FreeUnits} = Dict(
     :mass => mass_unit,
@@ -183,14 +196,15 @@ macro APCdef(kwargs...)
     :energy => energy_unit,
     :charge => charge_unit,
     :velocity => length_unit / time_unit,
-    :action => energy_unit * time_unit
+    :action => energy_unit * time_unit,
+    :spin => spin_unit
   )
   # this vector contains the names of the all the constants in the module in symbols
   constants::Vector{Symbol} = filter(x -> (
-      startswith(string(x), "__b_") && # the name starts with __b_
-      !occursin("_m_", string(x)) && # the name does not contain _m_, so that it is not a mass
-      (!occursin("_mu_", string(x)) || occursin("__b_mu_0_vac", string(x)))  # the name does not contain _mu_, so that it is not a magnetic moment
-    ), names(parentmodule(@__MODULE__).@__MODULE__, all=true))
+    startswith(string(x), "__b_") && # the name starts with __b_
+    !occursin("_m_", string(x)) && # the name does not contain _m_, so that it is not a mass
+    (!occursin("_mu_", string(x)) || occursin("__b_mu_0_vac", string(x)))  # the name does not contain _mu_, so that it is not a magnetic moment
+  ), names(parentmodule(@__MODULE__).@__MODULE__, all=true))
 
   constantdict_type::Type = Dict{Symbol,Union{Unitful.Quantity,Float64,DynamicQuantities.Quantity{Float64,DynamicQuantities.Dimensions{DynamicQuantities.FixedRational{Int32,25200}}}}}
 
