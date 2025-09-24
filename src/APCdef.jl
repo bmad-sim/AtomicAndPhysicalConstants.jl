@@ -360,6 +360,31 @@ function generate_constructor(release::AtomicAndPhysicalConstants.CODATA)
   end
 end
 
+function generate_spin_functions(release::AtomicAndPhysicalConstants.CODATA)
+  return_fxn = (release, property) -> begin
+    return quote
+      if $property == "g_spin"
+        return AtomicAndPhysicalConstants.g_spin(species, $release; signed = signed)
+      elseif $property == "gyromagnetic_anomaly"
+        return AtomicAndPhysicalConstants.gyromagnetic_anomaly(species, $release; signed = signed)
+      # elseif $property == "g_nucleon"
+      end
+    end
+  end
+
+  return quote
+    function $(esc(:g_spin))(species::AtomicAndPhysicalConstants.Species; signed::Bool = false)::Float64
+      $(return_fxn(release, "g_spin"))
+    end
+    function $(esc(:gyromagnetic_anomaly))(species::AtomicAndPhysicalConstants.Species; signed::Bool = false)::Float64
+      $(return_fxn(release, "gyromagnetic_anomaly"))
+    end
+    # function $(esc(:g_nucleon))(species::AtomicAndPhysicalConstants.Species; signed::Bool = false)::Float64
+    #   $(return_fxn(release, "g_nucleon"))
+    # end
+  end
+end
+
 
 function generate_particle_property_functions(unittype, mass_unit, charge_unit, spin_unit, energy_unit, field_unit)
   # require that the unittype is one of Float, Unitful, DynamicQuantities
