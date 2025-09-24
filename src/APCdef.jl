@@ -187,7 +187,7 @@ macro APCdef(kwargs...)
   # set the base values for subatomic particles
   # inside the APC module, so it doesn't pollute
 
-  Core.eval(AtomicAndPhysicalConstants, :(SUBATOMIC_SPECIES = subatomic_species($release)))  
+  # Core.eval(AtomicAndPhysicalConstants, :(SUBATOMIC_SPECIES = subatomic_species($release)))  
 
   
 
@@ -325,28 +325,39 @@ macro APCdef(kwargs...)
     end
   end
 
-  # APCflag::Bool = true
+  
 
   return quote
-
+    
 
     const $(esc(:APCconsts)) = $wrapper
 
     const $(esc(:UNITS)) = NamedTuple{Tuple(keys($unit_names))}(values($unit_names))
 
+    $(generate_constructor(release))
+
     $(generate_particle_property_functions(unittype, mass_unit, charge_unit, spin_unit, energy_unit, field_unit))
 
-
-    # this statement puts a flag in whatever the "Main" scope is
-    # which APC functions can test to see if @APCdef has been run
-    Core.eval(Main, :(APCflag::Bool = true))
-
-
+    
     
     $(tuple_statement)
 
   end
 
+end
+
+function generate_constructor(release::AtomicAndPhysicalConstants.CODATA)
+  return_species = (release) -> begin
+    return quote
+      return AtomicAndPhysicalConstants.Species(speciesname, $release)
+    end 
+  end
+  
+  return quote
+    function $(esc(:Species))(speciesname::String)::$(AtomicAndPhysicalConstants.Species)
+      $(return_species(release))
+    end
+  end
 end
 
 
@@ -395,7 +406,7 @@ function generate_particle_property_functions(unittype, mass_unit, charge_unit, 
     end
   end
   return quote
-    function $(esc(:massof))(species::Species)::$(typename)
+    function $(esc(:massof))(species::AtomicAndPhysicalConstants.Species)::$(typename)
       getfield(species, :kind) != Kind.NULL || error("Can't call massof() on a null Species object.")
       $(return_statement(mass_unit, "mass"))
     end
@@ -404,7 +415,7 @@ function generate_particle_property_functions(unittype, mass_unit, charge_unit, 
       getfield(species, :kind) != Kind.NULL || error("Can't call massof() on a null Species object.")
       $(return_statement(mass_unit, "mass"))
     end
-    function $(esc(:chargeof))(species::Species)::$(typename)
+    function $(esc(:chargeof))(species::AtomicAndPhysicalConstants.Species)::$(typename)
       getfield(species, :kind) != Kind.NULL || error("Can't call chargeof() on a null Species object.")
       $(return_statement(charge_unit, "charge"))
     end
@@ -413,7 +424,7 @@ function generate_particle_property_functions(unittype, mass_unit, charge_unit, 
       getfield(species, :kind) != Kind.NULL || error("Can't call chargeof() on a null Species object.")
       $(return_statement(charge_unit, "charge"))
     end
-    function $(esc(:spinof))(species::Species)::$(typename)
+    function $(esc(:spinof))(species::AtomicAndPhysicalConstants.Species)::$(typename)
       getfield(species, :kind) != Kind.NULL || error("Can't call spinof() on a null Species object.")
       getfield(species, :kind) != Kind.ATOM || error("The spin projection of a whole atom is ambiguous.")
       $(return_statement(spin_unit, "spin"))
@@ -424,7 +435,7 @@ function generate_particle_property_functions(unittype, mass_unit, charge_unit, 
       getfield(species, :kind) != Kind.ATOM || error("The spin projection of a whole atom is ambiguous.")
       $(return_statement(spin_unit, "spin"))
     end
-    function $(esc(:momentof))(species::Species)::$(typename)
+    function $(esc(:momentof))(species::AtomicAndPhysicalConstants.Species)::$(typename)
       getfield(species, :kind) != Kind.NULL || error("Can't call momentof() on a null Species object.")
       $(return_statement(energy_unit/field_unit, "magnetic moment"))
     end
@@ -433,7 +444,7 @@ function generate_particle_property_functions(unittype, mass_unit, charge_unit, 
       getfield(species, :kind) != Kind.NULL || error("Can't call momentof() on a null Species object.")
       $(return_statement(energy_unit/field_unit, "magnetic moment"))
     end
-    function $(esc(:isotopeof))(species::Species)::$(typename)
+    function $(esc(:isotopeof))(species::AtomicAndPhysicalConstants.Species)::$(typename)
       getfield(species, :kind) != Kind.NULL || error("Can't call isotopeof() on a null Species object.")
       getfield(species, :kind) == Kind.ATOM || error("This function only returns atomic isotope numbers.")
       $getfield(species, :iso)
@@ -444,14 +455,14 @@ function generate_particle_property_functions(unittype, mass_unit, charge_unit, 
       getfield(species, :kind) == Kind.ATOM || error("This function only returns atomic isotope numbers.")
       $getfield(species, :iso)
     end
-    function $(esc(:kindof))(species::Species)::$(Enum{Int32})
+    function $(esc(:kindof))(species::AtomicAndPhysicalConstants.Species)::$(Enum{Int32})
       return getfield(species, :kind)
     end
     function $(esc(:kindof))(speciesname::String)::$(Enum{Int32})
       species = Species(speciesname)
       return getfield(species, :kind)
     end
-    function $(esc(:nameof))(species::Species; basename::Bool=false)::String
+    function $(esc(:nameof))(species::AtomicAndPhysicalConstants.Species; basename::Bool=false)::String
       getfield(species, :kind) != Kind.NULL || error("Can't call nameof() on a null Species object")
       bname = getfield(species, :name)
       isostr = ""
@@ -485,7 +496,7 @@ end
 
 """
     massof(
-      species::Species,
+      species::AtomicAndPhysicalConstants.Species,
     )
 
     massof(
@@ -506,7 +517,7 @@ massof
 
 """
     chargeof(
-      species::Species,
+      species::AtomicAndPhysicalConstants.Species,
     )
     chargeof(
       speciesname::String,
@@ -527,7 +538,7 @@ chargeof
 
 """
     spinof(
-      species::Species,
+      species::AtomicAndPhysicalConstants.Species,
     )
     spinof(
       speciesname::String,
@@ -548,7 +559,7 @@ spinof
 
 """
   nameof(
-    species::Species;
+    species::AtomicAndPhysicalConstants.Species;
     basename::Bool = false
   )
 

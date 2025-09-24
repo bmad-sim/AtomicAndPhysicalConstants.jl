@@ -51,12 +51,16 @@ end
 #####################################################################
 
 
-function Species(speciesname::String)
+function Species(speciesname::String, release::AtomicAndPhysicalConstants.CODATA)
   
-  if isdefined(Main, :APCflag)
+  if !isdefined(@__MODULE__, :SUBATOMIC_SPECIES)
+    global SUBATOMIC_SPECIES = subatomic_species(release)
+  end
+
+  if 1==1
     
     # if the name is "Null", return a null Species
-    if speciesname == "Null" || speciesname == "null" || speciesname == ""
+    if speciesname == "Null" || speciesname == "null" || speciesname == "" 
       return Species()
     end
 
