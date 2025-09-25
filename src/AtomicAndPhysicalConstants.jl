@@ -15,7 +15,6 @@ using .NewUnits
 @reexport using Unitful
 
 include("constants_struct.jl")
-include("prerelease.jl")
 include("types.jl")
 include("2002_constants.jl")
 include("2006_constants.jl")
@@ -32,20 +31,13 @@ include("APCdef.jl")
 include("showconst.jl")
 include("docstrings.jl")
 
-# global APCflag::Bool = false
-# export APCflag;
-
-@reexport using .PreRelease
-# @reexport using .CODATA2022
-
 export @APCdef
 export ACCELERATOR, MKS, CGS
 export Species
 export SubatomicSpecies
 export AtomicSpecies
-# export SUBATOMIC_SPECIES
+export SUBATOMIC_SPECIES
 export ATOMIC_SPECIES
-# export useCODATAm
 export NewUnits
 export showconst
 export full_name, atomicnumber, g_spin, gyromagnetic_anomaly, g_nucleon, to_openPMD

@@ -98,7 +98,6 @@ If `tupleflag = false` then it creates the constants as individual variables.
 - `unittype`     -- Sets the return type of the constants and the getter functions. It can be `Float`, `Unitful`, or `DynamicQuantities`. Default to `Float`.
 - `name`         -- Sets the name of the module that contains the constants and getter functions. Default to `APC`.
 - `tupleflag`    -- type: `Bool`, whether to return the constants in a tuple or not. Default to `true`. If set to `false`, it will return the constants as individual variables.
-- `year`         -- chooses which CODATA release year to set constants from. Options are 2002, 2006, 2010, 2014, 2018, and 2022. Default is 2022.
     
 ## Note
 - @APCdef can be called only once in a module.
@@ -127,10 +126,7 @@ macro APCdef(kwargs...)
   unitsystem::NTuple{7,Unitful.FreeUnits} = ACCELERATOR
   name::Symbol = :APC
   tupleflag::Bool = true # whether return the constants in a tuple or not
-  year::Int32 = 2022 # default release year
-
-  # list of available release years: update as more come out
-  years::Vector{Int32} = [2002, 2006, 2010, 2014, 2018, 2022]
+  
 
 
   # initialize wrapper
@@ -156,12 +152,6 @@ macro APCdef(kwargs...)
         @error "tupleflag should be a boolean value"
         return
       end
-    elseif k == :year
-      if kwargdict[:year] ∈ years
-        year = kwargdict[:year]
-      else
-        @error "$(kwargdict[:year]) isn't an available CODATA release: using the 2022 release instead"
-      end
     else
       @error "$k is not a proper keyword argument for @APCdef, the only options are `unittype`, `unitsystem`, `name`, `year`"
       return
@@ -169,25 +159,6 @@ macro APCdef(kwargs...)
   end
 
 
-  # set the release year for the CODATA constants
-  release::CODATA = CODATA2022
-
-  if year == 2002
-    release = CODATA2002
-  elseif year == 2006
-    release = CODATA2006
-  elseif year == 2010
-    release = CODATA2010
-  elseif year == 2014
-    release = CODATA2014
-  elseif year == 2018
-    release = CODATA2018
-  end
-
-  # set the base values for subatomic particles
-  # inside the APC module, so it doesn't pollute
-
-  Core.eval(AtomicAndPhysicalConstants, :(SUBATOMIC_SPECIES = subatomic_species($release)))  
 
   
 
@@ -269,7 +240,7 @@ macro APCdef(kwargs...)
   # convert the constants to the proper unit
   constantsdict::constantdict_type = Dict()
   for sym in constants
-    value = getfield(release, sym) # the value of the constant
+    value = getfield(CODATA2022, sym) # the value of the constant
     constantname = Symbol(uppercase(string(sym)[5:end])) # the name of the field by converting the name to upper case
     if haskey(conversion, dimension(value)) #if the dimension is one of the dimensions in the dictionary
       constantsdict[constantname] = uconvert(conversion[dimension(value)], value) # convert them to proper unit
@@ -336,10 +307,6 @@ macro APCdef(kwargs...)
 
     $(generate_particle_property_functions(unittype, mass_unit, charge_unit, spin_unit, energy_unit, field_unit))
 
-
-    # this statement puts a flag in whatever the "Main" scope is
-    # which APC functions can test to see if @APCdef has been run
-    Core.eval(Main, :(APCflag::Bool = true))
 
 
     

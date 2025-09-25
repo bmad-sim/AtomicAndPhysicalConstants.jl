@@ -57,4 +57,4 @@ function subatomic_species(CODATAYEAR::CODATA)
 end
 
 
-
+SUBATOMIC_SPECIES = subatomic_species(CODATA2022)
