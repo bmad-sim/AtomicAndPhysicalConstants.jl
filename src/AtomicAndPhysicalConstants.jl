@@ -44,7 +44,7 @@ export Species
 export SubatomicSpecies
 export AtomicSpecies
 # export SUBATOMIC_SPECIES
-export ATOMIC_SPECIES
+# export ATOMIC_SPECIES
 # export useCODATAm
 export NewUnits
 export showconst

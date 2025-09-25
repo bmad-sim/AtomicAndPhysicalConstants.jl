@@ -29,7 +29,7 @@ For atomic particles, will currently return 0. Will be updated in a future patch
 """
 g_spin
 
-function g_spin(species::Species; signed::Bool=false)
+function g_spin(species::Species, release::CODATA; signed::Bool=false)
 
   vtypes = [Kind.LEPTON, Kind.HADRON]
   known = ["deuteron", "electron", "helion", "muon", "neutron", "proton", "triton"]
@@ -67,7 +67,7 @@ Compute and deliver the gyromagnetic anomaly for a particle
 """
 gyromagnetic_anomaly
 
-function gyromagnetic_anomaly(species::Species; signed::Bool=false)
+function gyromagnetic_anomaly(species::Species, release::CODATA; signed::Bool=false)
 
 
   vtypes = [Kind.LEPTON, Kind.HADRON]
@@ -79,9 +79,9 @@ function gyromagnetic_anomaly(species::Species; signed::Bool=false)
     error("Only subatomic particles have computable gyromagnetic anomalies in this package.")
   else
     if signed == true
-      gs = g_spin(species)
+      gs = g_spin(species, release; signed = true)
     else
-      gs = abs(g_spin(species))
+      gs = g_spin(species, release)
     end
     return (gs - 2) / 2
   end
