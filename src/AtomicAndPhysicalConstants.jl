@@ -40,7 +40,7 @@ include("docstrings.jl")
 
 export @APCdef
 export ACCELERATOR, MKS, CGS
-# export Species
+export Species
 export SubatomicSpecies
 export AtomicSpecies
 # export SUBATOMIC_SPECIES
