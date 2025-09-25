@@ -33,12 +33,15 @@ function g_spin(species::Species; signed::Bool=false)
 
   vtypes = [Kind.LEPTON, Kind.HADRON]
   known = ["deuteron", "electron", "helion", "muon", "neutron", "proton", "triton"]
+
   if getfield(species, :kind) ∉ vtypes
     error("Only massive subatomic particles have available gyromagnetic factors in this package.")
   end
   if lowercase(getfield(species, :name)) ∈ known
     valname = Symbol("__b_gspin_"*getfield(species, :name))
-    return abs(eval(valname))
+
+    return abs(CODATA2022.eval(valname))
+
   else
     m_s = uconvert(u"MeV/c^2", getfield(species, :mass))
     mu_s = uconvert(u"m^2 * C / s", getfield(species, :moment))
@@ -69,7 +72,6 @@ gyromagnetic_anomaly
 
 function gyromagnetic_anomaly(species::Species; signed::Bool=false)
 
-
   vtypes = [Kind.LEPTON, Kind.HADRON]
   if getfield(species, :name) == "electron"
     return CODATA2022.__b_gyro_anom_electron
@@ -79,13 +81,12 @@ function gyromagnetic_anomaly(species::Species; signed::Bool=false)
     error("Only subatomic particles have computable gyromagnetic anomalies in this package.")
   else
     if signed == true
-      gs = g_spin(species)
+      gs = g_spin(species; signed = true)
     else
-      gs = abs(g_spin(species))
+      gs = g_spin(species)
     end
     return (gs - 2) / 2
   end
-
 end;
 
 
