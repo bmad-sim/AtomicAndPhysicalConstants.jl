@@ -39,7 +39,9 @@ function g_spin(species::Species; signed::Bool=false)
   end
   if lowercase(getfield(species, :name)) ∈ known
     valname = Symbol("__b_gspin_"*getfield(species, :name))
+
     return abs(CODATA2022.eval(valname))
+
   else
     m_s = uconvert(u"MeV/c^2", getfield(species, :mass))
     mu_s = uconvert(u"m^2 * C / s", getfield(species, :moment))
@@ -52,6 +54,7 @@ function g_spin(species::Species; signed::Bool=false)
     gs = uconvert(u"h_bar", 2 * m_s * mu_s / (spin_s * charge_s)).val
     return gs
   end
+
 end;
 
 
@@ -59,31 +62,31 @@ end;
 """
     gyromagnetic_anomaly(species::Species)
 
-Compute and deliver the gyromagnetic anomaly for a lepton given its g factor
+Compute and deliver the gyromagnetic anomaly for a particle
 
 # Arguments:
-1. `gs::Float64': the g_factor for the particle
+1. `species::Species' : the species you want the gyromagnetic anomaly of
+2. `signed::Bool`     : keyword argument that determines whether you want a magnitude or a 1d vector
 """
 gyromagnetic_anomaly
 
 function gyromagnetic_anomaly(species::Species; signed::Bool=false)
 
-    vtypes = [Kind.LEPTON, Kind.HADRON]
-    if getfield(species, :name) == "electron"
-      return CODATA2022.__b_gyro_anom_electron
-    elseif getfield(species, :name) == "muon"
-      return CODATA2022.__b_gyro_anom_muon
-    elseif getfield(species, :kind) ∉ vtypes
-      error("Only subatomic particles have computable gyromagnetic anomalies in this package.")
+  vtypes = [Kind.LEPTON, Kind.HADRON]
+  if getfield(species, :name) == "electron"
+    return CODATA2022.__b_gyro_anom_electron
+  elseif getfield(species, :name) == "muon"
+    return CODATA2022.__b_gyro_anom_muon
+  elseif getfield(species, :kind) ∉ vtypes
+    error("Only subatomic particles have computable gyromagnetic anomalies in this package.")
+  else
+    if signed == true
+      gs = g_spin(species; signed = true)
     else
-      if signed == true
-        gs = g_spin(species; signed = true)
-      else
-        gs = g_spin(species)
-      end
-      return (gs - 2) / 2
+      gs = g_spin(species)
     end
-
+    return (gs - 2) / 2
+  end
 end;
 
 
@@ -92,6 +95,8 @@ end;
     g_nucleon(gs::Float64, Z::Int, mass::Float64)
 
 Compute and deliver the gyromagnetic anomaly for a baryon given its g factor
+
+  this function is not done yet and unstable
 
 
 """

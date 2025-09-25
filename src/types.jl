@@ -19,8 +19,11 @@ struct Species
   kind::Kind.T
 end
 
-Species() = Species("Null", 0.0u"e", 0.0u"MeV/c^2", 0.0u"h_bar", 0.0u"J/T", 0, Kind.NULL)
-
+function Species() 
+  if isdefined(Main, :APCflag)
+  return Species("Null", 0.0u"e", 0.0u"MeV/c^2", 0.0u"h_bar", 0.0u"J/T", 0, Kind.NULL)
+  end
+end
 
 
 
