@@ -1,26 +1,11 @@
 name = "AtomicAndPhysicalConstants"
 uuid = "5c0d271c-5419-4163-b387-496237733d8b"
 authors = ["David Sagan <david.sagan@cornell.edu> and contributors"]
-version = "0.7.2"
+version = "0.8.0"
 
 [deps]
-Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
-DynamicQuantities = "06fc5a27-2a28-4c7c-a15d-362465fb6821"
-EnumX = "4e289a0a-7415-4d19-859d-a7e5c4648b56"
-HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
-JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
-Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
-Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
-Dates = "1"
-DynamicQuantities = "1.1"
-EnumX = "1"
-HTTP = "1"
-JSON = "0.21"
-Reexport = "1"
-Unitful = "1"
 julia = "1.9"
 
 [extras]
