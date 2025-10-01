@@ -1,5 +1,5 @@
 using Test
-using APClite
+using AtomicAndPhysicalConstants
 
 @testset "APClite Tests" begin
     @testset "Constants" begin
@@ -48,7 +48,8 @@ using APClite
         
         # Hydrogen ion
         h_plus = Species("H+")
-        @test nameof(h_plus, basename=true) == "H+"
+        @test nameof(h_plus, basename=true) == "H"
+        @test nameof(h_plus, basename=false) == "H+1"
         @test h_plus.charge == 1.0
         
         # Carbon
@@ -58,7 +59,8 @@ using APClite
         
         # Carbon isotope
         c12 = Species("C12")
-        @test nameof(c12, basename=true) == "C12"
+        @test nameof(c12, basename=true) == "C"
+        @test nameof(c12, basename=false) == "#12C"
         @test c12.iso == 12
     end
     

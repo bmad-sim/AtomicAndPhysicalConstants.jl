@@ -12,7 +12,7 @@ Key features:
 - Fast compile times and minimal dependencies
 """
 
-module APClite
+module AtomicAndPhysicalConstants
 
 # Include all modules
 include("types.jl")
