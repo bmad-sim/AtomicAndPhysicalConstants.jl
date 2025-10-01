@@ -1,5 +1,5 @@
 using Test
-using APClite
+using AtomicAndPhysicalConstants
 
 @testset "APClite Tests" begin
     @testset "Constants" begin

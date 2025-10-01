@@ -4,7 +4,7 @@ Basic usage examples for APClite.jl
 This script demonstrates the main features of APClite.
 """
 
-using APClite
+using AtomicAndPhysicalConstants
 
 println("=== APClite.jl Basic Usage Examples ===\n")
 
