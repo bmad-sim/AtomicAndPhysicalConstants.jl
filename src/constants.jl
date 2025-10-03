@@ -11,29 +11,29 @@ const RELEASE_YEAR = 2022
 #  Mass constants
 #####################################################################
 
-# Electron mass [MeV/c²]
-const M_ELECTRON = 0.51099895069
+# Electron mass [eV/c²]
+const M_ELECTRON = 0.51099895069e6
 
-# Proton mass [MeV/c²]
-const M_PROTON = 938.2720894300001
+# Proton mass [eV/c²]
+const M_PROTON = 938.2720894300001e6
 
-# Neutron mass [MeV/c²]
-const M_NEUTRON = 939.5654219399999
+# Neutron mass [eV/c²]
+const M_NEUTRON = 939.5654219399999e6
 
-# Muon mass [MeV/c²]
-const M_MUON = 105.6583755
+# Muon mass [eV/c²]
+const M_MUON = 105.6583755e6
 
-# Pion⁰ mass [MeV/c²]
-const M_PION_0 = 134.9768277676847
+# Pion⁰ mass [eV/c²]
+const M_PION_0 = 134.9768277676847e6
 
-# Charged pion mass [MeV/c²]
-const M_PION_CHARGED = 139.57039098368132
+# Charged pion mass [eV/c²]
+const M_PION_CHARGED = 139.57039098368132e6
 
-# Deuteron mass [MeV/c²]
-const M_DEUTERON = 1875.612945
+# Deuteron mass [eV/c²]
+const M_DEUTERON = 1875.612945e6
 
-# Helion mass (³He nucleus) [MeV/c²]
-const M_HELION = 2808.39161112
+# Helion mass (³He nucleus) [eV/c²]
+const M_HELION = 2808.39161112e6
 
 
 #####################################################################

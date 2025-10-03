@@ -44,6 +44,6 @@ export G_ELECTRON, G_PROTON, G_NEUTRON, G_MUON, G_DEUTERON, G_HELION, G_TRITON
 export KG_PER_AMU, EV_PER_AMU, J_PER_EV
 
 # Functions
-export g_spin, gyromagnetic_anomaly
+export massof, chargeof, atomicnumberof, kindof, g_spin, gyromagnetic_anomaly
 
 end # module
