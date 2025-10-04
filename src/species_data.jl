@@ -7,6 +7,7 @@ This module contains dictionaries with particle data using the latest CODATA 202
 # Dictionary mapping particle names to their g-factors
 const G_FACTOR_MAP = Dict{String,Float64}(
     "electron"  => -G_ELECTRON,
+    "positron"  => -G_ELECTRON,
     "proton"    => G_PROTON,
     "neutron"   => G_NEUTRON,
     "muon"      => -G_MUON,
