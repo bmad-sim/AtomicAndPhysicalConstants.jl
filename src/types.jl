@@ -83,7 +83,7 @@ function Base.show(io::IO, species::Species)
     if species.kind == NULL
         print(io, "Species(Null)")
     else
-        print(io, "Species($(nameof(species))), charge=$(species.charge)e, mass=$(species.mass) eV/c², spin=$(species.spin)ħ)")
+        print(io, "Species($(nameof(species)), charge=$(species.charge)e, mass=$(species.mass) eV/c², spin=$(species.spin)ħ)")
     end
 end
 
