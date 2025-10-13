@@ -17,7 +17,7 @@ const G_FACTOR_MAP = Dict{String,Float64}(
 )
 
 # Subatomic particles dictionary
-# Masses are in MeV/c²
+# Masses are in eV/c²
 # Charges in units of e
 # Spins in units of ħ
 # Magnetic moments in J/T

@@ -18,7 +18,7 @@ A struct representing a particle or atom with its physical properties.
 # Fields
 - `name::String`: Name of the particle (e.g., "electron", "proton", "H")
 - `charge::Float64`: Charge in units of elementary charge e
-- `mass::Float64`: Mass in MeV/c²
+- `mass::Float64`: Mass in eV/c²
 - `spin::Float64`: Spin in units of ħ
 - `moment::Float64`: Magnetic moment in J/T
 - `g_factor::Float64`: g-factor for the particle
@@ -83,7 +83,7 @@ function Base.show(io::IO, species::Species)
     if species.kind == NULL
         print(io, "Species(Null)")
     else
-        print(io, "Species($(nameof(species))), charge=$(species.charge)e, mass=$(species.mass) eV/c², spin=$(species.spin)ħ)")
+        print(io, "Species($(nameof(species)), charge=$(species.charge)e, mass=$(species.mass) eV/c², spin=$(species.spin)ħ)")
     end
 end
 
@@ -98,7 +98,7 @@ function Base.show(io::IO, ::MIME"text/plain", species::Species)
     else
         println(io, "Species: $(nameof(species))")
         println(io, "  Charge: $(species.charge) e")
-        println(io, "  Mass: $(species.mass) MeV/c²")
+        println(io, "  Mass: $(species.mass) eV/c²")
         println(io, "  Spin: $(species.spin) ħ")
         println(io, "  Magnetic moment: $(species.moment) J/T")
         println(io, "  g-factor: $(species.g_factor)")
