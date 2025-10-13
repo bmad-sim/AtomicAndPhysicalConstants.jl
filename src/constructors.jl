@@ -230,13 +230,13 @@ function parse_atomic_species(name::String)
     # Calculate mass
     mass = begin
         if anti_atom == false
-            # Mass of the positively charged isotope in MeV/c²
-            nmass = atom_data.mass[iso] * EV_PER_AMU / 1e6
+            # Mass of the positively charged isotope in eV/c²
+            nmass = atom_data.mass[iso] * EV_PER_AMU
             # Remove the electrons
             nmass - M_ELECTRON * charge
         else
-            # Mass of the positively charged isotope in MeV/c²
-            nmass = atom_data.mass[iso] * EV_PER_AMU / 1e6
+            # Mass of the positively charged isotope in eV/c²
+            nmass = atom_data.mass[iso] * EV_PER_AMU
             # Remove the positrons
             nmass + M_ELECTRON * charge
         end

@@ -35,7 +35,7 @@ using APClite
 # Access physical constants directly
 C_LIGHT          # 2.99792458e8 [m/s]
 H_PLANCK         # 6.62607015e-34 [J⋅s]
-M_ELECTRON       # 0.51099895069 [MeV/c²]
+M_ELECTRON       # 510998.95069 [eV/c²]
 FINE_STRUCTURE   # 0.0072973525643
 
 # Create species objects
@@ -46,7 +46,7 @@ h_ion = Species("H+")
 anti_p = Species("anti-proton")
 
 # Access species properties (direct fields)
-e.mass           # 0.51099895069 [MeV/c²]
+e.mass           # 510998.95069 [eV/c²]
 p.charge         # 1.0 [e]
 e.spin           # 0.5 [ħ]
 e.g_factor       # g-factor (dimensionless)
@@ -85,7 +85,7 @@ All constants are available as module-level constants, grouped by type:
   - `EPS_0`: Permittivity of free space [F/m]
   - `MU_0`: Permeability of free space [N/A²]
 
-- Particle masses [MeV/c²]
+- Particle masses [eV/c²]
   - `M_ELECTRON`: Electron
   - `M_PROTON`: Proton
   - `M_NEUTRON`: Neutron
@@ -129,7 +129,7 @@ All constants are available as module-level constants, grouped by type:
 ### Species
 - `Species(name::String)`: Create a species from name
 - Access fields directly:
-  - `species.mass` (MeV/c²)
+  - `species.mass` (eV/c²)
   - `species.charge` (units of e)
   - `species.spin` (ħ)
   - `species.moment` (J/T)
@@ -145,7 +145,7 @@ using APClite
 
 # Physical constants
 println("Speed of light: ", C_LIGHT, " m/s")
-println("Electron mass: ", M_ELECTRON, " MeV/c²")
+println("Electron mass: ", M_ELECTRON, " eV/c²")
 
 # Create particles
 electron = Species("electron")
@@ -155,8 +155,8 @@ carbon12 = Species("C12")
 
 # Access properties
 println("Electron charge: ", electron.charge, " e")
-println("Proton mass: ", proton.mass, " MeV/c²")
-println("Hydrogen mass: ", hydrogen.mass, " MeV/c²")
+println("Proton mass: ", proton.mass, " eV/c²")
+println("Hydrogen mass: ", hydrogen.mass, " eV/c²")
 
 # Display species
 println(electron)
@@ -169,14 +169,14 @@ println(proton)
 using APClite
 
 # 1) Direct construction (no registry entry needed)
-#    name, charge [e], mass [MeV/c^2], spin [ħ], moment [J/T], g_factor, iso, kind
-custom = Species("my-hadron", 1.0, 2500.0, 0.5, 0.0, 2.0, 0.0, HADRON)
+#    name, charge [e], mass [eV/c^2], spin [ħ], moment [J/T], g_factor, iso, kind
+custom = Species("my-hadron", 1.0, 2.5e9, 0.5, 0.0, 2.0, 0.0, HADRON)
 println(custom)
 
 # 2) Register a custom subatomic species for name-based construction
 APClite.SUBATOMIC_SPECIES["X-"] = (
     charge=-1.0,
-    mass=1000.0,
+    mass=1e9.0,
     spin=0.5,
     moment=0.0,
     kind=HADRON,
