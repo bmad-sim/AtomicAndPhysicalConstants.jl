@@ -9,6 +9,7 @@ A lightweight version of AtomicAndPhysicalConstants.jl that provides atomic and 
 - **Fast compilation**: Simple static constants for optimal performance
 - **Simple API**: Easy-to-use Species struct with direct field access
 - **Comprehensive coverage**: Subatomic particles, atoms, ions, and isotopes
+- **Robust parsing**: Efficient atomic name parser with comprehensive error handling
 
 ## Comparison with AtomicAndPhysicalConstants.jl
 
@@ -64,9 +65,28 @@ e.g_factor       # g-factor (dimensionless)
 - `"photon"`
 
 ### Atomic Species
-- Supported elements: `"H"`, `"He"`, `"Li"`, `"Be"`, `"B"`, `"C"`, `"N"`, `"O"`, `"F"`, `"Ne"`, `"Na"`, `"Mg"`, `"Al"`, `"Si"`, `"P"`, `"S"`, `"Cl"`, `"Ar"`, `"K"`, `"Ca"`, `"Fe"`, `"Cu"`, `"Zn"`, `"U"`
-- Ions: `"H+"`, `"He++"`, `"C+"`, `"O-"`, etc.
-- Isotopes: `"H1"`, `"C12"`, `"U235"`, etc.
+- Supported elements from `"H"` to `"Og"`
+
+#### Mass Number Format (optional)
+- Mass number before the atomic symbol
+- Optional "#" symbol at the beginning
+- If not specified, uses the average of the mass in naturally occurring samples.
+
+```julia
+julia> Species("12C")
+julia> Species("#12C")
+```
+#### Charge Format (optional)
+- Charge number after the atomic symbol
+  - `"+"` - Single positive charge (e.g., `"C+"`)
+  - `"++"` - Double positive charge (e.g., `"C++"`)
+  - `"+n"` - n positive charges (e.g., `"C+3"`)
+  - `"n+"` - n positive charges (e.g., `"C3+"`)
+  - `"-"` - Single negative charge (e.g., `"C-"`)
+  - `"--"` - Double negative charge (e.g., `"C--"`)
+  - `"-n"` - n negative charges (e.g., `"C-2"`)
+  - `"n-"` - n negative charges (e.g., `"C2-"`)
+
 
 ## API Reference
 
@@ -151,7 +171,7 @@ println("Electron mass: ", M_ELECTRON, " eV/c²")
 electron = Species("electron")
 proton = Species("proton")
 hydrogen = Species("H")
-carbon12 = Species("C12")
+carbon12 = Species("12C")
 
 # Access properties
 println("Electron charge: ", electron.charge, " e")
@@ -189,6 +209,6 @@ APClite.ATOMIC_SPECIES["Xe"] = (
     Z=54,
     isotopes=Dict(129 => 120000.0, 132 => 122000.0, -1 => 121000.0),
 )
-xe129pp = Species("Xe129++")
+xe129pp = Species("129Xe++")
 println(xe129pp)
 ```

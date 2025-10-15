@@ -82,87 +82,93 @@ end
 
 Parse a bare atomic name into `(symbol, iso, charge)` without handling any anti- prefix.
 
-Supported examples: "H", "H+", "C12", "U235++", "He-", "O2-".
+Supported examples: "H", "H+", "12C", "235U++", "He-", "2O-".
 """
 function parse_atomic_name(name::String)
-    # Regex patterns (matching AtomicAndPhysicalConstants)
+    # Regex patterns
     rgas = r"[A-Z][a-z]|[A-Z]" # atomic symbol
-    rgm = r"#[0-9][0-9][0-9]|#[0-9][0-9]|#[0-9]" # mass number with # prefix
-    rgm_no_hash = r"[0-9][0-9][0-9]|[0-9][0-9]|[0-9]" # mass number without #
-    rgcp = r"\+[0-9][0-9][0-9]|\+[0-9][0-9]|\+[0-9]|\+\+|\+" # positive charge
-    rgcm = r"\-[0-9][0-9][0-9]|\-[0-9][0-9]|\-[0-9]|\-\-|\-" # negative charge
 
-    remaining = name
     charge = 0
     iso = -1
 
-    # Extract atomic symbol
-    AS = match(rgas, remaining)
-    if AS === nothing
+    # Find the atomic symbol first
+    symbol_match = match(rgas, name)
+    if symbol_match === nothing
         error("The specified particle name does not exist in this library.")
     end
-    symbol = AS.match
-    remaining = replace(remaining, symbol => "")
-
-    # Parse isotope number
-    isom = match(rgm, remaining)
-    if isom !== nothing
-        isostr = strip(isom.match, '#')
-        iso_val = tryparse(Int, isostr)
+    
+    symbol = symbol_match.match
+    symbol_start = symbol_match.offset
+    symbol_end = symbol_start + length(symbol) - 1
+    
+    # Parse what's on the left (isotope number)
+    left_part = name[1:symbol_start-1]
+    if left_part != ""
+        # Check if it starts with # and remove it
+        if startswith(left_part, "#")
+            left_part = left_part[2:end]
+        end
+        
+        # Try to parse as integer
+        iso_val = tryparse(Int, left_part)
         if iso_val === nothing
-            error("Invalid isotope number format")
+            error("Invalid isotope number format: \"$left_part\"")
         end
         iso = iso_val
-        remaining = replace(remaining, isom.match => "")
-    else
-        isom = match(rgm_no_hash, remaining)
-        if isom !== nothing
-            isostr = isom.match
-            iso_val = tryparse(Int, isostr)
-            if iso_val === nothing
-                error("Invalid isotope number format")
-            end
-            iso = iso_val
-            remaining = replace(remaining, isom.match => "")
-        end
     end
-
-    # Parse charge
-    if count('+', remaining) != 0 && count('-', remaining) != 0
-        error("You made a typo in \"$remaining\". You have both + and - in the name.")
-    elseif occursin(rgcp, remaining)
-        chstr = match(rgcp, remaining).match
-        if chstr == "+"
-            charge = 1
-        elseif chstr == "++"
-            charge = 2
-        else
-            chval = tryparse(Int, chstr)
-            if chval === nothing
-                error("Invalid charge format")
+    
+    # Parse what's on the right (charge)
+    right_part = name[symbol_end+1:end]
+    if right_part != ""
+        if count('+', right_part) != 0 && count('-', right_part) != 0
+            error("You made a typo in \"$right_part\". You have both + and - in the name.")
+        elseif startswith(right_part, "+")
+            if right_part == "+"
+                charge = 1
+            elseif right_part == "++"
+                charge = 2
+            else
+                # Try to parse numeric charge like "+n"
+                charge_str = right_part[2:end]
+                charge_val = tryparse(Int, charge_str)
+                if charge_val === nothing
+                    error("Invalid charge format: \"$right_part\"")
+                end
+                charge = charge_val
             end
-            charge = chval
-        end
-        remaining = replace(remaining, chstr => "")
-    elseif occursin(rgcm, remaining)
-        chstr = match(rgcm, remaining).match
-        if chstr == "-"
-            charge = -1
-        elseif chstr == "--"
-            charge = -2
-        else
-            chval = tryparse(Int, chstr)
-            if chval === nothing
-                error("Invalid charge format")
+        elseif startswith(right_part, "-")
+            if right_part == "-"
+                charge = -1
+            elseif right_part == "--"
+                charge = -2
+            else
+                # Try to parse numeric charge like "-n"
+                charge_str = right_part[2:end]
+                charge_val = tryparse(Int, charge_str)
+                if charge_val === nothing
+                    error("Invalid charge format: \"$right_part\"")
+                end
+                charge = -charge_val
             end
-            charge = chval
+        elseif endswith(right_part, "+")
+            # Handle "n+" format
+            charge_str = right_part[1:end-1]
+            charge_val = tryparse(Int, charge_str)
+            if charge_val === nothing
+                error("Invalid charge format: \"$right_part\"")
+            end
+            charge = charge_val
+        elseif endswith(right_part, "-")
+            # Handle "n-" format
+            charge_str = right_part[1:end-1]
+            charge_val = tryparse(Int, charge_str)
+            if charge_val === nothing
+                error("Invalid charge format: \"$right_part\"")
+            end
+            charge = -charge_val
+        else
+            error("Invalid characters after atomic symbol: \"$right_part\"")
         end
-        remaining = replace(remaining, chstr => "")
-    end
-
-    # Check for remaining characters
-    if remaining != ""
-        error("You have entered too many characters: please try again.")
     end
 
     return (symbol, iso, charge)
