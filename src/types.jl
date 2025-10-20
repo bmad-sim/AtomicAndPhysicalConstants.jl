@@ -60,7 +60,7 @@ end;
 struct AtomicSpecies
   Z::Int64  # atomic number
   species_name::String  # periodic table element symbol
-  mass::Dict{Int64,Float64}  # a dict to store the masses, keyed by isotope
+  mass::Dict{Int64,Float64}  # a dict to store the masses, keyed by isotope all masses in amu
   #=
   keyvalue -1 => average mass of common isotopes [amu],
   keyvalue n ∈ {0} ∪ N is the mass number of the isotope
