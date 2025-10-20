@@ -14,24 +14,24 @@ Base.@kwdef struct CODATA
 # constants with dimension [mass]
 #####################################################################
 
-__b_m_electron#::typeof(1.0*u"MeV/c^2")
+__b_m_electron::Float64
 # Electron Mass [MeV]/c^2
-__b_m_proton#::typeof(1.0*u"MeV/c^2")
+__b_m_proton::Float64
 # Proton Mass [MeV]/c^2
-__b_m_neutron#::typeof(1.0*u"MeV/c^2")
+__b_m_neutron::Float64
 # Neutron Mass [MeV]/c^2
-__b_m_muon#::typeof(1.0*u"MeV/c^2")
+__b_m_muon::Float64
 # Muon Mass [MeV]/c^2
-__b_m_helion #::typeof(1.0*u"MeV/c^2")
+__b_m_helion::Float64
 # Helion Mass He3 nucleus [MeV]/c^2
-__b_m_deuteron#::typeof(1.0*u"MeV/c^2")
+__b_m_deuteron::Float64
 # Deuteron Mass [MeV]/c^2
 
 # constants mysteriously missing from the release
 # picked up from PDG
-__b_m_pion_0#::typeof(1.0*u"MeV/c^2")
+__b_m_pion_0::Float64
 # uncharged pion mass [eV]/c^2
-__b_m_pion_charged#::typeof(1.0*u"MeV/c^2")
+__b_m_pion_charged::Float64
 # charged pion mass [eV]/c^2
 
 
@@ -39,19 +39,19 @@ __b_m_pion_charged#::typeof(1.0*u"MeV/c^2")
 # constants with dimension [magnetic moment]
 #####################################################################
 
-__b_mu_deuteron#::typeof(1.0*u"J/T")
+__b_mu_deuteron::Float64
 # deuteron magnetic moment in [J/T]
-__b_mu_electron#::typeof(1.0*u"J/T")
+__b_mu_electron::Float64
 # electron magnetic moment in [J/T]
-__b_mu_helion#::typeof(1.0*u"J/T")
+__b_mu_helion::Float64
 # helion magnetic moment in [J/T]
-__b_mu_muon#::typeof(1.0*u"J/T")
+__b_mu_muon::Float64
 # muon magnetic moment in [J/T]
-__b_mu_neutron#::typeof(1.0*u"J/T")
+__b_mu_neutron::Float64
 # neutron magnetic moment in [J/T]
-__b_mu_proton#::typeof(1.0*u"J/T")
+__b_mu_proton::Float64
 # proton magnetic moment in [J/T]
-__b_mu_triton#::typeof(1.0*u"J/T")
+__b_mu_triton::Float64
 # triton magnetic moment in [J/T]
 
 
@@ -89,13 +89,13 @@ __b_gspin_triton::Float64
 # unit conversion constants
 #####################################################################
 
-__b_kg_per_amu#::typeof(1.0*u"kg/amu")
+__b_kg_per_amu::Float64
 # kg per standard atomic mass unit (dalton)
-__b_eV_per_amu#::typeof(1.0*u"(eV/c^2)/amu")
-# eV per standard atomic mass unit (dalton)
-__b_J_per_eV#::typeof(1.0*u"J/eV")
+__b_eV_per_amu::Float64
+# eV/c^2 per standard atomic mass unit (dalton)
+__b_J_per_eV::Float64
 # Joules per eV
-__b_e_coulomb#::typeof(1.0*u"C/e")
+__b_e_coulomb::Float64
 # elementary charge in coulombs per elementary charge
 
 
@@ -103,25 +103,25 @@ __b_e_coulomb#::typeof(1.0*u"C/e")
 # constants with miscelaneous dimension
 #####################################################################
 
-__b_e_charge#::typeof(1.0*u"C")
+__b_e_charge::Float64
 # elementary charge [C]
-__b_r_e#::typeof(1.0*u"m")
+__b_r_e::Float64
 # classical electron radius [m]
-__b_r_p#::typeof(1.0*u"m/")
+__b_r_p::Float64
 # classical proton radius [m]
-__b_c_light#::typeof(u"m/s")
+__b_c_light::Float64
 # speed of light [m/s]
-__b_h_planck#::typeof(1.0*u"J*s")
+__b_h_planck::Float64
 # Planck's constant [J*s]
-__b_h_bar_planck#::typeof(1.0*u"J*s")
+__b_h_bar_planck::Float64
 # h_planck/twopi [J*s]
-__b_classical_radius_factor#::typeof(1.0*u"m*MeV/c^2")
+__b_classical_radius_factor::Float64
 # e^2 / (4 pi eps_0) = classical_radius*mass*c^2.
 # Is same for all particles of charge +/- 1.
 
-__b_eps_0_vac#::typeof(1.0*u"F/m") 
+__b_eps_0_vac::Float64
 # Permittivity of free space in [F/m]
-__b_mu_0_vac#::typeof(1.0*u"N/A^2")
+__b_mu_0_vac::Float64
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 __b_RELEASE_YEAR::Int32

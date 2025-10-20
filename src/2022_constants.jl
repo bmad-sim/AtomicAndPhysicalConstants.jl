@@ -11,25 +11,25 @@ CODATA2022 = CODATA(
 #####################################################################
 
 
-__b_m_electron = 0.51099895069 * u"MeV/c^2",
+__b_m_electron = 0.51099895069,
 # Electron Mass [MeV]/c^2
-__b_m_proton = 9.382720894300001e2 * u"MeV/c^2",
+__b_m_proton = 9.382720894300001e2,
 # Proton Mass [MeV]/c^2
-__b_m_neutron = 9.395654219399999e2 * u"MeV/c^2",
+__b_m_neutron = 9.395654219399999e2,
 # Neutron Mass [MeV]/c^2
-__b_m_muon = 1.056583755e2 * u"MeV/c^2",
+__b_m_muon = 1.056583755e2,
 # Muon Mass [MeV]/c^2
-__b_m_helion = 2.80839161112e3 * u"MeV/c^2",
+__b_m_helion = 2.80839161112e3,
 # Helion Mass He3 nucleus [MeV]/c^2
-__b_m_deuteron = 1.875612945e3 * u"MeV/c^2",
+__b_m_deuteron = 1.875612945e3,
 # Deuteron Mass [MeV]/c^2
 
 
 # constants mysteriously missing from the release
 # picked up from PDG
-__b_m_pion_0 = 1.349768277676847e2 * u"MeV/c^2",
+__b_m_pion_0 = 1.349768277676847e2,
 # uncharged pion mass [eV]/c^2
-__b_m_pion_charged = 1.3957039098368132e2 * u"MeV/c^2",
+__b_m_pion_charged = 1.3957039098368132e2,
 # charged pion mass [eV]/c^2
 
 
@@ -44,19 +44,19 @@ __b_m_pion_charged = 1.3957039098368132e2 * u"MeV/c^2",
 #####################################################################
 
 
-__b_mu_deuteron = 4.330735087e-27 * u"J/T",
+__b_mu_deuteron = 4.330735087e-27,
 # deuteron magnetic moment in [J/T]
-__b_mu_electron = -9.2847646917e-24 * u"J/T",
+__b_mu_electron = -9.2847646917e-24,
 # electron magnetic moment in [J/T]
-__b_mu_helion = -1.07461755198e-26 * u"J/T",
+__b_mu_helion = -1.07461755198e-26,
 # helion magnetic moment in [J/T],
-__b_mu_muon = -4.4904483e-26 * u"J/T",
+__b_mu_muon = -4.4904483e-26,
 # muon magnetic moment in [J/T]
-__b_mu_neutron = -9.6623653e-27 * u"J/T",
+__b_mu_neutron = -9.6623653e-27,
 # neutron magnetic moment in [J/T]
-__b_mu_proton = 1.41060679545e-26 * u"J/T",
+__b_mu_proton = 1.41060679545e-26,
 # proton magnetic moment in [J/T]
-__b_mu_triton = 1.5046095178e-26 * u"J/T",
+__b_mu_triton = 1.5046095178e-26,
 # triton magnetic moment in [J/T]
 
 
@@ -100,13 +100,13 @@ __b_gspin_triton = 5.957924930,
 # unit conversion constants
 #####################################################################
 
-__b_kg_per_amu = 1.66053906892e-27 * u"kg/amu",
+__b_kg_per_amu = 1.66053906892e-27,
 # kg per standard atomic mass unit (dalton)
-__b_eV_per_amu = 9.3149410372e8 * u"(eV/c^2)/amu",
-# eV per standard atomic mass unit (dalton)
-__b_J_per_eV = 1.602176634e-19 * u"J/eV",
+__b_eV_per_amu = 9.3149410372e8,
+# eV/c^2 per standard atomic mass unit (dalton)
+__b_J_per_eV = 1.602176634e-19,
 # Joules per eV
-__b_e_coulomb = 1.602176634e-19 * u"C/e",
+__b_e_coulomb = 1.602176634e-19,
 # elementary charge in coulombs per elementary charge
 
 
@@ -114,25 +114,25 @@ __b_e_coulomb = 1.602176634e-19 * u"C/e",
 # constants with miscelaneous dimension
 #####################################################################
 
-__b_e_charge = 1.602176634e-19 * u"C",
+__b_e_charge = 1.602176634e-19,
 # elementary charge [C]
-__b_r_e = 2.8179403205e-15 * u"m",
+__b_r_e = 2.8179403205e-15,
 # classical electron radius [m],
-__b_r_p = 2.8179403205e-15 * u"m"  * 0.51099895069 * u"MeV/c^2" / (9.382720894300001e2 * u"MeV/c^2"), #__b_r_e * __b_m_electron / __b_m_proton,
+__b_r_p = 2.8179403205e-15  * 0.51099895069 / (9.382720894300001e2), #__b_r_e * __b_m_electron / __b_m_proton,
 # classical proton radius [m]
-__b_c_light = 2.99792458e8 * u"m/s",
+__b_c_light = 2.99792458e8,
 # speed of light [m/s]
-__b_h_planck = 6.62607015e-34*u"J*s",
+__b_h_planck = 6.62607015e-34,
 # Planck's constant [J*s]
-__b_h_bar_planck = 6.62607015e-34*u"J*s" / 2 / pi,
+__b_h_bar_planck = 6.62607015e-34 / 2 / pi,
 # h_planck/twopi [eV*s]
-__b_classical_radius_factor = 2.8179403205e-15 * u"m" * 0.51099895069 * u"MeV/c^2", # __b_r_e * __b_m_electron,
+__b_classical_radius_factor = 2.8179403205e-15 * 0.51099895069, # __b_r_e * __b_m_electron,
 # e^2 / (4 pi eps_0) = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.
 
-__b_eps_0_vac = 8.8541878188e-12 * u"F/m",
+__b_eps_0_vac = 8.8541878188e-12,
 # Permittivity of free space in [F/m]
-__b_mu_0_vac = 1.25663706127e-6 * u"N/A^2",
+__b_mu_0_vac = 1.25663706127e-6,
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 __b_RELEASE_YEAR = 2022
