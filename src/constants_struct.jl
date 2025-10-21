@@ -85,18 +85,6 @@ __b_gspin_triton::Float64
 # triton g factor
 
 
-#####################################################################
-# unit conversion constants
-#####################################################################
-
-__b_kg_per_amu::Float64
-# kg per standard atomic mass unit (dalton)
-__b_eV_per_amu::Float64
-# eV/c^2 per standard atomic mass unit (dalton)
-__b_J_per_eV::Float64
-# Joules per eV
-__b_e_coulomb::Float64
-# elementary charge in coulombs per elementary charge
 
 
 #####################################################################

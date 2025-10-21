@@ -2,6 +2,25 @@
 # Constants pulled from the NIST table of
 # the 2022 CODATA release
 
+#####################################################################
+# unit conversion constants
+#####################################################################
+
+global const g_per_amu_2022::Float64 = 1.66053906892e-24
+# grams per standard atomic mass unit (dalton)
+
+global const eV_per_amu_2022::Float64 = 9.3149410372e8
+# eV/c^2 per standard atomic mass unit (dalton)
+
+global const J_per_eV_2022::Float64 = 1.602176634e-19
+# Joules per eV
+
+global const e_coulomb_2022::Float64 = 1.602176634e-19
+# elementary charge in coulombs per elementary charge
+
+global const eV_per_g_2022::Float64 = 1.78266192162790e-33
+# eV/c^2 per gram
+
 
 CODATA2022 = CODATA(
 
@@ -96,18 +115,7 @@ __b_gspin_triton = 5.957924930,
 # triton g factor
 
 
-#####################################################################
-# unit conversion constants
-#####################################################################
 
-__b_kg_per_amu = 1.66053906892e-27,
-# kg per standard atomic mass unit (dalton)
-__b_eV_per_amu = 9.3149410372e8,
-# eV/c^2 per standard atomic mass unit (dalton)
-__b_J_per_eV = 1.602176634e-19,
-# Joules per eV
-__b_e_coulomb = 1.602176634e-19,
-# elementary charge in coulombs per elementary charge
 
 
 #####################################################################
