@@ -126,7 +126,7 @@ end
   eV_per_amu::Float64
   J_per_eV::Float64
   e_coulomb::Float64
-  ev_per_g::Float64
+  g_per_eV::Float64
 end
 
 @kwdef struct CODATA_vals

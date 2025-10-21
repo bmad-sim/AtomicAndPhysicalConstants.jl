@@ -21,8 +21,8 @@ J_per_eV = 1.602176634e-19,
 e_coulomb = 1.602176634e-19,
 # elementary charge in coulombs per elementary charge
 
-eV_per_g = 1.78266190711e-33 
-# eV/c^2 per gram
+g_per_eV = 1.78266190711e-33 
+# grams per eV/c^2
 )
 
 
