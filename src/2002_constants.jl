@@ -8,7 +8,7 @@
 #####################################################################
 
 
-global convert_2022::conversion_consts(
+global convert_2002::conversion_consts(
 
 g_per_amu =  1.66053906892e-24,
 # grams per standard atomic mass unit (dalton)
@@ -32,7 +32,7 @@ eV_per_g = 1.7826618115e-33
 #####################################################################
 
 
-CODATA2002 = CODATA(
+CODATA2002 = CODATA_release(
 
 #######################################
 # constants with dimension [mass]
@@ -55,14 +55,15 @@ __b_m_deuteron = 1.875612945e3,
 # constants mysteriously missing from the release
 # picked up from PDG
 __b_m_pion_0 = 1.349768277676847e2,
-# uncharged pion mass [eV]/c^2
+# uncharged pion mass [MeV]/c^2
 __b_m_pion_charged = 1.3957039098368132e2,
-# charged pion mass [eV]/c^2
+# charged pion mass [MeV]/c^2
 
 
 #######################################
 # constants with dimension [magnetic moment]
 #######################################
+
 
 __b_mu_deuteron = 4.330735087e-27,
 # deuteron magnetic moment in [J/T]
