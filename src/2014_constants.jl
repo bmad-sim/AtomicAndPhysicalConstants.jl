@@ -3,11 +3,39 @@
 # the 2014 CODATA release
 
 
-CODATA2014 = CODATA(
+#####################################################################
+# unit conversion constants
+#####################################################################
+
+global convert_2014::conversion_consts(
+
+g_per_amu = 1.66053906892e-23,
+# grams per standard atomic mass unit (dalton)
+
+eV_per_amu = 9.3149410372e8,
+# eV/c^2 per standard atomic mass unit (dalton)
+
+J_per_eV = 1.602176634e-19,
+# Joules per eV
+
+e_coulomb = 1.602176634e-19,
+# elementary charge in coulombs per elementary charge
+
+eV_per_g = 1.78266190711e-33 
+# eV/c^2 per gram
+)
+
 
 #####################################################################
-# constants with dimension [mass]
+# Physical Constants
 #####################################################################
+
+
+CODATA2014 = CODATA(
+
+#######################################
+# constants with dimension [mass]
+#######################################
 
 
 __b_m_electron = 0.51099895069,
@@ -23,7 +51,6 @@ __b_m_helion = 2.80839161112e3,
 __b_m_deuteron = 1.875612945e3,
 # Deuteron Mass [MeV]/c^2
 
-
 # constants mysteriously missing from the release
 # picked up from PDG
 __b_m_pion_0 = 1.349768277676847e2,
@@ -32,9 +59,10 @@ __b_m_pion_charged = 1.3957039098368132e2,
 # charged pion mass [eV]/c^2
 
 
-#####################################################################
+#######################################
 # constants with dimension [magnetic moment]
-#####################################################################
+#######################################
+
 
 __b_mu_deuteron = 4.330735087e-27,
 # deuteron magnetic moment in [J/T]
@@ -52,9 +80,10 @@ __b_mu_triton = 1.5046095178e-26,
 # triton magnetic moment in [J/T]
 
 
-#####################################################################
+#######################################
 # dimensionless constants
-#####################################################################
+#######################################
+
 
 __b_N_avogadro = 6.02214076e23,
 # Avogadro's constant: Number / mole (exact)
@@ -82,23 +111,9 @@ __b_gspin_triton = 5.957924920,
 # triton g factor
 
 
-#####################################################################
-# unit conversion constants
-#####################################################################
-
-__b_kg_per_amu = 1.66053906892e-27,
-# kg per standard atomic mass unit (dalton)
-__b_eV_per_amu = 9.3149410372e8,
-# eV/c^2 per standard atomic mass unit (dalton)
-__b_J_per_eV = 1.602176634e-19,
-# Joules per eV
-__b_e_coulomb = 1.602176634e-19,
-# elementary charge in coulombs per elementary charge
-
-
-#####################################################################
-# constants with miscelaneous dimension
-#####################################################################
+#######################################
+# constants with miscellaneous dimension
+#######################################
 
 
 __b_e_charge = 1.602176634e-19,
@@ -123,7 +138,6 @@ __b_mu_0_vac = 1.25663706127e-6,
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 __b_RELEASE_YEAR = 2014
-
 
 
 )

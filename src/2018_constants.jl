@@ -8,27 +8,36 @@
 # unit conversion constants
 #####################################################################
 
+global convert_2018::conversion_consts(
 
-global const g_per_amu_2018::Float64 = 1.66053906892e-24
+g_per_amu = 1.66053906892e-24,
 # grams per standard atomic mass unit (dalton)
 
-global const eV_per_amu_2018::Float64 = 9.3149410372e8
+eV_per_amu = 9.3149410372e8,
 # eV/c^2 per standard atomic mass unit (dalton)
 
-global const J_per_eV_2018::Float64 = 1.602176634e-19
+J_per_eV = 1.602176634e-19,
 # Joules per eV
 
-global const e_coulomb_2018::Float64 = 1.602176634e-19
+e_coulomb = 1.602176634e-19,
 # elementary charge in coulombs per elementary charge
 
-global const eV_per_g_2022::Float64 = 1.782661921e-33 
+eV_per_g = 1.782661921e-33 
 # eV/c^2 per gram
+)
+
+
+#####################################################################
+# Physical constants
+#####################################################################
+
 
 CODATA2018 = CODATA(
 
-#####################################################################
+#######################################
 # constants with dimension [mass]
-#####################################################################
+#######################################
+
 
 __b_m_electron = 0.51099895069,
 # Electron Mass [MeV]/c^2
@@ -51,9 +60,10 @@ __b_m_pion_charged = 1.3957039098368132e2,
 # charged pion mass [eV]/c^2
 
 
-#####################################################################
+#######################################
 # constants with dimension [magnetic moment]
-#####################################################################
+#######################################
+
 
 __b_mu_deuteron = 4.330735087e-27,
 # deuteron magnetic moment in [J/T]
@@ -71,9 +81,10 @@ __b_mu_triton = 1.5046095178e-26,
 # triton magnetic moment in [J/T]
 
 
-#####################################################################
+#######################################
 # dimensionless constants
-#####################################################################
+#######################################
+
 
 __b_N_avogadro = 6.02214076e23,
 # Avogadro's constant: Number / mole (exact)
@@ -101,10 +112,9 @@ __b_gspin_triton = 5.957924931,
 # triton g factor
 
 
-
-#####################################################################
+#######################################
 # constants with miscellaneous dimension
-#####################################################################
+#######################################
 
 
 __b_e_charge = 1.602176634e-19,

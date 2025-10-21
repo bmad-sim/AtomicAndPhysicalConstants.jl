@@ -18,7 +18,7 @@ struct units
   end
 end
 
-global MeVkg::Float64
+
 
 function define_consts(; year::Int64 = 2022, my_units::units)::CODATA
 

@@ -9,7 +9,7 @@
 # YYYY is the year of the release.
 # """ CODATA
 
-Base.@kwdef struct CODATA
+@kwdef struct CODATA
 #####################################################################
 # constants with dimension [mass]
 #####################################################################
@@ -109,9 +109,17 @@ __b_classical_radius_factor::Float64
 
 __b_eps_0_vac::Float64
 # Permittivity of free space in [F/m]
-__b_mu_0_vac::Float64
+__b_mu_0_vac::Float6
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 __b_RELEASE_YEAR::Int32
 # release year for posterity
+end
+
+@kwdef struct conversion_consts
+  g_per_amu::Float64
+  eV_per_amu::Float64
+  J_per_eV::Float64
+  e_coulomb::Float64
+  ev_per_g::Float64
 end

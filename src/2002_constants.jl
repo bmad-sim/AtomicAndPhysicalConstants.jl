@@ -2,11 +2,42 @@
 # Constants pulled from the NIST table of
 # the 2002 CODATA release
 
-CODATA2002 = CODATA(
 
 #####################################################################
-# constants with dimension [mass]
+# unit conversion constants
 #####################################################################
+
+
+global convert_2022::conversion_consts(
+
+g_per_amu =  1.66053906892e-24,
+# grams per standard atomic mass unit (dalton)
+
+eV_per_amu = 9.3149410372e8,
+# eV/c^2 per standard atomic mass unit (dalton)
+
+J_per_eV = 1.602176634e-19,
+# Joules per eV
+
+e_coulomb = 1.602176634e-19,
+# elementary charge in coulombs per elementary charge
+
+eV_per_g = 1.7826618115e-33
+# eV/c^2 per gram
+)
+
+
+#####################################################################
+# Physical constants
+#####################################################################
+
+
+CODATA2002 = CODATA(
+
+#######################################
+# constants with dimension [mass]
+#######################################
+
 
 __b_m_electron::Float64 = 0.51099895069,
 # Electron Mass [MeV]/c^2
@@ -29,9 +60,9 @@ __b_m_pion_charged = 1.3957039098368132e2,
 # charged pion mass [eV]/c^2
 
 
-#####################################################################
+#######################################
 # constants with dimension [magnetic moment]
-#####################################################################
+#######################################
 
 __b_mu_deuteron = 4.330735087e-27,
 # deuteron magnetic moment in [J/T]
@@ -49,9 +80,10 @@ __b_mu_triton = 1.5046095178e-26,
 # triton magnetic moment in [J/T]
 
 
-#####################################################################
+#######################################
 # dimensionless constants
-#####################################################################
+#######################################
+
 
 __b_N_avogadro = 6.02214076e23,
 # Avogadro's constant: Number / mole (exact)
@@ -75,23 +107,11 @@ __b_gspin_deuteron = NaN,
 __b_gspin_helion = NaN,
 __b_gspin_triton = NaN,
 
-#####################################################################
-# unit conversion constants
-#####################################################################
 
-__b_kg_per_amu = 1.66053906892e-27,
-# kg per standard atomic mass unit (dalton)
-__b_eV_per_amu = 9.3149410372e8,
-# eV/c^2 per standard atomic mass unit (dalton)
-__b_J_per_eV = 1.602176634e-19,
-# Joules per eV
-__b_e_coulomb = 1.602176634e-19,
-# elementary charge in coulombs per elementary charge
+#######################################
+# constants with miscellaneous dimension
+#######################################
 
-
-#####################################################################
-# constants with miscelaneous dimension
-#####################################################################
 
 __b_e_charge = 1.602176634e-19,
 # elementary charge [C]
