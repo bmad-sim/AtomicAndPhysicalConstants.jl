@@ -20,6 +20,16 @@ end
 
 accelerator::units = units(baryon_mass = "eV", energy = "eV")
 
+##############################################################
+##############################################################
+##############################################################
+
+# DON'T BE STUPID, USE UCONVERT(u"UNIT", OBJ).VAL
+
+##############################################################
+##############################################################
+##############################################################
+
 function unit_name(unit::String)::String
 
   metric_prefix = Dict{String, String}("femto"=>"f", "pico"=>"p", "nano"=>"n", 
@@ -47,13 +57,26 @@ function define_conversion(my_units::units, convert::conversion_consts)
 
   if occursin(my_units.baryon_mass, "g")
     # factor of 1e6 to account for base unit MeV
-    mass_con = convert.g_per_eV/1e6
-    mpfx = rsplit(my_units.baryon_mass, "g", limit=2)
-    mass_con = mass_con/metric_abbr[mpfx]
+    bmass_con = convert.g_per_eV/1e6
+    bmpfx = rsplit(my_units.baryon_mass, "g", limit=2)
+    bmass_con = bmass_con/metric_abbr[bmpfx]
   elseif occursin(my_units.baryon_mass, "eV")
-    mpfx = rsplit(my_units.baryon_mass, "eV", limit=2)
-    mass_con = 1e6/metric_abbr[mpfx]
+    bmpfx = rsplit(my_units.baryon_mass, "eV", limit=2)
+    bmass_con = 1e6/metric_abbr[bmpfx]
   end
+
+  if occursin(myunits.atomic_mass, "g")
+    amass_con = convert.g_per_amu
+    ampfx = rsplit(my_units.atomic_mass, "g", limit=2)
+    amass_con = amass_con/metric_abbr[ampfx]
+  elseif occursin(my_units.atomic_mass, "eV")
+    amass_con = convert.eV_per_amu
+    ampfx = rsplit(my_units.atomic_mass, "eV", limit=2)
+    amass_con = amass_con/metric_abbr[ampfx]
+  else
+    amass_con = 1.0
+  end
+
 
   charge_con = 1/convert.e_coulomb
   if occursin(my_units.charge, "C")
@@ -61,8 +84,8 @@ function define_conversion(my_units::units, convert::conversion_consts)
   end
 
 
-  if occursin(my_units.charge, "Ga")
-    cpfx = rsplit(my_units.charge, "Ga", limit=2)
+  if occursin(my_units.magnetic_field, "Ga")
+    cpfx = rsplit(my_units.magnetic_field, "Ga", limit=2)
     field_con = 1e4/metric_abbr[cpfx]
   else
     cpfx = rsplit(my_units.charge, "T", limit=2)
@@ -89,7 +112,11 @@ function define_conversion(my_units::units, convert::conversion_consts)
   action_con = energy_con*time_con
   velocity_con = length_con/time_con
   
-
+  return Dict{String, Float64}("baryonmass"=>bmass_con, "atomicmass"=>amass_con, 
+                              "length"=>length_con, "time"=>time_con, 
+                              "energy"=>energy_con, "charge"=>charge_con, 
+                              "field"=>field_con, "moment"=>moment_con, 
+                              "action"=>action_con, "velocity"=>velocity_con)
     
 end
 
@@ -102,9 +129,11 @@ function define_consts(; year::Int64 = 2022, my_units::units = accelerator)
   
 
 
-  mass_consts = [:__b_m_electron, :__b_m_proton, :__b_m_neutron, :__b_m_muon, :__b_m_helion, :__b_m_deuteron, :__b_m_pion_0, :__b_m_pion_charged]
-  moment_consts = [:__b_mu_deuteron, :__b_mu_electron, :__b_mu_helion, :__b_mu_muon, :__b_mu_neutron, :__b_mu_proton, :__b_mu_triton]
-  lengths_consts = [:__r_e, :__b_r_p]
+  mass_base = [:__b_m_electron, :__b_m_proton, :__b_m_neutron, :__b_m_muon, :__b_m_helion, :__b_m_deuteron, :__b_m_pion_0, :__b_m_pion_charged]
+
+  moment_base = [:__b_mu_deuteron, :__b_mu_electron, :__b_mu_helion, :__b_mu_muon, :__b_mu_neutron, :__b_mu_proton, :__b_mu_triton]
+
+  length_base = [:__b_r_e, :__b_r_p]
   actions_consts = [:__b_h_planck, :__b_h_bar_planck]
   clight = :__b_c_light
   echarge = :__b_e_charge
@@ -122,7 +151,12 @@ function define_consts(; year::Int64 = 2022, my_units::units = accelerator)
   convert = getfield(@__MODULE__, symconv)
 
 
+  # define unit conversions 
+  ucs = define_conversion(my_units, convert)
 
 
+  for name in fieldnames(CODATA_vals)
+
+  end
 
 end
