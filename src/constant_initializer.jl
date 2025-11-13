@@ -16,7 +16,7 @@ struct units
 
 end
 
-accelerator::units = units(baryon_mass = "eV", energy = "eV")
+accelerator::units = apc_units(baryon_mass = "eV", energy = "eV")
 
 ##############################################################
 ##############################################################
