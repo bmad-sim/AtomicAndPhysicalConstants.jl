@@ -1,21 +1,19 @@
 # AtomicAndPhysicalConstants/src/constant_initializer.jl
+using Unitful
 struct units
-  baryon_mass::String
-  atomic_mass::String
-  length::String
-  time::String
-  energy::String
-  charge::String
-  magnetic_field::String
+  baryon_mass::Unitful.Units
+  atomic_mass::Unitful.Units
+  length::Unitful.Units
+  time::Unitful.Units
+  velocity::Unitful.Units
+  energy::Unitful.Units
+  charge::Unitful.Units
+  magnetic_field::Unitful.Units
+  magnetic_moment::Unitful.Units
+  action::Unitful.Units
   spin::String
 
-  function units(; baryon_mass::String = "MeV", atomic_mass::String = "amu", length::String = "m", 
-                  time::String = "s", energy::String = "MeV", 
-                  charge::String = "e", magnetic_field::String = "T",
-                  spin::String = "hbar")
 
-    new(baryon_mass, atomic_mass, length, time, energy, charge, magnetic_field, spin)
-  end
 end
 
 accelerator::units = units(baryon_mass = "eV", energy = "eV")
