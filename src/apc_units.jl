@@ -30,8 +30,8 @@ permeability::Unitful.Units
   function apc_units(; 
                       baryon_mass = u"MeV/c^2", atomic_mass = u"amu", 
                       electric_charge = u"e", length = u"m", magnetic_field = u"T",
-                      magnetic_moment = u"J/T", velocity = "m/s", 
-                      energy = u"MeV", action = "J*s", 
+                      magnetic_moment = u"J/T", velocity = u"m/s", 
+                      energy = u"MeV", action = u"J*s", 
                       permittivity = u"F/m", permeability = u"N/A^2"
                     )
 

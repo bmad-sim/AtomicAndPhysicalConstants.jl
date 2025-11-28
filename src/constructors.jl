@@ -24,7 +24,7 @@ subatomic_particle
 function subatomic_particle(name::String)
   # write the particle out directly
   leptons = ["electron", "positron", "muon", "anti-muon"]
-  particle = SUBATOMIC_SPECIES[name]
+  particle = SUBATOMIC_SPECIES[][name]
   if name == "photon"
     return Species(name, particle.charge,
       particle.mass,
@@ -67,7 +67,7 @@ function Species(speciesname::String)
   # if the particle is an anti-particle, remove the prefix for easier lookup
   name = replace(name, anti_regEx => "")
 
-  for (k, _) in SUBATOMIC_SPECIES
+  for (k, _) in SUBATOMIC_SPECIES[]
     # whether the particle is in the subatomic species dictionary
     if occursin(k, name)
       # whether the particle name only contains characters in the subatomic species dictionary

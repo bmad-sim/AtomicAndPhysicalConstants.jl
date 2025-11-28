@@ -122,7 +122,7 @@ __b_e_charge = 1.602176634e-19,
 # elementary charge [C]
 __b_r_e = 2.8179403205e-15,
 # classical electron radius [m]
-__b_r_p = 2.8179403205e-15 * 0.51099895069 / (9.382720894300001e2 * u"MeV/c^2"), # __b_r_e * __b_m_electron / __b_m_proton,
+__b_r_p = 2.8179403205e-15 * 0.51099895069 / (9.382720894300001e2), # __b_r_e * __b_m_electron / __b_m_proton,
 # classical proton radius [m]
 __b_c_light = 2.99792458e8,
 # speed of light [m/s]

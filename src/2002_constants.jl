@@ -39,7 +39,7 @@ CODATA2002 = CODATA_release(
 #######################################
 
 
-__b_m_electron::Float64 = 0.51099895069,
+__b_m_electron = 0.51099895069,
 # Electron Mass [MeV]/c^2
 __b_m_proton = 9.382720894300001e2,
 # Proton Mass [MeV]/c^2

@@ -112,7 +112,7 @@ __b_classical_radius_factor::Float64
 
 __b_eps_0_vac::Float64
 # Permittivity of free space in [F/m]
-__b_mu_0_vac::Float6
+__b_mu_0_vac::Float64
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 __b_RELEASE_YEAR::Int32
@@ -129,111 +129,111 @@ end
   g_per_eV::Float64
 end
 
-@kwdef struct CODATA_vals
+# @kwdef struct CODATA_vals
 
-#######################################
-# constants with dimension [mass]
-#######################################
-
-
-M_ELECTRON::Float64
-# Electron Mass
-M_PROTON::Float64
-# Proton Mass
-M_NEUTRON::Float64
-# Neutron Mass
-M_MUON::Float64
-# Muon Mass
-M_HELION::Float64
-# Helion Mass He3 nucleus
-M_DEUTERON::Float64
-# Deuteron Mass
-M_PION_0::Float64
-# uncharged pion mass
-M_PION_CHARGED::Float64
-# charged pion mass
+# #######################################
+# # constants with dimension [mass]
+# #######################################
 
 
-#######################################
-# constants with dimension [magnetic moment]
-#######################################
+# M_ELECTRON::Float64
+# # Electron Mass
+# M_PROTON::Float64
+# # Proton Mass
+# M_NEUTRON::Float64
+# # Neutron Mass
+# M_MUON::Float64
+# # Muon Mass
+# M_HELION::Float64
+# # Helion Mass He3 nucleus
+# M_DEUTERON::Float64
+# # Deuteron Mass
+# M_PION_0::Float64
+# # uncharged pion mass
+# M_PION_CHARGED::Float64
+# # charged pion mass
 
 
-MU_DEUTERON::Float64
-# deuteron magnetic moment
-MU_ELECTRON::Float64
-# electron magnetic moment
-MU_HELION::Float64
-# helion magnetic moment
-MU_MUON::Float64
-# muon magnetic moment
-MU_NEUTRON::Float64
-# neutron magnetic moment
-MU_PROTON::Float64
-# proton magnetic moment
-MU_TRITON::Float64
-# triton magnetic moment
+# #######################################
+# # constants with dimension [magnetic moment]
+# #######################################
 
 
-#######################################
-# dimensionless constants
-#######################################
+# MU_DEUTERON::Float64
+# # deuteron magnetic moment
+# MU_ELECTRON::Float64
+# # electron magnetic moment
+# MU_HELION::Float64
+# # helion magnetic moment
+# MU_MUON::Float64
+# # muon magnetic moment
+# MU_NEUTRON::Float64
+# # neutron magnetic moment
+# MU_PROTON::Float64
+# # proton magnetic moment
+# MU_TRITON::Float64
+# # triton magnetic moment
 
 
-N_AVOGADRO::Float64 
-# Avogadro's constant: Number / mole (exact)
-FINE_STRUCTURE::Float64 
-# fine structure constant
-
-GYRO_ANOM_ELECTRON::Float64 
-# electron magnetic moment anomaly
-GYRO_ANOM_MUON::Float64
-# muon magnetic moment anomaly
-
-GSPIN_DEUTERON::Float64
-# deuteron g factor 
-GSPIN_ELECTRON::Float64 
-# electron g factor 
-GSPIN_HELION::Float64 
-# helion g factor 
-GSPIN_MUON::Float64 
-# muon g factor 
-GSPIN_NEUTRON::Float64 
-# neutron g factor 
-GSPIN_PROTON::Float64 
-# proton g factor 
-GSPIN_TRITON::Float64 
-# triton g factor
+# #######################################
+# # dimensionless constants
+# #######################################
 
 
-#######################################
-# constants with miscellaneous dimension
-#######################################
+# N_AVOGADRO::Float64 
+# # Avogadro's constant: Number / mole (exact)
+# FINE_STRUCTURE::Float64 
+# # fine structure constant
+
+# GYRO_ANOM_ELECTRON::Float64 
+# # electron magnetic moment anomaly
+# GYRO_ANOM_MUON::Float64
+# # muon magnetic moment anomaly
+
+# GSPIN_DEUTERON::Float64
+# # deuteron g factor 
+# GSPIN_ELECTRON::Float64 
+# # electron g factor 
+# GSPIN_HELION::Float64 
+# # helion g factor 
+# GSPIN_MUON::Float64 
+# # muon g factor 
+# GSPIN_NEUTRON::Float64 
+# # neutron g factor 
+# GSPIN_PROTON::Float64 
+# # proton g factor 
+# GSPIN_TRITON::Float64 
+# # triton g factor
 
 
-E_CHARGE::Float64
-# elementary charge
-R_E::Float64
-# classical electron radius
-R_P::Float64
-# classical proton radius
-C_LIGHT::Float64
-# speed of light
-H_PLANCK::Float64
-# Planck's constant
-H_BAR_PLANCK::Float64
-# h_planck/twopi
-CLASSICAL_RADIUS_FACTOR::Float64
-# e^2 / (4 pi eps_0) = classical_radius*mass*c^2.
-# Is same for all particles of charge +/- 1.
-
-EPS_0_VAC::Float64
-# Permittivity of free space
-MU_0_VAC::Float6
-# Vacuum permeability
-
-RELEASE_YEAR::Int32
-# release year for posterity
+# #######################################
+# # constants with miscellaneous dimension
+# #######################################
 
 
-end
+# E_CHARGE::Float64
+# # elementary charge
+# R_E::Float64
+# # classical electron radius
+# R_P::Float64
+# # classical proton radius
+# C_LIGHT::Float64
+# # speed of light
+# H_PLANCK::Float64
+# # Planck's constant
+# H_BAR_PLANCK::Float64
+# # h_planck/twopi
+# CLASSICAL_RADIUS_FACTOR::Float64
+# # e^2 / (4 pi eps_0) = classical_radius*mass*c^2.
+# # Is same for all particles of charge +/- 1.
+
+# EPS_0_VAC::Float64
+# # Permittivity of free space
+# MU_0_VAC::Float64
+# # Vacuum permeability
+
+# RELEASE_YEAR::Int32
+# # release year for posterity
+
+
+# end

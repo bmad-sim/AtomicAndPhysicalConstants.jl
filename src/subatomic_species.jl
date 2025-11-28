@@ -37,24 +37,25 @@ SUBATOMIC_SPECIES
 #     "anti-neutron" => SubatomicSpecies("anti-neutron", 0, CODATA2022.__b_m_neutron, CODATA2022.__b_mu_neutron, 0.5)
 #   )
 
-function subatomic_species(CODATAYEAR::CODATA)
+function subatomic_species()
   return Dict{String,SubatomicSpecies}(
-    "pion0" => SubatomicSpecies("pion0", 0, CODATAYEAR.__b_m_pion_0, 0.0, 0.0),
-    "neutron" => SubatomicSpecies("neutron", 0, CODATAYEAR.__b_m_neutron, CODATAYEAR.__b_mu_neutron, 0.5),
-    "deuteron" => SubatomicSpecies("deuteron", 1, CODATAYEAR.__b_m_deuteron, CODATAYEAR.__b_mu_deuteron, 1.0),
-    "pion+" => SubatomicSpecies("pion+", 1, CODATAYEAR.__b_m_pion_charged, 0.0, 0.0),
-    "anti-muon" => SubatomicSpecies("anti-muon", 1, CODATAYEAR.__b_m_muon, CODATAYEAR.__b_mu_muon, 0.5),
-    "proton" => SubatomicSpecies("proton", 1, CODATAYEAR.__b_m_proton, CODATAYEAR.__b_mu_proton, 0.5),
-    "positron" => SubatomicSpecies("positron", 1, CODATAYEAR.__b_m_electron, CODATAYEAR.__b_mu_electron, 0.5),
-    "photon" => SubatomicSpecies("photon", 0, 0.0 * u"MeV/c^2", 0.0, 0.0),
-    "electron" => SubatomicSpecies("electron", -1, CODATAYEAR.__b_m_electron, CODATAYEAR.__b_mu_electron, 0.5),
-    "anti-proton" => SubatomicSpecies("anti-proton", -1, CODATAYEAR.__b_m_proton, CODATAYEAR.__b_mu_proton, 0.5),
-    "muon" => SubatomicSpecies("muon", -1, CODATAYEAR.__b_m_muon, CODATAYEAR.__b_mu_muon, 0.5),
-    "pion-" => SubatomicSpecies("pion-", -1, CODATAYEAR.__b_m_pion_charged, 0.0, 0.0),
-    "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, CODATAYEAR.__b_m_deuteron, CODATAYEAR.__b_mu_deuteron, 1.0),
-    "anti-neutron" => SubatomicSpecies("anti-neutron", 0, CODATAYEAR.__b_m_neutron, CODATAYEAR.__b_mu_neutron, 0.5)
+    "pion0" => SubatomicSpecies("pion0", 0, m_pion_0[], 0.0, 0.0),
+    "neutron" => SubatomicSpecies("neutron", 0, m_neutron[], mu_neutron[], 0.5),
+    "deuteron" => SubatomicSpecies("deuteron", 1, m_deuteron[], mu_deuteron[], 1.0),
+    "pion+" => SubatomicSpecies("pion+", 1, m_pion_charged[], 0.0, 0.0),
+    "anti-muon" => SubatomicSpecies("anti-muon", 1, m_muon[], mu_muon[], 0.5),
+    "proton" => SubatomicSpecies("proton", 1, m_proton[], mu_proton[], 0.5),
+    "positron" => SubatomicSpecies("positron", 1, m_electron[], mu_electron[], 0.5),
+    "photon" => SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0),
+    "electron" => SubatomicSpecies("electron", -1, m_electron[], mu_electron[], 0.5),
+    "anti-proton" => SubatomicSpecies("anti-proton", -1, m_proton[], mu_proton[], 0.5),
+    "muon" => SubatomicSpecies("muon", -1, m_muon[], mu_muon[], 0.5),
+    "pion-" => SubatomicSpecies("pion-", -1, m_pion_charged[], 0.0, 0.0),
+    "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, m_deuteron[], mu_deuteron[], 1.0),
+    "anti-neutron" => SubatomicSpecies("anti-neutron", 0, m_neutron[], mu_neutron[], 0.5)
   )
 end
 
 
-SUBATOMIC_SPECIES = subatomic_species(CODATA2022)
+
+const SUBATOMIC_SPECIES = Ref(subatomic_species())

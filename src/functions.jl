@@ -38,8 +38,11 @@ function g_spin(species::Species; signed::Bool=false)
     error("Only massive subatomic particles have available gyromagnetic factors in this package.")
   end
   if lowercase(getfield(species, :name)) ∈ known
-    valname = Symbol("__b_gspin_"*getfield(species, :name))
-    return abs(CODATA2022.eval(valname))
+    if signed == false 
+      return abs(getfield(@__MODULE__, "gspin_"*lowercase(getfield(species, :name))))
+    else
+      return getfield(@__MODULE__, "gspin_"*lowercase(getfield(species, :name)))
+    end
   else
     m_s = uconvert(u"MeV/c^2", getfield(species, :mass))
     mu_s = uconvert(u"m^2 * C / s", getfield(species, :moment))
