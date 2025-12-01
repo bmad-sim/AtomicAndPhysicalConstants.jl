@@ -26,8 +26,8 @@ function g_spin(species::Species; signed::Bool=false)
       return getfield(@__MODULE__, "gspin_"*lowercase(getfield(species, :name)))
     end
   else
-    m_s = uconvert(u"MeV/c^2", getfield(species, :mass))
-    mu_s = uconvert(u"m^2 * C / s", getfield(species, :moment))
+    m_s = getfield(species, :mass)
+    mu_s = uconvert(u"m^2 * C / s", getfield(species, :moment) * u"J/T").val
     spin_s = getfield(species, :spin).val # since we store spin in units [ħ], we just want the half/integer
     if signed == true
       charge_s = uconvert(u"C", getfield(species, :charge))
