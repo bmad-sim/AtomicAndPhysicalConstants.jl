@@ -1,16 +1,7 @@
 
 # AtomicAndPhysicalConstants.jl/src/isotopes.jl
 
-struct AtomicSpecies
-  Z::Int64  # atomic number
-  species_name::String  # periodic table element symbol
-  mass::Dict{Int64,Float64}  # a dict to store the masses, keyed by isotope all masses in amu
-  #=
-  keyvalue -1 => average mass of common isotopes [amu],
-  keyvalue n ∈ {0} ∪ N is the mass number of the isotope
-  	=> mass of that isotope [amu]
-  =#
-end
+
 
 #########################################################
 
@@ -68,22 +59,22 @@ function atomic_particle(name::String, charge::Int, iso::Int)
 
   # grab the particular element from the stack
   atom::AtomicSpecies = ATOMIC_SPECIES[AS]
-  # convert the mass of the selected isotope from amu tom MeV
-  nmass::Float64 = uconvert(u"MeV/c^2", atom.mass[iso]*u"amu")
+  # convert the mass of the selected isotope from amu to MeV
+  nmass::Float64 = uconvert(u"MeV/c^2", atom.mass[iso]*u"u").val
   
   spin::Float64 = 0.0
 
   mass::Float64 = begin
     if anti_atom == false
-      nmass + SUBATOMIC_SPECIES[]["electron"].mass * (-charge)
+      nmass + SUBATOMIC_SPECIES[]["electron"].mass * abs(charge)
       # for a nominal atom, add 1 electron mass for every - charge
     else
-      nmass + SUBATOMIC_SPECIES[]["positron"].mass * (+charge)
+      nmass + SUBATOMIC_SPECIES[]["positron"].mass * abs(charge)
       # for an anti-atom, add 1 positron mass for every + charge
     end
   end
   if iso == -1 # if it's the average, make an educated guess at the spin
-    partonum::Float64 = round(atom.mass[iso].val)
+    partonum::Float64 = round(atom.mass[iso])
     if anti_atom == false
       spin = 0.5 * (partonum + (atom.Z - charge))
     else
@@ -95,10 +86,10 @@ function atomic_particle(name::String, charge::Int, iso::Int)
   # return the object to track
   if anti_atom == false
     return Species(AS, charge, mass,
-      spin, 0, iso, Kind.ATOM)
+      spin, 0.0, iso, Kind.ATOM)
   else
     return Species("anti-" * AS, charge, mass,
-      spin, 0, iso, Kind.ATOM)
+      spin, 0.0, iso, Kind.ATOM)
   end
 
 end

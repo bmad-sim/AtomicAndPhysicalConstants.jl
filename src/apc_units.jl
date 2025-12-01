@@ -2,7 +2,7 @@
 
 module unitalias
 using Unitful
-@unit amu "amu" Dalton 1.0 * u"u" false
+@unit amu "amu" dalton 1.0 * u"u" false
 @unit e "e" elementary_charge 1.0 * u"q" false
 @unit h_bar "h_bar" reduced_planck_constant 1.0 * u"ħ" false
 end
@@ -13,8 +13,6 @@ Unitful.register(unitalias);
 using .unitalias
 
 
-isa(u"c", Unitful.Units)
-uconvert(u"m/s", 1.0u"c")
 struct apc_units
 baryon_mass::Unitful.Units
 atomic_mass::Unitful.Units
@@ -35,6 +33,9 @@ permeability::Unitful.Units
                       energy = u"MeV", action = u"J*s", 
                       permittivity = u"F/m", permeability = u"N/A^2"
                     )
+
+
+
 
     if dimension(baryon_mass) == dimension(u"eV")
       baryon_mass = baryon_mass/u"c^2" 
@@ -83,7 +84,7 @@ permeability::Unitful.Units
   end
 end
 
-const NISTunits = apc_units()
+
 
 const accelerator_units = apc_units(baryon_mass = u"eV/c^2", energy = u"eV")
 

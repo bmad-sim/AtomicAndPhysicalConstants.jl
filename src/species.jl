@@ -1,14 +1,6 @@
 # AtomicAndPhysicalConstants/src/species.jl
 
-struct Species
-  name::String # name of the particle to track
-  charge::Int64 # charge of the particle (important to consider ionized atoms) in [e]
-  mass::Float64 # mass of the particle in [eV/c^2]
-  spin::Float64 # spin of the particle in [ħ]
-  moment::Float64 # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
-  iso::Int64 # if the particle is an atomic isotope this is the mass number, otherwise 0
-  kind::Kind.T
-end
+
 
 
 # null constructor
@@ -17,9 +9,7 @@ Species() = new("Null", 0, 0.0, 0.0, 0.0, 0, Kind.NULL)
 #####################################################################
 #####################################################################
 
-# precompile regEx
 
-const anti_regEx = r"Anti\-|anti\-|Anti|anti"
 
 
 function Species(speciesname::String)
@@ -58,7 +48,7 @@ function Species(speciesname::String)
   # the atomic symbol
   atom::String = ""
   # the first index of the atomic symbol
-  index::Int64 = 0
+  index::Int = 0
 
   function normalize_superscripts(str::String)
     buf = IOBuffer()
@@ -98,7 +88,7 @@ function Species(speciesname::String)
   left::String = name[1:index-1]
 
   # default isotope is abundance avg
-  iso::Int64 = -1
+  iso::Int = -1
 
   #if the user choose to put isotope in the front 
   if left != ""
@@ -127,7 +117,9 @@ function Species(speciesname::String)
     # remove the charge symbol
     right = replace(right, "+" => "")
 
-    right == "" || charge = parse(Int64, right)
+    if right != ""
+      charge = parse(Int64, right)
+    end
 
 
   elseif occursin("-", right) #if the charge is negative
@@ -137,16 +129,17 @@ function Species(speciesname::String)
     # remove the charge symbol
     right = replace(right, "-" => "")
 
-    right == "" || charge = -parse(Int64, right)
-
+    if right != ""
+      charge = -parse(Int64, right)
+    end
   end
   # when the charge symbol is removed, the rest of the string should be a number
   all(isdigit, right) || error("The charge specification should only include '+', '-' and number")
 
   if anti
-    return create_atomic_species("anti-" * atom, charge, iso)
+    return atomic_particle("anti-" * atom, charge, iso)
   else
-    return create_atomic_species(atom, charge, iso)
+    return atomic_particle(atom, charge, iso)
   end
 
 

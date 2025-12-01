@@ -1,13 +1,7 @@
 
 # AtomicAndPhysicalConstants/src/subatomic_species.jl
 
-struct SubatomicSpecies
-  species_name::String  # common species_name of the particle
-  charge::Int64 # charge on the particle in e
-  mass::Float64 # mass of the particle in [MeV/c^2]
-  moment::Float64 # magnetic moment in J/T
-  spin::Float64 # spin magnetic moment in [ħ]
-end;
+
 
 
 #####################################################################
@@ -83,18 +77,18 @@ function subatomic_particle(name::String)
       particle.mass,
       particle.spin,
       particle.moment,
-      0.0, Kind.PHOTON)
+      0, Kind.PHOTON)
   elseif name in leptons
     return Species(name, particle.charge,
       particle.mass,
       particle.spin,
       particle.moment,
-      0.0, Kind.LEPTON)
+      0, Kind.LEPTON)
   else
     return Species(name, particle.charge,
       particle.mass,
       particle.spin,
       particle.moment,
-      0.0, Kind.HADRON)
+      0, Kind.HADRON)
   end
 end
