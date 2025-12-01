@@ -1,7 +1,8 @@
 
 
 
-function redef_consts(; year::Int64 = 2022, my_units::apc_units = accelerator_units)
+
+function setconst(; year::Int64 = 2022, units::apc_units = accelerator_units)
 
   mass_consts = [:__b_m_electron, :__b_m_proton, :__b_m_neutron, :__b_m_muon, :__b_m_helion, :__b_m_deuteron, :__b_m_pion_0, :__b_m_pion_charged]
   moment_consts = [:__b_mu_deuteron, :__b_mu_electron, :__b_mu_helion, :__b_mu_muon, :__b_mu_neutron, :__b_mu_proton, :__b_mu_triton]
@@ -21,27 +22,29 @@ function redef_consts(; year::Int64 = 2022, my_units::apc_units = accelerator_un
     symname = Symbol("CODATA"*string(year))
   end
 
+  current_units[] = units
+  
   consts = getfield(@__MODULE__, symname)
   nglobs = Dict{String, Float32}()
   for s in mass_consts
-    nglobs[vname(s)] = uconvert(my_units.baryon_mass, getfield(consts, s) * u"MeV/c^2").val
+    nglobs[vname(s)] = uconvert(units.baryon_mass, getfield(consts, s) * u"MeV/c^2").val
   end
   for s in moment_consts
-    nglobs[vname(s)] = uconvert(my_units.magnetic_moment, getfield(consts, s) * u"J/T").val
+    nglobs[vname(s)] = uconvert(units.magnetic_moment, getfield(consts, s) * u"J/T").val
   end
   for s in length_consts
-    nglobs[vname(s)] = uconvert(my_units.length, getfield(consts, s) * u"m").val
+    nglobs[vname(s)] = uconvert(units.length, getfield(consts, s) * u"m").val
   end
   for s in action_consts
-    nglobs[vname(s)] = uconvert(my_units.action, getfield(consts, s) * u"J*s").val
+    nglobs[vname(s)] = uconvert(units.action, getfield(consts, s) * u"J*s").val
   end
   for s in scalar_consts
     nglobs[vname(s)] = getfield(consts, s)
   end
-  nglobs[vname(clight)] = uconvert(my_units.velocity, getfield(consts, clight) * u"m/s").val
+  nglobs[vname(clight)] = uconvert(units.velocity, getfield(consts, clight) * u"m/s").val
   nglobs[vname(echarge)] = getfield(consts, echarge)
-  nglobs[vname(eps0)] = uconvert(my_units.permittivity, getfield(consts, eps0) * u"F/m").val
-  nglobs[vname(mu0)] = uconvert(my_units.permeability, getfield(consts, mu0) * u"N/A^2").val
+  nglobs[vname(eps0)] = uconvert(units.permittivity, getfield(consts, eps0) * u"F/m").val
+  nglobs[vname(mu0)] = uconvert(units.permeability, getfield(consts, mu0) * u"N/A^2").val
 
   
   m_electron[] = nglobs["m_electron"]
@@ -81,7 +84,7 @@ function redef_consts(; year::Int64 = 2022, my_units::apc_units = accelerator_un
   mu_0_vac[] = nglobs["mu_0_vac"]
   RELEASE_YEAR[] = nglobs["RELEASE_YEAR"]
 
-  SUBATOMIC_SPECIES[] = subatomic_species()
+  SUBATOMIC_SPECIES[] = subatomic_species(CODATA2022)
 
 
 end

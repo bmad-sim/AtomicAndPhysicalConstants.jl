@@ -1,9 +1,18 @@
-# Package: AtomicAndPhysicalConstants
-# file: src/species_initialize.jl
-# purpose: define constructors
+# AtomicAndPhysicalConstants/src/species.jl
+
+struct Species
+  name::String # name of the particle to track
+  charge::Int64 # charge of the particle (important to consider ionized atoms) in [e]
+  mass::Float64 # mass of the particle in [eV/c^2]
+  spin::Float64 # spin of the particle in [ħ]
+  moment::Float64 # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
+  iso::Int64 # if the particle is an atomic isotope this is the mass number, otherwise 0
+  kind::Kind.T
+end
 
 
-
+# null constructor
+Species() = new("Null", 0, 0.0, 0.0, 0.0, 0, Kind.NULL)
 
 #####################################################################
 #####################################################################
@@ -11,44 +20,6 @@
 # precompile regEx
 
 const anti_regEx = r"Anti\-|anti\-|Anti|anti"
-
-@doc """
-    subatomic_particle(name::String)
-
-## Description:
-Dependence of Particle(name, charge=0, iso=-1)
-Create a particle struct for a subatomic particle with name=name
-"""
-subatomic_particle
-
-function subatomic_particle(name::String)
-  # write the particle out directly
-  leptons = ["electron", "positron", "muon", "anti-muon"]
-  particle = SUBATOMIC_SPECIES[][name]
-  if name == "photon"
-    return Species(name, particle.charge,
-      particle.mass,
-      particle.spin,
-      particle.moment,
-      0.0, Kind.PHOTON)
-  elseif name in leptons
-    return Species(name, particle.charge,
-      particle.mass,
-      particle.spin,
-      particle.moment,
-      0.0, Kind.LEPTON)
-  else
-    return Species(name, particle.charge,
-      particle.mass,
-      particle.spin,
-      particle.moment,
-      0.0, Kind.HADRON)
-  end
-end
-
-
-#####################################################################
-#####################################################################
 
 
 function Species(speciesname::String)
@@ -126,7 +97,8 @@ function Species(speciesname::String)
   #the substring before the symbol
   left::String = name[1:index-1]
 
-  iso::Int64 = 0
+  # default isotope is abundance avg
+  iso::Int64 = -1
 
   #if the user choose to put isotope in the front 
   if left != ""
@@ -135,18 +107,13 @@ function Species(speciesname::String)
       left = left[2:end]
     end
     # convert the isotope to an integer
-    for c in left
-      iso = iso * 10 + parse(Int64, c)
-    end
+    iso = parse(Int64, left)
     haskey(ATOMIC_SPECIES[atom].mass, iso) || error("$iso is not a valid isotope of $atom")
   end
 
-  # if iso is not specified, use the most abundant isotope
-  if iso == 0
-    iso = -1
-  end
 
-  #now try to parse the charge
+
+  # now try to parse the charge
   right::String = name[index+length(atom):end]
   charge::Int64 = 0
   chargenum::Int64 = 0
@@ -159,26 +126,19 @@ function Species(speciesname::String)
     right[1] == '+' || right[end] == '+' || error("You should only put the charge symbol in the front or the back of the atomic symbol in $speciesname")
     # remove the charge symbol
     right = replace(right, "+" => "")
-    for c in right
-      chargenum = chargenum * 10 + parse(Int64, c) #parse the charge number 
-    end
-    if chargenum == 0 #if the charge number is not specified
-      chargenum = 1
-    end
-    charge *= chargenum
+
+    right == "" || charge = parse(Int64, right)
+
+
   elseif occursin("-", right) #if the charge is negative
     charge = -count(==('-'), right)
     #either put the charge symbol in the front or the back
     right[1] == '-' || right[end] == '-' || error("You should only put the charge symbol in the front or the back of the atomic symbol in $speciesname")
     # remove the charge symbol
     right = replace(right, "-" => "")
-    for c in right
-      chargenum = chargenum * 10 + parse(Int64, c) #parse the charge number 
-    end
-    if chargenum == 0 #if the charge number is not specified
-      chargenum = 1
-    end
-    charge *= chargenum
+
+    right == "" || charge = -parse(Int64, right)
+
   end
   # when the charge symbol is removed, the rest of the string should be a number
   all(isdigit, right) || error("The charge specification should only include '+', '-' and number")
@@ -191,64 +151,3 @@ function Species(speciesname::String)
 
 
 end
-
-
-#####################################################################
-#####################################################################
-@doc """
-    create_atomic_species(name::String, charge::Int, iso::Int)
-
-## Description:
-Create a species struct for an atomic species with name=name, charge=charge and iso=iso
-## fields:
-- `name::String':         the atomic symbol, must be exact. anti-prefix specifies whether it is an anti-atom
-- `charge::Int':           the net charge of the particle in units of [e]
-- `iso::Int':             the mass number of the isotope, -1 for the most abundant isotope
-"""
-create_atomic_species
-
-function create_atomic_species(name::String, charge::Int, iso::Int)
-  # whether the atom is anti-atom
-  anti_atom::Bool = occursin(anti_regEx, name)
-  # if the particle is an anti-particle, remove the prefix for easier lookup
-  AS::String = replace(name, anti_regEx => "")
-
-  haskey(ATOMIC_SPECIES, AS) || error("$AS is not a valid atomic species")
-
-  atom::AtomicSpecies = ATOMIC_SPECIES[AS]
-  nmass::Float64 = uconvert(u"MeV/c^2", atom.mass[iso]).val
-  spin::Float64 = 0.0
-
-  mass::Float64 = begin
-    if anti_atom == false
-      # ^ mass of the positively charged isotope in eV/c^2
-      nmass + SUBATOMIC_SPECIES["electron"].mass.val * (-charge)
-      # ^ put it in eV/c^2 and remove the electrons
-    else
-      # ^ mass of the positively charged isotope in amu
-      nmass + SUBATOMIC_SPECIES["electron"].mass.val * (+charge)
-      # ^ put it in eV/c^2 and remove the positrons
-    end
-  end
-  if iso == -1 # if it's the average, make an educated guess at the spin
-    partonum::Float64 = round(atom.mass[iso].val)
-    if anti_atom == false
-      spin = 0.5 * (partonum + (atom.Z - charge))
-    else
-      spin = 0.5 * (partonum + (atom.Z + charge))
-    end
-  else # otherwise, use the sum of proton and neutron spins
-    spin = 0.5 * iso
-  end
-  # return the object to track
-  if anti_atom == false
-    return Species(AS, charge * u"e", mass * u"MeV/c^2",
-      spin * u"h_bar", 0 * u"J/T", iso, Kind.ATOM)
-  else
-    return Species("anti-" * AS, charge * u"e", mass * u"MeV/c^2",
-      spin * u"h_bar", 0 * u"J/T", iso, Kind.ATOM)
-  end
-
-end
-
-

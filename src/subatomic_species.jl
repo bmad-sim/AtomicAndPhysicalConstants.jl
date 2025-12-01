@@ -1,61 +1,100 @@
 
+# AtomicAndPhysicalConstants/src/subatomic_species.jl
+
+struct SubatomicSpecies
+  species_name::String  # common species_name of the particle
+  charge::Int64 # charge on the particle in e
+  mass::Float64 # mass of the particle in [MeV/c^2]
+  moment::Float64 # magnetic moment in J/T
+  spin::Float64 # spin magnetic moment in [ħ]
+end;
 
 
-# -----------------------------------------------------------------------------------------------
-#=
-Below we have a dictionary, SUBATOMIC_SPECIES :
-this contatins key=>value pairs of  subatomic-name => SubatomicSpecies
-=#
+#####################################################################
+#####################################################################
 
 
 """
-    SUBATOMIC_SPECIES(CODATAYEAR)
+    subatomic_species()
 
-## Description:
-construct a dictionary of all the available subatomic species; 
-the key is the particle's species_name, 
-and the value is the relevant SubatomicSpecies struct, _eg_ 
+Construct a dictionary of subatomic particles with keys: 
+["pion0", "neutron", "deuteron", "pion+", "anti-muon", "proton",
+"positron", "photon", "electron", "anti-proton", "muon", "pion-",
+"anti-deuteron", "anti-neutron"]
 
-Particle_dict["some-particle"] = SubatomicSpecies("some-particle", ...)
+Each key is paired with a SubatomicSpecies struct containing 
+information about the named particle.
+
+## Example
+
+SUBATOMIC_SPECIES = subatomic_species()
 """
-SUBATOMIC_SPECIES
+subatomic_species
 
-# global SUBATOMIC_SPECIES::Dict{String,SubatomicSpecies} = Dict{String,SubatomicSpecies}(
-#     "pion0" => SubatomicSpecies("pion0", 0, CODATA2022.__b_m_pion_0, 0.0, 0.0),
-#     "neutron" => SubatomicSpecies("neutron", 0, CODATA2022.__b_m_neutron, CODATA2022.__b_mu_neutron, 0.5),
-#     "deuteron" => SubatomicSpecies("deuteron", 1, CODATA2022.__b_m_deuteron, CODATA2022.__b_mu_deuteron, 1.0),
-#     "pion+" => SubatomicSpecies("pion+", 1, CODATA2022.__b_m_pion_charged, 0.0, 0.0),
-#     "anti-muon" => SubatomicSpecies("anti-muon", 1, CODATA2022.__b_m_muon, CODATA2022.__b_mu_muon, 0.5),
-#     "proton" => SubatomicSpecies("proton", 1, CODATA2022.__b_m_proton, CODATA2022.__b_mu_proton, 0.5),
-#     "positron" => SubatomicSpecies("positron", 1, CODATA2022.__b_m_electron, CODATA2022.__b_mu_electron, 0.5),
-#     "photon" => SubatomicSpecies("photon", 0, 0.0 * u"MeV/c^2", 0.0, 0.0),
-#     "electron" => SubatomicSpecies("electron", -1, CODATA2022.__b_m_electron, CODATA2022.__b_mu_electron, 0.5),
-#     "anti-proton" => SubatomicSpecies("anti-proton", -1, CODATA2022.__b_m_proton, CODATA2022.__b_mu_proton, 0.5),
-#     "muon" => SubatomicSpecies("muon", -1, CODATA2022.__b_m_muon, CODATA2022.__b_mu_muon, 0.5),
-#     "pion-" => SubatomicSpecies("pion-", -1, CODATA2022.__b_m_pion_charged, 0.0, 0.0),
-#     "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, CODATA2022.__b_m_deuteron, CODATA2022.__b_mu_deuteron, 1.0),
-#     "anti-neutron" => SubatomicSpecies("anti-neutron", 0, CODATA2022.__b_m_neutron, CODATA2022.__b_mu_neutron, 0.5)
-#   )
-
-function subatomic_species()
+function subatomic_species(CODATAYEAR::CODATA_release)
   return Dict{String,SubatomicSpecies}(
-    "pion0" => SubatomicSpecies("pion0", 0, m_pion_0[], 0.0, 0.0),
-    "neutron" => SubatomicSpecies("neutron", 0, m_neutron[], mu_neutron[], 0.5),
-    "deuteron" => SubatomicSpecies("deuteron", 1, m_deuteron[], mu_deuteron[], 1.0),
-    "pion+" => SubatomicSpecies("pion+", 1, m_pion_charged[], 0.0, 0.0),
-    "anti-muon" => SubatomicSpecies("anti-muon", 1, m_muon[], mu_muon[], 0.5),
-    "proton" => SubatomicSpecies("proton", 1, m_proton[], mu_proton[], 0.5),
-    "positron" => SubatomicSpecies("positron", 1, m_electron[], mu_electron[], 0.5),
+    "pion0" => SubatomicSpecies("pion0", 0, CODATAYEAR.__b_m_pion_0, 0.0, 0.0),
+    "neutron" => SubatomicSpecies("neutron", 0, CODATAYEAR.__b_m_neutron, CODATAYEAR.__b_mu_neutron, 0.5),
+    "deuteron" => SubatomicSpecies("deuteron", 1, CODATAYEAR.__b_m_deuteron, CODATAYEAR.__b_mu_deuteron, 1.0),
+    "pion+" => SubatomicSpecies("pion+", 1, CODATAYEAR.__b_m_pion_charged, 0.0, 0.0),
+    "anti-muon" => SubatomicSpecies("anti-muon", 1, CODATAYEAR.__b_m_muon, CODATAYEAR.__b_mu_muon, 0.5),
+    "proton" => SubatomicSpecies("proton", 1, CODATAYEAR.__b_m_proton, CODATAYEAR.__b_mu_proton, 0.5),
+    "positron" => SubatomicSpecies("positron", 1, CODATAYEAR.__b_m_electron, CODATAYEAR.__b_mu_electron, 0.5),
     "photon" => SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0),
-    "electron" => SubatomicSpecies("electron", -1, m_electron[], mu_electron[], 0.5),
-    "anti-proton" => SubatomicSpecies("anti-proton", -1, m_proton[], mu_proton[], 0.5),
-    "muon" => SubatomicSpecies("muon", -1, m_muon[], mu_muon[], 0.5),
-    "pion-" => SubatomicSpecies("pion-", -1, m_pion_charged[], 0.0, 0.0),
-    "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, m_deuteron[], mu_deuteron[], 1.0),
-    "anti-neutron" => SubatomicSpecies("anti-neutron", 0, m_neutron[], mu_neutron[], 0.5)
+    "electron" => SubatomicSpecies("electron", -1, CODATAYEAR.__b_m_electron, CODATAYEAR.__b_mu_electron, 0.5),
+    "anti-proton" => SubatomicSpecies("anti-proton", -1, CODATAYEAR.__b_m_proton, CODATAYEAR.__b_mu_proton, 0.5),
+    "muon" => SubatomicSpecies("muon", -1, CODATAYEAR.__b_m_muon, CODATAYEAR.__b_mu_muon, 0.5),
+    "pion-" => SubatomicSpecies("pion-", -1, CODATAYEAR.__b_m_pion_charged, 0.0, 0.0),
+    "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, CODATAYEAR.__b_m_deuteron, CODATAYEAR.__b_mu_deuteron, 1.0),
+    "anti-neutron" => SubatomicSpecies("anti-neutron", 0, CODATAYEAR.__b_m_neutron, CODATAYEAR.__b_mu_neutron, 0.5)
   )
 end
 
 
+"""
+    SUBATOMIC_SPECIES
 
-const SUBATOMIC_SPECIES = Ref(subatomic_species())
+Constant pointer to a dictionary of subatomic particles
+
+## Example use:
+
+`julia> SUBATOMIC_SPECIES[]["photon"]`
+`SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0)`
+"""
+const SUBATOMIC_SPECIES = Ref(subatomic_species(CODATA2022))
+
+
+
+@doc """
+    subatomic_particle(name::String)
+
+## Description:
+Dependence of Particle(name, charge=0, iso=-1)
+Create a particle struct for a subatomic particle with name=name
+"""
+subatomic_particle
+
+function subatomic_particle(name::String)
+  # write the particle out directly
+  leptons = ["electron", "positron", "muon", "anti-muon"]
+  particle = SUBATOMIC_SPECIES[][name]
+  if name == "photon"
+    return Species(name, particle.charge,
+      particle.mass,
+      particle.spin,
+      particle.moment,
+      0.0, Kind.PHOTON)
+  elseif name in leptons
+    return Species(name, particle.charge,
+      particle.mass,
+      particle.spin,
+      particle.moment,
+      0.0, Kind.LEPTON)
+  else
+    return Species(name, particle.charge,
+      particle.mass,
+      particle.spin,
+      particle.moment,
+      0.0, Kind.HADRON)
+  end
+end

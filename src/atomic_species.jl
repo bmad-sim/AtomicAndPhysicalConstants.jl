@@ -1,6 +1,16 @@
 
 # AtomicAndPhysicalConstants.jl/src/isotopes.jl
 
+struct AtomicSpecies
+  Z::Int64  # atomic number
+  species_name::String  # periodic table element symbol
+  mass::Dict{Int64,Float64}  # a dict to store the masses, keyed by isotope all masses in amu
+  #=
+  keyvalue -1 => average mass of common isotopes [amu],
+  keyvalue n ∈ {0} ∪ N is the mass number of the isotope
+  	=> mass of that isotope [amu]
+  =#
+end
 
 #########################################################
 
@@ -13,7 +23,7 @@ Isotopes from NIST data 2024-11-06
 a dictionary of all the available atomic species, 
 with all the NIST isotopes included; 
 the key is the element's atomic symbol 
-n the periodic table, and the value is the relevant 
+in the periodic table, and the value is the relevant 
 AtomicSpecies struct, _eg_  
 
 ATOMIC_SPECIES["He"] = AtomicSpecies(2, "He", ...)
@@ -34,3 +44,61 @@ const ATOMIC_SPECIES::Dict{String,AtomicSpecies} = Dict(
 );
 
 const sorted_list_of_atomic_symbols = sort(collect(keys(ATOMIC_SPECIES)), by=length, rev=true);
+
+
+@doc """
+    atomic_particle(name::String, charge::Int, iso::Int)
+
+## Description:
+Create a species struct for an atomic species with name=name, charge=charge and iso=iso
+## fields:
+- `name::String':         the atomic symbol, must be exact. anti-prefix specifies whether it is an anti-atom
+- `charge::Int':           the net charge of the particle in units of [e]
+- `iso::Int':             the mass number of the isotope, -1 for the most abundant isotope
+"""
+atomic_particle
+
+function atomic_particle(name::String, charge::Int, iso::Int)
+  # whether the atom is anti-atom
+  anti_atom::Bool = occursin(anti_regEx, name)
+  # if the particle is an anti-particle, remove the prefix for easier lookup
+  AS::String = replace(name, anti_regEx => "")
+
+  haskey(ATOMIC_SPECIES, AS) || error("$AS is not a valid atomic species")
+
+  # grab the particular element from the stack
+  atom::AtomicSpecies = ATOMIC_SPECIES[AS]
+  # convert the mass of the selected isotope from amu tom MeV
+  nmass::Float64 = uconvert(u"MeV/c^2", atom.mass[iso]*u"amu")
+  
+  spin::Float64 = 0.0
+
+  mass::Float64 = begin
+    if anti_atom == false
+      nmass + SUBATOMIC_SPECIES[]["electron"].mass * (-charge)
+      # for a nominal atom, add 1 electron mass for every - charge
+    else
+      nmass + SUBATOMIC_SPECIES[]["positron"].mass * (+charge)
+      # for an anti-atom, add 1 positron mass for every + charge
+    end
+  end
+  if iso == -1 # if it's the average, make an educated guess at the spin
+    partonum::Float64 = round(atom.mass[iso].val)
+    if anti_atom == false
+      spin = 0.5 * (partonum + (atom.Z - charge))
+    else
+      spin = 0.5 * (partonum + (atom.Z + charge))
+    end
+  else # otherwise, use the sum of proton and neutron spins
+    spin = 0.5 * iso
+  end
+  # return the object to track
+  if anti_atom == false
+    return Species(AS, charge, mass,
+      spin, 0, iso, Kind.ATOM)
+  else
+    return Species("anti-" * AS, charge, mass,
+      spin, 0, iso, Kind.ATOM)
+  end
+
+end

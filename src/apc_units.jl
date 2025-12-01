@@ -12,6 +12,7 @@ using Unitful
 Unitful.register(unitalias);
 using .unitalias
 
+
 isa(u"c", Unitful.Units)
 uconvert(u"m/s", 1.0u"c")
 struct apc_units
@@ -82,4 +83,9 @@ permeability::Unitful.Units
   end
 end
 
-accelerator_units = apc_units(baryon_mass = u"eV/c^2", energy = u"eV")
+const NISTunits = apc_units()
+
+const accelerator_units = apc_units(baryon_mass = u"eV/c^2", energy = u"eV")
+
+
+const current_units = Ref(accelerator_units)
