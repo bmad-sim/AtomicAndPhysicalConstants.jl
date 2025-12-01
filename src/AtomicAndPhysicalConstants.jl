@@ -28,6 +28,7 @@ include("atomic_species.jl")
 include("subatomic_species.jl")
 include("species.jl")
 include("setconst.jl")
+include("gyro_vals.jl")
 
 # export the const pointers to values
 export m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron
