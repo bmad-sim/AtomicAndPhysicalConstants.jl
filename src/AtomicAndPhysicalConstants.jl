@@ -40,7 +40,7 @@ export N_avogadro, fine_structure
 export gyro_anom_electron, gyro_anom_muon
 export gspin_deuteron, gspin_electron, gspin_helion, gspin_muon, gspin_neutron, gspin_proton, gspin_triton
 
-export e_charge, r_e, r_p, c_light, h_planck, h_bar_planck, eps_0_vac, mu_0_vac, RELEASE_YEAR
+export e_charge, r_e, r_p, c_light, h_planck, h_bar_planck, classical_radius_factor, eps_0_vac, mu_0_vac, RELEASE_YEAR
 
 # export the pointer to subatomic species dict
 export SUBATOMIC_SPECIES

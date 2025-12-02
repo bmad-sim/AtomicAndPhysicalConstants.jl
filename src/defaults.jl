@@ -51,7 +51,7 @@ const mu_triton = Ref(1.5046095178e-26)
 #######################################
 
 
-const N_avogadro = Ref(6.02214076e23)
+const N_Avogadro = Ref(6.02214076e23)
 # Avogadro's constant: Number / mole (exact)
 const fine_structure = Ref(0.0072973525643)
 # fine structure constant
@@ -90,9 +90,9 @@ const r_p = Ref(2.8179403205e-15 * 0.51099895069 / 9.382720894300001e2) #r_e * m
 # classical proton radius [m]
 const c_light = Ref(2.99792458e8)
 # speed of light [m/s]
-const h_planck = Ref(6.62607015e-34)
+const h_Planck = Ref(6.62607015e-34)
 # Planck's constant [J*s]
-const h_bar_planck = Ref(6.62607015e-34 / 2 / pi)
+const h_bar_Planck = Ref(6.62607015e-34 / 2 / pi)
 # h_planck/twopi [eV*s]
 const classical_radius_factor = Ref(2.8179403205e-15 * 0.51099895069) # r_e * m_electron,
 # e^2 / (4 pi eps_0) = classical_radius * mass * c^2.

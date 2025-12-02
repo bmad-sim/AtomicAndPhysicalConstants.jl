@@ -2,24 +2,21 @@ module DefaultAPCDef
 using AtomicAndPhysicalConstants
 using Test
 
-# test default APCdef settings
-@APCdef
 
 @testset "test @APCdef" begin
   
   #constants should be of type float in the right unit
-  @test APC.C_LIGHT ≈ 2.99792458e8
-  @test APC.H_PLANCK ≈ 2.0*pi #  4.135667696e-15
-  @test APC.H_BAR_PLANCK ≈ 1.0 # 6.582119568038699e-16
-  @test APC.R_E ≈ 2.8179403205e-15
-  @test APC.R_P ≈ 1.5346982640795807e-18
-  @test APC.E_CHARGE ≈ 1
-  @test APC.E_COULOMB ≈ 1.602176634e-19
-  @test APC.MU_0_VAC ≈ 1.25663706127e-6
-  @test APC.EPS_0_VAC ≈ 8.8541878188e-12
-  @test APC.CLASSICAL_RADIUS_FACTOR ≈ 1.4399645468825422e-9
-  @test APC.FINE_STRUCTURE ≈ 0.0072973525643
-  @test APC.N_AVOGADRO ≈ 6.02214076e23
+  @test c_light ≈ 2.99792458e8
+  @test h_Planck ≈ 6.62607015e-34
+  @test h_bar_Planck ≈ 1.05457182e-34
+  @test r_e ≈ 2.8179403205e-15
+  @test r_p ≈ 1.53469826e-18
+  @test e_charge ≈ 1.602176634e-19
+  @test mu_0_vac ≈ 1.25663706127e-6
+  @test eps_0_vac ≈ 8.8541878188e-12
+  @test classical_radius_factor ≈ 1.43996455e-15
+  @test fine_structure ≈ 0.0072973525643
+  @test N_Avogadro ≈ 6.02214076e23
 
 
   #test massof() and chargeof()
