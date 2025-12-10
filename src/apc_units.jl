@@ -12,6 +12,9 @@ using Unitful
 Unitful.register(unitalias);
 using .unitalias
 
+function __init__()
+  Unitful.register(unitalias)
+end
 
 struct apc_units
   baryon_mass::Unitful.Units
