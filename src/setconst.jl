@@ -2,7 +2,7 @@
 
 
 
-function setconst(; year::Int64 = 2022, units::apc_units = accelerator_units)
+function setconst(; year::Int64=2022, units::apc_units=accelerator_units)
 
   mass_consts = [:__b_m_electron, :__b_m_proton, :__b_m_neutron, :__b_m_muon, :__b_m_helion, :__b_m_deuteron, :__b_m_pion_0, :__b_m_pion_charged]
   moment_consts = [:__b_mu_deuteron, :__b_mu_electron, :__b_mu_helion, :__b_mu_muon, :__b_mu_neutron, :__b_mu_proton, :__b_mu_triton]
@@ -19,13 +19,13 @@ function setconst(; year::Int64 = 2022, units::apc_units = accelerator_units)
   if year ∉ [2002, 2006, 2010, 2014, 2018, 2022]
     error("You have chosen a year which did not have a CODATA release.")
   else
-    symname = Symbol("CODATA"*string(year))
+    symname = Symbol("CODATA" * string(year))
   end
 
   current_units[] = units
-  
+
   consts = getfield(@__MODULE__, symname)
-  nglobs = Dict{String, Float32}()
+  nglobs = Dict{String,Float32}()
   for s in mass_consts
     nglobs[vname(s)] = uconvert(units.baryon_mass, getfield(consts, s) * u"MeV/c^2").val
   end
@@ -46,7 +46,7 @@ function setconst(; year::Int64 = 2022, units::apc_units = accelerator_units)
   nglobs[vname(eps0)] = uconvert(units.permittivity, getfield(consts, eps0) * u"F/m").val
   nglobs[vname(mu0)] = uconvert(units.permeability, getfield(consts, mu0) * u"N/A^2").val
 
-  
+
   m_electron[] = nglobs["m_electron"]
   m_proton[] = nglobs["m_proton"]
   m_neutron[] = nglobs["m_neutron"]
@@ -62,7 +62,7 @@ function setconst(; year::Int64 = 2022, units::apc_units = accelerator_units)
   mu_neutron[] = nglobs["mu_neutron"]
   mu_proton[] = nglobs["mu_proton"]
   mu_triton[] = nglobs["mu_triton"]
-  N_avogadro[] = nglobs["N_avogadro"]
+  N_Avogadro[] = nglobs["N_avogadro"]
   fine_structure[] = nglobs["fine_structure"]
   gyro_anom_electron[] = nglobs["gyro_anom_electron"]
   gyro_anom_muon[] = nglobs["gyro_anom_muon"]
@@ -77,8 +77,8 @@ function setconst(; year::Int64 = 2022, units::apc_units = accelerator_units)
   r_e[] = nglobs["r_e"]
   r_p[] = nglobs["r_p"]
   c_light[] = nglobs["c_light"]
-  h_planck[] = nglobs["h_planck"]
-  h_bar_planck[] = nglobs["h_bar_planck"]
+  h_Planck[] = nglobs["h_planck"]
+  h_bar_Planck[] = nglobs["h_bar_planck"]
   classical_radius_factor[] = nglobs["classical_radius_factor"]
   eps_0_vac[] = nglobs["eps_0_vac"]
   mu_0_vac[] = nglobs["mu_0_vac"]

@@ -6,7 +6,7 @@
 # unit conversion constants
 #####################################################################
 
-global convert_2022::conversion_consts(
+global convert_2022 = conversion_consts(
 
 g_per_amu =  1.66053906892e-24,
 # grams per standard atomic mass unit (dalton)

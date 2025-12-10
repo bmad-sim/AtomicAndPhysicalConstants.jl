@@ -29,6 +29,7 @@ include("subatomic_species.jl")
 include("species.jl")
 include("setconst.jl")
 include("gyro_vals.jl")
+include("getter_functions.jl")
 
 # export the const pointers to values
 export m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron
@@ -36,11 +37,11 @@ export m_pion_0, m_pion_charged
 
 export mu_deuteron, mu_electron, mu_helion, mu_muon, mu_neutron, mu_proton, mu_triton
 
-export N_avogadro, fine_structure
+export N_Avogadro, fine_structure
 export gyro_anom_electron, gyro_anom_muon
 export gspin_deuteron, gspin_electron, gspin_helion, gspin_muon, gspin_neutron, gspin_proton, gspin_triton
 
-export e_charge, r_e, r_p, c_light, h_planck, h_bar_planck, classical_radius_factor, eps_0_vac, mu_0_vac, RELEASE_YEAR
+export e_charge, r_e, r_p, c_light, h_Planck, h_bar_Planck, classical_radius_factor, eps_0_vac, mu_0_vac, RELEASE_YEAR
 
 # export the pointer to subatomic species dict
 export SUBATOMIC_SPECIES
@@ -48,6 +49,9 @@ export SUBATOMIC_SPECIES
 export ATOMIC_SPECIES
 
 export Species
+
+# export getter functions
+export nameof, chargeof, massof, spinof, momentof, isoof
 
 export setconst
 end
