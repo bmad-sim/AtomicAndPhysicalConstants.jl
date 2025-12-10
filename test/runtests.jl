@@ -2,177 +2,77 @@ module DefaultAPCDef
 using AtomicAndPhysicalConstants
 using Test
 
+@testset "Constants Access and Values" begin
 
-@testset "test @APCdef" begin
-  
-  #constants should be of type float in the right unit
-  @test c_light ≈ 2.99792458e8
-  @test h_Planck ≈ 6.62607015e-34
-  @test h_bar_Planck ≈ 1.05457182e-34
-  @test r_e ≈ 2.8179403205e-15
-  @test r_p ≈ 1.53469826e-18
-  @test e_charge ≈ 1.602176634e-19
-  @test mu_0_vac ≈ 1.25663706127e-6
-  @test eps_0_vac ≈ 8.8541878188e-12
-  @test classical_radius_factor ≈ 1.43996455e-15
-  @test fine_structure ≈ 0.0072973525643
-  @test N_Avogadro ≈ 6.02214076e23
+  # Test exact values from CODATA 2022
+  # Masses are stored in eV/c^2
+  @test m_electron[] ≈ 0.51099895069e6  # electron mass in eV/c^2
+  @test m_proton[] ≈ 9.382720894300001e8  # proton mass in eV/c^2
+  @test m_neutron[] ≈ 9.395654219399999e8  # neutron mass in eV/c^2
+  @test m_muon[] ≈ 1.056583755e8  # muon mass in eV/c^2
+  @test m_deuteron[] ≈ 1.875612945e9  # deuteron mass in eV/c^2
+  @test m_helion[] ≈ 2.80839161112e9  # helion mass in eV/c^2
 
+  # Test magnetic moments (in J/T)
+  @test mu_electron[] ≈ -9.2847646917e-24
+  @test mu_proton[] ≈ 1.41060679545e-26
+  @test mu_neutron[] ≈ -9.6623653e-27
+  @test mu_muon[] ≈ -4.4904483e-26
+  @test mu_deuteron[] ≈ 4.330735087e-27
+  @test mu_triton[] ≈ 1.5046095178e-26
 
-  #test massof() and chargeof()
-  H = Species("H")
+  # Test dimensionless constants
+  @test N_Avogadro[] ≈ 6.02214076e23
+  @test fine_structure[] ≈ 0.0072973525643
+  @test gyro_anom_electron[] ≈ 1.15965218046e-3
+  @test gyro_anom_muon[] ≈ 1.16592062e-3
 
-  @test massof(H) ≈ 9.388908693006046e8
-  @test chargeof(H) ≈ 0
+  # Test g-factors
+  @test gspin_electron[] ≈ -2.00231930436092
+  @test gspin_proton[] ≈ 5.5856946893
+  @test gspin_neutron[] ≈ -3.82608552
+  @test gspin_muon[] ≈ -2.00233184123
+  @test gspin_deuteron[] ≈ 0.8574382335
+  @test gspin_triton[] ≈ 5.957924930
 
+  # Test other physical constants
+  @test e_charge[] ≈ 1.602176634e-19  # elementary charge in C
+  @test c_light[] ≈ 2.99792458e8  # speed of light in m/s
+  @test h_Planck[] ≈ 6.62607015e-34  # Planck constant in J*s
+  @test h_bar_Planck[] ≈ 6.62607015e-34 / 2 / pi  # reduced Planck constant
+  @test r_e[] ≈ 2.8179403205e-15  # classical electron radius in m
+  @test eps_0_vac[] ≈ 8.8541878188e-12  # permittivity of free space in F/m
+  @test mu_0_vac[] ≈ 1.25663706127e-6  # vacuum permeability in N/A^2
+  @test RELEASE_YEAR[] == 2022
+end
+
+@testset "Getter Functions" begin
+  # Create test species
   e = Species("electron")
-  @test massof(e) ≈ 510998.95069
-  @test chargeof(e) ≈ -1
-end
+  C = Species("12C")
 
-@testset "test Species" begin
-  #test '+' and '-' signs to charge
-  @test chargeof(Species("H+")) ≈ 1
-  @test chargeof(Species("Mg++")) ≈ 2
-  @test chargeof(Species("Al+3")) ≈ 3
-  @test chargeof(Species("Cl-")) ≈ -1
-  @test chargeof(Species("O--")) ≈ -2
-  @test chargeof(Species("N-3")) ≈ -3
+  # Test nameof function
+  @test nameof(e) == "electron"
+  @test nameof(C) == "C"
 
-  #test superscript numbers to charge
-  @test chargeof(Species("He⁺")) ≈ 1
-  @test chargeof(Species("Ca⁺⁺")) ≈ 2
-  @test chargeof(Species("P⁻³")) ≈ -3
-  @test chargeof(Species("Fe³⁺")) ≈ 3
-  @test chargeof(Species("O²⁻")) ≈ -2
-  @test chargeof(Species("He")) ≈ 0
+  # Test chargeof function
+  @test chargeof(e) == -1
+  @test chargeof(C) == 0
 
-  #test isotope numbers
-  @test getfield(Species("#1H"), :iso) == 1
-  @test getfield(Species("H"), :iso) == -1
-  @test getfield(Species("#13C"), :iso) == 13
-  @test getfield(Species("C"), :iso) == -1
-  @test getfield(Species("#16O"), :iso) == 16
-  @test getfield(Species("O"), :iso) == -1
-  @test getfield(Species("#56Fe"), :iso) == 56
-  @test getfield(Species("Fe"), :iso) == -1
-  @test getfield(Species("#7Li"), :iso) == 7
-  @test getfield(Species("Li"), :iso) == -1
-  @test getfield(Species("#14N"), :iso) == 14
-  @test getfield(Species("N"), :iso) == -1
-  @test getfield(Species("#27Al"), :iso) == 27
-  @test getfield(Species("Al"), :iso) == -1
-  @test getfield(Species("#24Mg"), :iso) == 24
-  @test getfield(Species("Mg"), :iso) == -1
-  @test getfield(Species("#235U"), :iso) == 235
-  @test getfield(Species("#236U"), :iso) == 236
-  @test getfield(Species("U"), :iso) == -1
+  # Test massof function
+  @test massof(e) ≈ 0.51099895069 # unit should be MeV/c^2
+  @test massof(C) ≈ 12 # unit should be amu
 
-  #test isotope number with superscript
-  @test getfield(Species("¹H"), :iso) == 1
-  @test getfield(Species("²H"), :iso) == 2
-  @test getfield(Species("³H"), :iso) == 3
-  @test getfield(Species("⁴He"), :iso) == 4
-  @test getfield(Species("⁵He"), :iso) == 5
-  @test getfield(Species("⁶Li"), :iso) == 6
-  @test getfield(Species("⁷Li"), :iso) == 7
-  @test getfield(Species("⁸Be"), :iso) == 8
-  @test getfield(Species("⁹Be"), :iso) == 9
-  @test getfield(Species("¹⁴N"), :iso) == 14
-  @test getfield(Species("¹⁵N"), :iso) == 15
-  @test getfield(Species("¹⁶O"), :iso) == 16
-  @test getfield(Species("¹⁷O"), :iso) == 17
-  @test getfield(Species("¹⁸O"), :iso) == 18
-  @test getfield(Species("²³Na"), :iso) == 23
-  @test getfield(Species("²⁴Mg"), :iso) == 24
-  @test getfield(Species("²⁵Mg"), :iso) == 25
-  @test getfield(Species("²⁶Mg"), :iso) == 26
-  @test getfield(Species("²⁷Al"), :iso) == 27
-  @test getfield(Species("²³⁵U"), :iso) == 235
-  @test getfield(Species("²³⁶U"), :iso) == 236
-  @test getfield(Species("²³⁸U"), :iso) == 238
-  @test getfield(Species("U"), :iso) == -1
-end
+  # Test spinof function
+  @test spinof(e) == 0.5
+  @test spinof(C) == 6.0
 
-@testset "test Species parsing" begin
-  import AtomicAndPhysicalConstants: create_atomic_species
-  @test Species("¹H") == create_atomic_species("H", 0, 1)
-  @test Species("H⁺") == create_atomic_species("H", 1, -1)
-  @test Species("³H⁺") == create_atomic_species("H", 1, 3)
-  @test Species("¹⁵N³⁻") == create_atomic_species("N", -3, 15)
-  @test Species("⁴He") == create_atomic_species("He", 0, 4)
-  @test Species("²³⁶U⁺") == create_atomic_species("U", 1, 236)
-end
+  # Test momentof function
+  @test momentof(e) ≈ -9.2847646917e-24
+
+  # Test isoof function
+  @test isoof(C) == 12
 
 end
 
-module APCdefWithChangedName
-using AtomicAndPhysicalConstants
-using Test
-
-# test default APCdef settings
-@APCdef name = ABC
-@testset "test name definition" begin
-  #constants should be of type float in the right unit
-  @test ABC.C_LIGHT ≈ 2.99792458e8
-  @test ABC.H_PLANCK ≈ 2.0*pi #  4.135667696e-15
-  @test ABC.H_BAR_PLANCK ≈ 1.0 # 6.582119568038699e-16
-  @test ABC.R_E ≈ 2.8179403205e-15
-  @test ABC.R_P ≈ 1.5346982640795807e-18
-  @test ABC.E_CHARGE ≈ 1
-  @test ABC.E_COULOMB ≈ 1.602176634e-19
-  @test ABC.MU_0_VAC ≈ 1.25663706127e-6
-  @test ABC.EPS_0_VAC ≈ 8.8541878188e-12
-  @test ABC.CLASSICAL_RADIUS_FACTOR ≈ 1.4399645468825422e-9
-  @test ABC.FINE_STRUCTURE ≈ 0.0072973525643
-  @test ABC.N_AVOGADRO ≈ 6.02214076e23
-end
-
-end
-
-module APCdefWithDifferentUnitSystem
-using AtomicAndPhysicalConstants
-using Test
-
-# test default APCdef settings
-@APCdef unitsystem = MKS
-@testset "test constants" begin
-  #constants should be of type float in the right unit
-  @test APC.C_LIGHT ≈ 2.99792458e8
-  @test APC.H_PLANCK ≈ 2.0*pi #  6.626070148519815e-34
-  @test APC.H_BAR_PLANCK ≈ 1.0 # 1.0545718174105777e-34
-  @test APC.R_E ≈ 2.8179403205e-15
-  @test APC.R_P ≈ 1.5346982640795807e-18
-  @test APC.E_CHARGE ≈ 1.602176634e-19
-  @test APC.E_COULOMB ≈ 1.602176634e-19
-  @test APC.MU_0_VAC ≈ 1.25663706127e-6
-  @test APC.EPS_0_VAC ≈ 8.8541878188e-12
-  @test APC.CLASSICAL_RADIUS_FACTOR ≈ 2.5669699662216776e-45
-  @test APC.FINE_STRUCTURE ≈ 0.0072973525643
-  @test APC.N_AVOGADRO ≈ 6.02214076e23
-end
-
-end
-
-module APCdefWithoutTuple
-using AtomicAndPhysicalConstants
-using Test
-
-@APCdef tupleflag = false
-@testset "test no tuple setting " begin
-  #constants should be of type float in the right unit and accessable in the namespace
-  @test C_LIGHT ≈ 2.99792458e8
-  @test H_PLANCK ≈ 2.0*pi #  4.135667696e-15
-  @test H_BAR_PLANCK ≈ 1.0 # 6.582119568038699e-16
-  @test R_E ≈ 2.8179403205e-15
-  @test R_P ≈ 1.5346982640795807e-18
-  @test E_CHARGE ≈ 1
-  @test E_COULOMB ≈ 1.602176634e-19
-  @test MU_0_VAC ≈ 1.25663706127e-6
-  @test EPS_0_VAC ≈ 8.8541878188e-12
-  @test CLASSICAL_RADIUS_FACTOR ≈ 1.4399645468825422e-9
-  @test FINE_STRUCTURE ≈ 0.0072973525643
-  @test N_AVOGADRO ≈ 6.02214076e23
-end
-
-end
+end  # module

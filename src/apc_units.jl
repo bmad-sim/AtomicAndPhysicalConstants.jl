@@ -2,7 +2,7 @@
 
 module unitalias
 using Unitful
-@unit amu "amu" dalton 1.0 * u"u" false
+@unit amu "amu" amu 1.0 * u"u" false
 @unit e "e" elementary_charge 1.0 * u"q" false
 @unit h_bar "h_bar" reduced_planck_constant 1.0 * u"ħ" false
 end
@@ -14,34 +14,34 @@ using .unitalias
 
 
 struct apc_units
-baryon_mass::Unitful.Units
-atomic_mass::Unitful.Units
-electric_charge::Unitful.Units
-length::Unitful.Units
-magnetic_field::Unitful.Units
-velocity::Unitful.Units
-energy::Unitful.Units
-magnetic_moment::Unitful.Units
-action::Unitful.Units
-permittivity::Unitful.Units
-permeability::Unitful.Units
+  baryon_mass::Unitful.Units
+  atomic_mass::Unitful.Units
+  electric_charge::Unitful.Units
+  length::Unitful.Units
+  magnetic_field::Unitful.Units
+  velocity::Unitful.Units
+  energy::Unitful.Units
+  magnetic_moment::Unitful.Units
+  action::Unitful.Units
+  permittivity::Unitful.Units
+  permeability::Unitful.Units
 
-  function apc_units(; 
-                      baryon_mass = u"MeV/c^2", atomic_mass = u"amu", 
-                      electric_charge = u"e", length = u"m", magnetic_field = u"T",
-                      magnetic_moment = u"J/T", velocity = u"m/s", 
-                      energy = u"MeV", action = u"J*s", 
-                      permittivity = u"F/m", permeability = u"N/A^2"
-                    )
+  function apc_units(;
+    baryon_mass=u"MeV/c^2", atomic_mass=u"amu",
+    electric_charge=u"e", length=u"m", magnetic_field=u"T",
+    magnetic_moment=u"J/T", velocity=u"m/s",
+    energy=u"MeV", action=u"J*s",
+    permittivity=u"F/m", permeability=u"N/A^2"
+  )
 
 
 
 
     if dimension(baryon_mass) == dimension(u"eV")
-      baryon_mass = baryon_mass/u"c^2" 
+      baryon_mass = baryon_mass / u"c^2"
     end
     if dimension(atomic_mass) == dimension(u"eV")
-      atomic_mass = atomic_mass/u"c^2"
+      atomic_mass = atomic_mass / u"c^2"
     end
 
     if dimension(baryon_mass) != dimension(u"kg")
@@ -78,15 +78,15 @@ permeability::Unitful.Units
       error("permeability has been given units with improper dimensions.")
     end
 
-    new(baryon_mass, atomic_mass, electric_charge, length, 
-        magnetic_field, velocity, energy, magnetic_moment, 
-        action, permittivity, permeability)
+    new(baryon_mass, atomic_mass, electric_charge, length,
+      magnetic_field, velocity, energy, magnetic_moment,
+      action, permittivity, permeability)
   end
 end
 
 
 
-const accelerator_units = apc_units(baryon_mass = u"eV/c^2", energy = u"eV")
+const accelerator_units = apc_units(baryon_mass=u"eV/c^2", energy=u"eV")
 
 
 const current_units = Ref(accelerator_units)
