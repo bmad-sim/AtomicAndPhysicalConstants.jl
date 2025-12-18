@@ -9,7 +9,7 @@
 #####################################################################
 
 
-CODATA2006 = CODATA_release(
+const CODATA2006 = CODATA_release(
 
 #######################################
 # constants with dimension [mass]

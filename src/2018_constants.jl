@@ -9,7 +9,7 @@
 #####################################################################
 
 
-CODATA2018 = CODATA_release(
+const CODATA2018 = CODATA_release(
 
 #######################################
 # constants with dimension [mass]
