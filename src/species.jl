@@ -12,7 +12,9 @@ Species() = new("Null", 0, 0.0, 0.0, 0.0, 0, Kind.NULL)
 
 
 
-function Species(speciesname::String)
+function Species(speciesname::String;
+                CODATAvals::CODATA_release = CODATA2022,
+                SUBATOMIC_SPECIES::Dict{String, SubatomicSpecies} = SUBATOMIC_SPECIES)
   
   
   # if the name is "Null", return a null Species
@@ -28,7 +30,7 @@ function Species(speciesname::String)
   # if the particle is an anti-particle, remove the prefix for easier lookup
   name = replace(name, anti_regEx => "")
 
-  for (k, _) in SUBATOMIC_SPECIES[]
+  for (k, _) in SUBATOMIC_SPECIES
     # whether the particle is in the subatomic species dictionary
     if occursin(k, name)
       # whether the particle name only contains characters in the subatomic species dictionary
@@ -50,23 +52,7 @@ function Species(speciesname::String)
   # the first index of the atomic symbol
   index::Int = 0
 
-  function normalize_superscripts(str::String)
-    buf = IOBuffer()
-    for c in str
-      if haskey(SUPERSCRIPT_MAP, c)
-        print(buf, SUPERSCRIPT_MAP[c])  # write digit
-      elseif c == '⁺' # superscript +
-        print(buf, '+')  # write ASCII +
-      elseif c == '⁻' # superscript -
-        print(buf, '-')  # write ASCII -
-      elseif c == ' ' # remove spaces
-        continue
-      else
-        print(buf, c)  # preserve original char
-      end
-    end
-    return String(take!(buf))
-  end
+
   name = normalize_superscripts(name)
 
   # if the particle is not in the subatomic species dictionary, check the atomic species dictionary
@@ -106,8 +92,7 @@ function Species(speciesname::String)
   # now try to parse the charge
   right::String = name[index+length(atom):end]
   charge::Int64 = 0
-  chargenum::Int64 = 0
-  !(occursin("+", right) && occursin("-", right)) || error("You cannot have opposite charge in $speciesname")
+  !(occursin("+", right) && occursin("-", right)) || error("$speciesname has an ambiguously defined charge value.")
 
   #if the charge is positive
   if occursin("+", right)
@@ -125,7 +110,7 @@ function Species(speciesname::String)
   elseif occursin("-", right) #if the charge is negative
     charge = -count(==('-'), right)
     #either put the charge symbol in the front or the back
-    right[1] == '-' || right[end] == '-' || error("You should only put the charge symbol in the front or the back of the atomic symbol in $speciesname")
+    right[1] == '-' || right[end] == '-' || error("$speciesname has an incorrectly stated charge value.")
     # remove the charge symbol
     right = replace(right, "-" => "")
 
@@ -134,12 +119,12 @@ function Species(speciesname::String)
     end
   end
   # when the charge symbol is removed, the rest of the string should be a number
-  all(isdigit, right) || error("The charge specification should only include '+', '-' and number")
+  all(isdigit, right) || error("The charge specification should only include '+' or '-', and numerical value.")
 
   if anti
-    return atomic_particle("anti-" * atom, charge, iso)
+    return atomic_particle("anti-" * atom, charge, iso, CODATAvals, SUBATOMIC_SPECIES)
   else
-    return atomic_particle(atom, charge, iso)
+    return atomic_particle(atom, charge, iso, CODATAvals, SUBATOMIC_SPECIES)
   end
 
 

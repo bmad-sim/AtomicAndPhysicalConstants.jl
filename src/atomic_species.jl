@@ -49,7 +49,9 @@ Create a species struct for an atomic species with name=name, charge=charge and 
 """
 atomic_particle
 
-function atomic_particle(name::String, charge::Int, iso::Int)
+function atomic_particle(name::String, charge::Int, iso::Int,
+                          CODATAvals, SUBATOMIC_SPECIES)
+
   # whether the atom is anti-atom
   anti_atom::Bool = occursin(anti_regEx, name)
   # if the particle is an anti-particle, remove the prefix for easier lookup
@@ -60,16 +62,16 @@ function atomic_particle(name::String, charge::Int, iso::Int)
   # grab the particular element from the stack
   atom::AtomicSpecies = ATOMIC_SPECIES[AS]
   # convert the mass of the selected isotope from amu to MeV
-  nmass::Float64 = uconvert(u"MeV/c^2", atom.mass[iso]*u"u").val
+  nmass::Float64 = atom.mass[iso] * CODATAvals.eV_per_amu
   
   spin::Float64 = 0.0
 
   mass::Float64 = begin
     if anti_atom == false
-      nmass + SUBATOMIC_SPECIES[]["electron"].mass * abs(charge)
+      nmass + SUBATOMIC_SPECIES["electron"].mass * abs(charge)
       # for a nominal atom, add 1 electron mass for every - charge
     else
-      nmass + SUBATOMIC_SPECIES[]["positron"].mass * abs(charge)
+      nmass + SUBATOMIC_SPECIES["positron"].mass * abs(charge)
       # for an anti-atom, add 1 positron mass for every + charge
     end
   end

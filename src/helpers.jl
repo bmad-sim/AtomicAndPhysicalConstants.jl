@@ -65,20 +65,39 @@ characterizing the record's unit in SI
 """
 to_openPMD
 
-function to_openPMD(val::Unitful.Quantity)
-  # convert the type to DynamicQuantities, which automatically converts to SI units
-  # multiplying by 1.0 ensures that the value is converted to a float
-  v = convert(DynamicQuantities.Quantity, val * 1.0)
-  return (
-    DynamicQuantities.ustrip(v),
-    (
-      DynamicQuantities.ulength(v),
-      DynamicQuantities.umass(v),
-      DynamicQuantities.utime(v),
-      DynamicQuantities.ucurrent(v),
-      DynamicQuantities.utemperature(v),
-      DynamicQuantities.uamount(v),
-      DynamicQuantities.uluminosity(v)
-    )
-  )
+# function to_openPMD(val::Unitful.Quantity)
+#   # convert the type to DynamicQuantities, which automatically converts to SI units
+#   # multiplying by 1.0 ensures that the value is converted to a float
+#   v = convert(DynamicQuantities.Quantity, val * 1.0)
+#   return (
+#     DynamicQuantities.ustrip(v),
+#     (
+#       DynamicQuantities.ulength(v),
+#       DynamicQuantities.umass(v),
+#       DynamicQuantities.utime(v),
+#       DynamicQuantities.ucurrent(v),
+#       DynamicQuantities.utemperature(v),
+#       DynamicQuantities.uamount(v),
+#       DynamicQuantities.uluminosity(v)
+#     )
+#   )
+# end
+
+
+function normalize_superscripts(str::String)
+  buf = IOBuffer()
+  for c in str
+    if haskey(SUPERSCRIPT_MAP, c)
+      print(buf, SUPERSCRIPT_MAP[c])  # write digit
+    elseif c == '⁺' # superscript +
+      print(buf, '+')  # write ASCII +
+    elseif c == '⁻' # superscript -
+      print(buf, '-')  # write ASCII -
+    elseif c == ' ' # remove spaces
+      continue
+    else
+      print(buf, c)  # preserve original char
+    end
+  end
+  return String(take!(buf))
 end

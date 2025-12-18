@@ -137,10 +137,3 @@ end
 
 
 
-@kwdef struct conversion_consts
-  g_per_amu::Float32
-  eV_per_amu::Float32
-  J_per_eV::Float32
-  e_coulomb::Float32
-  g_per_eV::Float32
-end

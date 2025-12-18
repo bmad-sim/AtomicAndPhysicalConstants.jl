@@ -103,4 +103,19 @@ const eps_0_vac::Float32 = 8.8541878188e-12
 const mu_0_vac::Float32 = 1.25663706127e-6
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
+const g_per_amu::Float32 = 1.66053906892e-24
+# grams per standard atomic mass unit (dalton)
+
+const eV_per_amu::Float32 = 9.3149410372e8
+# eV/c^2 per standard atomic mass unit (dalton)
+
+const J_per_eV::Float32 = 1.602176634e-19
+# Joules per eV
+
+const e_coulomb::Float32 = 1.602176634e-19
+# elementary charge in coulombs per elementary charge
+
+const g_per_eV::Float32 = 1.78266192162790e-33
+# grams per eV/c^2
+
 const RELEASE_YEAR = 2022
