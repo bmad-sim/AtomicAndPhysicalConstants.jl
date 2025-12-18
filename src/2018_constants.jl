@@ -16,24 +16,24 @@ const CODATA2018 = CODATA_release(
 #######################################
 
 
-m_electron = 0.51099895069,
-# Electron Mass [MeV]/c^2
-m_proton = 9.382720894300001e2,
-# Proton Mass [MeV]/c^2
-m_neutron = 9.395654219399999e2,
-# Neutron Mass [MeV]/c^2
-m_muon = 1.056583755e2,
-# Muon Mass [MeV]/c^2
-m_helion = 2.80839161112e3,
-# Helion Mass He3 nucleus [MeV]/c^2
-m_deuteron = 1.875612945e3,
-# Deuteron Mass [MeV]/c^2
+m_electron = 0.51099895069e6,
+# Electron Mass [eV]/c^2
+m_proton = 9.382720894300001e8,
+# Proton Mass [eV]/c^2
+m_neutron = 9.395654219399999e8,
+# Neutron Mass [eV]/c^2
+m_muon = 1.056583755e8,
+# Muon Mass [eV]/c^2
+m_helion = 2.80839161112e9,
+# Helion Mass He3 nucleus [eV]/c^2
+m_deuteron = 1.875612945e9,
+# Deuteron Mass [eV]/c^2
 
 # constants mysteriously missing from the release
 # picked up from PDG
-m_pion_0 = 1.349768277676847e2,
+m_pion_0 = 1.349768277676847e8,
 # uncharged pion mass [eV]/c^2
-m_pion_charged = 1.3957039098368132e2,
+m_pion_charged = 1.3957039098368132e8,
 # charged pion mass [eV]/c^2
 
 
