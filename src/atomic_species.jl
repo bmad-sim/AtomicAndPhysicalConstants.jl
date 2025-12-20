@@ -62,11 +62,11 @@ function atomic_particle(name::String, charge::Int32, iso::Int32,
   # grab the particular element from the stack
   atom::AtomicSpecies = ATOMIC_SPECIES[AS]
   # convert the mass of the selected isotope from amu to MeV
-  nmass::Float32 = atom.mass[iso] * CODATAvals.eV_per_amu
+  nmass::Float64 = atom.mass[iso] * CODATAvals.eV_per_amu
   
-  spin::Float32 = 0.0
+  spin::Float64 = 0.0
 
-  mass::Float32 = begin
+  mass::Float64 = begin
     if anti_atom == false
       nmass + SUBATOMIC_SPECIES["electron"].mass * abs(charge)
       # for a nominal atom, add 1 electron mass for every - charge
@@ -76,7 +76,7 @@ function atomic_particle(name::String, charge::Int32, iso::Int32,
     end
   end
   if iso == -1 # if it's the average, make an educated guess at the spin
-    partonum::Float32 = round(atom.mass[iso])
+    partonum::Float64 = round(atom.mass[iso])
     if anti_atom == false
       spin = 0.5 * (partonum + (atom.Z - charge))
     else
@@ -88,10 +88,10 @@ function atomic_particle(name::String, charge::Int32, iso::Int32,
   # return the object to track
   if anti_atom == false
     return Species(AS, charge, mass,
-      spin, Float32(0.0), iso, Kind.ATOM)
+      spin, Float64(0.0), iso, Kind.ATOM)
   else
     return Species("anti-" * AS, charge, mass,
-      spin, Float32(0.0), iso, Kind.ATOM)
+      spin, Float64(0.0), iso, Kind.ATOM)
   end
 
 end

@@ -105,7 +105,7 @@ c_light = 2.99792458e8,
 h_planck = 6.62607015e-34,
 # Planck's constant [J*s]
 h_bar_planck = 6.62607015e-34 / 2 / pi,
-# h_planck/twopi [eV*s]
+# h_planck/twopi [J*s]
 classical_radius_factor = 2.8179403205e-15 * 0.51099895069, # r_e * m_electron,
 # e^2 / (4 pi eps_0) = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.

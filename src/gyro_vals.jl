@@ -47,7 +47,7 @@ end;
 Compute and deliver the gyromagnetic anomaly for a lepton given its g factor
 
 # Arguments:
-1. `gs::Float32': the g_factor for the particle
+1. `gs::Float64': the g_factor for the particle
 """
 gyromagnetic_anomaly
 
@@ -74,7 +74,7 @@ end;
 
 
 """
-    g_nucleon(gs::Float32, Z::Int, mass::Float32)
+    g_nucleon(gs::Float64, Z::Int, mass::Float64)
 
 Compute and deliver the gyromagnetic anomaly for a baryon given its g factor
 
