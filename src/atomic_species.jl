@@ -49,7 +49,7 @@ Create a species struct for an atomic species with name=name, charge=charge and 
 """
 atomic_particle
 
-function atomic_particle(name::String, charge::Int32, iso::Int32,
+function atomic_particle(name::String, charge::Int, iso::Int,
                           CODATAvals, SUBATOMIC_SPECIES)
 
   # whether the atom is anti-atom
@@ -88,10 +88,10 @@ function atomic_particle(name::String, charge::Int32, iso::Int32,
   # return the object to track
   if anti_atom == false
     return Species(AS, charge, mass,
-      spin, Float64(0.0), iso, Kind.ATOM)
+      spin, 0.0, iso, Kind.ATOM)
   else
     return Species("anti-" * AS, charge, mass,
-      spin, Float64(0.0), iso, Kind.ATOM)
+      spin, 0.0, iso, Kind.ATOM)
   end
 
 end

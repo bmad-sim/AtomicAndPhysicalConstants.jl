@@ -131,7 +131,7 @@ g_per_eV::Float64
 # grams per electronvolt/c^2
 
 
-RELEASE_YEAR::Int32
+RELEASE_YEAR::Int
 # release year for posterity
 end
 

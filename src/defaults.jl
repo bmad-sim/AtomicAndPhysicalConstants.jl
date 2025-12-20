@@ -118,4 +118,4 @@ const e_coulomb::Float64 = 1.602176634e-19
 const g_per_eV::Float64 = 1.78266192162790e-33
 # grams per eV/c^2
 
-const RELEASE_YEAR = 2022
+const RELEASE_YEAR::Int = 2022

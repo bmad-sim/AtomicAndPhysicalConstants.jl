@@ -77,18 +77,18 @@ function subatomic_particle(name::String)
       particle.mass,
       particle.spin,
       particle.moment,
-      Int32(0), Kind.PHOTON)
+      Int(0), Kind.PHOTON)
   elseif name in leptons
     return Species(name, particle.charge,
       particle.mass,
       particle.spin,
       particle.moment,
-      Int32(0), Kind.LEPTON)
+      Int(0), Kind.LEPTON)
   else
     return Species(name, particle.charge,
       particle.mass,
       particle.spin,
       particle.moment,
-      Int32(0), Kind.HADRON)
+      Int(0), Kind.HADRON)
   end
 end
