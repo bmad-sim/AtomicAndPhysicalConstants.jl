@@ -123,15 +123,15 @@ Struct AtomicSpecies
 ## Fields:
 - `Z`            -- Integer atomic number (i.e. protons in the nucleus)
 - `species_name` -- String periodic table symbol for element
-- `mass`   -- > Dict{Int, Float64}(isotope::Int, mass::Float64) isotope masses
+- `mass`   -- > Dict{Int, Float32}(isotope::Int, mass::Float32) isotope masses
                    > key -1 refers to the average common atomic mass, other keys refer to 
                    > the number of nucleons present in the isotope <
 
 ## Examples:
-- `AtomicSpeciesData(3, "Li", Dict(Int64, Float64)(-1 => 6.9675, 3 => 3.0308, 4 => 4.02719, 
+- `AtomicSpeciesData(3, "Li", Dict(Int32, Float32)(-1 => 6.9675, 3 => 3.0308, 4 => 4.02719, 
     5 => 5.012538, 6 => 6.0151228874, 7 => 7.0160034366, 8 => 8.022486246, 9 => 9.02679019, 
     10 => 10.035483, 11 => 11.04372358, 12 => 12.052517, 13 => 13.06263))`
-- `AtomicSpeciesData(47, "Ag", Dict(Int64, Float64)(-1 => 107.8682, 92 => 92.95033, 
+- `AtomicSpeciesData(47, "Ag", Dict(Int32, Float32)(-1 => 107.8682, 92 => 92.95033, 
     93 => 93.94373, 94 => 94.93602, 95 => 95.930744, 96 => 96.92397, 97 => 97.92156, 
     98 => 98.9176458, 99 => 99.9161154, 100 => 100.912684, 101 => 101.9117047, 
     102 => 102.9089631, 103 => 103.9086239, 104 => 104.9065256, 105 => 105.9066636, 

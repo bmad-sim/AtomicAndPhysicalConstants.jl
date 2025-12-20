@@ -18,7 +18,7 @@ end; export getproperty
     A dictionary mapping superscript characters to their corresponding integer values.
     This is used to convert superscript numbers in species names to their integer values.
 """
-const SUPERSCRIPT_MAP = Dict{Char,Int64}(
+const SUPERSCRIPT_MAP = Dict{Char,Int32}(
   '⁰' => 0,
   '¹' => 1,
   '²' => 2,
@@ -41,7 +41,7 @@ superscript characters for each digit in the integer.
 """
 find_superscript
 
-function find_superscript(num::Int64)
+function find_superscript(num::Int32)
   digs = reverse(digits(num))
   sup::String = ""
   for n ∈ digs

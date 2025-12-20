@@ -4,7 +4,7 @@
 
 
 # null constructor
-Species() = new("Null", 0, 0.0, 0.0, 0.0, 0, Kind.NULL)
+Species() = new("Null", Int32(0), Float32(0.0), Float32(0.0), Float32(0.0), Int32(0), Kind.NULL)
 
 #####################################################################
 #####################################################################
@@ -74,7 +74,7 @@ function Species(speciesname::String;
   left::String = name[1:index-1]
 
   # default isotope is abundance avg
-  iso::Int = -1
+  iso::Int32 = -1
 
   #if the user choose to put isotope in the front 
   if left != ""
@@ -83,7 +83,7 @@ function Species(speciesname::String;
       left = left[2:end]
     end
     # convert the isotope to an integer
-    iso = parse(Int64, left)
+    iso = parse(Int32, left)
     haskey(ATOMIC_SPECIES[atom].mass, iso) || error("$iso is not a valid isotope of $atom")
   end
 
@@ -91,7 +91,7 @@ function Species(speciesname::String;
 
   # now try to parse the charge
   right::String = name[index+length(atom):end]
-  charge::Int64 = 0
+  charge::Int32 = 0
   !(occursin("+", right) && occursin("-", right)) || error("$speciesname has an ambiguously defined charge value.")
 
   #if the charge is positive
@@ -103,7 +103,7 @@ function Species(speciesname::String;
     right = replace(right, "+" => "")
 
     if right != ""
-      charge = parse(Int64, right)
+      charge = parse(Int32, right)
     end
 
 
@@ -115,7 +115,7 @@ function Species(speciesname::String;
     right = replace(right, "-" => "")
 
     if right != ""
-      charge = -parse(Int64, right)
+      charge = -parse(Int32, right)
     end
   end
   # when the charge symbol is removed, the rest of the string should be a number
