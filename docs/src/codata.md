@@ -16,11 +16,11 @@ the fine structure constant, and various magnetic moment anomalies.
 ## Conversion Constants 
 
 Within CODATAstruct, the following conversion factors are defined:
-Grams per Dalton: g_per_amu 
-Electronvolts per Dalton: eV_per_amu
-Joules per Electronvolt: J_per_eV
-Elementary Charge in Coulombs: e_coulomb
-Grams per Elevtronvolt: g_per_eV
+* Grams per Dalton: g_per_amu
+* Electronvolts per Dalton: eV_per_amu
+* Joules per Electronvolt: J_per_eV
+* Elementary Charge in Coulombs: e_coulomb
+* Grams per Elevtronvolt: g_per_eV
 
 ## Release Year 
 The release year is also stored for posterity under the name RELEASE_YEAR and is of type Int.
