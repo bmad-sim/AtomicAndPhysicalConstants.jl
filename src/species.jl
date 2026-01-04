@@ -6,6 +6,11 @@
 # null constructor
 Species() = new("Null", 0, 0.0, 0.0, 0.0, 0, Kind.NULL)
 
+# vector of Null names
+const nulls::Vector{String} = ["null", ""]
+# anti::Bool = false
+
+left::String = ""
 #####################################################################
 #####################################################################
 
@@ -18,32 +23,32 @@ function Species(speciesname::String;
   
   
   # if the name is "Null", return a null Species
-  if speciesname == "Null" || speciesname == "null" || speciesname == ""
+  if speciesname in nulls
     return Species()
   end
 
-  name::String = speciesname
+  # name::String = lowercase(speciesname)
 
   # by checking for the anti- prefix, we can determine if the particle is an anti-particle
   # anti is true for anti-particles
-  anti::Bool = occursin(anti_regEx, name)
+  # anti = occursin(anti_regEx, name)
   # if the particle is an anti-particle, remove the prefix for easier lookup
-  name = replace(name, anti_regEx => "")
+  # name = replace(name, anti_regEx => "")
 
   for (k, _) in SUBATOMIC_SPECIES
     # whether the particle is in the subatomic species dictionary
-    if occursin(k, name)
+    if k == speciesname
       # whether the particle name only contains characters in the subatomic species dictionary
       # delete all the names and spaces, there should be nothing left
-      length(k) == length(name) || "$speciesname should contain only the name of the subatomic particle"
-      if anti
-        if k == "electron"
-          return subatomic_particle("positron")
-        end
-        return subatomic_particle("anti-" * k)
-      else
+      # length(k) == length(name) || "$speciesname should contain only the name of the subatomic particle"
+      # if anti
+      #   if k == "electron"
+      #     return subatomic_particle("positron")
+      #   end
+      #   return subatomic_particle("anti-" * k)
+      # else
         return subatomic_particle(k)
-      end
+      # end
     end
   end
 
@@ -51,8 +56,13 @@ function Species(speciesname::String;
   atom::String = ""
   # the first index of the atomic symbol
   index::Int = 0
-
-
+  anti = occursin(anti_regEx, speciesname)
+  # if the particle is an anti-particle, remove the prefix for easier lookup
+  if !anti
+    name = speciesname
+  else
+    name = replace(name, anti_regEx => "")
+  end
   name = normalize_superscripts(name)
 
   # if the particle is not in the subatomic species dictionary, check the atomic species dictionary
@@ -67,17 +77,14 @@ function Species(speciesname::String;
   # atom should not be empty
   atom != "" || error("you did not specify an atomic species or subatomic species in $speciesname")
 
-
-  #check for the isotope 
-
-  #the substring before the symbol
-  left::String = name[1:index-1]
-
   # default isotope is abundance avg
   iso::Int = -1
+  #check for the isotope 
+  #if the user choose to put isotope in the front
+  if index != 1
+    #the substring before the symbol
+    left::String = name[1:index-1]
 
-  #if the user choose to put isotope in the front 
-  if left != ""
     #if the left string starts with #, delete the #
     if left[1] == '#'
       left = left[2:end]
@@ -85,41 +92,42 @@ function Species(speciesname::String;
     # convert the isotope to an integer
     iso = parse(Int, left)
     haskey(ATOMIC_SPECIES[atom].mass, iso) || error("$iso is not a valid isotope of $atom")
-  end
 
+  end
 
 
   # now try to parse the charge
   right::String = name[index+length(atom):end]
-  charge::Int = 0
-  !(occursin("+", right) && occursin("-", right)) || error("$speciesname has an ambiguously defined charge value.")
+  !(occursin('+', right) && occursin('-', right)) || error("$speciesname has an ambiguously defined charge value.")
+  charge::Int = chargeparse(right)
+  
 
-  #if the charge is positive
-  if occursin("+", right)
-    charge = count(==('+'), right)
-    #either put the charge symbol in the front or the back
-    right[1] == '+' || right[end] == '+' || error("You should only put the charge symbol in the front or the back of the atomic symbol in $speciesname")
-    # remove the charge symbol
-    right = replace(right, "+" => "")
+  # #if the charge is positive
+  # if occursin("+", right)
+  #   charge = count(==('+'), right)
+  #   #either put the charge symbol in the front or the back
+  #   right[1] == '+' || right[end] == '+' || error("You should only put the charge symbol in the front or the back of the atomic symbol in $speciesname")
+  #   # remove the charge symbol
+  #   right = replace(right, "+" => "")
 
-    if right != ""
-      charge = parse(Int, right)
-    end
+  #   if right != ""
+  #     charge = parse(Int, right)
+  #   end
 
 
-  elseif occursin("-", right) #if the charge is negative
-    charge = -count(==('-'), right)
-    #either put the charge symbol in the front or the back
-    right[1] == '-' || right[end] == '-' || error("$speciesname has an incorrectly stated charge value.")
-    # remove the charge symbol
-    right = replace(right, "-" => "")
+  # elseif occursin("-", right) #if the charge is negative
+  #   charge = -count(==('-'), right)
+  #   #either put the charge symbol in the front or the back
+  #   right[1] == '-' || right[end] == '-' || error("$speciesname has an incorrectly stated charge value.")
+  #   # remove the charge symbol
+  #   right = replace(right, "-" => "")
 
-    if right != ""
-      charge = -parse(Int, right)
-    end
-  end
-  # when the charge symbol is removed, the rest of the string should be a number
-  all(isdigit, right) || error("The charge specification should only include '+' or '-', and numerical value.")
+  #   if right != ""
+  #     charge = -parse(Int, right)
+  #   end
+  # end
+  # # when the charge symbol is removed, the rest of the string should be a number
+  # all(isdigit, right) || error("The charge specification should only include '+' or '-', and numerical value.")
 
   if anti
     return atomic_particle("anti-" * atom, charge, iso, CODATAvals, SUBATOMIC_SPECIES)

@@ -101,3 +101,27 @@ function normalize_superscripts(str::String)
   end
   return String(take!(buf))
 end
+
+
+function chargeparse(c::String)
+
+  if c[1] == '+'
+    if c[end] == '+' && length(c) ≤ 3
+      return Int(length(c))
+    elseif occursin(mag_regEx, c)
+      return parse(Int, c)
+    else
+      error("The given charge $c is not formatted correctly.")
+    end
+  elseif c[1] == '-'
+    if c[end] == '-' && length(c) ≤ 3
+      return -1*Int(length(c))
+    elseif occursin(mag_regEx, c)
+      return parse(Int, c)
+    else
+      error("The given charge $c is not formatted correctly.")
+    end
+  else
+    error("Charge specifier must begin with '+' or '-'")
+  end
+end

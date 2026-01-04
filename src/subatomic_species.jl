@@ -6,7 +6,7 @@
 
 #####################################################################
 #####################################################################
-
+const leptons::Vector{String} = ["electron", "positron", "muon", "anti-muon"]
 
 """
     subatomic_species()
@@ -68,9 +68,9 @@ Create a particle struct for a subatomic particle with name=name
 """
 subatomic_particle
 
-function subatomic_particle(name::String)
+function subatomic_particle(name::String)::Species
   # write the particle out directly
-  leptons = ["electron", "positron", "muon", "anti-muon"]
+  
   particle = SUBATOMIC_SPECIES[name]
   if name == "photon"
     return Species(name, particle.charge,
@@ -83,12 +83,12 @@ function subatomic_particle(name::String)
       particle.mass,
       particle.spin,
       particle.moment,
-      Int(0), Kind.LEPTON)
+      0, Kind.LEPTON)
   else
     return Species(name, particle.charge,
       particle.mass,
       particle.spin,
       particle.moment,
-      Int(0), Kind.HADRON)
+      0, Kind.HADRON)
   end
 end

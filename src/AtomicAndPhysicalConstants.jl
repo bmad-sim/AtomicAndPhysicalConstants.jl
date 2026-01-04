@@ -10,7 +10,8 @@ using JSON
 # NULL is for null species (placeholder species)
 @enumx Kind ATOM HADRON LEPTON PHOTON NULL
 # precompile regEx
-const anti_regEx = r"Anti\-|anti\-|Anti|anti"
+const anti_regEx = r"anti\-|anti"
+const mag_regEx = r"[0-9]|[0-9][0-9]|[0-9][0-9][0-9]"
 
 include("defaults.jl")
 include("CODATAstruct.jl")
