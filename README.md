@@ -11,8 +11,6 @@ julia> using Pkg; Pkg.add("AtomicAndPhysicalConstants.jl")
 julia> using AtomicAndPhysicalConstants
 ```
 
-The macro `@APCdef` initializes the APC package.
-@APCdef sets the units for physical constants, species mass and charge. It defines the physical constants and getter functions for species mass and charge with the proper unit and data. Documentation is  [here](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/).
 
 ```julia
 julia> @APCdef
