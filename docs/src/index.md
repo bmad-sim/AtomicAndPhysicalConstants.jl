@@ -1,67 +1,105 @@
 # AtomicAndPhysicalConstants.jl
 
-## Setup
+## Installation
 
-To use AtomicAndPhysicalConstants, like any Julia package, execute the commands:
+To use AtomicAndPhysicalConstants, install it like any Julia package:
 ```julia
-julia> using Pkg; Pkg.add("AtomicAndPhysicalConstants.jl")
-julia> using AtomicAndPhysicalConstants
+julia> using Pkg
+julia> Pkg.add("AtomicAndPhysicalConstants.jl")
 ```
 
-The macro `@APCdef` initializes the APC package.
-@APCdef sets the units for physical constants, species mass and charge. It defines the physical constants and getter functions for species mass and charge with the proper unit and data. Documentation is  [here](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/units/).
+## Quick Start
 
 ```julia
-julia> @APCdef
-julia> APC.C_LIGHT
-2.99792458e8
-julia> e = Species("electron")
-julia> massof(e)
-510998.95069
-```
+using AtomicAndPhysicalConstants
 
-Users have the options for choosing the return type (Float64, Unitful, or DynamicQuantities) and unit of the constants, see [this page](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/units/)
+# Access physical constants directly
+C_LIGHT          # 2.99792458e8 [m/s]
+H_PLANCK         # 6.62607015e-34 [J⋅s]
+M_ELECTRON       # 510998.95069 [eV/c²]
+FINE_STRUCTURE   # 0.0072973525643
+
+# Create species objects
+e = Species("electron")
+p = Species("proton")
+h = Species("H")
+h_ion = Species("H+")
+anti_p = Species("anti-proton")
+
+# Access species properties using helper functions (recommended)
+massof(e)        # 510998.95069 [eV/c²]
+chargeof(p)      # 1.0 [e]
+kindof(e)        # LEPTON
+g_spin(e)        # g-factor (dimensionless)
+```
 
 ## Introduction
 
-`AtomicAndPhysicalConstants.jl` (APC) provides a quick way to access information about different species and physical constants optimized for faster compile time and simulations.
+`AtomicAndPhysicalConstants.jl` provides a simple and efficient way to access physical constants and particle properties optimized for fast compile times and simulations.
 
-It is designed to provide atomic and physical constants including things like the speed of light, subatomic particle properties, atomic isotope properties, etc. 
+The package provides:
+- Fundamental physical constants (speed of light, Planck constant, etc.)
+- Subatomic particle properties (electrons, protons, muons, pions, etc.)
+- Atomic and isotope data for all elements
+- Support for ions and antiparticles
 
-Values are obtained from CODATA (Committee on Data of the International Science Council), NIST (National Institute of Standards and Technology), and PDG (Particle Data Group). This package enables users to access and customize units for the constants. 
-
-The package is compatible with Julia's `Unitful.jl` and `DynamicQuantities.jl` library for convenient unit manipulation.
-
-`AtomicAndPhysicalConstants.jl` has the following main features and advantages:
-
-1. **Simple Unit Manipulation**: Users can define the units they want to use in a simple and consistent way. `Unitful.jl` provides a simple way to do unit conversion and calculations.
-2. **Rigorous and Up-to-Date Data**: We uses the most updated values from creditable sources. We also provided the option to use past data for specific purposes.
-3. **Simple usage**: Users can access data of a wide range of particles and physic constants by simply defining a species with their name or call a variable in the namespace. 
+All values are sourced from **CODATA 2022**.
 
 ## Documentation
 
-Documentation is at 
+Full documentation is available at
 [https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl)
 
+## Working with Species
 
-## Defining Species
+`Species` is a structure that holds information about a particle or atom, including mass, charge, spin, magnetic moment, and g-factor.
 
-`Species` is a structure that holds information about a particle or atom, such as its mass, charge, spin, and other properties. It is designed to provide a convenient way to access and manipulate data related to different species in physics.
-
-The constructor `Species()` helps you create a structure with all the information of the species stored in it.
-
-```julia
-julia> e = Species("electron")
-julia> hydrogen = Species("H")
-```
-
-You could use getter functions to access its properties or directly calling its fields. 
+### Creating Species
 
 ```julia
-julia> massof(e)
-510998.95069
-julia> hydrogen.spin
-1.0 h_bar
+using AtomicAndPhysicalConstants
+
+# Subatomic particles
+electron = Species("electron")
+proton = Species("proton")
+muon = Species("muon")
+
+# Atomic species
+hydrogen = Species("H")
+carbon12 = Species("12C")
+carbon_ion = Species("C+3")
+
+# Antiparticles
+anti_proton = Species("anti-proton")
 ```
 
-See more about `Species()` constructors and getter functions [here](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/species/)
+### Accessing Properties
+
+The recommended way to access species properties is through helper functions:
+
+```julia
+e = Species("electron")
+
+# Using helper functions (recommended)
+massof(e)              # 510998.95069 [eV/c²]
+chargeof(e)            # -1.0 [e]
+kindof(e)              # LEPTON
+atomicnumberof(e)      # Mass number
+g_spin(e)              # g-factor (dimensionless)
+gyromagnetic_anomaly(e) # (g-2)/2
+isnullspecies(e)       # false
+```
+
+Alternatively, properties can be accessed directly as fields:
+
+```julia
+e.mass           # 510998.95069 [eV/c²]
+e.charge         # -1.0 [e]
+e.spin           # 0.5 [ħ]
+e.moment         # Magnetic moment [J/T]
+e.g_factor       # g-factor (dimensionless)
+e.kind           # LEPTON
+e.name           # "electron"
+```
+
+See the [Species](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/species/) page for more details on supported species and naming conventions.
