@@ -49,8 +49,9 @@ Create a species struct for an atomic species with name=name, charge=charge and 
 """
 atomic_particle
 
-function atomic_particle(name::String, charge::Int, iso::Int,
-                          CODATAvals::CODATA_release, SUBATOMIC_SPECIES::Dict{String,SubatomicSpecies})
+function atomic_particle(name::String, charge::Int, iso::Int;
+                          CODATAvals::CODATA_release = CODATA2022, 
+                          SUBATOMIC_SPECIES::Dict{String,SubatomicSpecies} = SUBATOMIC_SPECIES)
 
   # whether the atom is anti-atom
   anti_atom::Bool = occursin(anti_regEx, name)
