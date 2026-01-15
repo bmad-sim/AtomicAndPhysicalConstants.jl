@@ -130,9 +130,9 @@ function Species(speciesname::String;
   # all(isdigit, right) || error("The charge specification should only include '+' or '-', and numerical value.")
 
   if anti
-    return atomic_particle("anti-" * atom, charge, iso, CODATAvals, SUBATOMIC_SPECIES)
+    return atomic_particle("anti-" * atom, charge, iso, CODATAvals=CODATAvals, SUBATOMIC_SPECIES=SUBATOMIC_SPECIES)
   else
-    return atomic_particle(atom, charge, iso, CODATAvals, SUBATOMIC_SPECIES)
+    return atomic_particle(atom, charge, iso, CODATAvals=CODATAvals, SUBATOMIC_SPECIES=SUBATOMIC_SPECIES)
   end
 
 
