@@ -105,7 +105,9 @@ end
 
 function chargeparse(c::String)
 
-  if c[1] == '+'
+  if c == ""
+    return 0
+  elseif c[1] == '+'
     if c[end] == '+' && length(c) ≤ 3
       return Int(length(c))
     elseif occursin(mag_regEx, c)

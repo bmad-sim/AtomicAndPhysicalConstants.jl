@@ -18,14 +18,19 @@ const CODATA2022 = CODATA_release(
 
 m_electron = 0.51099895069e6,
 # Electron Mass [eV]/c^2
+
 m_proton = 9.382720894300001e8,
 # Proton Mass [eV]/c^2
+
 m_neutron = 9.395654219399999e8,
 # Neutron Mass [eV]/c^2
+
 m_muon = 1.056583755e8,
 # Muon Mass [eV]/c^2
+
 m_helion = 2.80839161112e9,
 # Helion Mass He3 nucleus [eV]/c^2
+
 m_deuteron = 1.875612945e9,
 # Deuteron Mass [eV]/c^2
 
@@ -44,16 +49,22 @@ m_pion_charged = 1.3957039098368132e8,
 
 mu_deuteron = 4.330735087e-27,
 # deuteron magnetic moment in [J/T]
+
 mu_electron = -9.2847646917e-24,
 # electron magnetic moment in [J/T]
+
 mu_helion = -1.07461755198e-26,
 # helion magnetic moment in [J/T],
+
 mu_muon = -4.4904483e-26,
 # muon magnetic moment in [J/T]
+
 mu_neutron = -9.6623653e-27,
 # neutron magnetic moment in [J/T]
+
 mu_proton = 1.41060679545e-26,
 # proton magnetic moment in [J/T]
+
 mu_triton = 1.5046095178e-26,
 # triton magnetic moment in [J/T]
 
