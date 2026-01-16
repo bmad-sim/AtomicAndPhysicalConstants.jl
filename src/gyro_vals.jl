@@ -61,10 +61,10 @@ function gyromagnetic_anomaly(species::Species; signed::Bool=false)
     elseif getfield(species, :kind) ∉ vtypes
       error("Only subatomic particles have computable gyromagnetic anomalies in this package.")
     else
-      if signed == true
-        gs = g_spin(species; signed = true)
-      else
+      if signed == false
         gs = g_spin(species)
+      else
+        gs = g_spin(species; signed = true)
       end
       return (gs - 2) / 2
     end
