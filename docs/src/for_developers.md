@@ -1,176 +1,209 @@
-# For Developers: Code Logic
+# For Developers: Package Architecture
 
-## Species
+## Overview
 
-We provide a type `Species` for simple access to atomic and subatomic particle data. The constructor `Species(::String)` creates a `Species` instance from a given name. Users can retrieve data through getter functions such as `massof()` and `chargeof()`.
+AtomicAndPhysicalConstants.jl provides simple, direct access to physical constants and particle properties without requiring initialization macros or complex configuration.
 
-```julia
-julia> e = Species("electron") # create an "electron" Species
+## Species Type
 
-julia> @APCdef unittype = Unitful # specify return units and type of the getter functions via @APCdef
+The `Species` type is the core data structure that holds information about particles and atoms.
 
-julia> massof(e) # get the electron mass
-510998.95069 eV c⁻²
+### Species Structure
 
-julia> chargeof(e) # get the electron charge
--1.0 e
+A `Species` object contains the following fields:
 
-```
+- `name::String` - Name of the particle
+- `charge::Float64` - Charge in elementary charges [e]
+- `mass::Float64` - Mass in [eV/c²]
+- `spin::Float64` - Spin in [ħ]
+- `moment::Float64` - Magnetic moment in [J/T]
+- `g_factor::Float64` - g-factor (dimensionless)
+- `iso::Float64` - Mass number for isotopes (0.0 for subatomic particles)
+- `kind::Kind` - Species classification (ATOM, HADRON, LEPTON, PHOTON, NULL)
 
-### Species Type Internal Structure
-
-The `Species` type contains the following fields, defined in [types.jl](https://github.com/bmad-sim/AtomicAndPhysicalConstants.jl/blob/main/src/types.jl)
-
-
-A `Species` stores the following information:
-
-- `name`: name of the particle to track
-- `charge`: charge of the particle
-- `mass`: mass of the particle
-- `spin`: spin of the particle
-- `moment`: magnetic moment of the particle
-- `iso`: mass number of atomic isotope
-- `kind`: The `kind` field classifies species into five types: `ATOM`, `HADRON`, `LEPTON`, `PHOTON`, and `NULL`.
-
-**Note**: The `NULL` kind serves as a placeholder that can be used by Julia code. For example, if a `struct`
-has a `Species` component, a `NULL` species can be used as an initial value to indicate that the
-species component has not yet been set.
+### Example
 
 ```julia
-struct Species
-  name::String # name of the particle to track
-  charge::typeof(1u"e") # charge of the particle, unit [e]
-  mass::typeof(1.0u"MeV/c^2") # mass of the particle, unit in [eV/c^2]
-  spin::typeof(1.0u"h_bar") # spin of the particle, unit in [ħ]
-  moment::typeof(1.0u"J/T") # magnetic moment of the particle (for now it's 0 unless we have a recorded value), unit in [J/T]
-  iso::Float64 # if the particle is an atomic isotope, this is the mass number, otherwise 0
-  kind::Kind.T #The kind field classifies species into five types: ATOM, HADRON, LEPTON, PHOTON, and NULL.
-end
+e = Species("electron")
+# Accesses:
+# name = "electron"
+# charge = -1.0
+# mass = 510998.95069
+# spin = 0.5
+# moment = -928.4764620e-26
+# g_factor = -2.00231930436256
+# iso = 0.0
+# kind = LEPTON
 ```
 
-Note that `charge`, `mass`, `spin`, and `moment` are stored as `Unitful.Quantity` types with specific units, as indicated in the comments.
+## Species Registry
 
-### Species Data storage
+Species data is stored in two main registries:
 
-All possible `Species` data is stored internally. When the constructor `Species(::String)` is called, it retrieves this data to build a new `Species`.
+### 1. Subatomic Species Registry
 
-Information about subatomic and atomic particles is stored in two structs: `SubatomicSpecies` and `AtomicSpecies`. Dictionary maps link particle names (as strings) to these structures. The structs are defined in [types.jl](https://github.com/bmad-sim/AtomicAndPhysicalConstants.jl/blob/main/src/types.jl), and the dictionaries are defined in [subatomic_species.jl](https://github.com/bmad-sim/AtomicAndPhysicalConstants.jl/blob/main/src/subatomic_species.jl) and [isotopes.jl](https://github.com/bmad-sim/AtomicAndPhysicalConstants.jl/blob/main/src/isotopes.jl). 
-
-`SubatomicSpecies` has the following fields
+The `SUBATOMIC_SPECIES` dictionary maps particle names to their properties:
 
 ```julia
-struct SubatomicSpecies
-  species_name::String              # common species_name of the particle
-  charge::typeof(1.0u"e")           # charge on the particle, in units of [e]
-  mass::typeof(1.0u"MeV/c^2")       # mass of the particle, in units of [eV/c^2]
-  moment::typeof(1.0u"J/T")         # magnetic moment, in units of [J/T]
-  spin::typeof(1.0u"h_bar")         # spin magnetic moment, in units of [ħ]
-end;
+SUBATOMIC_SPECIES = Dict(
+    "electron" => (
+        charge=-1.0,
+        mass=510998.95069,
+        spin=0.5,
+        moment=-928.4764620e-26,
+        kind=LEPTON,
+    ),
+    "proton" => (
+        charge=1.0,
+        mass=938272088.16,
+        spin=0.5,
+        moment=1.41060679736e-26,
+        kind=HADRON,
+    ),
+    # ... more particles
+)
 ```
 
-`AtomicSpecies` has the following fields
+### 2. Atomic Species Registry
+
+The `ATOMIC_SPECIES` dictionary maps element symbols to atomic data:
 
 ```julia
-struct AtomicSpecies
-  Z::Int64                           # number of protons
-  species_name::String               # periodic table element symbol
-  mass::Dict{Int64,typeof(1.0 * u"amu")}  # a dict to store the masses, keyed by isotope
-end
+ATOMIC_SPECIES = Dict(
+    "H" => (
+        Z=1,  # Atomic number
+        isotopes=Dict(
+            1 => 1007825.0322,   # Hydrogen-1 mass
+            2 => 2014101.778,    # Deuterium mass
+            3 => 3016049.2779,   # Tritium mass
+            -1 => 1007940.0,     # Natural abundance average
+        ),
+    ),
+    # ... more elements
+)
 ```
 
-**Note:** mass is a dictionary that maps mass number to isotope mass. `-1` maps to the average mass of common isotopes. Only existing isotopes is a key in the dictionary.
+The key `-1` in the isotopes dictionary represents the natural abundance average mass.
 
-The function `subatomic_particle(name::String)` searches for a subatomic particle with corresponding `name` in the dictionary and builds a `Species` from `SubatomicSpecies`.
+## Species Constructor Logic
 
-Similarly, `create_atomic_species(name::String, charge::Int, iso::Int)` searches for an atomic particle with corresponding `name` and `iso` in the dictionary and builds a `Species` with the corresponding `mass` and charge. Other fields—`spin`, `moment`, and `kind`—are computed accordingly.
+The `Species(name::String)` constructor follows this parsing order:
 
-### Species Constructor
+1. **Check for Null Species**: If name is "Null" or empty, create a NULL species
+2. **Check for Antiparticles**: If name starts with "anti-", set antimatter flag
+3. **Check Subatomic Registry**: Look up in `SUBATOMIC_SPECIES` dictionary
+4. **Parse Atomic Species**:
+   - Extract mass number prefix (e.g., "12" in "12C")
+   - Extract element symbol (e.g., "C")
+   - Extract charge suffix (e.g., "+3" in "C+3")
+   - Look up in `ATOMIC_SPECIES` dictionary
+   - Calculate properties based on isotope mass and ionization
 
-The constructor parses the `name` and creates the according `Species`.
+### Parsing Examples
 
-The constructor follows this order for parsing the `name`.
+- `"electron"` → Direct lookup in subatomic registry
+- `"12C"` → Mass number: 12, Element: C, Charge: 0
+- `"12C+3"` → Mass number: 12, Element: C, Charge: +3
+- `"C+3"` → Mass number: -1 (natural), Element: C, Charge: +3
+- `"anti-proton"` → Antimatter flag set, lookup "proton", negate charge
 
-- Check whether it is a `Null Species`, if yes then creates a `Null Species` by setting `kind` to `NULL`
-- Check whether they are Anti-particles.
-- Check whether it is a subatomic particles, if yes then use `subatomic_particle()` to create the `Species`.
-- Check whether it is an atomic species.
-    - Parse the `iso` number in front of the atomic symbol
-    - Parse the `charge` number in the back of the atomic symbol
-    - Call `create_atomic_species()` to create the `Species`.
+## Constants
 
-## @APCdef
-
-`@APCdef` configures physical constants and `Species` getter functions using the specified:
-
-- Unit system
-- Return type (`Float`, `Unitful`, or `DynamicQuantities`)
-- Tuple name
-- Tuple output flag (whether to wrap constants in a tuple
-
-### 1 Predefined Unit Systems
-
-For convient usage, we predefined 3 unit systems:
-
-- `ACCELERATOR`: Uses high-energy physics units (`eV/c²`, `m`, `s`, `eV`, `e`)
-- `MKS`: Standard SI units (`kg`, `m`, `s`, `J`, `C`)
-- `CGS`: CGS units (`g`, `cm`, `s`, `J`, `C`)
+Physical constants are defined as module-level constants:
 
 ```julia
-@APCdef unitsystem = MKS
+# Fundamental constants
+const C_LIGHT = 2.99792458e8          # [m/s]
+const H_PLANCK = 6.62607015e-34       # [J⋅s]
+const H_BAR = 1.054571817e-34         # [J⋅s]
+const E_CHARGE = 1.602176634e-19      # [C]
+const FINE_STRUCTURE = 0.0072973525643
+
+# Particle masses [eV/c²]
+const M_ELECTRON = 510998.95069
+const M_PROTON = 938272088.16
+const M_NEUTRON = 939565420.52
+
+# ... more constants
 ```
 
-The user can specify a set of units quickly. 
+These are available immediately after `using AtomicAndPhysicalConstants`.
 
-Since users can also define their own unit system. The units of the tuple must be in the order of “mass unit”, “length unit”, “time unit”, “energy unit”, and “charge unit”. The unit dimension is checked in macro.
+## Adding Custom Species
 
-### 2 Ensuring Single Macro Call
+### Method 1: Direct Construction
 
-Since `@APCdef` defines `massof()`, we check whether `@APCdef` is called in the module by check whether `massof()` is in the namespace.
+Create a species by providing all parameters:
 
-### 3 Extract Keyword Arguements
+```julia
+custom = Species(
+    "my-particle",  # name
+    1.0,            # charge [e]
+    2.5e9,          # mass [eV/c²]
+    0.5,            # spin [ħ]
+    0.0,            # moment [J/T]
+    2.0,            # g_factor
+    0.0,            # iso
+    HADRON          # kind
+)
+```
 
-Julia macro does accept keyword arguments, so the next section sets default values
+### Method 2: Register Custom Subatomic Species
 
-- `unittype = :Float`
-- `unitsystem = ACCELERATOR`
-- `name = :APC`
-- `tupleflag = true`
+Add to the registry for name-based construction:
 
-And extracts keyword arguement variables from the marco expression input.
+```julia
+AtomicAndPhysicalConstants.SUBATOMIC_SPECIES["X-"] = (
+    charge=-1.0,
+    mass=1e9,
+    spin=0.5,
+    moment=0.0,
+    kind=HADRON,
+)
 
-### 4 Collecting Constants
+# Now can create by name
+x = Species("X-")
+```
 
-- Extracts constants from the parent module whose names start with `__b_` and are not intermediate variables (e.g., those containing `_m_`).
-- Converts them to appropriate units based on the `conversion` dictionary.
-- Constructs a dictionary `constantsdict` with transformed values.
+### Method 3: Register Custom Atomic Element
 
-### 5 Unit Type Conversion
+Add a custom element with isotopes:
 
-Based on `unittype`:
+```julia
+AtomicAndPhysicalConstants.ATOMIC_SPECIES["Xe"] = (
+    Z=54,
+    isotopes=Dict(
+        129 => 120000.0,  # Xe-129 mass
+        132 => 122000.0,  # Xe-132 mass
+        -1 => 121000.0,   # Natural abundance average
+    ),
+)
 
-- **`:Unitful`**: Constants retain their units.
-- **`:Float`**: Extracts `.val` from quantities, stripping units.
-- **`:DynamicQuantities`**: Converts values into `DynamicQuantities.Quantity`
+# Now can create with full parsing
+xe = Species("129Xe++")
+```
 
-### 6 Output Format: Tuple or Individual Variables
+## Data Sources
 
-Determined by `tupleflag`:
+All constants, particle properties, and atomic data are sourced from **CODATA 2022** (Committee on Data of the International Science Council), the most recent internationally recommended values for fundamental physical constants.
 
-- `true` → constants are packed into a `NamedTuple` under the given module name.
-- `false` → constants are returned as independent global variables.
+## Package Design Philosophy
 
-### 7 Generate Species Getter Functions
+1. **Simplicity**: No initialization required, direct access to all data
+2. **Performance**: Module-level constants enable compiler optimizations
+3. **Extensibility**: Easy to add custom species via dictionaries
+4. **Standards Compliance**: Uses authoritative data sources
+5. **Type Stability**: All properties use standard Julia numeric types
 
-Generated via `generate_particle_property_functions(...)`:
+## File Organization
 
-- **`massof`**: Returns the mass of a `Species` or species name.
-- **`chargeof`**: Returns the charge.
-- **`spinof`**: Returns the spin (except for null or atomic species).
-- **`nameof`**: Returns a species' name, including isotope/charge info unless `basename = true`.
+The package source is organized as follows:
 
-### 8 Return statement
+- Type definitions and core structures
+- Subatomic species data dictionary
+- Atomic species and isotope data dictionary
+- Physical constants definitions
+- Species constructor and parsing logic
+- Helper functions (`nameof()`, etc.)
 
-- `APCconsts` stores the macro-defined name.
-- `UNITS` holds a `NamedTuple` mapping physical quantity symbols (`:mass`, `:length`, etc.) to their respective units.
-- Species Getter Functions
-- Constants (either wrapped in named tuple or not)
+This structure keeps the implementation simple and maintainable while providing all necessary functionality.

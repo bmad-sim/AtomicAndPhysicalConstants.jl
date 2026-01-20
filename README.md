@@ -1,37 +1,16 @@
-# APClite.jl
-
-A lightweight version of AtomicAndPhysicalConstants.jl that provides atomic and physical constants as plain Float64 values in fixed units.
-
-## Features
-
-- **Latest CODATA 2022 data**: All physical constants from the most recent CODATA release
-- **No dependencies**: Pure Julia with no external dependencies
-- **Fast compilation**: Simple static constants for optimal performance
-- **Simple API**: Easy-to-use Species struct with direct field access
-- **Comprehensive coverage**: Subatomic particles, atoms, ions, and isotopes
-- **Robust parsing**: Efficient atomic name parser with comprehensive error handling
-
-## Comparison with AtomicAndPhysicalConstants.jl
-
-| Feature | APClite | AtomicAndPhysicalConstants |
-|---------|---------|----------------------------|
-| Dependencies | None | Unitful, DynamicQuantities, etc. |
-| Performance | Fast | Slower |
-| Units | Plain Float64 | Unitful quantities |
-| Data sources | CODATA 2022 only | Multiple years available |
-| API | Direct field access | Macro-based API |
+# AtomicAndPhysicalConstants.jl
 
 ## Installation
 
 ```julia
 julia> using Pkg
-julia> Pkg.add(url="https://github.com/ndwang/APClite")
+julia> Pkg.add("AtomicAndPhysicalConstants.jl")
 ```
 
 ## Quick Start
 
 ```julia
-using APClite
+using AtomicAndPhysicalConstants
 
 # Access physical constants directly
 C_LIGHT          # 2.99792458e8 [m/s]
@@ -161,7 +140,7 @@ All constants are available as module-level constants, grouped by type:
 ## Examples
 
 ```julia
-using APClite
+using AtomicAndPhysicalConstants
 
 # Physical constants
 println("Speed of light: ", C_LIGHT, " m/s")
@@ -186,7 +165,7 @@ println(proton)
 ### Custom species
 
 ```julia
-using APClite
+using AtomicAndPhysicalConstants
 
 # 1) Direct construction (no registry entry needed)
 #    name, charge [e], mass [eV/c^2], spin [ħ], moment [J/T], g_factor, iso, kind
@@ -194,7 +173,7 @@ custom = Species("my-hadron", 1.0, 2.5e9, 0.5, 0.0, 2.0, 0.0, HADRON)
 println(custom)
 
 # 2) Register a custom subatomic species for name-based construction
-APClite.SUBATOMIC_SPECIES["X-"] = (
+AtomicAndPhysicalConstants.SUBATOMIC_SPECIES["X-"] = (
     charge=-1.0,
     mass=1e9.0,
     spin=0.5,
@@ -205,7 +184,7 @@ xminus = Species("X-")
 println(xminus)
 
 # 3) Register a custom atomic element (with isotopes) for name/ion/isotope parsing
-APClite.ATOMIC_SPECIES["Xe"] = (
+AtomicAndPhysicalConstants.ATOMIC_SPECIES["Xe"] = (
     Z=54,
     isotopes=Dict(129 => 120000.0, 132 => 122000.0, -1 => 121000.0),
 )

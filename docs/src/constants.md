@@ -1,88 +1,105 @@
-# Constants 
+# Constants
 
 ## Available Constants
 
-The macro `@APCdef` defines a set of physical constants with the provided set of units (For more details, see [this page](units.md)). The following example is how to use the macro and the physical constants.
+Physical constants are available directly after importing the package. No initialization is required.
 
 ```julia
 julia> using AtomicAndPhysicalConstants
-julia> @APCdef
-julia> APC.C_LIGHT
+julia> C_LIGHT
 2.99792458e8
 ```
 
-### Constants Defined by @APCdef
+## Fundamental Constants
 
-- Speed of light: `C_LIGHT`
-- Planck's constant: `H_PLANCK`
-- Reduced Planck's constant: `H_BAR_PLANCK`
-- Classical electron radius: `R_E`
-- Classical proton radius: `R_P`
-- Elementary charge: `E_CHARGE`
-- Vacuum permeability: `MU_0_VAC`
-- Permittivity of free space: `EPS_0_VAC`
-- Classical Radius Factor: `CLASSICAL_RADIUS_FACTOR`
-- Fine structure constant: `FINE_STRUCTURE`
-- Avogadro's constant: `N_AVOGADRO`
+All constants are available as module-level constants:
 
-### Species Mass and Charge
+### Speed and Universal Constants
+- `C_LIGHT`: Speed of light [m/s]
+- `H_PLANCK`: Planck constant [J⋅s]
+- `H_BAR`: Reduced Planck constant [J⋅s]
+- `E_CHARGE`: Elementary charge [C]
+- `FINE_STRUCTURE`: Fine structure constant (dimensionless)
+- `AVOGADRO`: Avogadro constant [mol⁻¹]
 
-To access mass or charge of a species, use `massof()` getter function for mass, and `chargeof()` getter function for charge. The function will return unit given to [`@APCdef`](units.md). For Example:
+### Electromagnetic Constants
+- `EPS_0`: Permittivity of free space [F/m]
+- `MU_0`: Permeability of free space [N/A²]
+
+### Classical Radii
+- `R_ELECTRON`: Classical electron radius [m]
+- `R_PROTON`: Classical proton radius [m]
+
+## Particle Masses
+
+All masses are in [eV/c²]:
+
+- `M_ELECTRON`: Electron mass
+- `M_PROTON`: Proton mass
+- `M_NEUTRON`: Neutron mass
+- `M_MUON`: Muon mass
+- `M_PION_0`: Neutral pion mass
+- `M_PION_CHARGED`: Charged pion mass
+- `M_DEUTERON`: Deuteron mass
+- `M_HELION`: Helion (³He nucleus) mass
+
+## Magnetic Moments
+
+All magnetic moments are in [J/T]:
+
+- `MU_ELECTRON`: Electron magnetic moment
+- `MU_PROTON`: Proton magnetic moment
+- `MU_NEUTRON`: Neutron magnetic moment
+- `MU_MUON`: Muon magnetic moment
+- `MU_DEUTERON`: Deuteron magnetic moment
+- `MU_HELION`: Helion magnetic moment
+- `MU_TRITON`: Triton magnetic moment
+
+## g-factors
+
+All g-factors are dimensionless:
+
+- `G_ELECTRON`: Electron g-factor
+- `G_PROTON`: Proton g-factor
+- `G_NEUTRON`: Neutron g-factor
+- `G_MUON`: Muon g-factor
+- `G_DEUTERON`: Deuteron g-factor
+- `G_HELION`: Helion g-factor
+- `G_TRITON`: Triton g-factor
+
+## Magnetic Moment Anomalies
+
+Dimensionless anomalies:
+
+- `ANOMALY_ELECTRON`: Electron magnetic moment anomaly
+- `ANOMALY_MUON`: Muon magnetic moment anomaly
+
+## Unit Conversions
+
+- `KG_PER_AMU`: Kilograms per atomic mass unit [kg/amu]
+- `EV_PER_AMU`: Electronvolts per atomic mass unit [eV/amu]
+- `J_PER_EV`: Joules per electronvolt [J/eV]
+
+## Release Information
+
+- `RELEASE_YEAR`: CODATA release year (2022)
+
+## Examples
 
 ```julia
-julia> e = Species("electron")
+using AtomicAndPhysicalConstants
 
-julia> @APCdef unitsystem = ACCELERATOR unittype = Unitful
-# set units to ACCELERATOR unit system, where mass unit is eV/c^2 and charge unit is elementary charge
+# Physical constants
+println("Speed of light: ", C_LIGHT, " m/s")
+println("Electron mass: ", M_ELECTRON, " eV/c²")
+println("Planck constant: ", H_PLANCK, " J⋅s")
+println("Fine structure constant: ", FINE_STRUCTURE)
 
-julia> massof(e)
-510998.95069 eV c⁻²
-
-julia> chargeof(e)
--1.0 e
-
+# Unit conversions
+println("1 amu = ", EV_PER_AMU, " eV/c²")
+println("1 eV = ", J_PER_EV, " J")
 ```
 
-### Atomic m=Mass and Electron Binding Energies
+## Data Sources
 
-Unfortunately, Atomic and Isotopic masses do not scale perfectly to reality; we haven't been able to account for binding energies of electrons in varying shells in this code.
-As a result, the mass of any given isotope in any charge state is taken to be the mass of the neutrally charged isotope (from NIST) plus or minus the requisite number of 
-electron masses.
-
-## Listing Constants: `showconst()`
-
-The `showconst()` function displays all available constants in the package.
-
-There are three options:
-
-```julia
-julia> showconst() 
-#list all the physical constants created by @APCdef
-julia> showconst(:subatomic) 
-#list all possible subatomic particles
-julia> showconst(:Fe) 
-# ':Fe' can be replaced by any atomic symbols
-# list all the available isotopes of that element
-```
-
-**Note**: You must run `@APCdef` before using `showconst()`.
-
-## Constants Sources and Updates
-
-- The constants data comes from CODATA. You can choose which year of CODATA values to use through different submodules. If not specified, it defaults to CODATA2022. For example:
-
-```julia
-julia> using AtomicAndPhysicalConstants.CODATA2018 #use CODATA2018 values
-julia> using AtomicAndPhysicalConstants #use CODATA2022 values
-```
-
-- NIST provides the isotope data, which we extract from their database. Since NIST doesn't maintain old releases, the isotope data always reflects their latest release.
-- The pion0 and pion± data comes from PDG (Particle Data Group). We extract this data from the database at [pdgapi.lbl.gov](http://pdgapi.lbl.gov)
-
-### setisos()
-
-The `setisos()` function downloads the latest isotope data from NIST and creates a Julia file containing a usable dictionary of each element with all of their isotopes
-
-### CODATA_releases()
-
-The `CODATA_releases()` function lists all the available CODATA release years in the package.
+All constants and species data are sourced from **CODATA 2022** (Committee on Data of the International Science Council), the most recent internationally recommended values for fundamental physical constants.
