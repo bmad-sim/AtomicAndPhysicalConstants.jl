@@ -21,11 +21,9 @@ include("CODATA2014.jl")
 include("CODATA2018.jl")
 include("CODATA2022.jl")
 include("constants.jl")
-include("helpers.jl")
+include("functions.jl")
 include("species_data.jl")
 include("constructors.jl")
-# include("gyro_vals.jl")
-include("getter_functions.jl")
 
 # export the const pointers to values
 export m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron
