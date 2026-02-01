@@ -13,15 +13,14 @@ using JSON
 const anti_regEx = r"anti\-|anti"
 const mag_regEx = r"[0-9]|[0-9][0-9]|[0-9][0-9][0-9]"
 
-include("defaults.jl")
-include("CODATAstruct.jl")
-include("2002_constants.jl")
-include("2006_constants.jl")
-include("2010_constants.jl")
-include("2014_constants.jl")
-include("2018_constants.jl")
-include("2022_constants.jl")
-include("ptypes.jl")
+include("types.jl")
+include("CODATA2002.jl")
+include("CODATA2006.jl")
+include("CODATA2010.jl")
+include("CODATA2014.jl")
+include("CODATA2018.jl")
+include("CODATA2022.jl")
+include("constants.jl")
 include("helpers.jl")
 include("atomic_species.jl")
 include("subatomic_species.jl")

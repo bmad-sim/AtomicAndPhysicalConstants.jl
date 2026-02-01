@@ -1,5 +1,98 @@
 # AtomicAndPhysicalConstants/src/species.jl
+@doc """
+    subatomic_particle(name::String)
 
+## Description:
+Dependence of Particle(name, charge=0, iso=-1)
+Create a particle struct for a subatomic particle with name=name
+"""
+subatomic_particle
+
+function subatomic_particle(name::String)::Species
+  # write the particle out directly
+
+  particle = SUBATOMIC_SPECIES[name]
+  if name == "photon"
+    return Species(name, particle.charge,
+      particle.mass,
+      particle.spin,
+      particle.moment,
+      Int(0), Kind.PHOTON)
+  elseif name in leptons
+    return Species(name, particle.charge,
+      particle.mass,
+      particle.spin,
+      particle.moment,
+      0, Kind.LEPTON)
+  else
+    return Species(name, particle.charge,
+      particle.mass,
+      particle.spin,
+      particle.moment,
+      0, Kind.HADRON)
+  end
+end
+
+
+@doc """
+    atomic_particle(name::String, charge::Int, iso::Int)
+
+## Description:
+Create a species struct for an atomic species with name=name, charge=charge and iso=iso
+## fields:
+- `name::String':         the atomic symbol, must be exact. anti-prefix specifies whether it is an anti-atom
+- `charge::Int':           the net charge of the particle in units of [e]
+- `iso::Int':             the mass number of the isotope, -1 for the most abundant isotope
+"""
+atomic_particle
+
+function atomic_particle(name::String, charge::Int, iso::Int;
+  CODATAvals::CODATA_release=CODATA2022,
+  SUBATOMIC_SPECIES::Dict{String,SubatomicSpecies}=SUBATOMIC_SPECIES)
+
+  # whether the atom is anti-atom
+  anti_atom::Bool = occursin(anti_regEx, name)
+  # if the particle is an anti-particle, remove the prefix for easier lookup
+  AS::String = replace(name, anti_regEx => "")
+
+  haskey(ATOMIC_SPECIES, AS) || error("$AS is not a valid atomic species")
+
+  # grab the particular element from the stack
+  atom::AtomicSpecies = ATOMIC_SPECIES[AS]
+  # convert the mass of the selected isotope from amu to MeV
+  nmass::Float64 = atom.mass[iso] * CODATAvals.eV_per_amu
+
+  spin::Float64 = 0.0
+
+  mass::Float64 = begin
+    if anti_atom == false
+      nmass + SUBATOMIC_SPECIES["electron"].mass * abs(charge)
+      # for a nominal atom, add 1 electron mass for every - charge
+    else
+      nmass + SUBATOMIC_SPECIES["positron"].mass * abs(charge)
+      # for an anti-atom, add 1 positron mass for every + charge
+    end
+  end
+  if iso == -1 # if it's the average, make an educated guess at the spin
+    partonum::Float64 = round(atom.mass[iso])
+    if anti_atom == false
+      spin = 0.5 * (partonum + (atom.Z - charge))
+    else
+      spin = 0.5 * (partonum + (atom.Z + charge))
+    end
+  else # otherwise, use the sum of proton and neutron spins
+    spin = 0.5 * iso
+  end
+  # return the object to track
+  if anti_atom == false
+    return Species(AS, charge, mass,
+      spin, 0.0, iso, Kind.ATOM)
+  else
+    return Species("anti-" * AS, charge, mass,
+      spin, 0.0, iso, Kind.ATOM)
+  end
+
+end
 
 
 

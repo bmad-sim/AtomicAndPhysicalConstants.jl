@@ -2,6 +2,60 @@
 # AtomicAndPhysicalConstants.jl/src/isotopes.jl
 
 
+#####################################################################
+#####################################################################
+const leptons::Vector{String} = ["electron", "positron", "muon", "anti-muon"]
+
+"""
+    subatomic_species()
+
+Construct a dictionary of subatomic particles with keys: 
+["pion0", "neutron", "deuteron", "pion+", "anti-muon", "proton",
+"positron", "photon", "electron", "anti-proton", "muon", "pion-",
+"anti-deuteron", "anti-neutron"]
+
+Each key is paired with a SubatomicSpecies struct containing 
+information about the named particle.
+
+## Example
+
+SUBATOMIC_SPECIES = subatomic_species()
+"""
+subatomic_species
+
+function subatomic_species(CODATAYEAR::CODATA_release)
+  return Dict{String,SubatomicSpecies}(
+    "pion0" => SubatomicSpecies("pion0", 0, CODATAYEAR.m_pion_0, 0.0, 0.0),
+    "neutron" => SubatomicSpecies("neutron", 0, CODATAYEAR.m_neutron, CODATAYEAR.mu_neutron, 0.5),
+    "deuteron" => SubatomicSpecies("deuteron", 1, CODATAYEAR.m_deuteron, CODATAYEAR.mu_deuteron, 1.0),
+    "pion+" => SubatomicSpecies("pion+", 1, CODATAYEAR.m_pion_charged, 0.0, 0.0),
+    "anti-muon" => SubatomicSpecies("anti-muon", 1, CODATAYEAR.m_muon, CODATAYEAR.mu_muon, 0.5),
+    "proton" => SubatomicSpecies("proton", 1, CODATAYEAR.m_proton, CODATAYEAR.mu_proton, 0.5),
+    "positron" => SubatomicSpecies("positron", 1, CODATAYEAR.m_electron, CODATAYEAR.mu_electron, 0.5),
+    "photon" => SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0),
+    "electron" => SubatomicSpecies("electron", -1, CODATAYEAR.m_electron, CODATAYEAR.mu_electron, 0.5),
+    "anti-proton" => SubatomicSpecies("anti-proton", -1, CODATAYEAR.m_proton, CODATAYEAR.mu_proton, 0.5),
+    "muon" => SubatomicSpecies("muon", -1, CODATAYEAR.m_muon, CODATAYEAR.mu_muon, 0.5),
+    "pion-" => SubatomicSpecies("pion-", -1, CODATAYEAR.m_pion_charged, 0.0, 0.0),
+    "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, CODATAYEAR.m_deuteron, CODATAYEAR.mu_deuteron, 1.0),
+    "anti-neutron" => SubatomicSpecies("anti-neutron", 0, CODATAYEAR.m_neutron, CODATAYEAR.mu_neutron, 0.5)
+  )
+end
+
+
+"""
+    SUBATOMIC_SPECIES
+
+Constant dictionary of subatomic particles
+
+## Example use:
+
+`julia> SUBATOMIC_SPECIES["photon"]`
+`SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0)`
+"""
+const SUBATOMIC_SPECIES = subatomic_species(CODATA2022)
+
+
 
 #########################################################
 
@@ -37,62 +91,3 @@ const ATOMIC_SPECIES::Dict{String,AtomicSpecies} = Dict(
 const sorted_list_of_atomic_symbols = sort(collect(keys(ATOMIC_SPECIES)), by=length, rev=true);
 
 
-@doc """
-    atomic_particle(name::String, charge::Int, iso::Int)
-
-## Description:
-Create a species struct for an atomic species with name=name, charge=charge and iso=iso
-## fields:
-- `name::String':         the atomic symbol, must be exact. anti-prefix specifies whether it is an anti-atom
-- `charge::Int':           the net charge of the particle in units of [e]
-- `iso::Int':             the mass number of the isotope, -1 for the most abundant isotope
-"""
-atomic_particle
-
-function atomic_particle(name::String, charge::Int, iso::Int;
-                          CODATAvals::CODATA_release = CODATA2022, 
-                          SUBATOMIC_SPECIES::Dict{String,SubatomicSpecies} = SUBATOMIC_SPECIES)
-
-  # whether the atom is anti-atom
-  anti_atom::Bool = occursin(anti_regEx, name)
-  # if the particle is an anti-particle, remove the prefix for easier lookup
-  AS::String = replace(name, anti_regEx => "")
-
-  haskey(ATOMIC_SPECIES, AS) || error("$AS is not a valid atomic species")
-
-  # grab the particular element from the stack
-  atom::AtomicSpecies = ATOMIC_SPECIES[AS]
-  # convert the mass of the selected isotope from amu to MeV
-  nmass::Float64 = atom.mass[iso] * CODATAvals.eV_per_amu
-  
-  spin::Float64 = 0.0
-
-  mass::Float64 = begin
-    if anti_atom == false
-      nmass + SUBATOMIC_SPECIES["electron"].mass * abs(charge)
-      # for a nominal atom, add 1 electron mass for every - charge
-    else
-      nmass + SUBATOMIC_SPECIES["positron"].mass * abs(charge)
-      # for an anti-atom, add 1 positron mass for every + charge
-    end
-  end
-  if iso == -1 # if it's the average, make an educated guess at the spin
-    partonum::Float64 = round(atom.mass[iso])
-    if anti_atom == false
-      spin = 0.5 * (partonum + (atom.Z - charge))
-    else
-      spin = 0.5 * (partonum + (atom.Z + charge))
-    end
-  else # otherwise, use the sum of proton and neutron spins
-    spin = 0.5 * iso
-  end
-  # return the object to track
-  if anti_atom == false
-    return Species(AS, charge, mass,
-      spin, 0.0, iso, Kind.ATOM)
-  else
-    return Species("anti-" * AS, charge, mass,
-      spin, 0.0, iso, Kind.ATOM)
-  end
-
-end
