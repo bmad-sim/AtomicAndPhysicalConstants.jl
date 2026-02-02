@@ -1,4 +1,7 @@
 # AtomicAndPhysicalConstants/src/species.jl
+
+include("species_data.jl")
+
 @doc """
     subatomic_particle(name::String)
 
@@ -13,23 +16,32 @@ function subatomic_particle(name::String)::Species
 
   particle = SUBATOMIC_SPECIES[name]
   if name == "photon"
-    return Species(name, particle.charge,
+    return Species(
+      name, 
+      particle.charge,
       particle.mass,
       particle.spin,
       particle.moment,
-      Int(0), Kind.PHOTON)
+      Int(0), 
+      Kind.PHOTON)
   elseif name in leptons
-    return Species(name, particle.charge,
+    return Species(
+      name, 
+      particle.charge,
       particle.mass,
       particle.spin,
       particle.moment,
-      0, Kind.LEPTON)
+      0, 
+      Kind.LEPTON)
   else
-    return Species(name, particle.charge,
+    return Species(
+      name, 
+      particle.charge,
       particle.mass,
       particle.spin,
       particle.moment,
-      0, Kind.HADRON)
+      0, 
+      Kind.HADRON)
   end
 end
 
@@ -46,9 +58,7 @@ Create a species struct for an atomic species with name=name, charge=charge and 
 """
 atomic_particle
 
-function atomic_particle(name::String, charge::Int, iso::Int;
-  CODATAvals::CODATA_release=CODATA2022,
-  SUBATOMIC_SPECIES::Dict{String,SubatomicSpecies}=SUBATOMIC_SPECIES)
+function atomic_particle(name::String, charge::Int, iso::Int;)
 
   # whether the atom is anti-atom
   anti_atom::Bool = occursin(anti_regEx, name)
@@ -60,7 +70,7 @@ function atomic_particle(name::String, charge::Int, iso::Int;
   # grab the particular element from the stack
   atom::AtomicSpecies = ATOMIC_SPECIES[AS]
   # convert the mass of the selected isotope from amu to MeV
-  nmass::Float64 = atom.mass[iso] * CODATAvals.eV_per_amu
+  nmass::Float64 = atom.mass[iso] * EV_PER_AMU
 
   spin::Float64 = 0.0
 
@@ -85,11 +95,25 @@ function atomic_particle(name::String, charge::Int, iso::Int;
   end
   # return the object to track
   if anti_atom == false
-    return Species(AS, charge, mass,
-      spin, 0.0, iso, Kind.ATOM)
+    return Species(
+      AS, 
+      charge, 
+      mass,
+      spin, 
+      0.0, 
+      iso, 
+      Kind.ATOM
+    )
   else
-    return Species("anti-" * AS, charge, mass,
-      spin, 0.0, iso, Kind.ATOM)
+    return Species(
+      "anti-" * AS, 
+      charge, 
+      mass,
+      spin, 
+      0.0, 
+      iso, 
+      Kind.ATOM
+    )
   end
 
 end
@@ -110,9 +134,7 @@ left::String = ""
 
 
 
-function Species(speciesname::String;
-                CODATAvals::CODATA_release = CODATA2022,
-                SUBATOMIC_SPECIES::Dict{String, SubatomicSpecies} = SUBATOMIC_SPECIES)
+function Species(speciesname::String)
   
   
   # if the name is "Null", return a null Species
@@ -223,9 +245,9 @@ function Species(speciesname::String;
   # all(isdigit, right) || error("The charge specification should only include '+' or '-', and numerical value.")
 
   if anti
-    return atomic_particle("anti-" * atom, charge, iso, CODATAvals=CODATAvals, SUBATOMIC_SPECIES=SUBATOMIC_SPECIES)
+    return atomic_particle("anti-" * atom, charge, iso)
   else
-    return atomic_particle(atom, charge, iso, CODATAvals=CODATAvals, SUBATOMIC_SPECIES=SUBATOMIC_SPECIES)
+    return atomic_particle(atom, charge, iso)
   end
 
 

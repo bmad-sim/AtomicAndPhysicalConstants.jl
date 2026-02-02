@@ -20,22 +20,25 @@ include("CODATA2010.jl")
 include("CODATA2014.jl")
 include("CODATA2018.jl")
 include("CODATA2022.jl")
-include("constants.jl")
+
+release::CODATA_release = CODATA2022
+
 include("functions.jl")
-include("species_data.jl")
+# include("constants.jl")
+# include("species_data.jl")
 include("constructors.jl")
 
 # export the const pointers to values
-export m_electron, m_proton, m_neutron, m_muon, m_helion, m_deuteron
-export m_pion_0, m_pion_charged
+export M_ELECTRON, M_PROTON, M_NEUTRON, M_MUON, M_HELION, M_DEUTERON
+export M_PION_0, M_PION_CHARGED
 
-export mu_deuteron, mu_electron, mu_helion, mu_muon, mu_neutron, mu_proton, mu_triton
+export MU_DEUTERON, MU_ELECTRON, MU_HELION, MU_MUON, MU_NEUTRON, MU_PROTON, MU_TRITON
 
-export N_Avogadro, fine_structure
-export gyro_anom_electron, gyro_anom_muon
-export gspin_deuteron, gspin_electron, gspin_helion, gspin_muon, gspin_neutron, gspin_proton, gspin_triton
+export N_AVOGADRO, FINE_STRUCTURE
+export GYRO_ANOM_ELECTRON, GYRO_ANOM_MUON
+export GSPIN_DEUTERON, GSPIN_ELECTRON, GSPIN_HELION, GSPIN_MUON, GSPIN_NEUTRON, GSPIN_PROTON, GSPIN_TRITON
 
-export e_charge, r_e, r_p, c_light, h_Planck, h_bar_Planck, classical_radius_factor, eps_0_vac, mu_0_vac, RELEASE_YEAR
+export E_CHARGE, R_E, R_P, C_LIGHT, H_PLANCK, H_BAR_PLANCK, CLASSICAL_RADIUS_FACTOR, EPS_0_VAC, MU_0_VAC, RELEASE_YEAR
 
 export CODATA2002, CODATA2006, CODATA2010, CODATA2014, CODATA2018, CODATA2022
 # export the pointer to subatomic species dict

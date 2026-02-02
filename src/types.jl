@@ -50,24 +50,24 @@ end;
   #######################################
 
 
-  m_electron::Float64
+  M_ELECTRON::Float64
   # Electron Mass [MeV]/c^2
-  m_proton::Float64
+  M_PROTON::Float64
   # Proton Mass [MeV]/c^2
-  m_neutron::Float64
+  M_NEUTRON::Float64
   # Neutron Mass [MeV]/c^2
-  m_muon::Float64
+  M_MUON::Float64
   # Muon Mass [MeV]/c^2
-  m_helion::Float64
+  M_HELION::Float64
   # Helion Mass He3 nucleus [MeV]/c^2
-  m_deuteron::Float64
+  M_DEUTERON::Float64
   # Deuteron Mass [MeV]/c^2
 
   # constants mysteriously missing from the release
   # picked up from PDG
-  m_pion_0::Float64
+  M_PION_0::Float64
   # uncharged pion mass [eV]/c^2
-  m_pion_charged::Float64
+  M_PION_CHARGED::Float64
   # charged pion mass [eV]/c^2
 
 
@@ -76,19 +76,19 @@ end;
   #######################################
 
 
-  mu_deuteron::Float64
+  MU_DEUTERON::Float64
   # deuteron magnetic moment in [J/T]
-  mu_electron::Float64
+  MU_ELECTRON::Float64
   # electron magnetic moment in [J/T]
-  mu_helion::Float64
+  MU_HELION::Float64
   # helion magnetic moment in [J/T]
-  mu_muon::Float64
+  MU_MUON::Float64
   # muon magnetic moment in [J/T]
-  mu_neutron::Float64
+  MU_NEUTRON::Float64
   # neutron magnetic moment in [J/T]
-  mu_proton::Float64
+  MU_PROTON::Float64
   # proton magnetic moment in [J/T]
-  mu_triton::Float64
+  MU_TRITON::Float64
   # triton magnetic moment in [J/T]
 
 
@@ -97,29 +97,29 @@ end;
   #######################################
 
 
-  N_avogadro::Float64
+  N_AVOGADRO::Float64
   # Avogadro's constant: Number / mole (exact)
-  fine_structure::Float64
+  FINE_STRUCTURE::Float64
   # fine structure constant
 
-  gyro_anom_electron::Float64
+  GYRO_ANOM_ELECTRON::Float64
   # electron magnetic moment anomaly
-  gyro_anom_muon::Float64
+  GYRO_ANOM_MUON::Float64
   # muon magnetic moment anomaly
 
-  gspin_deuteron::Float64
+  GSPIN_DEUTERON::Float64
   # deuteron g factor 
-  gspin_electron::Float64
+  GSPIN_ELECTRON::Float64
   # electron g factor 
-  gspin_helion::Float64
+  GSPIN_HELION::Float64
   # helion g factor 
-  gspin_muon::Float64
+  GSPIN_MUON::Float64
   # muon g factor 
-  gspin_neutron::Float64
+  GSPIN_NEUTRON::Float64
   # neutron g factor 
-  gspin_proton::Float64
+  GSPIN_PROTON::Float64
   # proton g factor 
-  gspin_triton::Float64
+  GSPIN_TRITON::Float64
   # triton g factor
 
 
@@ -127,25 +127,25 @@ end;
   # constants with miscellaneous dimension
   #######################################
 
-  e_charge::Float64
+  E_CHARGE::Float64
   # elementary charge [C]
-  r_e::Float64
+  R_E::Float64
   # classical electron radius [m]
-  r_p::Float64
+  R_P::Float64
   # classical proton radius [m]
-  c_light::Float64
+  C_LIGHT::Float64
   # speed of light [m/s]
-  h_planck::Float64
+  H_PLANCK::Float64
   # Planck's constant [J*s]
-  h_bar_planck::Float64
+  H_BAR_PLANCK::Float64
   # h_planck/twopi [J*s]
-  classical_radius_factor::Float64
+  CLASSICAL_RADIUS_FACTOR::Float64
   # e^2 / (4 pi eps_0) = classical_radius*mass*c^2.
   # Is same for all particles of charge +/- 1.
 
-  eps_0_vac::Float64
+  EPS_0_VAC::Float64
   # Permittivity of free space in [F/m]
-  mu_0_vac::Float64
+  MU_0_VAC::Float64
   # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 
@@ -153,15 +153,15 @@ end;
   # conversion_consts
   #######################################
 
-  g_per_amu::Float64
+  G_PER_AMU::Float64
   # grams per dalton
-  eV_per_amu::Float64
+  EV_PER_AMU::Float64
   # electronvolts/c^2 per dalton
-  J_per_eV::Float64
+  J_PER_EV::Float64
   # Joules per electronvolt
-  e_coulomb::Float64
+  E_COULOMB::Float64
   # elementary charge in Coulombs
-  g_per_eV::Float64
+  G_PER_EV::Float64
   # grams per electronvolt/c^2
 
 

@@ -26,15 +26,15 @@ function g_spin(species::Species; signed::Bool=false)
       return getfield(@__MODULE__, "gspin_" * lowercase(getfield(species, :name)))
     end
   else
-    m_s = getfield(species, :mass) * g_per_eV * 1e3
+    m_s = getfield(species, :mass) * G_PER_EV * 1e3
     mu_s = getfield(species, :moment)
-    spin_s = getfield(species, :spin) * h_bar_Planck
+    spin_s = getfield(species, :spin) * H_BAR_PLANCK
     if signed == false
-      charge_s = abs(getfield(species, :charge) * e_charge)
+      charge_s = abs(getfield(species, :charge) * E_CHARGE)
     else
-      charge_s = getfield(species, :charge) * e_charge
+      charge_s = getfield(species, :charge) * E_CHARGE
     end
-    gs = m_s * mu_s / (charg_s * spin_s)
+    gs = m_s * mu_s / (charge_s * spin_s)
     return gs
   end
 end;
@@ -55,9 +55,9 @@ function gyromagnetic_anomaly(species::Species; signed::Bool=false)
 
   vtypes = [Kind.LEPTON, Kind.HADRON]
   if getfield(species, :name) == "electron"
-    return CODATA2022.__b_gyro_anom_electron
+    return GYRO_ANOM_ELECTRON
   elseif getfield(species, :name) == "muon"
-    return CODATA2022.__b_gyro_anom_muon
+    return GYRO_ANOM_MUON
   elseif getfield(species, :kind) ∉ vtypes
     error("Only subatomic particles have computable gyromagnetic anomalies in this package.")
   else
@@ -111,11 +111,11 @@ end
 
 Returns the charge of the species in units of elementary charge [e].
 """
-function chargeof(species::Species; C::Bool=false, CODATAvals::CODATA_release=CODATA2022)
+function chargeof(species::Species; C::Bool=false,)
   if C == false
     return getfield(species, :charge)
   else
-    return CODATAvals.e_coulomb * getfield(species, :charge)
+    return E_COULOMB * getfield(species, :charge)
   end
 end
 
@@ -130,7 +130,7 @@ function massof(species::Species; AMU::Bool=false, CODATAvals::CODATA_release=CO
   if AMU == false
     return getfield(species, :mass)
   else
-    return getfield(species, :mass) / CODATAvals.eV_per_amu
+    return getfield(species, :mass) / EV_PER_AMU
   end
 end
 

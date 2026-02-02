@@ -16,24 +16,24 @@ const CODATA2002 = CODATA_release(
 #######################################
 
 
-m_electron = 0.51099895069e6,
+M_ELECTRON = 0.51099895069e6,
 # Electron Mass [eV]/c^2
-m_proton = 9.382720894300001e8,
+M_PROTON = 9.382720894300001e8,
 # Proton Mass [eV]/c^2
-m_neutron = 9.395654219399999e8,
+M_NEUTRON = 9.395654219399999e8,
 # Neutron Mass [eV]/c^2
-m_muon = 1.056583755e8,
+M_MUON = 1.056583755e8,
 # Muon Mass [eV]/c^2
-m_helion = 2.80839161112e9,
+M_HELION = 2.80839161112e9,
 # Helion Mass He3 nucleus [eV]/c^2
-m_deuteron = 1.875612945e9,
+M_DEUTERON = 1.875612945e9,
 # Deuteron Mass [eV]/c^2
 
 # constants mysteriously missing from the release
 # picked up from PDG
-m_pion_0 = 1.349768277676847e8,
+M_PION_0 = 1.349768277676847e8,
 # uncharged pion mass [eV]/c^2
-m_pion_charged = 1.3957039098368132e8,
+M_PION_CHARGED = 1.3957039098368132e8,
 # charged pion mass [eV]/c^2
 
 
@@ -42,19 +42,19 @@ m_pion_charged = 1.3957039098368132e8,
 #######################################
 
 
-mu_deuteron = 4.330735087e-27,
+MU_DEUTERON = 4.330735087e-27,
 # deuteron magnetic moment in [J/T]
-mu_electron = -9.2847646917e-24,
+MU_ELECTRON = -9.2847646917e-24,
 # electron magnetic moment in [J/T]
-mu_helion = -1.07461755198e-26,
+MU_HELION = -1.07461755198e-26,
 # helion magnetic moment in [J/T]
-mu_muon = -4.4904483e-26,
+MU_MUON = -4.4904483e-26,
 # muon magnetic moment in [J/T]
-mu_neutron = -9.6623653e-27,
+MU_NEUTRON = -9.6623653e-27,
 # neutron magnetic moment in [J/T]
-mu_proton = 1.41060679545e-26,
+MU_PROTON = 1.41060679545e-26,
 # proton magnetic moment in [J/T]
-mu_triton = 1.5046095178e-26,
+MU_TRITON = 1.5046095178e-26,
 # triton magnetic moment in [J/T]
 
 
@@ -63,27 +63,27 @@ mu_triton = 1.5046095178e-26,
 #######################################
 
 
-N_avogadro = 6.02214076e23,
+N_AVOGADRO = 6.02214076e23,
 # Avogadro's constant: Number / mole (exact)
-fine_structure = 0.0072973525643,
+FINE_STRUCTURE = 0.0072973525643,
 # fine structure constant
 
 
-gspin_electron = -2.0023193043718,
+GSPIN_ELECTRON = -2.0023193043718,
 # electron g factor 
-gspin_muon =  -2.0023318396,
+GSPIN_MUON =  -2.0023318396,
 # muon g factor 
-gspin_neutron = -3.82608546,
+GSPIN_NEUTRON = -3.82608546,
 # neutron g factor 
-gspin_proton = 5.585694701,
+GSPIN_PROTON = 5.585694701,
 # proton g factor 
 
 # the following dimensionless constants were not included in CODATA2002
-gyro_anom_electron = NaN,
-gyro_anom_muon = NaN,
-gspin_deuteron = NaN,
-gspin_helion = NaN,
-gspin_triton = NaN,
+GYRO_ANOM_ELECTRON = NaN,
+GYRO_ANOM_MUON = NaN,
+GSPIN_DEUTERON = NaN,
+GSPIN_HELION = NaN,
+GSPIN_TRITON = NaN,
 
 
 #######################################
@@ -91,44 +91,44 @@ gspin_triton = NaN,
 #######################################
 
 
-e_charge = 1.602176634e-19,
+E_CHARGE = 1.602176634e-19,
 # elementary charge [C]
-r_e = 2.8179403205e-15,
+R_E = 2.8179403205e-15,
 # classical electron radius [m]
-r_p = 2.8179403205e-15 * 0.51099895069 / (9.382720894300001e2), #r_e * m_electron / m_proton,
+R_P = 2.8179403205e-15 * 0.51099895069 / (9.382720894300001e2), #r_e * m_electron / m_proton,
 # classical proton radius [m]
-c_light = 2.99792458e8,
+C_LIGHT = 2.99792458e8,
 # speed of light [m/s]
-h_planck = 6.62607015e-34,
+H_PLANCK = 6.62607015e-34,
 # Planck's constant [J*s]
-h_bar_planck = 6.62607015e-34 / 2 / pi,
+H_BAR_PLANCK = 6.62607015e-34 / 2 / pi,
 # h_planck/twopi [eV*s]
-classical_radius_factor = 2.8179403205e-15 * 0.51099895069, # r_e * m_electron,
+CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # r_e * m_electron,
 # e^2 / (4 pi eps_0)::typeof() = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.
 
-eps_0_vac= 8.8541878188e-12,
+EPS_0_VAC= 8.8541878188e-12,
 # Permittivity of free space in [F/m]
-mu_0_vac = 1.25663706127e-6,
+MU_0_VAC = 1.25663706127e-6,
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 
 
 
-  g_per_amu=1.66053906892e-24,
-  # grams per standard atomic mass unit (dalton)
+G_PER_AMU=1.66053906892e-24,
+# grams per standard atomic mass unit (dalton)
 
-  eV_per_amu=9.3149410372e8,
-  # eV/c^2 per standard atomic mass unit (dalton)
+EV_PER_AMU=9.3149410372e8,
+# eV/c^2 per standard atomic mass unit (dalton)
 
-  J_per_eV=1.602176634e-19,
-  # Joules per eV
+J_PER_EV=1.602176634e-19,
+# Joules per eV
 
-  e_coulomb=1.602176634e-19,
-  # elementary charge in coulombs per elementary charge
+E_COULOMB=1.602176634e-19,
+# elementary charge in coulombs per elementary charge
 
-  g_per_eV=1.7826618115e-33,
-  # grams per eV/c^2
+G_PER_EV=1.7826618115e-33,
+# grams per eV/c^2
 
 RELEASE_YEAR = 2002
 

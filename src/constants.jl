@@ -4,24 +4,24 @@
 # constants with dimension [mass]
 #######################################
 
-const m_electron::Float64 = 0.51099895069e6
+const M_ELECTRON::Float64 = release.M_ELECTRON 
 # Electron Mass [eV]/c^2
-const m_proton::Float64 = 9.382720894300001e8
+const M_PROTON::Float64 = release.M_PROTON
 # Proton Mass [eV]/c^2
-const m_neutron::Float64 = 9.395654219399999e8
+const M_NEUTRON::Float64 = release.M_NEUTRON
 # Neutron Mass [eV]/c^2
-const m_muon::Float64 = 1.056583755e8
+const M_MUON::Float64 = release.M_MUON
 # Muon Mass [eV]/c^2
-const m_helion::Float64 = 2.80839161112e9
+const M_HELION::Float64 = release.M_HELION
 # Helion Mass He3 nucleus [eV]/c^2
-const m_deuteron::Float64 = 1.875612945e9
+const M_DEUTERON::Float64 = release.M_DEUTERON
 # Deuteron Mass [MeV]/c^2
 
 # constants mysteriously missing from the release
 # picked up from PDG
-const m_pion_0::Float64 = 1.349768277676847e8
+const M_PION_0::Float64 = release.M_PION_0
 # uncharged pion mass [eV]/c^2
-const m_pion_charged::Float64 = 1.3957039098368132e8
+const M_PION_CHARGED::Float64 = release.M_PION_CHARGED
 # charged pion mass [eV]/c^2
 
 
@@ -30,19 +30,19 @@ const m_pion_charged::Float64 = 1.3957039098368132e8
 #######################################
 
 
-const mu_deuteron::Float64 = 4.330735087e-27
+const MU_DEUTERON::Float64 = release.MU_DEUTERON
 # deuteron magnetic moment in [J/T]
-const mu_electron::Float64 = -9.2847646917e-24
+const MU_ELECTRON::Float64 = release.MU_ELECTRON
 # electron magnetic moment in [J/T]
-const mu_helion::Float64 = -1.07461755198e-26
+const MU_HELION::Float64 = release.MU_HELION
 # helion magnetic moment in [J/T],
-const mu_muon::Float64 = -4.4904483e-26
+const MU_MUON::Float64 = release.MU_MUON
 # muon magnetic moment in [J/T]
-const mu_neutron::Float64 = -9.6623653e-27
+const MU_NEUTRON::Float64 = release.MU_NEUTRON
 # neutron magnetic moment in [J/T]
-const mu_proton::Float64 = 1.41060679545e-26
+const MU_PROTON::Float64 = release.MU_PROTON
 # proton magnetic moment in [J/T]
-const mu_triton::Float64 = 1.5046095178e-26
+const MU_TRITON::Float64 = release.MU_TRITON
 # triton magnetic moment in [J/T]
 
 
@@ -51,29 +51,29 @@ const mu_triton::Float64 = 1.5046095178e-26
 #######################################
 
 
-const N_Avogadro::Float64 = 6.02214076e23
+const N_AVOGADRO::Float64 = release.N_AVOGADRO
 # Avogadro's constant: Number / mole (exact)
-const fine_structure::Float64 = 0.0072973525643
+const FINE_STRUCTURE::Float64 = release.FINE_STRUCTURE
 # fine structure constant
 
-const gyro_anom_electron::Float64 = 1.15965218046e-3
+const GYRO_ANOM_ELECTRON::Float64 = release.GYRO_ANOM_ELECTRON
 # electron magnetic moment anomaly
-const gyro_anom_muon::Float64 = 1.16592062e-3
+const GYRO_ANOM_MUON::Float64 = release.GYRO_ANOM_MUON
 # muon magnetic moment anomaly
 
-const gspin_deuteron::Float64 = 0.8574382335
+const GSPIN_DEUTERON::Float64 = release.GSPIN_DEUTERON
 # deuteron g factor 
-const gspin_electron::Float64 = -2.00231930436092
+const GSPIN_ELECTRON::Float64 = release.GSPIN_ELECTRON
 # electron g factor 
-const gspin_helion::Float64 = -4.2552506995
+const GSPIN_HELION::Float64 = release.GSPIN_HELION
 # helion g factor 
-const gspin_muon::Float64 = -2.00233184123
+const GSPIN_MUON::Float64 = release.GSPIN_MUON
 # muon g factor 
-const gspin_neutron::Float64 = -3.82608552
+const GSPIN_NEUTRON::Float64 = release.GSPIN_NEUTRON
 # neutron g factor 
-const gspin_proton::Float64 = 5.5856946893
+const GSPIN_PROTON::Float64 = release.GSPIN_PROTON
 # proton g factor 
-const gspin_triton::Float64 = 5.957924930
+const GSPIN_TRITON::Float64 = release.GSPIN_TRITON
 # triton g factor
 
 
@@ -82,40 +82,40 @@ const gspin_triton::Float64 = 5.957924930
 #######################################
 
 
-const e_charge::Float64 = 1.602176634e-19
+const E_CHARGE::Float64 = release.E_CHARGE
 # elementary charge [C]
-const r_e::Float64 = 2.8179403205e-15
+const R_E::Float64 = release.R_E
 # classical electron radius [m],
-const r_p::Float64 = 2.8179403205e-15 * 0.51099895069 / 9.382720894300001e2 #r_e * m_electron / m_proton,
+const R_P::Float64 = release.R_P #r_e * m_electron / m_proton,
 # classical proton radius [m]
-const c_light::Float64 = 2.99792458e8
+const C_LIGHT::Float64 = release.C_LIGHT
 # speed of light [m/s]
-const h_Planck::Float64 = 6.62607015e-34
+const H_PLANCK::Float64 = release.H_PLANCK
 # Planck's constant [J*s]
-const h_bar_Planck::Float64 = 6.62607015e-34 / 2 / pi
+const H_BAR_PLANCK::Float64 = release.H_BAR_PLANCK
 # h_planck/twopi [eV*s]
-const classical_radius_factor::Float64 = 2.8179403205e-15 * 0.51099895069 # r_e * m_electron,
+const CLASSICAL_RADIUS_FACTOR::Float64 = release.CLASSICAL_RADIUS_FACTOR # r_e * m_electron,
 # e^2 / (4 pi eps_0)::Float64 = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.
 
-const eps_0_vac::Float64 = 8.8541878188e-12
+const EPS_0_VAC::Float64 = release.EPS_0_VAC
 # Permittivity of free space in [F/m]
-const mu_0_vac::Float64 = 1.25663706127e-6
+const MU_0_VAC::Float64 = release.MU_0_VAC
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
-const g_per_amu::Float64 = 1.66053906892e-24
+const G_PER_AMU::Float64 = release.G_PER_AMU
 # grams per standard atomic mass unit (dalton)
 
-const eV_per_amu::Float64 = 9.3149410372e8
+const EV_PER_AMU::Float64 = release.EV_PER_AMU
 # eV/c^2 per standard atomic mass unit (dalton)
 
-const J_per_eV::Float64 = 1.602176634e-19
+const J_PER_EV::Float64 = release.J_PER_EV
 # Joules per eV
 
-const e_coulomb::Float64 = 1.602176634e-19
+const E_COULOMB::Float64 = release.E_COULOMB
 # elementary charge in coulombs per elementary charge
 
-const g_per_eV::Float64 = 1.78266192162790e-33
+const G_PER_EV::Float64 = release.G_PER_EV
 # grams per eV/c^2
 
-const RELEASE_YEAR::Int = 2022
+const RELEASE_YEAR::Int = release.RELEASE_YEAR
