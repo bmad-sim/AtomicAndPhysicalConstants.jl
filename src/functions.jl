@@ -73,24 +73,23 @@ end;
 
 
 
-"""
-    g_nucleon(gs::Float64, Z::Int, mass::Float64)
+# """
+#     g_nucleon(gs::Float64, Z::Int, mass::Float64)
 
-Compute and deliver the gyromagnetic anomaly for a baryon given its g factor
+# Compute and deliver the gyromagnetic anomaly for a baryon given its g factor
 
 
-"""
-g_nucleon
+# """
+# g_nucleon
 
-function g_nucleon(species::Species)
+# function g_nucleon(species::Species)
 
-  e = 1u"h_bar"
-  m = getfield(species, :mass).val
-  gs = g_spin(species)
-  m_p = getfield(Species("proton"), :mass).val
+#   m = getfield(species, :mass)
+#   gs = g_spin(species)
+  
 
-  return gs * e * m_p / m
-end;
+#   return gs * m_proton / m
+# end
 
 
 #####################################################################

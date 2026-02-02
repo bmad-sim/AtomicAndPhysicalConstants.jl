@@ -2,7 +2,7 @@ module APCtest
 using AtomicAndPhysicalConstants
 using Test
 
-@testset "Constants Access and Values" begin
+@testset "Constant Access and Values" begin
 
   # Test exact values from CODATA 2022
   # Masses are stored in eV/c^2
