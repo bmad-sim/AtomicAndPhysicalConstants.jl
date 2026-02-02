@@ -1,6 +1,5 @@
 # AtomicAndPhysicalConstants/src/species.jl
 
-include("species_data.jl")
 
 @doc """
     subatomic_particle(name::String)

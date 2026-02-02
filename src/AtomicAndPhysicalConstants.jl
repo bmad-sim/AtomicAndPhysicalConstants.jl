@@ -1,10 +1,7 @@
 module AtomicAndPhysicalConstants
 
-using Reexport
 using EnumX
-using Dates
-using HTTP
-using JSON
+using Preferences
 
 # kind enum stores the kind of particle
 # NULL is for null species (placeholder species)
@@ -21,11 +18,10 @@ include("CODATA2014.jl")
 include("CODATA2018.jl")
 include("CODATA2022.jl")
 
-release::CODATA_release = CODATA2022
 
+include("constants.jl")
+include("species_data.jl")
 include("functions.jl")
-# include("constants.jl")
-# include("species_data.jl")
 include("constructors.jl")
 
 # export the const pointers to values

@@ -1,10 +1,10 @@
 # AtomicAndPhysicalConstants/src/defaults.jl
-
+const release = CODATA2022
 #######################################
 # constants with dimension [mass]
 #######################################
 
-const M_ELECTRON::Float64 = release.M_ELECTRON 
+const M_ELECTRON::Float64 = release.M_ELECTRON
 # Electron Mass [eV]/c^2
 const M_PROTON::Float64 = release.M_PROTON
 # Proton Mass [eV]/c^2
