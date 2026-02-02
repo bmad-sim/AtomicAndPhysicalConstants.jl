@@ -162,9 +162,25 @@ For subatomic particles, yields 0.
 function iso_of(species::Species)
   return getfield(species, :iso)
 end
+
+
 #####################################################################
 # Nuts and bolts functionality in more convenient packaging
 #####################################################################
+
+
+function set_release(year::String)
+  if !haskey(CODATA_MAP, year)
+    throw(ArgumentError("You have provided an invalid release year: 
+                         options are currently 
+                         2002, 2006, 2010, 2014, 2018, or 2022."))
+  end
+  @set_preferences!("release" => year)
+  @info("The default CODATA release is now $year. Restart your Julia session for this change to take effect.")
+end
+
+
+
 
 import Base: getproperty
 

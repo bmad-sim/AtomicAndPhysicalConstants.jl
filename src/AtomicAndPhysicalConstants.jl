@@ -11,12 +11,21 @@ const anti_regEx = r"anti\-|anti"
 const mag_regEx = r"[0-9]|[0-9][0-9]|[0-9][0-9][0-9]"
 
 include("types.jl")
+
 include("CODATA2002.jl")
 include("CODATA2006.jl")
 include("CODATA2010.jl")
 include("CODATA2014.jl")
 include("CODATA2018.jl")
 include("CODATA2022.jl")
+
+CODATA_MAP = Dict{String,CODATA_release}(
+  "2002" => CODATA2002,
+  "2006" => CODATA2006,
+  "2010" => CODATA2010,
+  "2014" => CODATA2014,
+  "2018" => CODATA2018,
+  "2022" => CODATA2022)
 
 
 include("constants.jl")
