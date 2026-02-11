@@ -80,7 +80,7 @@ end
   #Create test species
   e = Species("electron")
   C = Species("12C")
-  p = Species("p")
+  p = Species("proton")
 
   #Test g_spin function
   g_spin(e) ≈ 2
