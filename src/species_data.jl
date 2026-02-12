@@ -18,20 +18,20 @@ Constant dictionary of subatomic particles
 `SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0)`
 """
 const SUBATOMIC_SPECIES = Dict{String,SubatomicSpecies}(
-  "pion0" => SubatomicSpecies("pion0", 0, M_PION_0, 0.0, 0.0),
-  "neutron" => SubatomicSpecies("neutron", 0, M_NEUTRON, MU_NEUTRON, 0.5),
-  "deuteron" => SubatomicSpecies("deuteron", 1, M_DEUTERON, MU_DEUTERON, 1.0),
-  "pion+" => SubatomicSpecies("pion+", 1, M_PION_CHARGED, 0.0, 0.0),
-  "anti-muon" => SubatomicSpecies("anti-muon", 1, M_MUON, MU_MUON, 0.5),
-  "proton" => SubatomicSpecies("proton", 1, M_PROTON, MU_PROTON, 0.5),
-  "positron" => SubatomicSpecies("positron", 1, M_ELECTRON, MU_ELECTRON, 0.5),
-  "photon" => SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0),
-  "electron" => SubatomicSpecies("electron", -1, M_ELECTRON, MU_ELECTRON, 0.5),
-  "anti-proton" => SubatomicSpecies("anti-proton", -1, M_PROTON, MU_PROTON, 0.5),
-  "muon" => SubatomicSpecies("muon", -1, M_MUON, MU_MUON, 0.5),
-  "pion-" => SubatomicSpecies("pion-", -1, M_PION_CHARGED, 0.0, 0.0),
-  "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, M_DEUTERON, MU_DEUTERON, 1.0),
-  "anti-neutron" => SubatomicSpecies("anti-neutron", 0, M_NEUTRON, MU_NEUTRON, 0.5)
+  "pion0" => SubatomicSpecies("pion0", 0, M_PION_0, 0.0, 0.0, g_spin(M_PION_0, 0.0, 0.0, 0.0)),
+  "neutron" => SubatomicSpecies("neutron", 0, M_NEUTRON, MU_NEUTRON, 0.5, GSPIN_NEUTRON),
+  "deuteron" => SubatomicSpecies("deuteron", 1, M_DEUTERON, MU_DEUTERON, 1.0, GSPIN_DEUTERON),
+  "pion+" => SubatomicSpecies("pion+", 1, M_PION_CHARGED, 0.0, 0.0, g_spin(M_PION_CHARGED, 0.0, 0.0, 1.0)),
+  "anti-muon" => SubatomicSpecies("anti-muon", 1, M_MUON, MU_MUON, 0.5, GSPIN_MUON),
+  "proton" => SubatomicSpecies("proton", 1, M_PROTON, MU_PROTON, 0.5, GSPIN_PROTON),
+  "positron" => SubatomicSpecies("positron", 1, M_ELECTRON, MU_ELECTRON, 0.5, GSPIN_ELECTRON),
+  "photon" => SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0, 0),
+  "electron" => SubatomicSpecies("electron", -1, M_ELECTRON, MU_ELECTRON, 0.5, GSPIN_ELECTRON),
+  "anti-proton" => SubatomicSpecies("anti-proton", -1, M_PROTON, MU_PROTON, 0.5, GSPIN_PROTON),
+  "muon" => SubatomicSpecies("muon", -1, M_MUON, MU_MUON, 0.5, GSPIN_MUON),
+  "pion-" => SubatomicSpecies("pion-", -1, M_PION_CHARGED, 0.0, 0.0, g_spin(M_PION_CHARGED, 0.0, 0.0, -1.0)),
+  "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, M_DEUTERON, MU_DEUTERON, 1.0, GSPIN_DEUTERON),
+  "anti-neutron" => SubatomicSpecies("anti-neutron", 0, M_NEUTRON, MU_NEUTRON, 0.5, GSPIN_ELECTRON)
 )
 
 

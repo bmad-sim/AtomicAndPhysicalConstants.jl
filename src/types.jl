@@ -6,12 +6,13 @@ struct Species
   charge::Int # charge of the particle (important to consider ionized atoms) in [e]
   mass::Float64 # mass of the particle in [eV/c^2]
   spin::Float64 # spin of the particle in [ħ]
+  gspin::Float64 # gyromagnetic factor (if particle is subatomic, otherwise 0)
   moment::Float64 # magnetic moment of the particle (for now it's 0 unless we have a recorded value)
   iso::Int # if the particle is an atomic isotope this is the mass number, otherwise 0
   kind::Kind.T
 
-  function Species(name::String, charge::Int, mass::Float64, spin::Float64, moment::Float64, iso::Int, kind::Kind.T)
-    new(name, charge, mass, spin, moment, iso, kind)
+  function Species(name::String, charge::Int, mass::Float64, spin::Float64, gspin::Float64, moment::Float64, iso::Int, kind::Kind.T)
+    new(name, charge, mass, spin, gspin, moment, iso, kind)
   end
 end;
 
@@ -22,6 +23,7 @@ struct SubatomicSpecies
   mass::Float64 # mass of the particle in [MeV/c^2]
   moment::Float64 # magnetic moment in J/T
   spin::Float64 # spin magnetic moment in [ħ]
+  gspin::Float64
 end;
 
 struct AtomicSpecies

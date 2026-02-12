@@ -20,6 +20,7 @@ function subatomic_particle(name::String)::Species
       particle.charge,
       particle.mass,
       particle.spin,
+      particle.gspin,
       particle.moment,
       Int(0), 
       Kind.PHOTON)
@@ -29,6 +30,7 @@ function subatomic_particle(name::String)::Species
       particle.charge,
       particle.mass,
       particle.spin,
+      particle.gspin,
       particle.moment,
       0, 
       Kind.LEPTON)
@@ -38,6 +40,7 @@ function subatomic_particle(name::String)::Species
       particle.charge,
       particle.mass,
       particle.spin,
+      particle.gspin,
       particle.moment,
       0, 
       Kind.HADRON)
@@ -99,6 +102,7 @@ function atomic_particle(name::String, charge::Int, iso::Int;)
       charge, 
       mass,
       spin, 
+      0.0,
       0.0, 
       iso, 
       Kind.ATOM
@@ -109,6 +113,7 @@ function atomic_particle(name::String, charge::Int, iso::Int;)
       charge, 
       mass,
       spin, 
+      0.0,
       0.0, 
       iso, 
       Kind.ATOM
@@ -120,7 +125,7 @@ end
 
 
 # null constructor
-Species() = new("Null", 0, 0.0, 0.0, 0.0, 0, Kind.NULL)
+Species() = new("Null", 0, 0.0, 0.0, 0.0, 0.0, 0, Kind.NULL)
 
 # vector of Null names
 const nulls::Vector{String} = ["null", ""]

@@ -11,32 +11,18 @@ For atomic particles, will currently return 0. Will be updated in a future patch
 """
 g_spin
 
-function g_spin(species::Species; signed::Bool=false)
+function g_spin(mass, moment, spin, charge)
 
-  vtypes = [Kind.LEPTON, Kind.HADRON]
-  known = ["deuteron", "electron", "helion", "muon", "neutron", "proton", "triton"]
+  m_s = mass * G_PER_EV / 1e3 # mass in kg
+  mu_s = moment # magnetic moment in J/T
+  spin_s = spin * H_BAR_PLANCK # spin in J*s
 
-  if getfield(species, :kind) ∉ vtypes
-    error("Only massive subatomic particles have available gyromagnetic factors in this package.")
-  end
-  if lowercase(getfield(species, :name)) ∈ known
-    if signed == false
-      return abs(getfield(@__MODULE__, "gspin_" * lowercase(getfield(species, :name))))
-    else
-      return getfield(@__MODULE__, "gspin_" * lowercase(getfield(species, :name)))
-    end
-  else
-    m_s = getfield(species, :mass) * G_PER_EV * 1e3
-    mu_s = getfield(species, :moment)
-    spin_s = getfield(species, :spin) * H_BAR_PLANCK
-    if signed == false
-      charge_s = abs(getfield(species, :charge) * E_CHARGE)
-    else
-      charge_s = getfield(species, :charge) * E_CHARGE
-    end
-    gs = m_s * mu_s / (charge_s * spin_s)
-    return gs
-  end
+  charge_s = charge * E_CHARGE # charge in C
+
+  # kg * ( J / T ) / (C * J * s) === kg / (T * C * s) === 1
+  gs = m_s * mu_s / (charge_s * spin_s)
+  return gs
+
 end;
 
 
