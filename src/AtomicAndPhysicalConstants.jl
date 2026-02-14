@@ -55,5 +55,6 @@ export ATOMIC_SPECIES
 
 export Species
 
-export chargeof, massof, spinof, momentof, iso_of
+export chargeof, massof, spinof, gfactor_of, momentof, iso_of
+export set_release
 end

@@ -164,8 +164,13 @@ end
 # Nuts and bolts functionality in more convenient packaging
 #####################################################################
 
+"""
+    set_release(; year = "2022")
 
-function set_release(year::String)
+sets the default value of global constants in AtomicAndPhysicalConstants to a particular CODATA release year.
+The setting is persistent across Julia sessions.
+"""
+function set_release(;year::String = "2022")
   if !haskey(CODATA_MAP, year)
     throw(ArgumentError("You have provided an invalid release year: 
                          options are currently 

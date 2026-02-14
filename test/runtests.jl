@@ -67,6 +67,8 @@ end
   @test spinof(e) == 0.5
   @test spinof(C) == 6.0
 
+  @test gfactor_of(e, signed=true) == GSPIN_ELECTRON
+  
   # Test momentof function
   @test momentof(e) ≈ -9.2847646917e-24
 
