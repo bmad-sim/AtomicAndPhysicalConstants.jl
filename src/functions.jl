@@ -127,11 +127,11 @@ function spinof(species::Species)
 end
 
 """
-    gfactor_of(species::Species)
+    gspin_of(species::Species)
 
 Returns the gyromagnetic factor of the species if it is known, otherwise 0.
 """
-function gfactor_of(species::Species; signed::Bool = false)
+function gspin_of(species::Species; signed::Bool = false)
   if signed == false
     return abs(getfield(species, :gspin))
   else
