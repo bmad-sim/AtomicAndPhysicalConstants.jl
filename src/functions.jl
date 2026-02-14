@@ -30,10 +30,7 @@ end;
 """
     gyromagnetic_anomaly(species::Species)
 
-Compute and deliver the gyromagnetic anomaly for a lepton given its g factor
-
-# Arguments:
-1. `gs::Float64': the g_factor for the particle
+Compute and deliver the gyromagnetic anomaly for a lepton
 """
 gyromagnetic_anomaly
 
@@ -48,9 +45,9 @@ function gyromagnetic_anomaly(species::Species; signed::Bool=false)
     error("Only subatomic particles have computable gyromagnetic anomalies in this package.")
   else
     if signed == false
-      gs = g_spin(species)
+      gs = gfactor_of(species)
     else
-      gs = g_spin(species; signed=true)
+      gs = gfactor_of(species; signed=true)
     end
     return (gs - 2) / 2
   end
@@ -127,6 +124,19 @@ Returns the spin of the species in units of reduced Planck constant [ħ].
 """
 function spinof(species::Species)
   return getfield(species, :spin)
+end
+
+"""
+    gfactor_of(species::Species)
+
+Returns the gyromagnetic factor of the species if it is known, otherwise 0.
+"""
+function gfactor_of(species::Species; signed::Bool = false)
+  if signed == false
+    return abs(getfield(species, :gspin))
+  else
+    return getfield(species, :gspin)
+  end
 end
 
 """

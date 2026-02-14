@@ -29,8 +29,8 @@ CODATA_MAP = Dict{String,CODATA_release}(
 
 
 include("constants.jl")
-include("species_data.jl")
 include("functions.jl")
+include("species_data.jl")
 include("constructors.jl")
 
 # export the const pointers to values
