@@ -27,32 +27,6 @@ end;
 
 
 
-"""
-    gyromagnetic_anomaly(species::Species)
-
-Compute and deliver the gyromagnetic anomaly for a lepton
-"""
-gyromagnetic_anomaly
-
-function gyromagnetic_anomaly(species::Species; signed::Bool=false)
-
-  vtypes = [Kind.LEPTON, Kind.HADRON]
-  if getfield(species, :name) == "electron"
-    return GYRO_ANOM_ELECTRON
-  elseif getfield(species, :name) == "muon"
-    return GYRO_ANOM_MUON
-  elseif getfield(species, :kind) ∉ vtypes
-    error("Only subatomic particles have computable gyromagnetic anomalies in this package.")
-  else
-    if signed == false
-      gs = gfactor_of(species)
-    else
-      gs = gfactor_of(species; signed=true)
-    end
-    return (gs - 2) / 2
-  end
-
-end;
 
 
 
@@ -139,14 +113,35 @@ function gspin_of(species::Species; signed::Bool = false)
   end
 end
 
+
+"""
+    gyromagnetic_anomaly(species::Species)
+
+Compute and deliver the gyromagnetic anomaly for a lepton
+"""
+gyromagnetic_anomaly
+
+function gyromagnetic_anomaly(species::Species)
+  electron = ["electron", "positron"]
+  muon = [ "muon", "anti-muon"]
+  name = getfield(species, :name)
+  if name in electron
+    return GYRO_ANOM_ELECTRON 
+  elseif name in muon
+    return GYRO_ANOM_MUON
+  else
+    return (gspin_of(species) - 2) / 2
+  end
+end
+
+
 """
     momentof(species::Species)
 
 Returns the magnetic moment of the species in magnetic moment units J/T.
 """
-function momentof(species::Species)
-  return getfield(species, :moment)
-end
+momentof(species::Species) = getfield(species, :moment)
+
 
 """
     iso_of(species::Species)
@@ -155,10 +150,10 @@ Returns the isotope mass number of the species as an Int.
 For atomic isotopes, this is the mass number: if taken as the abundance average, yields -1. 
 For subatomic particles, yields 0.
 """
-function iso_of(species::Species)
-  return getfield(species, :iso)
-end
+iso_of(species::Species) = getfield(species, :iso)
 
+
+isnullspecies(species::Species) = getfield(species, :kind) == NULL
 
 #####################################################################
 # Nuts and bolts functionality in more convenient packaging
