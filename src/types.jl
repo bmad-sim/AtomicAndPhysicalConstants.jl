@@ -14,6 +14,10 @@ struct Species
   function Species(name::String, charge::Int, mass::Float64, spin::Float64, gspin::Float64, moment::Float64, iso::Int, kind::Kind.T)
     new(name, charge, mass, spin, gspin, moment, iso, kind)
   end
+
+
+  # null constructor
+  Species() = new("Null", 0, 0.0, 0.0, 0.0, 0.0, 0, Kind.NULL)
 end;
 
 

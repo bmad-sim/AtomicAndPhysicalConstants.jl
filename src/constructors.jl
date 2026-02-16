@@ -124,8 +124,6 @@ end
 
 
 
-# null constructor
-Species() = new("Null", 0, 0.0, 0.0, 0.0, 0.0, 0, Kind.NULL)
 
 # vector of Null names
 const nulls::Vector{String} = ["null", ""]
