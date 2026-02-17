@@ -50,6 +50,7 @@ end
   # Create test species
   e = Species("electron")
   C = Species("12C")
+  nas = Species()
 
   # Test nameof function
   @test nameof(e) == "electron"
@@ -67,13 +68,16 @@ end
   @test spinof(e) == 0.5
   @test spinof(C) == 6.0
 
-  @test gfactor_of(e, signed=true) == GSPIN_ELECTRON
+  @test gspin_of(e, signed=true) == GSPIN_ELECTRON
   
   # Test momentof function
   @test momentof(e) ≈ -9.2847646917e-24
 
   # Test isoof function
   @test iso_of(C) == 12
+  @test isnullspecies(C) == false
+  @test isnullspecies(e) == false
+  @test isnullspecies(nas) == true
 
 end
 
