@@ -98,9 +98,9 @@ const CLASSICAL_RADIUS_FACTOR::Float64 = get(CODATA_MAP, release, CODATA2022).CL
 # e^2 / (4 pi eps_0)::Float64 = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.
 
-const EPS_0_VAC::Float64 = get(CODATA_MAP, release, CODATA2022).EPS_0_VAC
+const EPS_0::Float64 = get(CODATA_MAP, release, CODATA2022).EPS_0
 # Permittivity of free space in [F/m]
-const MU_0_VAC::Float64 = get(CODATA_MAP, release, CODATA2022).MU_0_VAC
+const MU_0::Float64 = get(CODATA_MAP, release, CODATA2022).MU_0
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 const G_PER_AMU::Float64 = get(CODATA_MAP, release, CODATA2022).G_PER_AMU

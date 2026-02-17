@@ -108,9 +108,9 @@ CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # r_e * m_electron,
 # e^2 / (4 pi eps_0)::typeof() = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.
 
-EPS_0_VAC = 8.8541878188e-12,
+EPS_0 = 8.8541878188e-12,
 # Permittivity of free space in [F/m]
-MU_0_VAC = 1.25663706127e-6,
+MU_0 = 1.25663706127e-6,
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 

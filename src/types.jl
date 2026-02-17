@@ -149,9 +149,9 @@ end;
   # e^2 / (4 pi eps_0) = classical_radius*mass*c^2.
   # Is same for all particles of charge +/- 1.
 
-  EPS_0_VAC::Float64
+  EPS_0::Float64
   # Permittivity of free space in [F/m]
-  MU_0_VAC::Float64
+  MU_0::Float64
   # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 
