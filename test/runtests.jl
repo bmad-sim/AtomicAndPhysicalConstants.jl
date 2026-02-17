@@ -41,8 +41,8 @@ using Test
   @test H_PLANCK ≈ 6.62607015e-34  # Planck constant in J*s
   @test H_BAR_PLANCK ≈ 6.62607015e-34 / 2 / pi  # reduced Planck constant
   @test R_E ≈ 2.8179403205e-15  # classical electron radius in m
-  @test EPS_0_VAC ≈ 8.8541878188e-12  # permittivity of free space in F/m
-  @test MU_0_VAC ≈ 1.25663706127e-6  # vacuum permeability in N/A^2
+  @test EPS_0 ≈ 8.8541878188e-12  # permittivity of free space in F/m
+  @test MU_0 ≈ 1.25663706127e-6  # vacuum permeability in N/A^2
   @test RELEASE_YEAR == 2022
 end
 
