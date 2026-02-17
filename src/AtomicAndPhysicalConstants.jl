@@ -49,7 +49,7 @@ export E_CHARGE, R_E, R_P, C_LIGHT, H_PLANCK, H_BAR_PLANCK, CLASSICAL_RADIUS_FAC
 export CODATA2002, CODATA2006, CODATA2010, CODATA2014, CODATA2018, CODATA2022
 export set_release
 
-# export the pointer to subatomic species dict
+# export the subatomic species dict
 export SUBATOMIC_SPECIES
 # export the atomic species dict
 export ATOMIC_SPECIES
