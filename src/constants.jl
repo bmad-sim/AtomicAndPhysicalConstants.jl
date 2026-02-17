@@ -103,7 +103,7 @@ const EPS_0::Float64 = get(CODATA_MAP, release, CODATA2022).EPS_0
 const MU_0::Float64 = get(CODATA_MAP, release, CODATA2022).MU_0
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
-const G_PER_AMU::Float64 = get(CODATA_MAP, release, CODATA2022).G_PER_AMU
+const KG_PER_AMU::Float64 = get(CODATA_MAP, release, CODATA2022).G_PER_AMU * 1e-3
 # grams per standard atomic mass unit (dalton)
 
 const EV_PER_AMU::Float64 = get(CODATA_MAP, release, CODATA2022).EV_PER_AMU
