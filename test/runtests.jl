@@ -46,7 +46,7 @@ using Test
   @test RELEASE_YEAR == 2022
 end
 
-@testset "Getter Functions" begin
+@testset "getfield tests" begin
   # Create test species
   e = Species("electron")
   C = Species("12C")
@@ -70,6 +70,8 @@ end
 
   @test gspin_of(e, signed=true) == G_ELECTRON
   
+  @test gyromagnetic_anomaly(e) == ANOMALY_ELECTRON
+
   # Test momentof function
   @test momentof(e) ≈ -9.2847646917e-24
 
@@ -78,6 +80,7 @@ end
   @test isnullspecies(C) == false
   @test isnullspecies(e) == false
   @test isnullspecies(nas) == true
+
 
 end
 
