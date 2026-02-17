@@ -153,7 +153,7 @@ For subatomic particles, yields 0.
 iso_of(species::Species) = getfield(species, :iso)
 
 
-isnullspecies(species::Species) = getfield(species, :kind) == NULL
+isnullspecies(species::Species) = getfield(species, :kind) == Kind.NULL
 
 #####################################################################
 # Nuts and bolts functionality in more convenient packaging
