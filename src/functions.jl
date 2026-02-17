@@ -126,9 +126,9 @@ function gyromagnetic_anomaly(species::Species)
   muon = [ "muon", "anti-muon"]
   name = getfield(species, :name)
   if name in electron
-    return GYRO_ANOM_ELECTRON 
+    return ANOMALY_ELECTRON 
   elseif name in muon
-    return GYRO_ANOM_MUON
+    return ANOMALY_MUON
   else
     return (gspin_of(species) - 2) / 2
   end
