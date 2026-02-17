@@ -15,7 +15,7 @@ function g_spin(mass, moment, spin, charge)
 
   m_s = mass * G_PER_EV / 1e3 # mass in kg
   mu_s = moment # magnetic moment in J/T
-  spin_s = spin * H_BAR_PLANCK # spin in J*s
+  spin_s = spin * H_BAR # spin in J*s
 
   charge_s = charge * E_CHARGE # charge in C
 

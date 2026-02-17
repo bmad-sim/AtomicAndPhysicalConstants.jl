@@ -22,25 +22,25 @@ using Test
   @test MU_TRITON ≈ 1.5046095178e-26
 
   # Test dimensionless constants
-  @test N_AVOGADRO ≈ 6.02214076e23
+  @test AVOGADRO ≈ 6.02214076e23
   @test FINE_STRUCTURE ≈ 0.0072973525643
-  @test GYRO_ANOM_ELECTRON ≈ 1.15965218046e-3
-  @test GYRO_ANOM_MUON ≈ 1.16592062e-3
+  @test ANOMALY_ELECTRON ≈ 1.15965218046e-3
+  @test ANOMALY_MUON ≈ 1.16592062e-3
 
   # Test g-factors
-  @test GSPIN_ELECTRON ≈ -2.00231930436092
-  @test GSPIN_PROTON ≈ 5.5856946893
-  @test GSPIN_NEUTRON ≈ -3.82608552
-  @test GSPIN_MUON ≈ -2.00233184123
-  @test GSPIN_DEUTERON ≈ 0.8574382335
-  @test GSPIN_TRITON ≈ 5.957924930
+  @test G_ELECTRON ≈ -2.00231930436092
+  @test G_PROTON ≈ 5.5856946893
+  @test G_NEUTRON ≈ -3.82608552
+  @test G_MUON ≈ -2.00233184123
+  @test G_DEUTERON ≈ 0.8574382335
+  @test G_TRITON ≈ 5.957924930
 
   # Test other physical constants
   @test E_CHARGE ≈ 1.602176634e-19  # elementary charge in C
   @test C_LIGHT ≈ 2.99792458e8  # speed of light in m/s
   @test H_PLANCK ≈ 6.62607015e-34  # Planck constant in J*s
-  @test H_BAR_PLANCK ≈ 6.62607015e-34 / 2 / pi  # reduced Planck constant
-  @test R_E ≈ 2.8179403205e-15  # classical electron radius in m
+  @test H_BAR ≈ 6.62607015e-34 / 2 / pi  # reduced Planck constant
+  @test R_ELECTRON ≈ 2.8179403205e-15  # classical electron radius in m
   @test EPS_0 ≈ 8.8541878188e-12  # permittivity of free space in F/m
   @test MU_0 ≈ 1.25663706127e-6  # vacuum permeability in N/A^2
   @test RELEASE_YEAR == 2022
@@ -68,7 +68,7 @@ end
   @test spinof(e) == 0.5
   @test spinof(C) == 6.0
 
-  @test gspin_of(e, signed=true) == GSPIN_ELECTRON
+  @test gspin_of(e, signed=true) == G_ELECTRON
   
   # Test momentof function
   @test momentof(e) ≈ -9.2847646917e-24

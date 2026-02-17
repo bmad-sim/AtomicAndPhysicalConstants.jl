@@ -103,29 +103,29 @@ end;
   #######################################
 
 
-  N_AVOGADRO::Float64
+  AVOGADRO::Float64
   # Avogadro's constant: Number / mole (exact)
   FINE_STRUCTURE::Float64
   # fine structure constant
 
-  GYRO_ANOM_ELECTRON::Float64
+  ANOMALY_ELECTRON::Float64
   # electron magnetic moment anomaly
-  GYRO_ANOM_MUON::Float64
+  ANOMALY_MUON::Float64
   # muon magnetic moment anomaly
 
-  GSPIN_DEUTERON::Float64
+  G_DEUTERON::Float64
   # deuteron g factor 
-  GSPIN_ELECTRON::Float64
+  G_ELECTRON::Float64
   # electron g factor 
-  GSPIN_HELION::Float64
+  G_HELION::Float64
   # helion g factor 
-  GSPIN_MUON::Float64
+  G_MUON::Float64
   # muon g factor 
-  GSPIN_NEUTRON::Float64
+  G_NEUTRON::Float64
   # neutron g factor 
-  GSPIN_PROTON::Float64
+  G_PROTON::Float64
   # proton g factor 
-  GSPIN_TRITON::Float64
+  G_TRITON::Float64
   # triton g factor
 
 
@@ -135,15 +135,15 @@ end;
 
   E_CHARGE::Float64
   # elementary charge [C]
-  R_E::Float64
+  R_ELECTRON::Float64
   # classical electron radius [m]
-  R_P::Float64
+  R_PROTON::Float64
   # classical proton radius [m]
   C_LIGHT::Float64
   # speed of light [m/s]
   H_PLANCK::Float64
   # Planck's constant [J*s]
-  H_BAR_PLANCK::Float64
+  H_BAR::Float64
   # h_planck/twopi [J*s]
   CLASSICAL_RADIUS_FACTOR::Float64
   # e^2 / (4 pi eps_0) = classical_radius*mass*c^2.
@@ -165,8 +165,6 @@ end;
   # electronvolts/c^2 per dalton
   J_PER_EV::Float64
   # Joules per electronvolt
-  E_COULOMB::Float64
-  # elementary charge in Coulombs
   G_PER_EV::Float64
   # grams per electronvolt/c^2
 

@@ -63,27 +63,27 @@ MU_TRITON = 1.5046095178e-26,
 #######################################
 
 
-N_AVOGADRO = 6.02214076e23,
+AVOGADRO = 6.02214076e23,
 # Avogadro's constant: Number / mole (exact)
 FINE_STRUCTURE = 0.0072973525643,
 # fine structure constant
 
 
-GSPIN_ELECTRON = -2.0023193043718,
+G_ELECTRON = -2.0023193043718,
 # electron g factor 
-GSPIN_MUON =  -2.0023318396,
+G_MUON =  -2.0023318396,
 # muon g factor 
-GSPIN_NEUTRON = -3.82608546,
+G_NEUTRON = -3.82608546,
 # neutron g factor 
-GSPIN_PROTON = 5.585694701,
+G_PROTON = 5.585694701,
 # proton g factor 
 
 # the following dimensionless constants were not included in CODATA2002
-GYRO_ANOM_ELECTRON = NaN,
-GYRO_ANOM_MUON = NaN,
-GSPIN_DEUTERON = NaN,
-GSPIN_HELION = NaN,
-GSPIN_TRITON = NaN,
+ANOMALY_ELECTRON = NaN,
+ANOMALY_MUON = NaN,
+G_DEUTERON = NaN,
+G_HELION = NaN,
+G_TRITON = NaN,
 
 
 #######################################
@@ -93,17 +93,17 @@ GSPIN_TRITON = NaN,
 
 E_CHARGE = 1.602176634e-19,
 # elementary charge [C]
-R_E = 2.8179403205e-15,
+R_ELECTRON = 2.8179403205e-15,
 # classical electron radius [m]
-R_P = 2.8179403205e-15 * 0.51099895069 / (9.382720894300001e2), #r_e * m_electron / m_proton,
+R_PROTON = 2.8179403205e-15 * 0.51099895069 / (9.382720894300001e2), #R_ELECTRON* m_electron / m_proton,
 # classical proton radius [m]
 C_LIGHT = 2.99792458e8,
 # speed of light [m/s]
 H_PLANCK = 6.62607015e-34,
 # Planck's constant [J*s]
-H_BAR_PLANCK = 6.62607015e-34 / 2 / pi,
+H_BAR = 6.62607015e-34 / 2 / pi,
 # h_planck/twopi [eV*s]
-CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # r_e * m_electron,
+CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # R_ELECTRON* m_electron,
 # e^2 / (4 pi eps_0)::typeof() = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.
 
@@ -124,8 +124,6 @@ EV_PER_AMU=9.3149410372e8,
 J_PER_EV=1.602176634e-19,
 # Joules per eV
 
-E_COULOMB=1.602176634e-19,
-# elementary charge in coulombs per elementary charge
 
 G_PER_EV=1.7826618115e-33,
 # grams per eV/c^2

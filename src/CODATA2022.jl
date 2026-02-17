@@ -74,29 +74,29 @@ MU_TRITON = 1.5046095178e-26,
 #######################################
 
 
-N_AVOGADRO = 6.02214076e23,
+AVOGADRO = 6.02214076e23,
 # Avogadro's constant: Number / mole (exact)
 FINE_STRUCTURE = 0.0072973525643,
 # fine structure constant
 
-GYRO_ANOM_ELECTRON = 1.15965218046e-3,
+ANOMALY_ELECTRON = 1.15965218046e-3,
 # electron magnetic moment anomaly
-GYRO_ANOM_MUON = 1.16592062e-3,
+ANOMALY_MUON = 1.16592062e-3,
 # muon magnetic moment anomaly
 
-GSPIN_DEUTERON = 0.8574382335,
+G_DEUTERON = 0.8574382335,
 # deuteron g factor 
-GSPIN_ELECTRON = -2.00231930436092,
+G_ELECTRON = -2.00231930436092,
 # electron g factor 
-GSPIN_HELION = -4.2552506995,
+G_HELION = -4.2552506995,
 # helion g factor 
-GSPIN_MUON = -2.00233184123,
+G_MUON = -2.00233184123,
 # muon g factor 
-GSPIN_NEUTRON = -3.82608552,
+G_NEUTRON = -3.82608552,
 # neutron g factor 
-GSPIN_PROTON = 5.5856946893,
+G_PROTON = 5.5856946893,
 # proton g factor 
-GSPIN_TRITON = 5.957924930,
+G_TRITON = 5.957924930,
 # triton g factor
 
 
@@ -107,17 +107,17 @@ GSPIN_TRITON = 5.957924930,
 
 E_CHARGE = 1.602176634e-19,
 # elementary charge [C]
-R_E = 2.8179403205e-15,
+R_ELECTRON = 2.8179403205e-15,
 # classical electron radius [m],
-R_P = 2.8179403205e-15  * 0.51099895069 / (9.382720894300001e2), #r_e * m_electron / m_proton,
+R_PROTON = 2.8179403205e-15  * 0.51099895069 / (9.382720894300001e2), #R_ELECTRON * m_electron / m_proton,
 # classical proton radius [m]
 C_LIGHT = 2.99792458e8,
 # speed of light [m/s]
 H_PLANCK = 6.62607015e-34,
 # Planck's constant [J*s]
-H_BAR_PLANCK = 6.62607015e-34 / 2 / pi,
+H_BAR = 6.62607015e-34 / 2 / pi,
 # h_planck/twopi [J*s]
-CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # r_e * m_electron,
+CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # R_ELECTRON * m_electron,
 # e^2 / (4 pi eps_0) = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.
 
@@ -136,9 +136,6 @@ EV_PER_AMU=9.3149410372e8,
 
 J_PER_EV=1.602176634e-19,
 # Joules per eV
-
-E_COULOMB=1.602176634e-19,
-# elementary charge in coulombs per elementary charge
 
 G_PER_EV=1.78266192162790e-33,
 # grams per eV/c^2
