@@ -107,9 +107,9 @@ R_PROTON = 2.8179403205e-15 * 0.51099895069 / (9.382720894300001e2), # R_ELECTRO
 # classical proton radius [m]
 C_LIGHT = 2.99792458e8,
 # speed of light [m/s]
-H_PLANCK = 6.62607015e-34,
-# Planck's constant [J*s]
-H_BAR = 6.62607015e-34 / 2 / pi,
+H_PLANCK = 4.135667516e-15,
+# Planck's constant [eV*s]
+H_BAR = 6.58211928e-16,
 # h_planck/twopi [eV*s]
 CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # R_ELECTRON * m_electron,
 # e^2 / (4 pi eps_0)::typeof() = classical_radius * mass * c^2.

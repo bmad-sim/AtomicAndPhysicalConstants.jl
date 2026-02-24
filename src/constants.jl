@@ -184,12 +184,12 @@ C_LIGHT::Float32 - Speed of light in m/s per the selected CODATA release.
 const C_LIGHT::Float32 = get(CODATA_MAP, release, CODATA2022).C_LIGHT
 # speed of light [m/s]
 """
-H_PLANCK::Float32 - Planck's constant (h) in J*s per the selected CODATA release.
+H_PLANCK::Float32 - Planck's constant (h) in eV*s per the selected CODATA release.
 """
 const H_PLANCK::Float32 = get(CODATA_MAP, release, CODATA2022).H_PLANCK
 # Planck's constant [J*s]
 """
-H_BAR::Float32 - Planck's reduced constant (ħ) in J*s per the selected CODATA release.
+H_BAR::Float32 - Planck's reduced constant (ħ) in eV*s per the selected CODATA release.
 """
 const H_BAR::Float32 = get(CODATA_MAP, release, CODATA2022).H_BAR
 # h_planck/twopi [eV*s]
