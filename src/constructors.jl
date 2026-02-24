@@ -5,8 +5,8 @@
     subatomic_particle(name::String)
 
 ## Description:
-Dependence of Particle(name, charge=0, iso=-1)
-Create a particle struct for a subatomic particle with name=name
+sub-constructor for struct Species: subatomic_particle generates a Species object 
+for a particle with openPMD identifier 'name'
 """
 subatomic_particle
 
@@ -52,7 +52,8 @@ end
     atomic_particle(name::String, charge::Int, iso::Int)
 
 ## Description:
-Create a species struct for an atomic species with name=name, charge=charge and iso=iso
+sub-constructor for struct Species: atomic_particle generates a Species object 
+for an atom with atomic symbol 'name', charge state 'charge', and mass number 'iso'
 ## fields:
 - `name::String':         the atomic symbol, must be exact. anti-prefix specifies whether it is an anti-atom
 - `charge::Int':           the net charge of the particle in units of [e]
@@ -135,7 +136,79 @@ left::String = ""
 
 
 
+@doc """
+  Species Struct:
 
+The Species struct is used for keeping track 
+of information specifice to the chosen particle.
+
+## Fields:
+1. `name::String':         the name of the particle 
+
+2. `int_charge::Float64':          the net charge of the particle in units of |e|
+                                        - bookkeeping only, thus in internal units
+                                       - use the 'charge()' function to get the charge 
+                                       - in the desired units
+
+3. `mass::Float64':          the mass of the particle in eV/c^2
+                                       - bookkeeping only, thus in internal units
+                                        - use the 'mass()' function to get the mass 
+                                       - in the desired units
+
+4. `spin::Float64':            the spin of the particle in ħ
+
+5. 'gspin::Float64':            the spin g-factor of the particle
+                                      - defaults to 0 for atoms.
+
+6. `moment::Float64':            the magnetic moment of the particle in eV/T
+
+7. `iso::Int':                          if the particle is an atomic isotope, this is the 
+                                       - mass number, otherwise -1
+8. `kind::Kind.T':                    the kind of particle (ATOM, HADRON, LEPTON, PHOTON, NULL)
+                                       - NULL kind defines a null particle, which is not a real particle 
+                                       - but a placeholder
+
+## Constructors:
+
+This structure has the following constructor
+
+    Species(speciesname::String)
+
+This constructor is used to create a species struct for a subatomic particle or an atomic species by giving the name 
+of the particle.
+
+Here are some ways to use this constructor:
+1. If the particle is To construct a subatomic species, put the name of the subatomic species in the field name. 
+Note that the name must be provided exactly.
+2. If the particle is an atomic species, put the atomic symbol in the name along with isotope and charge information.
+   - The name of the atomic species should be in the format:
+   "mass number" + "atomic symbol" + "charge"
+   the mass number in front of the atomic symbol, and the charge at the end.
+   - The mass number and charge are optional.
+   - The mass number can be in unicode superscript or in ASCII, with an optional "#" in front.
+   e.g. 
+    Species("¹H") - Hydrogen-1
+    Species("1H") - Hydrogen-1
+    Species("#1H") - Hydrogen-1
+   - if the mass number is not specified, the most abundant isotope will be used.
+   - The charge can be in the following formats:
+      * "+" represents single positive charge
+      * "++" represents double positive charge
+      * "+n" or "n+" represents n positive charge, where n can be unicode superscript
+      * "-" represents single negative charge
+      * "–-" represents double negative charge
+      * "-n" or "n-" represents n negative charge, where n can be unicode superscript
+    e.g. 
+    Species("C+") - Carbon with a single positive charge
+    Species("N³⁻") - Nitrogen with a 3 negative charge
+   - if charge is not specified, the charge will be 0.
+3. To create a null species, use the name "Null" or "null" or "".
+4. To create an anti-particle, prepend "anti-" to the name of the particle.
+   e.g. Species("anti-H") - Anti-hydrogen
+   Species("anti-Fe") - Anti-iron
+   Species("anti-positron") - Positron
+
+"""
 function Species(speciesname::String)
   
   
@@ -155,17 +228,7 @@ function Species(speciesname::String)
   for (k, _) in SUBATOMIC_SPECIES
     # whether the particle is in the subatomic species dictionary
     if k == speciesname
-      # whether the particle name only contains characters in the subatomic species dictionary
-      # delete all the names and spaces, there should be nothing left
-      # length(k) == length(name) || "$speciesname should contain only the name of the subatomic particle"
-      # if anti
-      #   if k == "electron"
-      #     return subatomic_particle("positron")
-      #   end
-      #   return subatomic_particle("anti-" * k)
-      # else
-        return subatomic_particle(k)
-      # end
+      return subatomic_particle(k)
     end
   end
 

@@ -13,13 +13,13 @@ using Test
   @test M_DEUTERON ≈ 1.875612945e9  # deuteron mass in eV/c^2
   @test M_HELION ≈ 2.80839161112e9  # helion mass in eV/c^2
 
-  # Test magnetic moments (in J/T)
-  @test MU_ELECTRON ≈ -9.2847646917e-24
-  @test MU_PROTON ≈ 1.41060679545e-26
-  @test MU_NEUTRON ≈ -9.6623653e-27
-  @test MU_MUON ≈ -4.4904483e-26
-  @test MU_DEUTERON ≈ 4.330735087e-27
-  @test MU_TRITON ≈ 1.5046095178e-26
+  # Test magnetic moments (in EV_PER_J/T)
+  @test MU_ELECTRON ≈ -9.2847646917e-24 * EV_PER_J
+  @test MU_PROTON ≈ 1.41060679545e-26 * EV_PER_J
+  @test MU_NEUTRON ≈ -9.6623653e-27 * EV_PER_J
+  @test MU_MUON ≈ -4.4904483e-26 * EV_PER_J
+  @test MU_DEUTERON ≈ 4.330735087e-27 * EV_PER_J
+  @test MU_TRITON ≈ 1.5046095178e-26 * EV_PER_J
 
   # Test dimensionless constants
   @test AVOGADRO ≈ 6.02214076e23
@@ -38,8 +38,8 @@ using Test
   # Test other physical constants
   @test E_CHARGE ≈ 1.602176634e-19  # elementary charge in C
   @test C_LIGHT ≈ 2.99792458e8  # speed of light in m/s
-  @test H_PLANCK ≈ 6.62607015e-34  # Planck constant in J*s
-  @test H_BAR ≈ 6.62607015e-34 / 2 / pi  # reduced Planck constant
+  @test H_PLANCK ≈ 4.135667696e-15  # Planck constant in J*s
+  @test H_BAR ≈ 6.582119569e-16  # reduced Planck constant
   @test R_ELECTRON ≈ 2.8179403205e-15  # classical electron radius in m
   @test EPS_0 ≈ 8.8541878188e-12  # permittivity of free space in F/m
   @test MU_0 ≈ 1.25663706127e-6  # vacuum permeability in N/A^2
@@ -68,12 +68,12 @@ end
   @test spinof(e) == 0.5
   @test spinof(C) == 6.0
 
-  @test gspin_of(e, signed=true) == G_ELECTRON
+  @test gspin_of(e, signed=true) ≈ G_ELECTRON
   
-  @test gyromagnetic_anomaly(e) == ANOMALY_ELECTRON
+  @test gyromagnetic_anomaly(e) ≈ ANOMALY_ELECTRON
 
   # Test momentof function
-  @test momentof(e) ≈ -9.2847646917e-24
+  @test momentof(e) ≈ -9.2847646917e-24 * EV_PER_J
 
   # Test isoof function
   @test iso_of(C) == 12

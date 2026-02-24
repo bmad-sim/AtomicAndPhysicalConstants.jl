@@ -8,55 +8,55 @@ const release::String = @load_preference("release", "2022")
 #######################################
 
 """
-M_ELECTRON::Float32 - Mass of the electron in eV/c^2 from the selected CODATA release.
+M_ELECTRON::Float64 - Mass of the electron in eV/c^2 from the selected CODATA release.
 """
-const M_ELECTRON::Float32 = get(CODATA_MAP, release, CODATA2022).M_ELECTRON
+const M_ELECTRON::Float64 = get(CODATA_MAP, release, CODATA2022).M_ELECTRON
 
 """
-M_PROTON::Float32 - Mass of the proton in eV/c^2 from the selected CODATA release.
+M_PROTON::Float64 - Mass of the proton in eV/c^2 from the selected CODATA release.
 """
-const M_PROTON::Float32 = get(CODATA_MAP, release, CODATA2022).M_PROTON
+const M_PROTON::Float64 = get(CODATA_MAP, release, CODATA2022).M_PROTON
 
 """
-M_NEUTRON::Float32 - Mass of the neutron in eV/c^2 from the selected CODATA release.
+M_NEUTRON::Float64 - Mass of the neutron in eV/c^2 from the selected CODATA release.
 """
-const M_NEUTRON::Float32 = get(CODATA_MAP, release, CODATA2022).M_NEUTRON
+const M_NEUTRON::Float64 = get(CODATA_MAP, release, CODATA2022).M_NEUTRON
 
 """
-M_MUON::Float32 - Mass of the muon in eV/c^2 from the selected CODATA release.
+M_MUON::Float64 - Mass of the muon in eV/c^2 from the selected CODATA release.
 """
-const M_MUON::Float32 = get(CODATA_MAP, release, CODATA2022).M_MUON
+const M_MUON::Float64 = get(CODATA_MAP, release, CODATA2022).M_MUON
 # Muon Mass [eV]/c^2
 """
-M_HELION::Float32 - Mass of the helion in eV/c^2 from the selected CODATA release.
+M_HELION::Float64 - Mass of the helion in eV/c^2 from the selected CODATA release.
 """
-const M_HELION::Float32 = get(CODATA_MAP, release, CODATA2022).M_HELION
+const M_HELION::Float64 = get(CODATA_MAP, release, CODATA2022).M_HELION
 # Helion Mass He3 nucleus [eV]/c^2
 """
-M_DEUTERON::Float32 - Mass of the deuteron in eV/c^2 from the selected CODATA release.
+M_DEUTERON::Float64 - Mass of the deuteron in eV/c^2 from the selected CODATA release.
 """
-const M_DEUTERON::Float32 = get(CODATA_MAP, release, CODATA2022).M_DEUTERON
+const M_DEUTERON::Float64 = get(CODATA_MAP, release, CODATA2022).M_DEUTERON
 # Deuteron Mass [MeV]/c^2
 
 # constants mysteriously missing from the release
 # picked up from PDG
 """
-M_PION_0::Float32 - Mass of the neutral pion in eV/c^2 scraped from the particle data group.
+M_PION_0::Float64 - Mass of the neutral pion in eV/c^2 scraped from the particle data group.
 """
-const M_PION_0::Float32 = get(CODATA_MAP, release, CODATA2022).M_PION_0
+const M_PION_0::Float64 = get(CODATA_MAP, release, CODATA2022).M_PION_0
 # uncharged pion mass [eV]/c^2
 """
-M_PION_CHARGED::Float32 - Mass of a charged pion in eV/c^2 scraped from the particle data group.
+M_PION_CHARGED::Float64 - Mass of a charged pion in eV/c^2 scraped from the particle data group.
 """
-const M_PION_CHARGED::Float32 = get(CODATA_MAP, release, CODATA2022).M_PION_CHARGED
+const M_PION_CHARGED::Float64 = get(CODATA_MAP, release, CODATA2022).M_PION_CHARGED
 # charged pion mass [eV]/c^2
 
 
 #######################################
 """
-EV_PER_J::Float32 - eV per Joule in the selected CODATA release.
+EV_PER_J::Float64 - eV per Joule in the selected CODATA release.
 """
-const EV_PER_J::Float32 = get(CODATA_MAP, release, CODATA2022).EV_PER_J
+const EV_PER_J::Float64 = get(CODATA_MAP, release, CODATA2022).EV_PER_J
 # Joules per eV
 
 # constants with dimension [magnetic moment]
@@ -64,39 +64,39 @@ const EV_PER_J::Float32 = get(CODATA_MAP, release, CODATA2022).EV_PER_J
 
 
 """
-MU_DEUTERON::Float32 - Magnetic moment of the deuteron in eV/T (converted) from the selected CODATA release.
+MU_DEUTERON::Float64 - Magnetic moment of the deuteron in eV/T (converted) from the selected CODATA release.
 """
-const MU_DEUTERON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_DEUTERON
+const MU_DEUTERON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_DEUTERON
 # deuteron magnetic moment in [J/T]
 """
-MU_ELECTRON::Float32 - Magnetic moment of the electron in eV/T (converted) from the selected CODATA release.
+MU_ELECTRON::Float64 - Magnetic moment of the electron in eV/T (converted) from the selected CODATA release.
 """
-const MU_ELECTRON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_ELECTRON
+const MU_ELECTRON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_ELECTRON
 # electron magnetic moment in [J/T]
 """
-MU_HELION::Float32 - Magnetic moment of the helion in eV/T (converted) from the selected CODATA release.
+MU_HELION::Float64 - Magnetic moment of the helion in eV/T (converted) from the selected CODATA release.
 """
-const MU_HELION::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_HELION
+const MU_HELION::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_HELION
 # helion magnetic moment in [J/T],
 """
-MU_MUON::Float32 - Magnetic moment of the muon in eV/T (converted) from the selected CODATA release.
+MU_MUON::Float64 - Magnetic moment of the muon in eV/T (converted) from the selected CODATA release.
 """
-const MU_MUON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_MUON
+const MU_MUON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_MUON
 # muon magnetic moment in [J/T]
 """
-MU_NEUTRON::Float32 - Magnetic moment of the neutron in eV/T (converted) from the selected CODATA release.
+MU_NEUTRON::Float64 - Magnetic moment of the neutron in eV/T (converted) from the selected CODATA release.
 """
-const MU_NEUTRON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_NEUTRON
+const MU_NEUTRON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_NEUTRON
 # neutron magnetic moment in [J/T]
 """
-MU_PROTON::Float32 - Magnetic moment of the proton in eV/T (converted) from the selected CODATA release.
+MU_PROTON::Float64 - Magnetic moment of the proton in eV/T (converted) from the selected CODATA release.
 """
-const MU_PROTON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_PROTON
+const MU_PROTON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_PROTON
 # proton magnetic moment in [J/T]
 """
-MU_TRITON::Float32 - Magnetic moment of the triton in eV/T (converted) from the selected CODATA release.
+MU_TRITON::Float64 - Magnetic moment of the triton in eV/T (converted) from the selected CODATA release.
 """
-const MU_TRITON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_TRITON
+const MU_TRITON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_TRITON
 # triton magnetic moment in [J/T]
 
 
@@ -106,61 +106,61 @@ const MU_TRITON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_TRIT
 
 
 """
-AVOGADRO::Float32 - Avogadro's constant number/mol (exact)
+AVOGADRO::Float64 - Avogadro's constant number/mol (exact)
 """
-const AVOGADRO::Float32 = get(CODATA_MAP, release, CODATA2022).AVOGADRO
+const AVOGADRO::Float64 = get(CODATA_MAP, release, CODATA2022).AVOGADRO
 # Avogadro's constant: Number / mole (exact)
 """
-FINE_STRUCTURE::Float32 - Finse structure constant from the selected CODATA release.
+FINE_STRUCTURE::Float64 - Finse structure constant from the selected CODATA release.
 """
-const FINE_STRUCTURE::Float32 = get(CODATA_MAP, release, CODATA2022).FINE_STRUCTURE
+const FINE_STRUCTURE::Float64 = get(CODATA_MAP, release, CODATA2022).FINE_STRUCTURE
 # fine structure constant
 
 """
-ANOMALY_ELECTRON::Float32 - The electron gyromagnetic anomaly per the selected CODATA release.
+ANOMALY_ELECTRON::Float64 - The electron gyromagnetic anomaly per the selected CODATA release.
 """
-const ANOMALY_ELECTRON::Float32 = get(CODATA_MAP, release, CODATA2022).ANOMALY_ELECTRON
+const ANOMALY_ELECTRON::Float64 = get(CODATA_MAP, release, CODATA2022).ANOMALY_ELECTRON
 # electron magnetic moment anomaly
 """
-ANOMALY_MUON::Float32 - The muon gyromagnetic anomaly per the selected CODATA release.
+ANOMALY_MUON::Float64 - The muon gyromagnetic anomaly per the selected CODATA release.
 """
-const ANOMALY_MUON::Float32 = get(CODATA_MAP, release, CODATA2022).ANOMALY_MUON
+const ANOMALY_MUON::Float64 = get(CODATA_MAP, release, CODATA2022).ANOMALY_MUON
 # muon magnetic moment anomaly
 
 """
-G_DEUTERON::Float32 - The deuteron spin g-factor per the selected CODATA release.
+G_DEUTERON::Float64 - The deuteron spin g-factor per the selected CODATA release.
 """
-const G_DEUTERON::Float32 = get(CODATA_MAP, release, CODATA2022).G_DEUTERON
+const G_DEUTERON::Float64 = get(CODATA_MAP, release, CODATA2022).G_DEUTERON
 # deuteron g factor 
 """
-G_ELECTRON::Float32 - The electron spin g-factor per the selected CODATA release.
+G_ELECTRON::Float64 - The electron spin g-factor per the selected CODATA release.
 """
-const G_ELECTRON::Float32 = get(CODATA_MAP, release, CODATA2022).G_ELECTRON
+const G_ELECTRON::Float64 = get(CODATA_MAP, release, CODATA2022).G_ELECTRON
 # electron g factor 
 """
-G_HELION::Float32 - The helion spin g-factor per the selected CODATA release.
+G_HELION::Float64 - The helion spin g-factor per the selected CODATA release.
 """
-const G_HELION::Float32 = get(CODATA_MAP, release, CODATA2022).G_HELION
+const G_HELION::Float64 = get(CODATA_MAP, release, CODATA2022).G_HELION
 # helion g factor 
 """
-G_MUON::Float32 - The muon spin g-factor per the selected CODATA release.
+G_MUON::Float64 - The muon spin g-factor per the selected CODATA release.
 """
-const G_MUON::Float32 = get(CODATA_MAP, release, CODATA2022).G_MUON
+const G_MUON::Float64 = get(CODATA_MAP, release, CODATA2022).G_MUON
 # muon g factor 
 """
-G_NEUTRON::Float32 - The neutron spin g-factor per the selected CODATA release.
+G_NEUTRON::Float64 - The neutron spin g-factor per the selected CODATA release.
 """
-const G_NEUTRON::Float32 = get(CODATA_MAP, release, CODATA2022).G_NEUTRON
+const G_NEUTRON::Float64 = get(CODATA_MAP, release, CODATA2022).G_NEUTRON
 # neutron g factor 
 """
-G_PROTON::Float32 - The proton spin g-factor per the selected CODATA release.
+G_PROTON::Float64 - The proton spin g-factor per the selected CODATA release.
 """
-const G_PROTON::Float32 = get(CODATA_MAP, release, CODATA2022).G_PROTON
+const G_PROTON::Float64 = get(CODATA_MAP, release, CODATA2022).G_PROTON
 # proton g factor 
 """
-G_TRITON::Float32 - The triton spin g-factor per the selected CODATA release.
+G_TRITON::Float64 - The triton spin g-factor per the selected CODATA release.
 """
-const G_TRITON::Float32 = get(CODATA_MAP, release, CODATA2022).G_TRITON
+const G_TRITON::Float64 = get(CODATA_MAP, release, CODATA2022).G_TRITON
 # triton g factor
 
 
@@ -170,75 +170,75 @@ const G_TRITON::Float32 = get(CODATA_MAP, release, CODATA2022).G_TRITON
 
 
 """
-E_CHARGE::Float32 - magnitude of charge on the electron in C per the selected CODATA release.
+E_CHARGE::Float64 - magnitude of charge on the electron in C per the selected CODATA release.
 """
-const E_CHARGE::Float32 = get(CODATA_MAP, release, CODATA2022).E_CHARGE
+const E_CHARGE::Float64 = get(CODATA_MAP, release, CODATA2022).E_CHARGE
 # elementary charge [C]
 """
-R_ELECTRON::Float32 - Classical electron radius in m per the selected CODATA release.
+R_ELECTRON::Float64 - Classical electron radius in m per the selected CODATA release.
 """
-const R_ELECTRON::Float32 = get(CODATA_MAP, release, CODATA2022).R_ELECTRON
+const R_ELECTRON::Float64 = get(CODATA_MAP, release, CODATA2022).R_ELECTRON
 # classical electron radius [m],
 """
-R_PROTON::Float32 - Classical proton radius in m per the selected CODATA release.
+R_PROTON::Float64 - Classical proton radius in m per the selected CODATA release.
 """
-const R_PROTON::Float32 = get(CODATA_MAP, release, CODATA2022).R_PROTON #R_ELECTRON * m_electron / m_proton,
+const R_PROTON::Float64 = get(CODATA_MAP, release, CODATA2022).R_PROTON #R_ELECTRON * m_electron / m_proton,
 # classical proton radius [m]
 """
-C_LIGHT::Float32 - Speed of light in m/s per the selected CODATA release.
+C_LIGHT::Float64 - Speed of light in m/s per the selected CODATA release.
 """
-const C_LIGHT::Float32 = get(CODATA_MAP, release, CODATA2022).C_LIGHT
+const C_LIGHT::Float64 = get(CODATA_MAP, release, CODATA2022).C_LIGHT
 # speed of light [m/s]
 """
-H_PLANCK::Float32 - Planck's constant (h) in eV*s per the selected CODATA release.
+H_PLANCK::Float64 - Planck's constant (h) in eV*s per the selected CODATA release.
 """
-const H_PLANCK::Float32 = get(CODATA_MAP, release, CODATA2022).H_PLANCK
+const H_PLANCK::Float64 = get(CODATA_MAP, release, CODATA2022).H_PLANCK
 # Planck's constant [J*s]
 """
-H_BAR::Float32 - Planck's reduced constant (ħ) in eV*s per the selected CODATA release.
+H_BAR::Float64 - Planck's reduced constant (ħ) in eV*s per the selected CODATA release.
 """
-const H_BAR::Float32 = get(CODATA_MAP, release, CODATA2022).H_BAR
+const H_BAR::Float64 = get(CODATA_MAP, release, CODATA2022).H_BAR
 # h_planck/twopi [eV*s]
 """
-CLASSICAL_RADIUS_FACTOR::Float32 - Classical radius factor per the selected CODATA release.
+CLASSICAL_RADIUS_FACTOR::Float64 - Classical radius factor per the selected CODATA release.
 """
-const CLASSICAL_RADIUS_FACTOR::Float32 = get(CODATA_MAP, release, CODATA2022).CLASSICAL_RADIUS_FACTOR # R_ELECTRON * m_electron,
-# e^2 / (4 pi eps_0)::Float32 = classical_radius * mass * c^2.
+const CLASSICAL_RADIUS_FACTOR::Float64 = get(CODATA_MAP, release, CODATA2022).CLASSICAL_RADIUS_FACTOR # R_ELECTRON * m_electron,
+# e^2 / (4 pi eps_0)::Float64 = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.
 
 """
-EPS_0::Float32 - Permittivity of free space in F/m per the selected CODATA release.
+EPS_0::Float64 - Permittivity of free space in F/m per the selected CODATA release.
 """
-const EPS_0::Float32 = get(CODATA_MAP, release, CODATA2022).EPS_0
+const EPS_0::Float64 = get(CODATA_MAP, release, CODATA2022).EPS_0
 # Permittivity of free space in [F/m]
 """
-MU_0::Float32 - Vacuum permeability in N/A^2 per the selected CODATA release.
+MU_0::Float64 - Vacuum permeability in N/A^2 per the selected CODATA release.
 """
-const MU_0::Float32 = get(CODATA_MAP, release, CODATA2022).MU_0
+const MU_0::Float64 = get(CODATA_MAP, release, CODATA2022).MU_0
 # Vacuum permeability in [N/A^2] (newtons per ampere squared)
 
 """
-KG_PER_AMU::Float32 - Kilograms per Dalton conversion in the selected CODATA release.
+KG_PER_AMU::Float64 - Kilograms per Dalton conversion in the selected CODATA release.
 """
-const KG_PER_AMU::Float32 = get(CODATA_MAP, release, CODATA2022).G_PER_AMU * 1e-3
+const KG_PER_AMU::Float64 = get(CODATA_MAP, release, CODATA2022).G_PER_AMU * 1e-3
 # grams per standard atomic mass unit (dalton)
 
 """
-EV_PER_AMU::Float32 - eV/c^2 per Dalton conversion in the selected CODATA release.
+EV_PER_AMU::Float64 - eV/c^2 per Dalton conversion in the selected CODATA release.
 """
-const EV_PER_AMU::Float32 = get(CODATA_MAP, release, CODATA2022).EV_PER_AMU
+const EV_PER_AMU::Float64 = get(CODATA_MAP, release, CODATA2022).EV_PER_AMU
 # eV/c^2 per standard atomic mass unit (dalton)
 
 """
-J_PER_EV::Float32 - Joules per eV in the selected CODATA release.
+J_PER_EV::Float64 - Joules per eV in the selected CODATA release.
 """
-const J_PER_EV::Float32 = get(CODATA_MAP, release, CODATA2022).J_PER_EV
+const J_PER_EV::Float64 = get(CODATA_MAP, release, CODATA2022).J_PER_EV
 # Joules per eV
 
 """
-G_PER_EV::Float32 - Grams per eV/c^2 in the selected CODATA release.
+G_PER_EV::Float64 - Grams per eV/c^2 in the selected CODATA release.
 """
-const G_PER_EV::Float32 = get(CODATA_MAP, release, CODATA2022).G_PER_EV
+const G_PER_EV::Float64 = get(CODATA_MAP, release, CODATA2022).G_PER_EV
 # grams per eV/c^2
 
 """
@@ -248,6 +248,6 @@ const RELEASE_YEAR::Int = get(CODATA_MAP, release, CODATA2022).RELEASE_YEAR
 
 # kg per MeV/c²
 """
-KG_PER_MEV_C2::Float32 - Kilograms per MeV/c^2
+KG_PER_MEV_C2::Float64 - Kilograms per MeV/c^2
 """
-const KG_PER_MEV_C2::Float32 = G_PER_EV * 1e-3
+const KG_PER_MEV_C2::Float64 = G_PER_EV * 1e-3
