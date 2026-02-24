@@ -165,6 +165,8 @@ end;
   # electronvolts/c^2 per dalton
   J_PER_EV::Float64
   # Joules per electronvolt
+  EV_PER_J::Float64
+  # electronvolts per joule
   G_PER_EV::Float64
   # grams per electronvolt/c^2
 

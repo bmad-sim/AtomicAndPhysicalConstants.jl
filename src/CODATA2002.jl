@@ -126,7 +126,10 @@ EV_PER_AMU=9.3149410372e8,
 # eV/c^2 per standard atomic mass unit (dalton)
 
 J_PER_EV=1.602176634e-19,
-# Joules per eV
+  # Joules per eV
+
+EV_PER_J=6.24150947e18,
+# eV per Joule
 
 
 G_PER_EV=1.7826618115e-33,

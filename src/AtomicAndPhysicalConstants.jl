@@ -38,7 +38,7 @@ include("constructors.jl")
 # export the const pointers to values
 export M_ELECTRON, M_PROTON, M_NEUTRON, M_MUON, M_HELION, M_DEUTERON
 export M_PION_0, M_PION_CHARGED
-
+export EV_PER_J
 export MU_DEUTERON, MU_ELECTRON, MU_HELION, MU_MUON, MU_NEUTRON, MU_PROTON, MU_TRITON
 
 export AVOGADRO, FINE_STRUCTURE

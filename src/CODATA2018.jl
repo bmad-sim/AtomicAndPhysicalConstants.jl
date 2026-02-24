@@ -130,6 +130,9 @@ EV_PER_AMU=9.3149410372e8,
 J_PER_EV=1.602176634e-19,
 # Joules per eV
 
+EV_PER_J=6.241509074e18,
+# eV per Joule
+
 G_PER_EV=1.782661921e-33,
 # grams per eV/c^2
 

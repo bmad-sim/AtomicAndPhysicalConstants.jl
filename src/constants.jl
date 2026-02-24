@@ -1,8 +1,8 @@
 # AtomicAndPhysicalConstants/src/defaults.jl
 """
-release::Int - The release year of the currently selected CODATA values.
+release::String - The release year of the currently selected CODATA values.
 """
-const release::Int = @load_preference("release", "2022")
+const release::String = @load_preference("release", "2022")
 #######################################
 # constants with dimension [mass]
 #######################################
@@ -53,44 +53,50 @@ const M_PION_CHARGED::Float32 = get(CODATA_MAP, release, CODATA2022).M_PION_CHAR
 
 
 #######################################
+"""
+EV_PER_J::Float32 - eV per Joule in the selected CODATA release.
+"""
+const EV_PER_J::Float32 = get(CODATA_MAP, release, CODATA2022).EV_PER_J
+# Joules per eV
+
 # constants with dimension [magnetic moment]
 #######################################
 
 
 """
-MU_DEUTERON::Float32 - Magnetic moment of the deuteron in J/T from the selected CODATA release.
+MU_DEUTERON::Float32 - Magnetic moment of the deuteron in eV/T (converted) from the selected CODATA release.
 """
-const MU_DEUTERON::Float32 = get(CODATA_MAP, release, CODATA2022).MU_DEUTERON
+const MU_DEUTERON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_DEUTERON
 # deuteron magnetic moment in [J/T]
 """
-MU_ELECTRON::Float32 - Magnetic moment of the electron in J/T from the selected CODATA release.
+MU_ELECTRON::Float32 - Magnetic moment of the electron in eV/T (converted) from the selected CODATA release.
 """
-const MU_ELECTRON::Float32 = get(CODATA_MAP, release, CODATA2022).MU_ELECTRON
+const MU_ELECTRON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_ELECTRON
 # electron magnetic moment in [J/T]
 """
-MU_HELION::Float32 - Magnetic moment of the helion in J/T from the selected CODATA release.
+MU_HELION::Float32 - Magnetic moment of the helion in eV/T (converted) from the selected CODATA release.
 """
-const MU_HELION::Float32 = get(CODATA_MAP, release, CODATA2022).MU_HELION
+const MU_HELION::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_HELION
 # helion magnetic moment in [J/T],
 """
-MU_MUON::Float32 - Magnetic moment of the muon in J/T from the selected CODATA release.
+MU_MUON::Float32 - Magnetic moment of the muon in eV/T (converted) from the selected CODATA release.
 """
-const MU_MUON::Float32 = get(CODATA_MAP, release, CODATA2022).MU_MUON
+const MU_MUON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_MUON
 # muon magnetic moment in [J/T]
 """
-MU_NEUTRON::Float32 - Magnetic moment of the neutron in J/T from the selected CODATA release.
+MU_NEUTRON::Float32 - Magnetic moment of the neutron in eV/T (converted) from the selected CODATA release.
 """
-const MU_NEUTRON::Float32 = get(CODATA_MAP, release, CODATA2022).MU_NEUTRON
+const MU_NEUTRON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_NEUTRON
 # neutron magnetic moment in [J/T]
 """
-MU_PROTON::Float32 - Magnetic moment of the proton in J/T from the selected CODATA release.
+MU_PROTON::Float32 - Magnetic moment of the proton in eV/T (converted) from the selected CODATA release.
 """
-const MU_PROTON::Float32 = get(CODATA_MAP, release, CODATA2022).MU_PROTON
+const MU_PROTON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_PROTON
 # proton magnetic moment in [J/T]
 """
-MU_TRITON::Float32 - Magnetic moment of the triton in J/T from the selected CODATA release.
+MU_TRITON::Float32 - Magnetic moment of the triton in eV/T (converted) from the selected CODATA release.
 """
-const MU_TRITON::Float32 = get(CODATA_MAP, release, CODATA2022).MU_TRITON
+const MU_TRITON::Float32 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_TRITON
 # triton magnetic moment in [J/T]
 
 
@@ -236,6 +242,7 @@ const G_PER_EV::Float32 = get(CODATA_MAP, release, CODATA2022).G_PER_EV
 # grams per eV/c^2
 
 """
+RELEASE_YEAR::Int - The release year of the currently selected CODATA values.
 """
 const RELEASE_YEAR::Int = get(CODATA_MAP, release, CODATA2022).RELEASE_YEAR
 
