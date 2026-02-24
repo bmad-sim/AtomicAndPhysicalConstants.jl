@@ -5,6 +5,7 @@ using Preferences
 
 # kind enum stores the kind of particle
 # NULL is for null species (placeholder species)
+
 @enumx Kind ATOM HADRON LEPTON PHOTON NULL
 export Kind, ATOM, HADRON, LEPTON, PHOTON, NULL
 # precompile regEx

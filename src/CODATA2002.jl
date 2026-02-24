@@ -8,7 +8,11 @@
 # Physical constants
 #####################################################################
 
+"""
+    CODATA2002::CODATA_release
 
+Constant structure storing select values from the 2002 release of CODATA fundamental constants.
+"""
 const CODATA2002 = CODATA_release(
 
 #######################################
