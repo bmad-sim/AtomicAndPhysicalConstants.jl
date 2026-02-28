@@ -231,34 +231,6 @@ function find_superscript(num::Int)
   return sup
 end
 
-@doc """
-    to_openPMD(val::Unitful.Quantity)
-## Description:
-Convert a Unitful.Quantity to a format suitable for openPMD.
-Returns a tuple where the first element is the value in SI units
-and the second element is a 7-tuple of  powers of the 7 base measures
-characterizing the record's unit in SI 
-(length L, mass M, time T, electric current I, thermodynamic temperature theta, amount of substance N, luminous intensity J)
-"""
-to_openPMD
-
-# function to_openPMD(val::Unitful.Quantity)
-#   # convert the type to DynamicQuantities, which automatically converts to SI units
-#   # multiplying by 1.0 ensures that the value is converted to a float
-#   v = convert(DynamicQuantities.Quantity, val * 1.0)
-#   return (
-#     DynamicQuantities.ustrip(v),
-#     (
-#       DynamicQuantities.ulength(v),
-#       DynamicQuantities.umass(v),
-#       DynamicQuantities.utime(v),
-#       DynamicQuantities.ucurrent(v),
-#       DynamicQuantities.utemperature(v),
-#       DynamicQuantities.uamount(v),
-#       DynamicQuantities.uluminosity(v)
-#     )
-#   )
-# end
 
 
 function normalize_superscripts(str::String)
