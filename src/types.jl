@@ -20,9 +20,21 @@ struct Species
   Species() = new("Null", 0, 0.0, 0.0, 0.0, 0.0, 0, Kind.NULL)
 end;
 
+"""
+    SubatomicSpecies(speciesname, charge, mass, moment, spin, gspin)
 
+Structure for storing information about subatomic particles. Used in the SUBATOMIC_SPECIES dictionary.
+
+## Fields:
+-'speciesname::String': - openPMD formatted particl name.
+-'charge::Int' - Particle charge in [e].
+-'mass::Float64' - Particle mass in [eV/c^2].
+-'moment::Float64' - Particle dipole moment in [eV/T].
+-'spin::Float64' - Particle spin in [ħ].
+-'gspin::Float64' - Particle g-factor.
+"""
 struct SubatomicSpecies
-  species_name::String  # common species_name of the particle
+  speciesname::String  # common species_name of the particle
   charge::Int # charge on the particle in e
   mass::Float64 # mass of the particle in [MeV/c^2]
   moment::Float64 # magnetic moment in J/T
@@ -30,9 +42,20 @@ struct SubatomicSpecies
   gspin::Float64
 end;
 
+
+"""
+    AtomicSpecies(Z, speciesname, mass)
+
+Structure for storing information about atomic elements. Used in the ATOMIC_SPECIES dictionary.
+
+## Fields:
+-'Z::Int' - Atomic number.
+-'speciesname::String': - Atomic symbol.
+-'mass::Dict{Int,Float64}' - Dictionary of isotope masses for the element, each in [amu]. Dictionary is keyed by mass number.
+"""
 struct AtomicSpecies
   Z::Int  # atomic number
-  species_name::String  # periodic table element symbol
+  speciesname::String  # periodic table element symbol
   mass::Dict{Int,Float64}  # a dict to store the masses, keyed by isotope all masses in amu
   #=
   keyvalue -1 => average mass of common isotopes [amu],

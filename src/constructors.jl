@@ -137,7 +137,7 @@ left::String = ""
 
 
 @doc """
-  Species Struct:
+# Species Struct:
 
 The Species struct is used for keeping track 
 of information specifice to the chosen particle.
@@ -168,7 +168,7 @@ of information specifice to the chosen particle.
                                        - NULL kind defines a null particle, which is not a real particle 
                                        - but a placeholder
 
-## Constructors:
+# Species Constructor:
 
 This structure has the following constructor
 
@@ -177,36 +177,35 @@ This structure has the following constructor
 This constructor is used to create a species struct for a subatomic particle or an atomic species by giving the name 
 of the particle.
 
-Here are some ways to use this constructor:
-1. If the particle is To construct a subatomic species, put the name of the subatomic species in the field name. 
+### Usage:
+1. To construct a subatomic species, put the name of the subatomic species in the field name. 
 Note that the name must be provided exactly.
 2. If the particle is an atomic species, put the atomic symbol in the name along with isotope and charge information.
-   - The name of the atomic species should be in the format:
-   "mass number" + "atomic symbol" + "charge"
+   - The name of the atomic species should be in the format: "mass number" + "atomic symbol" + "charge"
    the mass number in front of the atomic symbol, and the charge at the end.
    - The mass number and charge are optional.
    - The mass number can be in unicode superscript or in ASCII, with an optional "#" in front.
    e.g. 
-    Species("¹H") - Hydrogen-1
-    Species("1H") - Hydrogen-1
-    Species("#1H") - Hydrogen-1
-   - if the mass number is not specified, the most abundant isotope will be used.
+    Species("¹H"): Hydrogen 1, 
+    Species("1H"): Hydrogen 1, 
+    Species("#1H"): Hydrogen 1
+   - if the mass number is not specified, the abundance averaged mass will be used.
    - The charge can be in the following formats:
       * "+" represents single positive charge
       * "++" represents double positive charge
-      * "+n" or "n+" represents n positive charge, where n can be unicode superscript
+      * "+n" represents n positive charge, where n can be unicode superscript
       * "-" represents single negative charge
       * "–-" represents double negative charge
       * "-n" or "n-" represents n negative charge, where n can be unicode superscript
     e.g. 
-    Species("C+") - Carbon with a single positive charge
-    Species("N³⁻") - Nitrogen with a 3 negative charge
+    Species("C+"): Carbon with a single positive charge
+    Species("N⁻³"): Nitrogen with a 3 negative charge
    - if charge is not specified, the charge will be 0.
-3. To create a null species, use the name "Null" or "null" or "".
+3. To create a null species, call Species() with nor arguments, or use the name "Null", "null", or "".
 4. To create an anti-particle, prepend "anti-" to the name of the particle.
-   e.g. Species("anti-H") - Anti-hydrogen
-   Species("anti-Fe") - Anti-iron
-   Species("anti-positron") - Positron
+   e.g. Species("anti-H"): Anti-hydrogen
+   Species("anti-Fe"): Anti-iron
+   Species("anti-electron"): Positron
 
 """
 function Species(speciesname::String)
@@ -217,13 +216,6 @@ function Species(speciesname::String)
     return Species()
   end
 
-  # name::String = lowercase(speciesname)
-
-  # by checking for the anti- prefix, we can determine if the particle is an anti-particle
-  # anti is true for anti-particles
-  # anti = occursin(anti_regEx, name)
-  # if the particle is an anti-particle, remove the prefix for easier lookup
-  # name = replace(name, anti_regEx => "")
 
   for (k, _) in SUBATOMIC_SPECIES
     # whether the particle is in the subatomic species dictionary
@@ -281,33 +273,6 @@ function Species(speciesname::String)
   !(occursin('+', right) && occursin('-', right)) || error("$speciesname has an ambiguously defined charge value.")
   charge::Int = chargeparse(right)
   
-
-  # #if the charge is positive
-  # if occursin("+", right)
-  #   charge = count(==('+'), right)
-  #   #either put the charge symbol in the front or the back
-  #   right[1] == '+' || right[end] == '+' || error("You should only put the charge symbol in the front or the back of the atomic symbol in $speciesname")
-  #   # remove the charge symbol
-  #   right = replace(right, "+" => "")
-
-  #   if right != ""
-  #     charge = parse(Int, right)
-  #   end
-
-
-  # elseif occursin("-", right) #if the charge is negative
-  #   charge = -count(==('-'), right)
-  #   #either put the charge symbol in the front or the back
-  #   right[1] == '-' || right[end] == '-' || error("$speciesname has an incorrectly stated charge value.")
-  #   # remove the charge symbol
-  #   right = replace(right, "-" => "")
-
-  #   if right != ""
-  #     charge = -parse(Int, right)
-  #   end
-  # end
-  # # when the charge symbol is removed, the rest of the string should be a number
-  # all(isdigit, right) || error("The charge specification should only include '+' or '-', and numerical value.")
 
   if anti
     return atomic_particle("anti-" * atom, charge, iso)

@@ -4,18 +4,20 @@
 
 #####################################################################
 #####################################################################
+
 const leptons::Vector{String} = ["electron", "positron", "muon", "anti-muon"]
 
 
 """
     SUBATOMIC_SPECIES
 
-Constant dictionary of subatomic particles
+Constant dictionary of subatomic particles using values from the preferred CODATA release.
 
-## Example use:
-
-`julia> SUBATOMIC_SPECIES["photon"]`
-`SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0)`
+# Examples
+```julia-repl
+julia> SUBATOMIC_SPECIES["photon"]
+SubatomicSpecies("photon", 0, 0.0, 0.0, 0.0, 0.0)
+```
 """
 const SUBATOMIC_SPECIES = Dict{String,SubatomicSpecies}(
   "pion0" => SubatomicSpecies("pion0", 0, M_PION_0, 0.0, 0.0, g_spin(M_PION_0, 0.0, 0.0, 0.0)),

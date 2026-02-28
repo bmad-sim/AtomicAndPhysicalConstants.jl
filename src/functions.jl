@@ -72,7 +72,7 @@ function chargeof(species::Species; C::Bool=false,)
   if C == false
     return getfield(species, :charge)
   else
-    return E_COULOMB * getfield(species, :charge)
+    return E_CHARGE * getfield(species, :charge)
   end
 end
 
@@ -83,7 +83,7 @@ Returns the mass of the species.
 For atomic species, returns mass in atomic mass units (current_units.atomic_mass).
 For subatomic species (baryons, leptons, etc.), returns mass in baryon mass units (current_units.baryon_mass).
 """
-function massof(species::Species; AMU::Bool=false, CODATAvals::CODATA_release=CODATA2022)
+function massof(species::Species; AMU::Bool=false)
   if AMU == false
     return getfield(species, :mass)
   else
@@ -164,6 +164,8 @@ isnullspecies(species::Species) = getfield(species, :kind) == Kind.NULL
 
 sets the default value of global constants in AtomicAndPhysicalConstants to a particular CODATA release year.
 The setting is persistent across Julia sessions.
+Requires a restart of Julia to take effect.
+
 """
 function set_release(;year::String = "2022")
   if !haskey(CODATA_MAP, year)
