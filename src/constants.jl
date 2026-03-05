@@ -35,30 +35,63 @@ const M_DEUTERON = 1875.612945e6
 # Helion mass (³He nucleus) [eV/c²]
 const M_HELION = 2808.39161112e6
 
+#####################################################################
+#  Fundamental constants
+#####################################################################
+
+# Elementary charge [C]
+const E_CHARGE = 1.602176634e-19
+
+# Speed of light in vacuum [m/s]
+const C_LIGHT = 2.99792458e8
+
+# Planck constant [eV⋅s]
+const H_PLANCK = 6.62607015e-34 / E_CHARGE
+
+# Reduced Planck constant [eV⋅s]
+const H_BAR = H_PLANCK / (2π)
+
+# Fine structure constant (dimensionless)
+const FINE_STRUCTURE = 0.0072973525643
+
+# Avogadro constant [mol⁻¹]
+const AVOGADRO = 6.02214076e23
+
+# Classical electron radius [m]
+const R_ELECTRON = 2.8179403205e-15
+
+# Classical proton radius [m]
+const R_PROTON = R_ELECTRON * M_ELECTRON / M_PROTON
+
+# Permittivity of free space [F/m]
+const EPS_0 = 8.8541878128e-12
+
+# Permeability of free space [N/A²]
+const MU_0 = 1.25663706212e-6
 
 #####################################################################
 #  Magnetic moment constants
 #####################################################################
-# Electron magnetic moment [J/T]
-const MU_ELECTRON = -9.2847646917e-24
+# Electron magnetic moment [eV/T]
+const MU_ELECTRON = -9.2847646917e-24 / E_CHARGE
 
-# Proton magnetic moment [J/T]
-const MU_PROTON = 1.41060679545e-26
+# Proton magnetic moment [eV/T]
+const MU_PROTON = 1.41060679545e-26 / E_CHARGE
 
-# Neutron magnetic moment [J/T]
-const MU_NEUTRON = -9.6623653e-27
+# Neutron magnetic moment [eV/T]
+const MU_NEUTRON = -9.6623653e-27 / E_CHARGE
 
-# Muon magnetic moment [J/T]
-const MU_MUON = -4.4904483e-26
+# Muon magnetic moment [eV/T]
+const MU_MUON = -4.4904483e-26 / E_CHARGE
 
-# Deuteron magnetic moment [J/T]
-const MU_DEUTERON = 4.330735087e-27
+# Deuteron magnetic moment [eV/T]
+const MU_DEUTERON = 4.330735087e-27 / E_CHARGE
 
-# Helion magnetic moment [J/T]
-const MU_HELION = -1.07461755198e-26
+# Helion magnetic moment [eV/T]
+const MU_HELION = -1.07461755198e-26 / E_CHARGE
 
-# Triton magnetic moment [J/T]
-const MU_TRITON = 1.5046095178e-26
+# Triton magnetic moment [eV/T]
+const MU_TRITON = 1.5046095178e-26 / E_CHARGE
 
 #####################################################################
 #  g-factor constants
@@ -90,40 +123,6 @@ const G_HELION = -4.2552506995
 
 # Triton g-factor
 const G_TRITON = 5.957924930
-
-#####################################################################
-#  Fundamental constants
-#####################################################################
-
-# Speed of light in vacuum [m/s]
-const C_LIGHT = 2.99792458e8
-
-# Planck constant [J⋅s]
-const H_PLANCK = 6.62607015e-34
-
-# Reduced Planck constant [J⋅s]
-const H_BAR = H_PLANCK / (2π)
-
-# Elementary charge [C]
-const E_CHARGE = 1.602176634e-19
-
-# Fine structure constant (dimensionless)
-const FINE_STRUCTURE = 0.0072973525643
-
-# Avogadro constant [mol⁻¹]
-const AVOGADRO = 6.02214076e23
-
-# Classical electron radius [m]
-const R_ELECTRON = 2.8179403205e-15
-
-# Classical proton radius [m]
-const R_PROTON = R_ELECTRON * M_ELECTRON / M_PROTON
-
-# Permittivity of free space [F/m]
-const EPS_0 = 8.8541878128e-12
-
-# Permeability of free space [N/A²]
-const MU_0 = 1.25663706212e-6
 
 #####################################################################
 #  Unit conversions
