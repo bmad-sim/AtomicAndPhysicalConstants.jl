@@ -4,7 +4,7 @@ using AtomicAndPhysicalConstants
 @testset "APClite Tests" begin
     @testset "Constants" begin
         @test C_LIGHT ≈ 2.99792458e8
-        @test H_PLANCK ≈ 6.62607015e-34
+        @test H_PLANCK ≈ 6.62607015e-34 / E_CHARGE
         @test M_ELECTRON ≈ 0.51099895069e6
         @test M_PROTON ≈ 938.27208816e6
         @test FINE_STRUCTURE ≈ 0.0072973525643
