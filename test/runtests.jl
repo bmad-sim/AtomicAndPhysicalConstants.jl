@@ -84,4 +84,35 @@ end
 
 end
 
+
+@testset "Gyrovals Functions" begin
+  #Create test species
+  e = Species("electron")
+  C = Species("12C")
+  p = Species("proton")
+
+  #Test g_spin function
+  g_spin(e) ≈ 2
+  g_spin(C) ≈ 2
+
+  #Test gyromagnetic_anomaly function
+  gyromagnetic_anomaly(e) ≈ 2
+  gyromagnetic_anomaly(C) ≈ 2
+
+  g_nucleon(p) ≈ 5.58
+end
+
+@testset "Helper Functions" begin
+  # Create test species
+  C = Species("12C+")
+  @test find_superscript(C) == '+' 
+
+  #Test normalize_superscipt Function
+  @test normalize_superscripts(C) == '+'
+
+  #Test chargeparse function
+  @test chargeparse(C) == 1
+
+end
+
 end  # module
