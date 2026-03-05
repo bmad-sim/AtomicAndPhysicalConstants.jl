@@ -16,8 +16,8 @@ All constants are available as module-level constants:
 
 ### Speed and Universal Constants
 - `C_LIGHT`: Speed of light [m/s]
-- `H_PLANCK`: Planck constant [J⋅s]
-- `H_BAR`: Reduced Planck constant [J⋅s]
+- `H_PLANCK`: Planck constant [eV⋅s]
+- `H_BAR`: Reduced Planck constant [eV⋅s]
 - `E_CHARGE`: Elementary charge [C]
 - `FINE_STRUCTURE`: Fine structure constant (dimensionless)
 - `AVOGADRO`: Avogadro constant [mol⁻¹]
@@ -45,7 +45,7 @@ All masses are in [eV/c²]:
 
 ## Magnetic Moments
 
-All magnetic moments are in [J/T]:
+All magnetic moments are in [eV/T]:
 
 - `MU_ELECTRON`: Electron magnetic moment
 - `MU_PROTON`: Proton magnetic moment
@@ -92,7 +92,7 @@ using AtomicAndPhysicalConstants
 # Physical constants
 println("Speed of light: ", C_LIGHT, " m/s")
 println("Electron mass: ", M_ELECTRON, " eV/c²")
-println("Planck constant: ", H_PLANCK, " J⋅s")
+println("Planck constant: ", H_PLANCK, " eV⋅s")
 println("Fine structure constant: ", FINE_STRUCTURE)
 
 # Unit conversions

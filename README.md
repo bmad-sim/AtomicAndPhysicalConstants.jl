@@ -14,7 +14,7 @@ using AtomicAndPhysicalConstants
 
 # Access physical constants directly
 C_LIGHT          # 2.99792458e8 [m/s]
-H_PLANCK         # 6.62607015e-34 [J⋅s]
+H_PLANCK         # 6.62607015e-34 [eV⋅s]
 M_ELECTRON       # 510998.95069 [eV/c²]
 FINE_STRUCTURE   # 0.0072973525643
 
@@ -74,8 +74,8 @@ All constants are available as module-level constants, grouped by type:
 
 - Fundamental constants
   - `C_LIGHT`: Speed of light [m/s]
-  - `H_PLANCK`: Planck constant [J⋅s]
-  - `H_BAR`: Reduced Planck constant [J⋅s]
+  - `H_PLANCK`: Planck constant [eV⋅s]
+  - `H_BAR`: Reduced Planck constant [eV⋅s]
   - `E_CHARGE`: Elementary charge [C]
   - `FINE_STRUCTURE`: Fine structure constant (dimensionless)
   - `AVOGADRO`: Avogadro constant [mol⁻¹]
@@ -94,7 +94,7 @@ All constants are available as module-level constants, grouped by type:
   - `M_DEUTERON`: Deuteron
   - `M_HELION`: Helion (³He nucleus)
 
-- Magnetic moments [J/T]
+- Magnetic moments [eV/T]
   - `MU_ELECTRON`: Electron
   - `MU_PROTON`: Proton
   - `MU_NEUTRON`: Neutron
@@ -131,7 +131,7 @@ All constants are available as module-level constants, grouped by type:
   - `species.mass` (eV/c²)
   - `species.charge` (units of e)
   - `species.spin` (ħ)
-  - `species.moment` (J/T)
+  - `species.moment` (eV/T)
   - `species.g_factor` (dimensionless)
   - `species.iso` (mass number)
   - `species.kind` (ATOM, HADRON, LEPTON, PHOTON, NULL)
@@ -168,7 +168,7 @@ println(proton)
 using AtomicAndPhysicalConstants
 
 # 1) Direct construction (no registry entry needed)
-#    name, charge [e], mass [eV/c^2], spin [ħ], moment [J/T], g_factor, iso, kind
+#    name, charge [e], mass [eV/c^2], spin [ħ], moment [eV/T], g_factor, iso, kind
 custom = Species("my-hadron", 1.0, 2.5e9, 0.5, 0.0, 2.0, 0.0, HADRON)
 println(custom)
 
