@@ -36,7 +36,7 @@ const M_HELION::Float64 = get(CODATA_MAP, release, CODATA2022).M_HELION
 M_DEUTERON::Float64 - Mass of the deuteron in eV/c^2 from the selected CODATA release.
 """
 const M_DEUTERON::Float64 = get(CODATA_MAP, release, CODATA2022).M_DEUTERON
-# Deuteron Mass [MeV]/c^2
+# Deuteron Mass [eV]/c^2
 
 # constants mysteriously missing from the release
 # picked up from PDG
@@ -193,7 +193,7 @@ const C_LIGHT::Float64 = get(CODATA_MAP, release, CODATA2022).C_LIGHT
 H_PLANCK::Float64 - Planck's constant (h) in eV*s per the selected CODATA release.
 """
 const H_PLANCK::Float64 = get(CODATA_MAP, release, CODATA2022).H_PLANCK
-# Planck's constant [J*s]
+# Planck's constant [eV*s]
 """
 H_BAR::Float64 - Planck's reduced constant (ħ) in eV*s per the selected CODATA release.
 """
