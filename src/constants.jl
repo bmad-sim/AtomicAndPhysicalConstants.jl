@@ -67,37 +67,37 @@ const EV_PER_J::Float64 = get(CODATA_MAP, release, CODATA2022).EV_PER_J
 MU_DEUTERON::Float64 - Magnetic moment of the deuteron in eV/T (converted) from the selected CODATA release.
 """
 const MU_DEUTERON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_DEUTERON
-# deuteron magnetic moment in [J/T]
+# deuteron magnetic moment in [eV/T]
 """
 MU_ELECTRON::Float64 - Magnetic moment of the electron in eV/T (converted) from the selected CODATA release.
 """
 const MU_ELECTRON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_ELECTRON
-# electron magnetic moment in [J/T]
+# electron magnetic moment in [eV/T]
 """
 MU_HELION::Float64 - Magnetic moment of the helion in eV/T (converted) from the selected CODATA release.
 """
 const MU_HELION::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_HELION
-# helion magnetic moment in [J/T],
+# helion magnetic moment in [eV/T],
 """
 MU_MUON::Float64 - Magnetic moment of the muon in eV/T (converted) from the selected CODATA release.
 """
 const MU_MUON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_MUON
-# muon magnetic moment in [J/T]
+# muon magnetic moment in [eV/T]
 """
 MU_NEUTRON::Float64 - Magnetic moment of the neutron in eV/T (converted) from the selected CODATA release.
 """
 const MU_NEUTRON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_NEUTRON
-# neutron magnetic moment in [J/T]
+# neutron magnetic moment in [eV/T]
 """
 MU_PROTON::Float64 - Magnetic moment of the proton in eV/T (converted) from the selected CODATA release.
 """
 const MU_PROTON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_PROTON
-# proton magnetic moment in [J/T]
+# proton magnetic moment in [eV/T]
 """
 MU_TRITON::Float64 - Magnetic moment of the triton in eV/T (converted) from the selected CODATA release.
 """
 const MU_TRITON::Float64 = EV_PER_J*get(CODATA_MAP, release, CODATA2022).MU_TRITON
-# triton magnetic moment in [J/T]
+# triton magnetic moment in [eV/T]
 
 
 #######################################

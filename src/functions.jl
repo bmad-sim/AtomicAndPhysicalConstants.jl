@@ -54,7 +54,7 @@ end;
 #####################################################################
 
 
-"""
+@doc """
     nameof(species::Species)
 
 Returns the name of the species as a String.
@@ -63,7 +63,7 @@ function Base.nameof(species::Species)
   return getfield(species, :name)
 end
 
-"""
+@doc """
     chargeof(species::Species)
 
 Returns the charge of the species in units of elementary charge [e].
@@ -76,8 +76,8 @@ function chargeof(species::Species; C::Bool=false,)
   end
 end
 
-"""
-    massof(species::Species)
+@doc """
+    massof(species::Species; AMU::Bool=false)
 
 Returns the mass of the species.
 For atomic species, returns mass in atomic mass units (current_units.atomic_mass).
@@ -91,7 +91,7 @@ function massof(species::Species; AMU::Bool=false)
   end
 end
 
-"""
+@doc """
     spinof(species::Species)
 
 Returns the spin of the species in units of reduced Planck constant [ħ].
@@ -100,7 +100,7 @@ function spinof(species::Species)
   return getfield(species, :spin)
 end
 
-"""
+@doc """
     gspin_of(species::Species)
 
 Returns the gyromagnetic factor of the species if it is known, otherwise 0.
@@ -114,7 +114,7 @@ function gspin_of(species::Species; signed::Bool = false)
 end
 
 
-"""
+@doc """
     gyromagnetic_anomaly(species::Species)
 
 Compute and deliver the gyromagnetic anomaly for a lepton
@@ -135,23 +135,33 @@ function gyromagnetic_anomaly(species::Species)
 end
 
 
-"""
+@doc """
     momentof(species::Species)
 
-Returns the magnetic moment of the species in magnetic moment units J/T.
+Returns the magnetic moment of the species in magnetic moment units eV/T.
 """
+momentof
+
 momentof(species::Species) = getfield(species, :moment)
 
 
-"""
+@doc """
     iso_of(species::Species)
 
-Returns the isotope mass number of the species as an Int.
+Isotope mass number of the species as an Int.
 For atomic isotopes, this is the mass number: if taken as the abundance average, yields -1. 
 For subatomic particles, yields 0.
 """
+iso_of
+
 iso_of(species::Species) = getfield(species, :iso)
 
+@doc """
+    isnullspecies(species::Species)
+
+Determine whether `species` is populated: `true` indicates a null species.
+"""
+isnullspecies
 
 isnullspecies(species::Species) = getfield(species, :kind) == Kind.NULL
 
@@ -159,14 +169,15 @@ isnullspecies(species::Species) = getfield(species, :kind) == Kind.NULL
 # Nuts and bolts functionality in more convenient packaging
 #####################################################################
 
-"""
+@doc """
     set_release(; year = "2022")
 
 sets the default value of global constants in AtomicAndPhysicalConstants to a particular CODATA release year.
 The setting is persistent across Julia sessions.
 Requires a restart of Julia to take effect.
-
 """
+set_release
+
 function set_release(;year::String = "2022")
   if !haskey(CODATA_MAP, year)
     throw(ArgumentError("You have provided an invalid release year: 
@@ -232,7 +243,11 @@ function find_superscript(num::Int)
 end
 
 
+"""
+    normalize_superscripts(str::String)
 
+Turns a superscript string of digits `str` into a normal string of digits.
+"""
 function normalize_superscripts(str::String)
   buf = IOBuffer()
   for c in str
@@ -251,7 +266,11 @@ function normalize_superscripts(str::String)
   return String(take!(buf))
 end
 
+"""
+    chargeparse(c::String)
 
+Turn a user defined string `c` representing atomic charge state into an integer charge state.
+"""
 function chargeparse(c::String)
 
   if c == ""

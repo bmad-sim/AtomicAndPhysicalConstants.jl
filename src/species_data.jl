@@ -8,7 +8,7 @@
 const leptons::Vector{String} = ["electron", "positron", "muon", "anti-muon"]
 
 
-"""
+@doc """
     SUBATOMIC_SPECIES
 
 Constant dictionary of subatomic particles using values from the preferred CODATA release.
