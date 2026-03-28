@@ -22,6 +22,16 @@ It is designed to provide atomic and physical constants including:
 
 Values are obtained from CODATA (Committee on Data of the International Science Council), NIST (National Institute of Standards and Technology), and PDG (Particle Data Group). 
 This package enables users to access CODATA releases from 2002, 2006, 2010, 2014, 2018, and 2022. New releases will be added as they become available.
+Each set of constants is stored in an object called "CODATAYYYY" (where YYYY is the release year). In these objects the constants have values in the units provided by NIST.
+Constants from the preferred release (most recent by default) are used to define all objects from the package, and they have the following units:
+1. length - _m_
+2. energy - _eV_
+3. mass - _eV/c^2_
+4. action - _eV*s_
+5. charge - _e_
+6. magnetic moment - _eV/T_
+7. electric permittivity - _F/m_
+8. magnetic permeability - _N/A^2_
 
 
 ## Documentation
