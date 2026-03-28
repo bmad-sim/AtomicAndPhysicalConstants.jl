@@ -13,7 +13,7 @@ julia> using AtomicAndPhysicalConstants
 
 ## Introduction
 
-`AtomicAndPhysicalConstants.jl` (APC) provides a quick way to access information about different species and physical constants optimized for faster compile time and simulations.
+`AtomicAndPhysicalConstants.jl` (APC) provides a convenient, fast, and lightweight API to access information about different species and physical constants optimized for faster compile time and simulations.
 
 It is designed to provide atomic and physical constants including:
 1. fundamental constants (_e.g._ speed of light, Planck's constant, etc.), 
