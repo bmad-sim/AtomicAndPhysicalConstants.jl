@@ -1,86 +1,198 @@
 # AtomicAndPhysicalConstants.jl
+
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/dev/)
 [![Build Status](https://github.com/bmad-sim/AtomicAndPhysicalConstants.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/bmad-sim/AtomicAndPhysicalConstants.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
-## Setup
 
-To install and use AtomicAndPhysicalConstants, execute the commands:
+## Installation
+
 ```julia-repl
-julia> using Pkg; Pkg.add("AtomicAndPhysicalConstants.jl")
-julia> using AtomicAndPhysicalConstants
+julia> using Pkg
+julia> Pkg.add("AtomicAndPhysicalConstants.jl")
 ```
 
-## Introduction
-
-`AtomicAndPhysicalConstants.jl` (APC) provides a convenient, fast, and lightweight API to access information about different species and physical constants optimized for faster compile time and simulations.
-
-It is designed to provide atomic and physical constants including:
-1. fundamental constants (_e.g._ speed of light, Planck's constant, etc.), 
-2. subatomic particle properties (_e.g._ rest mass, charge, magnetic moment, etc.), 
-3. and atomic isotope properties (_e.g._ mass of any isotope with arbitrary charge states, etc.) 
-
-Values are obtained from CODATA (Committee on Data of the International Science Council), NIST (National Institute of Standards and Technology), and PDG (Particle Data Group). 
-This package enables users to access CODATA releases from 2002, 2006, 2010, 2014, 2018, and 2022. New releases will be added as they become available.
-Each set of constants is stored in an object called "CODATAYYYY" (where YYYY is the release year). In these objects the constants have values in the units provided by NIST.
-Constants from the preferred release (most recent by default) are used to define all objects from the package, and they have the following units:
-1. length - _m_
-2. energy - _eV_
-3. mass - _eV/c^2_
-4. action - _eV*s_
-5. charge - _e_
-6. magnetic moment - _eV/T_
-7. electric permittivity - _F/m_
-8. magnetic permeability - _N/A^2_
-
-
-## Documentation
-
-The API reference may be obtained at 
-[https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl)
-
-
-## Defining Species
-
-The immutable `Species` struct is the fundamental object provided by this package. It contains the following information about the stored particle type:
-1. The name (or atomic symbol) of the particle,
-2. the charge on the particle in units of _e_,
-3. the mass of the particle in _eV/c^2_,
-4. the spin of the particle in units of Planck's reduced constant,
-5. the gyromagnetic factor for subatomic particles,
-6. the magnetic moment of subatomic particles in _eV/T_,
-7. the mass number for atomic isotopes,
-8. and the type of particle (_e.g._ Hadron, Boson, Lepton, etc.)
-
-The `Species()` constructor is a fast and stable way to create a species object from input text.
-The following snippet shows examples of creating an object with the properties of an electron, and another with the properties of tritium.
+## Quick Start
 
 ```julia-repl
-julia> e = Species("electron")
+julia> using AtomicAndPhysicalConstants
+
+julia> # Access physical constants directly
+
+julia> C_LIGHT # in [m/s]      
+2.99792458e8
+
+julia> H_PLANCK # in [eV⋅s]
+4.135667696e-15
+
+julia> M_ELECTRON # in [eV/c²]   
+510998.95069 
+
+julia> FINE_STRUCTURE # unitless
+0.0072973525643
+
+julia> # Create species objects
+
+julia> e = Species("electron") # print the output on this for example
 Species("electron", -1, 510998.95069, 0.5, -2.00231930436092, -5.795094307320036e-5, 0, AtomicAndPhysicalConstants.Kind.LEPTON)
 
-julia> tritium = Species("3H")
-Species("H", 0, 2.8094321188928137e9, 1.5, 0.0, 0.0, 3, AtomicAndPhysicalConstants.Kind.ATOM)
+julia> p = Species("proton"); # suppress the output for the rest of the definitions
+
+julia> h = Species("H"); # a neutral hydrogen atom
+
+julia> he = Species("3He"); # a neutral helium atom
+
+julia> h_ion = Species("H+"); # a hydrogen atom with one less electron than usual
+
+julia> anti_p = Species("anti-proton"); 
+
+julia> # retrieve Species qualities with access functions
+
+julia> nameof(anti_p)
+"anti-proton"
+
+julia> chargeof(p) # charge of the particle in [e]
+1
+
+julia> massof(e) # retrieve the mass of a particle in [eV/c²]
+510998.95069
+
+julia> massof(h, AMU=true) # or grab the mass of an atom in AMU (also called Daltons)
+1.0079407540557772
+
+julia> spinof(e) # spin projection of the particle in [ħ]
+0.5
+
+julia> gspin_of(e) # spin g-factor (dimensionless)
+2.00231930436092
+
+
+julia> gyromagnetic_anomaly(e)
+0.0011596521804599913
+
+julia> momentof(p) # magnetic dipole moment in [eV/T] - errors for atoms
+8.804315113647238e-8
+
+julia> iso_of(he) # mass number of the specified atom - errors for non-atoms
+3
+
 ```
 
-For stability, it is not possible to use the standard 'dot' syntax to access the fields of a Species object.
-To do so, use one of the functions designed for this purpose. An example of each is shown below.
+## Supported Particle Species
+
+### Subatomic Particles
+
+The following list of strings may be used as arguments to the `Species()` function.
+
+- `"electron"`, `"positron"`
+- `"proton", `"anti-proton"`
+- `"neutron"`, `"anti-neutron"`
+- `"muon"`, `"anti-muon"`
+- `"pion0"`, `"pion+"`, `"pion-"`
+- `"deuteron"`, `"anti-deuteron"`
+- `"photon"`
+
+
+### Atomic Species
+
+Atomic numbers from 1 (`"H"`) to 118 (`"Og"`) are available with the `Species()` function.
+
+#### Mass Number Formatting
+
+To access different isotopes of a particular atomic element, two different syntax option are available:
 
 ```julia-repl
-julia> nameof(e)
-"electron"
-julia> chargeof(tritium)
-0
-julia> massof(e)
-510998.95069
-julia> spinof(e)
-0.5
-julia> gspin_of(e)
--2.00231930436092
-julia> momentof(e)
--5.795094307320036e-5
-julia> iso_of(tritium)
-3
+julia> he = Species("#5He"); he5 = Species("5He");
+
+julia>  massof(he5, AMU=true)
+5.012057
+
+julia> he == he5
+true
 ```
 
-See more about `Species()` constructors and field access functions [here](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/species/)
+#### Charge State Specification
+
+Charge state may be specified for atoms.
+Positive charges with magnitude less than 4_e_ may be given with repeated plus symbols, _e.g._
+```julia-repl
+julia> chargeof(Species("Li+++"))
+3
+```
+Similarly, negative charges with magnitude less than 4_e_ may be given with repeated plus symbols, _e.g._
+```julia-repl
+julia> chargeof(Species("K---"))
+-3
+```
+A single positive or negative sign followed by and integer may be used the same way, _e.g._
+```julia-repl
+julia> Species("Li+++") == Species("Li+3")
+true
+
+julia> Species("K---") == Species("K-3")
+true
+```
+
+## Directly Exported Constants
+
+### Masses with units [eV/c²]
+- `M_ELECTRON`
+- `M_PROTON`
+- `M_NEUTRON`
+- `M_MUON`
+- `M_DEUTERON`
+- `M_HELION`
+- `M_PION_0`
+- `M_PION_CHARGED`
+
+Both Pion masses are obtained from PDG, rather than CODATA.
+
+### Magnetic dipole moments with units [eV/T]
+- `MU_ELECTRON`
+- `MU_PROTON`
+- `MU_NEUTRON`
+- `MU_MUON`
+- `MU_DEUTERON`
+- `MU_HELION`
+- `MU_TRION`
+
+### Dimensionless constants
+
+- `AVOGADRO`
+- `FINE_STRUCTURE`
+
+#### Spin G-factors
+- `G_ELECTRON`
+- `G_PROTON`
+- `G_NEUTRON`
+- `G_MUON`
+- `G_DEUTERON`
+- `G_HELION`
+  - This constant is not available from CODATA releases prior to 2010
+- `G_TRITON`
+
+#### Gyromagnetic Anomalies
+- `ANOMALY_ELECTRON`
+  - This constant is not available from CODATA releases prior to 2010
+- `ANOMALY_MUON`
+  - This constant is not available from CODATA releases prior to 2010
+
+
+### Other Physical Constants
+- `E_CHARGE` - charge on the electron in [C]
+- `R_ELECTRON` : classical electron radius in [m]
+- `R_PROTON`: classical proton radius in [m]
+- `C_LIGHT`: speed of light in [m/s]
+- `H_PLANCK`: Planck's constant in [eV⋅s]
+- `H_BAR`: Planck's reduced constant in [eV⋅s]
+- `CLASSICAL_RADIUS_FACTOR` 
+- `EPS_0`: Permittivity of free space in [F/m]
+- `MU_0`: Vacuum Permeability in [N/A^2]
+
+
+### Conversion Constants
+- `KG_PER_AMU`:
+- `EV_PER_AMU`
+- `J_PER_EV`
+- `G_PER_EV`
+- `KG_PER_MEV_C2`

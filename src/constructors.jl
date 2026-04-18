@@ -272,7 +272,9 @@ function Species(speciesname::String)
   right::String = name[index+length(atom):end]
   !(occursin('+', right) && occursin('-', right)) || error("$speciesname has an ambiguously defined charge value.")
   charge::Int = chargeparse(right)
-  
+  if charge > ATOMIC_SPECIES[atom].Z
+    error("The element $atom does not contain $charge protons; the particle $atom with charge +$charge is not physical.")
+  end
 
   if anti
     return atomic_particle("anti-" * atom, charge, iso)

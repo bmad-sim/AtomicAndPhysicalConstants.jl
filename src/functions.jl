@@ -142,7 +142,13 @@ Returns the magnetic moment of the species in magnetic moment units eV/T.
 """
 momentof
 
-momentof(species::Species) = getfield(species, :moment)
+function momentof(species::Species) 
+  if getfield(species, :kind) != Kind.ATOM && getfield(species, :kind) != Kind.NULL
+    return getfield(species, :moment)
+
+  else error("The magnetic dipole moment of that species is not available.")
+  end
+end
 
 
 @doc """
@@ -154,7 +160,13 @@ For subatomic particles, yields 0.
 """
 iso_of
 
-iso_of(species::Species) = getfield(species, :iso)
+function iso_of(species::Species) 
+  if getfield(species, :kind) == Kind.ATOM
+    return getfield(species, :iso)
+  else
+    error("Particles that are not atoms do not have an isotope mass number.")
+  end
+end
 
 @doc """
     isnullspecies(species::Species)
