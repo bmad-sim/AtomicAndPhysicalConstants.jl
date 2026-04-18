@@ -40,7 +40,7 @@ julia> p = Species("proton"); # suppress the output for the rest of the definiti
 
 julia> h = Species("H"); # a neutral hydrogen atom
 
-julia> he = Species("3He"); # a neutral helium atom
+julia> he = Species("3He"); # a neutral helium atom with mass number 3
 
 julia> h_ion = Species("H+"); # a hydrogen atom with one less electron than usual
 
