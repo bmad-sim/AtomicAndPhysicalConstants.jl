@@ -359,7 +359,7 @@ function Base.show(io::IO, ::MIME"text/plain", species::Species)
   if isnullspecies(species) == true
     print(io, "Species(Null)")
   else
-    println(io, "Species: $(nameof(species))")
+    println(io, "Species: $(getfield(species, :name))")
     println(io, "Charge: $(chargeof(species)) e")
     println(io, "Mass: $(massof(species)) eV/c²")
     println(io, "Spin: $(spinof(species)) ħ")
