@@ -282,5 +282,10 @@ function Species(speciesname::String)
     return atomic_particle(atom, charge, iso)
   end
 
+    # Check for remaining characters
+    if remaining != ""
+        error("You have entered too many characters: please try again.")
+    end
 
+    return (symbol, iso, charge)
 end

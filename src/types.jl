@@ -1,5 +1,8 @@
 # AtomicAndPhysicalConstants/src/types.jl
 
+# This module defines the core data structures used in APClite.
+"""
+"""
 
 struct Species
   name::String # name of the particle to track
@@ -23,7 +26,7 @@ end;
 """
     SubatomicSpecies(speciesname, charge, mass, moment, spin, gspin)
 
-Structure for storing information about subatomic particles. Used in the SUBATOMIC_SPECIES dictionary.
+#Structure for storing information about subatomic particles. Used in the SUBATOMIC_SPECIES dictionary.
 
 ## Fields:
 -'speciesname::String': - openPMD formatted particl name.
