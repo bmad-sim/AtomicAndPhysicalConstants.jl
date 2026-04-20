@@ -23,6 +23,8 @@ struct Species
   Species() = new("Null", 0, 0.0, 0.0, 0.0, 0.0, 0, Kind.NULL)
 end;
 
+
+
 """
     SubatomicSpecies(speciesname, charge, mass, moment, spin, gspin)
 

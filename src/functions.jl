@@ -58,9 +58,31 @@ end;
     nameof(species::Species)
 
 Returns the name of the species as a String.
+If the species is an atomic element with symbol 'AS', given positive charge 'c', and given mass number 'm', prints "#mAS+c".
 """
 function Base.nameof(species::Species)
-  return getfield(species, :name)
+  if getfield(species, :kind) != Kind.ATOM
+    return getfield(species, :name)
+  elseif getfield(species, :iso) == -1
+    charge = getfield(species, :charge)
+    if charge > 0
+      return getfield(species, :name) * "+$charge"
+    elseif charge < 0
+      return getfield(species, :name) * "$charge"
+    else
+      return getfield(species, :name)
+    end
+  else
+    iso = getfield(species, :iso)
+    charge = getfield(species, :charge)
+    if charge > 0
+      return "#$iso" * getfield(species, :name) * "+$charge"
+    elseif charge < 0
+      return "#$iso" * getfield(species, :name) * "$charge"
+    else
+      return "#$iso" * getfield(species, :name)
+    end
+  end
 end
 
 @doc """
@@ -122,16 +144,12 @@ Compute and deliver the gyromagnetic anomaly for a lepton
 gyromagnetic_anomaly
 
 function gyromagnetic_anomaly(species::Species)
-  # electron = ["electron", "positron"]
-  # muon = [ "muon", "anti-muon"]
-  # name = getfield(species, :name)
-  # if name in electron && ANOMALY_ELECTRON != NaN
-  #   return ANOMALY_ELECTRON 
-  # elseif name in muon && ANOMALY_MUON != NaN
-  #   return ANOMALY_MUON 
-  # else
+  kind = getfield(species, :kind)
+  if kind == Kind.LEPTON || kind == Kind.HADRON
     return (gspin_of(species) - 2) / 2
-  # end
+  else
+    return 0
+  end
 end
 
 
@@ -146,7 +164,7 @@ function momentof(species::Species)
   if getfield(species, :kind) != Kind.ATOM && getfield(species, :kind) != Kind.NULL
     return getfield(species, :moment)
 
-  else error("The magnetic dipole moment of that species is not available.")
+  else return 0
   end
 end
 
@@ -163,10 +181,37 @@ iso_of
 function iso_of(species::Species) 
   if getfield(species, :kind) == Kind.ATOM
     return getfield(species, :iso)
-  else
-    error("Particles that are not atoms do not have an isotope mass number.")
+  else return 0
   end
 end
+
+@doc """
+    kindof(species::Species)
+
+The 'genus' of the particle species, _e.g._ LEPTON or ATOM.
+"""
+kindof
+
+function kindof(species::Species)
+  return getfield(species, :kind)
+end
+
+
+@doc """
+    atomicnumberof(species::Species)
+
+Number of protons in the nucleus of species.
+Gives an error if the type is not ATOM.
+"""
+function atomicnumberof(species::Species)
+  if getfield(species, :kind) != Kind.ATOM
+    error("Particle species which are not atoms do not have atomic numbers.")
+  else
+    AS = getfield(species, :name)
+    return ATOMIC_SPECIES[AS].Z
+  end
+end
+
 
 @doc """
     isnullspecies(species::Species)
@@ -306,4 +351,25 @@ function chargeparse(c::String)
   else
     error("Charge specifier must begin with '+' or '-'")
   end
+end
+
+
+
+function Base.show(io::IO, ::MIME"text/plain", species::Species)
+  if isnullspecies(species) == true
+    print(io, "Species(Null)")
+  else
+    println(io, "Species: $(nameof(species))")
+    println(io, "Charge: $(chargeof(species)) e")
+    println(io, "Mass: $(massof(species)) eV/c²")
+    println(io, "Spin: $(spinof(species)) ħ")
+    println(io, "Moment: $(momentof(species)) eV/T")
+    println(io, "G-factor: $(gspin_of(species))")
+    if iso_of(species) > 0 
+      println(io, "Mass number: $(iso_of(species))")
+      println(io, "Atomic Number: $(atomicnumberof(species))")
+    end
+    println(io, "Kind: $(kindof(species))")
+  end
+
 end
