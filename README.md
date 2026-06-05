@@ -33,8 +33,14 @@ julia> FINE_STRUCTURE # unitless
 
 julia> # Create species objects
 
-julia> e = Species("electron") # print the output on this for example
-Species("electron", -1, 510998.95069, 0.5, -2.00231930436092, -5.795094307320036e-5, 0, AtomicAndPhysicalConstants.Kind.LEPTON)
+julia> e = Species("electron") # print the output for this one as an example
+Species: electron
+Charge: -1 e
+Mass: 510998.95069 eV/c²
+Spin: 0.5 ħ
+Moment: -5.795094307320036e-5 eV/T
+G-factor: 2.00231930436092
+Kind: LEPTON
 
 julia> p = Species("proton"); # suppress the output for the rest of the definitions
 
