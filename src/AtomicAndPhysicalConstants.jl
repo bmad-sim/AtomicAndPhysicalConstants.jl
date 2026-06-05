@@ -5,7 +5,21 @@ using Preferences
 
 # kind enum stores the kind of particle
 # NULL is for null species (placeholder species)
+"""
+    Kind
 
+Classification of a particle species.
+
+| Value | Meaning |
+|-------|---------|
+| `Kind.LEPTON` | leptons: electron, positron, muon, anti-muon |
+| `Kind.HADRON` | hadrons: proton, neutron, pions, deuteron, … |
+| `Kind.PHOTON` | photon |
+| `Kind.ATOM` | any atomic or ionic species |
+| `Kind.NULL` | null placeholder species |
+
+The kind of a species is queried with [`kindof`](@ref).
+"""
 @enumx Kind ATOM HADRON LEPTON PHOTON NULL
 export Kind, ATOM, HADRON, LEPTON, PHOTON, NULL
 # precompile regEx

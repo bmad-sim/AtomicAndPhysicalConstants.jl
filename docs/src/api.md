@@ -5,7 +5,6 @@ Complete index of all exported symbols.
 ## Internal Types
 
 ```@docs
-Species
 AtomicAndPhysicalConstants.SubatomicSpecies
 AtomicAndPhysicalConstants.AtomicSpecies
 AtomicAndPhysicalConstants.CODATA_release
@@ -14,7 +13,7 @@ AtomicAndPhysicalConstants.CODATA_release
 ## Species type and constructor
 
 ```@docs
-Species()
+Species
 ```
 
 ## Accessor functions
