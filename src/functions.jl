@@ -55,11 +55,24 @@ end;
 
 
 @doc """
-    nameof(species::Species)
+    nameof(species::Species) -> String
 
-Returns the name of the species as a String.
-If the species is an atomic element with symbol 'AS', given positive charge 'c', and given mass number 'm', prints "#mAS+c".
+Return the canonical name of `species`.
+
+For subatomic particles the openPMD name is returned unchanged.
+For atomic species the name is assembled from the atomic symbol, mass number
+(if a specific isotope was requested), and charge state, using the `#mAS±c`
+convention:
+
+```julia
+nameof(Species("electron"))   # "electron"
+nameof(Species("Fe"))         # "Fe"
+nameof(Species("4He+2"))      # "#4He+2"
+nameof(Species("Li+"))        # "Li+1"
+```
 """
+Base.nameof(::Species)
+
 function Base.nameof(species::Species)
   if getfield(species, :kind) != Kind.ATOM
     return getfield(species, :name)
@@ -86,40 +99,95 @@ function Base.nameof(species::Species)
 end
 
 @doc """
-    chargeof(species::Species)
+    chargeof(species::Species; C::Bool = false) -> Union{Int, Float64}
 
-Returns the charge of the species in units of elementary charge [e].
+Return the net charge of `species`.
+
+By default the charge is returned as an integer multiple of the elementary
+charge *e*.  Pass `C = true` to convert to coulombs using the active
+[`E_CHARGE`](@ref) constant.
+
+# Examples
+
+```julia
+chargeof(Species("proton"))       # 1
+chargeof(Species("electron"))     # -1
+chargeof(Species("Li+3"))         # 3
+chargeof(Species("proton"), C=true)   # ≈ 1.602176634e-19
+```
 """
+chargeof
+
 function chargeof(species::Species; C::Bool=false,)
    !C ? (return getfield(species, :charge)) : (return E_CHARGE * getfield(species, :charge))
 end
 
 @doc """
-    massof(species::Species; AMU::Bool=false)
+    massof(species::Species; AMU::Bool = false) -> Float64
 
-Returns the mass of the species.
-For atomic species, returns mass in atomic mass units (current_units.atomic_mass).
-For subatomic species (baryons, leptons, etc.), returns mass in baryon mass units (current_units.baryon_mass).
+Return the rest mass of `species`.
+
+By default the mass is returned in **eV/c²**.  Pass `AMU = true` to return the
+mass in atomic mass units (daltons), which is particularly convenient for
+atomic species.
+
+# Examples
+
+```julia
+massof(Species("electron"))              # 510998.95069  eV/c²
+massof(Species("proton"))               # 9.38272089430e8  eV/c²
+massof(Species("H"), AMU = true)        # ≈ 1.00794  u
+massof(Species("4He"), AMU = true)      # ≈ 4.0026  u
+```
 """
+massof
+
 function massof(species::Species; AMU::Bool=false)
 
   !AMU ? (return getfield(species, :mass)) : (getfield(species, :mass) / EV_PER_AMU)
 end
 
 @doc """
-    spinof(species::Species)
+    spinof(species::Species) -> Float64
 
-Returns the spin of the species in units of reduced Planck constant [ħ].
+Return the spin of `species` in units of the reduced Planck constant ħ.
+
+# Examples
+
+```julia
+spinof(Species("electron"))    # 0.5
+spinof(Species("proton"))      # 0.5
+spinof(Species("photon"))      # 1.0
+```
 """
+spinof
+
 function spinof(species::Species)
   return getfield(species, :spin)
 end
 
 @doc """
-    gspin_of(species::Species)
+    gspin_of(species::Species; signed::Bool = false) -> Float64
 
-Returns the gyromagnetic factor of the species if it is known, otherwise 0.
+Return the spin g-factor of `species`.
+
+By default the absolute value is returned.  Pass `signed = true` to get the
+signed g-factor (negative for particles with a negative gyromagnetic ratio,
+such as the electron).
+
+Returns 0 for atomic species, for which no g-factor is stored.
+
+# Examples
+
+```julia
+gspin_of(Species("electron"))               # 2.00231930436092
+gspin_of(Species("electron"), signed=true)  # -2.00231930436092
+gspin_of(Species("proton"))                 # 5.5856946893
+gspin_of(Species("H"))                      # 0.0
+```
 """
+gspin_of
+
 function gspin_of(species::Species; signed::Bool = false)
 
   !signed ? (return abs(getfield(species, :gspin))) : (return getfield(species, :gspin))
@@ -127,9 +195,23 @@ end
 
 
 @doc """
-    gyromagnetic_anomaly(species::Species)
+    gyromagnetic_anomaly(species::Species) -> Float64
 
-Compute and deliver the gyromagnetic anomaly for a lepton
+Compute and return the gyromagnetic anomaly
+
+```math
+a = \\frac{g - 2}{2}
+```
+
+for leptons and hadrons.  Returns 0 for photons, atoms, and null species.
+
+# Examples
+
+```julia
+gyromagnetic_anomaly(Species("electron"))   # ≈  0.00115965218046
+gyromagnetic_anomaly(Species("muon"))       # ≈  0.00116592062
+gyromagnetic_anomaly(Species("H"))          # 0.0
+```
 """
 gyromagnetic_anomaly
 
@@ -141,9 +223,20 @@ end
 
 
 @doc """
-    momentof(species::Species)
+    momentof(species::Species) -> Float64
 
-Returns the magnetic moment of the species in magnetic moment units eV/T.
+Return the magnetic dipole moment of `species` in **eV/T**.
+
+Returns 0 for atomic species and the null species (no moment is stored for
+these types).
+
+# Examples
+
+```julia
+momentof(Species("electron"))   # ≈ -5.7883818060e-5  eV/T
+momentof(Species("proton"))     # ≈  8.8043151136e-8  eV/T
+momentof(Species("H"))          # 0.0
+```
 """
 momentof
 
@@ -157,11 +250,21 @@ end
 
 
 @doc """
-    iso_of(species::Species)
+    iso_of(species::Species) -> Int
 
-Isotope mass number of the species as an Int.
-For atomic isotopes, this is the mass number: if taken as the abundance average, yields -1. 
-For subatomic particles, yields 0.
+Return the mass number (isotope) of `species`.
+
+- For atomic species: the mass number of the requested isotope, or `−1` if the
+  abundance-averaged atomic mass was used.
+- For subatomic particles: always `0`.
+
+# Examples
+
+```julia
+iso_of(Species("3He"))          # 3
+iso_of(Species("He"))           # -1  (abundance average)
+iso_of(Species("electron"))     # 0
+```
 """
 iso_of
 
@@ -173,9 +276,22 @@ function iso_of(species::Species)
 end
 
 @doc """
-    kindof(species::Species)
+    kindof(species::Species) -> Kind.T
 
-The 'genus' of the particle species, _e.g._ LEPTON or ATOM.
+Return the particle classification of `species` as a `Kind.T` enum value.
+
+Possible values: `Kind.LEPTON`, `Kind.HADRON`, `Kind.PHOTON`, `Kind.ATOM`,
+`Kind.NULL`.
+
+# Examples
+
+```julia
+kindof(Species("electron"))    # Kind.LEPTON
+kindof(Species("proton"))      # Kind.HADRON
+kindof(Species("H"))           # Kind.ATOM
+kindof(Species("photon"))      # Kind.PHOTON
+kindof(Species())              # Kind.NULL
+```
 """
 kindof
 
@@ -185,11 +301,22 @@ end
 
 
 @doc """
-    atomicnumberof(species::Species)
+    atomicnumberof(species::Species) -> Int
 
-Number of protons in the nucleus of species.
-Gives an error if the type is not ATOM.
+Return the atomic number (number of protons) of `species`.
+
+Throws an error if `species` is not of kind `ATOM`.
+
+# Examples
+
+```julia
+atomicnumberof(Species("Fe"))       # 26
+atomicnumberof(Species("H+"))       # 1
+atomicnumberof(Species("electron")) # ERROR
+```
 """
+atomicnumberof
+
 function atomicnumberof(species::Species)
   if getfield(species, :kind) != Kind.ATOM
     error("Particle species which are not atoms do not have atomic numbers.")
@@ -201,9 +328,15 @@ end
 
 
 @doc """
-    isnullspecies(species::Species)
+    isnullspecies(species::Species) -> Bool
 
-Determine whether `species` is populated: `true` indicates a null species.
+Return `true` if `species` is a null (placeholder) species, `false` otherwise.
+
+```julia
+isnullspecies(Species())           # true
+isnullspecies(Species("null"))     # true
+isnullspecies(Species("proton"))   # false
+```
 """
 isnullspecies
 
@@ -214,11 +347,28 @@ isnullspecies(species::Species) = getfield(species, :kind) == Kind.NULL
 #####################################################################
 
 @doc """
-    set_release(; year = "2022")
+    set_release(; year::String = "2022")
 
-sets the default value of global constants in AtomicAndPhysicalConstants to a particular CODATA release year.
-The setting is persistent across Julia sessions.
-Requires a restart of Julia to take effect.
+Persistently set the CODATA release year used by AtomicAndPhysicalConstants.jl.
+
+The setting is stored via [Preferences.jl](https://github.com/JuliaPackaging/Preferences.jl)
+in the active Julia environment and survives across sessions.  A Julia restart
+is required for the new constants to take effect.
+
+Valid values for `year`: `"2002"`, `"2006"`, `"2010"`, `"2014"`, `"2018"`,
+`"2022"`.  Calling with no arguments resets to the default (`"2022"`).
+
+# Examples
+
+```julia
+set_release(year = "2014")
+# [ Info: The default CODATA release is now 2014.
+#         Restart your Julia session for this change to take effect.
+
+set_release()   # revert to 2022
+```
+
+See also: [`RELEASE_YEAR`](@ref).
 """
 set_release
 

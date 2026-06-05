@@ -2,7 +2,74 @@
 
 # This module defines the core data structures used in APClite.
 """
+    Species(speciesname::String)
+    Species()
+
+Construct a particle species by name, or a null placeholder with no arguments.
+
+The string format encodes particle identity, isotope (for atoms), and charge
+state in one expression: `[mass_number] symbol [charge]`.
+
+# Subatomic particles
+
+Pass the openPMD name exactly:
+
+| Name | Particle |
+|------|----------|
+| `"electron"` / `"positron"` | electron / positron |
+| `"proton"` / `"anti-proton"` | proton / antiproton |
+| `"neutron"` / `"anti-neutron"` | neutron / antineutron |
+| `"muon"` / `"anti-muon"` | muon / antimuon |
+| `"pion0"` / `"pion+"` / `"pion-"` | pions |
+| `"deuteron"` / `"anti-deuteron"` | deuteron / antideuteron |
+| `"photon"` | photon |
+
+# Atomic species
+
+Atomic symbols `"H"` (Z=1) through `"Og"` (Z=118) are supported.
+
+**Mass number** — prefix the symbol with ASCII digits, `#`-prefixed digits, or
+Unicode superscripts. Omit for the abundance-averaged mass.
+
+**Charge state** — append after the symbol. Repeated signs (`"++"`, `"---"`)
+or `"+n"` / `"-n"` notation are both accepted.
+
+```julia
+Species("4He")      # helium-4, neutral
+Species("⁴He")      # same, Unicode superscript
+Species("#4He")     # same, # prefix
+Species("Li+3")     # lithium, charge +3
+Species("Li+++")    # same
+Species("K-2")      # potassium, charge −2
+```
+
+**Anti-atoms**: prepend `"anti-"` to any atomic symbol.
+
+```julia
+Species("anti-H")   # antihydrogen
+```
+
+**Null species**: `Species()`, or names `"Null"`, `"null"`, `""`.
+
+# Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | `String` | Particle name or atomic symbol |
+| `charge` | `Int` | Net charge in units of *e* |
+| `mass` | `Float64` | Rest mass in eV/c² |
+| `spin` | `Float64` | Spin in ħ |
+| `gspin` | `Float64` | Spin g-factor (0 for atoms) |
+| `moment` | `Float64` | Magnetic dipole moment in eV/T (0 for atoms) |
+| `iso` | `Int` | Mass number; −1 for abundance average; 0 for subatomic particles |
+| `kind` | `Kind.T` | `LEPTON`, `HADRON`, `PHOTON`, `ATOM`, or `NULL` |
+
+Direct field access is disabled. Use [`chargeof`](@ref), [`massof`](@ref),
+[`spinof`](@ref), [`gspin_of`](@ref), [`momentof`](@ref), [`iso_of`](@ref),
+[`atomicnumberof`](@ref), [`kindof`](@ref), [`isnullspecies`](@ref),
+[`Base.nameof`](@ref).
 """
+Species
 
 struct Species
   name::String # name of the particle to track
@@ -25,19 +92,23 @@ end;
 
 
 
-"""
-    SubatomicSpecies(speciesname, charge, mass, moment, spin, gspin)
+@doc """
+    SubatomicSpecies
 
-#Structure for storing information about subatomic particles. Used in the SUBATOMIC_SPECIES dictionary.
+Internal struct storing intrinsic data for a single subatomic particle.
+Instances are stored in [`SUBATOMIC_SPECIES`](@ref).
 
-## Fields:
--'speciesname::String': - openPMD formatted particl name.
--'charge::Int' - Particle charge in [e].
--'mass::Float64' - Particle mass in [eV/c^2].
--'moment::Float64' - Particle dipole moment in [eV/T].
--'spin::Float64' - Particle spin in [ħ].
--'gspin::Float64' - Particle g-factor.
+# Fields
+
+- `speciesname::String` — openPMD particle identifier.
+- `charge::Int` — charge in units of *e*.
+- `mass::Float64` — mass in eV/c².
+- `moment::Float64` — magnetic dipole moment in eV/T.
+- `spin::Float64` — spin in ħ.
+- `gspin::Float64` — spin g-factor.
 """
+SubatomicSpecies
+
 struct SubatomicSpecies
   speciesname::String  # common species_name of the particle
   charge::Int # charge on the particle in e
@@ -48,16 +119,22 @@ struct SubatomicSpecies
 end;
 
 
-"""
-    AtomicSpecies(Z, speciesname, mass)
 
-Structure for storing information about atomic elements. Used in the ATOMIC_SPECIES dictionary.
-
-## Fields:
--'Z::Int' - Atomic number.
--'speciesname::String': - Atomic symbol.
--'mass::Dict{Int,Float64}' - Dictionary of isotope masses for the element, each in [amu]. Dictionary is keyed by mass number.
 """
+    AtomicSpecies
+
+Internal struct storing isotope mass data for a chemical element.
+Instances are stored in [`ATOMIC_SPECIES`](@ref).
+
+# Fields
+
+- `Z::Int` — atomic number (number of protons).
+- `speciesname::String` — standard atomic symbol (*e.g.* `"Fe"`).
+- `mass::Dict{Int,Float64}` — isotope masses in atomic mass units (u), keyed by
+  mass number.  The special key `−1` holds the abundance-averaged atomic mass.
+"""
+AtomicSpecies
+
 struct AtomicSpecies
   Z::Int  # atomic number
   speciesname::String  # periodic table element symbol
@@ -71,11 +148,25 @@ end;
 
 
 
-# @doc"""
-# CODATA is a type which contains all the relevant constants from our package;
-# each release year is a different struct object with name "CODATAYYYY" where 
-# YYYY is the year of the release.
-# """ CODATA
+@doc """
+    CODATA_release
+
+Keyword-argument struct holding all fundamental constants from one CODATA
+release year.  Fields mirror the exported scalar constants
+([`M_ELECTRON`](@ref), [`C_LIGHT`](@ref), *etc.*) but are grouped together so
+that multiple release years can coexist in memory simultaneously.
+
+Pre-built instances are exported as [`CODATA2002`](@ref), [`CODATA2006`](@ref),
+[`CODATA2010`](@ref), [`CODATA2014`](@ref), [`CODATA2018`](@ref), and
+[`CODATA2022`](@ref).
+
+```julia
+CODATA2018.M_ELECTRON   # electron mass from the 2018 release
+CODATA2014.C_LIGHT      # speed of light from the 2014 release
+```
+"""
+CODATA_release
+
 
 @kwdef struct CODATA_release
 

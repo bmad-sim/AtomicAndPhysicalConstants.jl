@@ -10,10 +10,16 @@
 
 
 """
-    CODATA2002::CODATA_release
+    CODATA2022 :: CODATA_release
 
-Constant structure storing select values from the 2022 release of CODATA fundamental constants.
+Fundamental constants from the 2022 CODATA release.
+This is the default release used when no preference has been set.
+
+See [NIST 2022 CODATA](https://physics.nist.gov/cuu/Constants/) for the
+primary source values.
 """
+CODATA2022
+
 const CODATA2022 = CODATA_release(
 
 #######################################
