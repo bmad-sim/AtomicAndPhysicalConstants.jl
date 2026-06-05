@@ -27,7 +27,6 @@ Units: **eV/c²**
 † Pion masses are taken from the Particle Data Group (PDG), not from CODATA,
 and are the same across all release years.
 
-See the [API Reference](@ref) for full docstrings of all constants.
 
 ---
 
@@ -47,7 +46,6 @@ Stored values are CODATA SI values (J/T) converted to eV/T via `EV_PER_J`.
 | `MU_HELION` | helion |
 | `MU_TRITON` | triton |
 
-See the [API Reference](@ref) for full docstrings of all magnetic momenta.
 
 ---
 
@@ -63,7 +61,6 @@ See the [API Reference](@ref) for full docstrings of all magnetic momenta.
 | `G_HELION` | helion | 2010 and later |
 | `G_TRITON` | triton | all releases |
 
-See the [API Reference](@ref) for full docstrings of all spin g-factors.
 
 ---
 
@@ -76,7 +73,6 @@ The gyromagnetic anomaly is defined as ``a = (g - 2)/2``.
 | `ANOMALY_ELECTRON` | electron | 2010 and later |
 | `ANOMALY_MUON` | muon | 2010 and later |
 
-See the [API Reference](@ref) for full docstrings of all gyromagnetic anomalies.
 
 ---
 
@@ -97,7 +93,6 @@ See the [API Reference](@ref) for full docstrings of all gyromagnetic anomalies.
 | `FINE_STRUCTURE` | fine-structure constant | dimensionless |
 | `RELEASE_YEAR` | active CODATA release year | — |
 
-See the [API Reference](@ref) for full docstrings of all miscellaneous constants.
 
 ---
 
@@ -112,4 +107,3 @@ See the [API Reference](@ref) for full docstrings of all miscellaneous constants
 | `G_PER_EV` | grams per eV/c² |
 | `KG_PER_MEV_C2` | kg per MeV/c² |
 
-See the [API Reference](@ref) for full docstrings of all unit-conversion constants.

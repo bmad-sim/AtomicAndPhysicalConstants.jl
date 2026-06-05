@@ -46,9 +46,6 @@ To revert to the default (2022):
 set_release()          # no argument → defaults to "2022"
 ```
 
-```@docs
-set_release
-```
 
 ## Direct access to release structs
 
@@ -60,22 +57,6 @@ CODATA2018.M_ELECTRON    # electron mass from the 2018 release
 CODATA2014.C_LIGHT       # speed of light from the 2014 release
 ```
 
-The exported structs are:
-
-```@docs
-CODATA2002
-CODATA2006
-CODATA2010
-CODATA2014
-CODATA2018
-CODATA2022
-```
-
-## The `CODATA_release` type
-
-```@docs
-AtomicAndPhysicalConstants.CODATA_release
-```
 
 ## Constants not in CODATA
 
