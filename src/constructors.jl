@@ -14,37 +14,36 @@ function subatomic_particle(name::String)::Species
   # write the particle out directly
 
   particle = SUBATOMIC_SPECIES[name]
-  if name == "photon"
-    return Species(
-      name, 
-      particle.charge,
-      particle.mass,
-      particle.spin,
-      particle.gspin,
-      particle.moment,
-      Int(0), 
-      Kind.PHOTON)
-  elseif name in leptons
-    return Species(
-      name, 
-      particle.charge,
-      particle.mass,
-      particle.spin,
-      particle.gspin,
-      particle.moment,
-      0, 
-      Kind.LEPTON)
-  else
-    return Species(
-      name, 
-      particle.charge,
-      particle.mass,
-      particle.spin,
-      particle.gspin,
-      particle.moment,
-      0, 
-      Kind.HADRON)
-  end
+  
+  name == "photon" && return Species(
+    name, 
+    particle.charge,
+    particle.mass,
+    particle.spin,
+    particle.gspin,
+    particle.moment,
+    Int(0), 
+    Kind.PHOTON)
+  name in leptons && return Species(
+    name, 
+    particle.charge,
+    particle.mass,
+    particle.spin,
+    particle.gspin,
+    particle.moment,
+    0, 
+    Kind.LEPTON)
+
+  return Species(
+    name, 
+    particle.charge,
+    particle.mass,
+    particle.spin,
+    particle.gspin,
+    particle.moment,
+    0, 
+    Kind.HADRON)
+
 end
 
 
@@ -230,11 +229,8 @@ function Species(speciesname::String)
   index::Int = 0
   anti = occursin(anti_regEx, speciesname)
   # if the particle is an anti-particle, remove the prefix for easier lookup
-  if !anti
-    name = speciesname
-  else
-    name = replace(name, anti_regEx => "")
-  end
+  !anti ? (name = speciesname) : (name = replace(name, anti_regEx => ""))
+  
   name = normalize_superscripts(name)
 
   # if the particle is not in the subatomic species dictionary, check the atomic species dictionary
@@ -258,9 +254,8 @@ function Species(speciesname::String)
     left::String = name[1:index-1]
 
     #if the left string starts with #, delete the #
-    if left[1] == '#'
-      left = left[2:end]
-    end
+    left[1] == '#' && left = left[2:end]
+    
     # convert the isotope to an integer
     iso = parse(Int, left)
     haskey(ATOMIC_SPECIES[atom].mass, iso) || error("$iso is not a valid isotope of $atom")
@@ -271,21 +266,17 @@ function Species(speciesname::String)
   # now try to parse the charge
   right::String = name[index+length(atom):end]
   !(occursin('+', right) && occursin('-', right)) || error("$speciesname has an ambiguously defined charge value.")
+  
   charge::Int = chargeparse(right)
-  if charge > ATOMIC_SPECIES[atom].Z
-    error("The element $atom does not contain $charge protons; the particle $atom with charge +$charge is not physical.")
-  end
+  charge > ATOMIC_SPECIES[atom].Z && error("The element $atom does not contain $charge protons; the particle $atom with charge +$charge is not physical.")
+  
 
-  if anti
-    return atomic_particle("anti-" * atom, charge, iso)
-  else
-    return atomic_particle(atom, charge, iso)
-  end
+  anti ? (return atomic_particle("anti-" * atom, charge, iso)) : (return atomic_particle(atom, charge, iso))
+  
 
-    # Check for remaining characters
-    if remaining != ""
-        error("You have entered too many characters: please try again.")
-    end
+  # Check for remaining characters
+  remaining != "" && error("You have entered too many characters: please try again.")
+ 
 
-    return (symbol, iso, charge)
+  return (symbol, iso, charge)
 end

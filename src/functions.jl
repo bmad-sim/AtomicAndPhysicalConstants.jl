@@ -91,11 +91,7 @@ end
 Returns the charge of the species in units of elementary charge [e].
 """
 function chargeof(species::Species; C::Bool=false,)
-  if C == false
-    return getfield(species, :charge)
-  else
-    return E_CHARGE * getfield(species, :charge)
-  end
+   !C ? (return getfield(species, :charge)) : (return E_CHARGE * getfield(species, :charge))
 end
 
 @doc """
@@ -106,11 +102,8 @@ For atomic species, returns mass in atomic mass units (current_units.atomic_mass
 For subatomic species (baryons, leptons, etc.), returns mass in baryon mass units (current_units.baryon_mass).
 """
 function massof(species::Species; AMU::Bool=false)
-  if AMU == false
-    return getfield(species, :mass)
-  else
-    return getfield(species, :mass) / EV_PER_AMU
-  end
+
+  !AMU ? (return getfield(species, :mass)) : (getfield(species, :mass) / EV_PER_AMU)
 end
 
 @doc """
@@ -128,11 +121,8 @@ end
 Returns the gyromagnetic factor of the species if it is known, otherwise 0.
 """
 function gspin_of(species::Species; signed::Bool = false)
-  if signed == false
-    return abs(getfield(species, :gspin))
-  else
-    return getfield(species, :gspin)
-  end
+
+  !signed ? (return abs(getfield(species, :gspin))) : (return getfield(species, :gspin))
 end
 
 
@@ -145,11 +135,8 @@ gyromagnetic_anomaly
 
 function gyromagnetic_anomaly(species::Species)
   kind = getfield(species, :kind)
-  if kind == Kind.LEPTON || kind == Kind.HADRON
-    return (gspin_of(species) - 2) / 2
-  else
-    return 0
-  end
+  (kind == Kind.LEPTON || kind == Kind.HADRON) ? (return (gspin_of(species) - 2) / 2) : (return 0)
+
 end
 
 
@@ -291,16 +278,14 @@ function find_superscript(num::Int)
   sup::String = ""
   for n ∈ digs
     for (k, v) in SUPERSCRIPT_MAP
-      if n == v
-        sup = sup * k
-      end
+      n == v && sup = sup * k
     end
   end
   return sup
 end
 
 
-"""
+@doc """
     normalize_superscripts(str::String)
 
 Turns a superscript string of digits `str` into a normal string of digits.
