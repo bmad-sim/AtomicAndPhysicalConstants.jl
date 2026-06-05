@@ -1,20 +1,31 @@
-using Documenter, AtomicAndPhysicalConstants
+using Documenter
+using AtomicAndPhysicalConstants
 
 makedocs(
-  sitename="AtomicAndPhysicalConstants.jl",
-  authors="Alex Coxe, Lixing Li, Matt Signorelli, David Sagan et al.",
-  format=Documenter.HTMLWriter.HTML(size_threshold=nothing, mathengine=Documenter.MathJax()),
-  pages=
-  [
-    "Home" => "index.md",
-    "Setting Units: APCdef" => "units.md",
-    "Constants" => "constants.md",
-    "Species" => "species.md",
-    "Species Functions" => "species_functions.md",
-    "For Developers" => "for_developers.md",
-  ]
+    sitename = "AtomicAndPhysicalConstants.jl",
+    authors  = "David Sagan and contributors",
+    modules  = [AtomicAndPhysicalConstants],
+    format   = Documenter.HTML(
+        prettyurls       = get(ENV, "CI", nothing) == "true",
+        canonical        = "https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl",
+        assets           = String[],
+    ),
+    pages = [
+        "Home"               => "index.md",
+        "Manual" => [
+            "Species"        => "man/species.md",
+            "Constants"      => "man/constants.md",
+            "CODATA Releases"=> "man/codata.md",
+        ],
+        "API Reference"      => "api.md",
+    ],
+    checkdocs = :exports,   # warn on exported symbols without docstrings
+    doctest   = true,
 )
 
-deploydocs(;
-  repo="github.com/bmad-sim/AtomicAndPhysicalConstants.jl.git",
+deploydocs(
+    repo   = "github.com/bmad-sim/AtomicAndPhysicalConstants.jl",
+    target = "build",
+    branch = "gh-pages",
+    devbranch = "main",
 )

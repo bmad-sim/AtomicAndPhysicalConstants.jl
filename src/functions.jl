@@ -278,7 +278,7 @@ function find_superscript(num::Int)
   sup::String = ""
   for n ∈ digs
     for (k, v) in SUPERSCRIPT_MAP
-      n == v && sup = sup * k
+      n == v && (sup = sup * k)
     end
   end
   return sup
