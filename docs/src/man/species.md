@@ -109,23 +109,7 @@ Use [`isnullspecies`](@ref) to test for a null species.
 ---
 
 ## Accessor functions
-
-Direct field access on a `Species` object is intentionally disabled.
-Use the following functions instead.
-
-```@docs
-Base.nameof(::Species)
-chargeof
-massof
-spinof
-gspin_of
-gyromagnetic_anomaly
-momentof
-iso_of
-atomicnumberof
-kindof
-isnullspecies
-```
+See the [API Reference](@ref) for full docstrings of all accessor functions.
 
 ---
 

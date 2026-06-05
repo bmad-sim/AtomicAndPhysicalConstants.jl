@@ -27,16 +27,7 @@ Units: **eV/c²**
 † Pion masses are taken from the Particle Data Group (PDG), not from CODATA,
 and are the same across all release years.
 
-```@docs
-M_ELECTRON
-M_PROTON
-M_NEUTRON
-M_MUON
-M_DEUTERON
-M_HELION
-M_PION_0
-M_PION_CHARGED
-```
+See the [API Reference](@ref) for full docstrings of all constants.
 
 ---
 
@@ -56,15 +47,7 @@ Stored values are CODATA SI values (J/T) converted to eV/T via `EV_PER_J`.
 | `MU_HELION` | helion |
 | `MU_TRITON` | triton |
 
-```@docs
-MU_ELECTRON
-MU_PROTON
-MU_NEUTRON
-MU_MUON
-MU_DEUTERON
-MU_HELION
-MU_TRITON
-```
+See the [API Reference](@ref) for full docstrings of all magnetic momenta.
 
 ---
 
@@ -80,15 +63,7 @@ MU_TRITON
 | `G_HELION` | helion | 2010 and later |
 | `G_TRITON` | triton | all releases |
 
-```@docs
-G_ELECTRON
-G_PROTON
-G_NEUTRON
-G_MUON
-G_DEUTERON
-G_HELION
-G_TRITON
-```
+See the [API Reference](@ref) for full docstrings of all spin g-factors.
 
 ---
 
@@ -101,10 +76,7 @@ The gyromagnetic anomaly is defined as ``a = (g - 2)/2``.
 | `ANOMALY_ELECTRON` | electron | 2010 and later |
 | `ANOMALY_MUON` | muon | 2010 and later |
 
-```@docs
-ANOMALY_ELECTRON
-ANOMALY_MUON
-```
+See the [API Reference](@ref) for full docstrings of all gyromagnetic anomalies.
 
 ---
 
@@ -125,20 +97,7 @@ ANOMALY_MUON
 | `FINE_STRUCTURE` | fine-structure constant | dimensionless |
 | `RELEASE_YEAR` | active CODATA release year | — |
 
-```@docs
-E_CHARGE
-C_LIGHT
-H_PLANCK
-H_BAR
-R_ELECTRON
-R_PROTON
-CLASSICAL_RADIUS_FACTOR
-EPS_0
-MU_0
-AVOGADRO
-FINE_STRUCTURE
-RELEASE_YEAR
-```
+See the [API Reference](@ref) for full docstrings of all miscellaneous constants.
 
 ---
 
@@ -153,11 +112,4 @@ RELEASE_YEAR
 | `G_PER_EV` | grams per eV/c² |
 | `KG_PER_MEV_C2` | kg per MeV/c² |
 
-```@docs
-KG_PER_AMU
-EV_PER_AMU
-J_PER_EV
-EV_PER_J
-G_PER_EV
-KG_PER_MEV_C2
-```
+See the [API Reference](@ref) for full docstrings of all unit-conversion constants.
