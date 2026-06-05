@@ -10,9 +10,10 @@
 
 
 """
-    CODATA2002::CODATA_release
+    CODATA2010 :: CODATA_release
 
-Constant structure storing select values from the 2010 release of CODATA fundamental constants.
+Fundamental constants from the 2010 CODATA release.
+First release to include `G_HELION`, `ANOMALY_ELECTRON`, and `ANOMALY_MUON`.
 """
 const CODATA2010 = CODATA_release(
 

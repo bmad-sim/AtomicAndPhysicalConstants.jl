@@ -10,9 +10,9 @@
 
 
 """
-    CODATA2002::CODATA_release
+    CODATA2006 :: CODATA_release
 
-Constant structure storing select values from the 2006 release of CODATA fundamental constants.
+Fundamental constants from the 2006 CODATA release.
 """
 const CODATA2006 = CODATA_release(
 

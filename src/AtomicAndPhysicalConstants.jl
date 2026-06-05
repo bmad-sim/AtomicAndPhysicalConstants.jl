@@ -5,7 +5,21 @@ using Preferences
 
 # kind enum stores the kind of particle
 # NULL is for null species (placeholder species)
+"""
+    Kind
 
+Classification of a particle species.
+
+| Value | Meaning |
+|-------|---------|
+| `Kind.LEPTON` | leptons: electron, positron, muon, anti-muon |
+| `Kind.HADRON` | hadrons: proton, neutron, pions, deuteron, … |
+| `Kind.PHOTON` | photon |
+| `Kind.ATOM` | any atomic or ionic species |
+| `Kind.NULL` | null placeholder species |
+
+The kind of a species is queried with [`kindof`](@ref).
+"""
 @enumx Kind ATOM HADRON LEPTON PHOTON NULL
 export Kind, ATOM, HADRON, LEPTON, PHOTON, NULL
 # precompile regEx
@@ -47,6 +61,7 @@ export G_DEUTERON, G_ELECTRON, G_HELION, G_MUON, G_NEUTRON, G_PROTON, G_TRITON
 
 export E_CHARGE, R_ELECTRON, R_PROTON, C_LIGHT, H_PLANCK, H_BAR, CLASSICAL_RADIUS_FACTOR, EPS_0, MU_0, RELEASE_YEAR
 
+export KG_PER_AMU, EV_PER_AMU, J_PER_EV, G_PER_EV, RELEASE_YEAR, KG_PER_MEV_C2
 export CODATA2002, CODATA2006, CODATA2010, CODATA2014, CODATA2018, CODATA2022
 
 # export the subatomic species dict
@@ -56,6 +71,7 @@ export ATOMIC_SPECIES
 
 export Species
 
-export chargeof, massof, spinof, gspin_of, gyromagnetic_anomaly, momentof, iso_of, isnullspecies
+export chargeof, massof, spinof, gspin_of, gyromagnetic_anomaly
+export momentof, iso_of, atomicnumberof, kindof, isnullspecies
 export set_release
 end

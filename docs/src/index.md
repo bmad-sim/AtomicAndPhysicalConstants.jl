@@ -1,67 +1,55 @@
 # AtomicAndPhysicalConstants.jl
 
-## Setup
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/dev/)
+[![Build Status](https://github.com/bmad-sim/AtomicAndPhysicalConstants.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/bmad-sim/AtomicAndPhysicalConstants.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
-To use AtomicAndPhysicalConstants, like any Julia package, execute the commands:
-```julia
-julia> using Pkg; Pkg.add("AtomicAndPhysicalConstants.jl")
-julia> using AtomicAndPhysicalConstants
-```
+AtomicAndPhysicalConstants.jl provides fundamental physical constants and
+particle data drawn from official [CODATA](https://codata.org/) releases
+(2002 – 2022).  Values are expressed in units natural to accelerator and
+atomic physics (eV, eV/c², eV·s, eV/T, …).
 
-The macro `@APCdef` initializes the APC package.
-@APCdef sets the units for physical constants, species mass and charge. It defines the physical constants and getter functions for species mass and charge with the proper unit and data. Documentation is  [here](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/units/).
-
-```julia
-julia> @APCdef
-julia> APC.C_LIGHT
-2.99792458e8
-julia> e = Species("electron")
-julia> massof(e)
-510998.95069
-```
-
-Users have the options for choosing the return type (Float64, Unitful, or DynamicQuantities) and unit of the constants, see [this page](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/units/)
-
-## Introduction
-
-`AtomicAndPhysicalConstants.jl` (APC) provides a quick way to access information about different species and physical constants optimized for faster compile time and simulations.
-
-It is designed to provide atomic and physical constants including things like the speed of light, subatomic particle properties, atomic isotope properties, etc. 
-
-Values are obtained from CODATA (Committee on Data of the International Science Council), NIST (National Institute of Standards and Technology), and PDG (Particle Data Group). This package enables users to access and customize units for the constants. 
-
-The package is compatible with Julia's `Unitful.jl` and `DynamicQuantities.jl` library for convenient unit manipulation.
-
-`AtomicAndPhysicalConstants.jl` has the following main features and advantages:
-
-1. **Simple Unit Manipulation**: Users can define the units they want to use in a simple and consistent way. `Unitful.jl` provides a simple way to do unit conversion and calculations.
-2. **Rigorous and Up-to-Date Data**: We uses the most updated values from creditable sources. We also provided the option to use past data for specific purposes.
-3. **Simple usage**: Users can access data of a wide range of particles and physic constants by simply defining a species with their name or call a variable in the namespace. 
-
-## Documentation
-
-Documentation is at 
-[https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl)
-
-
-## Defining Species
-
-`Species` is a structure that holds information about a particle or atom, such as its mass, charge, spin, and other properties. It is designed to provide a convenient way to access and manipulate data related to different species in physics.
-
-The constructor `Species()` helps you create a structure with all the information of the species stored in it.
+## Installation
 
 ```julia
-julia> e = Species("electron")
-julia> hydrogen = Species("H")
+using Pkg
+Pkg.add("AtomicAndPhysicalConstants")
 ```
 
-You could use getter functions to access its properties or directly calling its fields. 
+## Quick start
 
 ```julia
-julia> massof(e)
-510998.95069
-julia> hydrogen.spin
-1.0 h_bar
+using AtomicAndPhysicalConstants
+
+# ── physical constants ──────────────────────────────────────────────
+C_LIGHT    # 2.99792458e8  m/s
+H_PLANCK   # 4.135667696e-15  eV·s
+M_ELECTRON # 510998.95069  eV/c²
+
+# ── particle species ────────────────────────────────────────────────
+e    = Species("electron")
+p    = Species("proton")
+h    = Species("H")          # neutral hydrogen, abundance-averaged mass
+he3  = Species("3He")        # neutral helium-3
+hion = Species("H+")         # singly-ionised hydrogen
+antip = Species("anti-proton")
+
+# ── accessor functions ───────────────────────────────────────────────
+massof(e)                    # 510998.95069  eV/c²
+massof(h, AMU=true)          # mass in atomic mass units
+chargeof(hion)               # 1  (units of e)
+spinof(e)                    # 0.5  ħ
+gspin_of(e)                  # 2.00231930436092
+gyromagnetic_anomaly(e)      # ≈ 0.00115965…
+momentof(p)                  # magnetic dipole moment  eV/T
+iso_of(he3)                  # 3  (mass number)
 ```
 
-See more about `Species()` constructors and getter functions [here](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/stable/species/)
+## Package overview
+
+| Topic | Description |
+|-------|-------------|
+| [Species](@ref man-species) | Constructing and querying particle species |
+| [Constants](@ref man-constants) | Exported physical constants |
+| [CODATA Releases](@ref man-codata) | Switching between CODATA release years |
+| [API Reference](@ref) | Complete docstring index |

@@ -54,7 +54,7 @@ end
 
   # Test nameof function
   @test nameof(e) == "electron"
-  @test nameof(C) == "C"
+  @test nameof(C) == "#12C"
 
   # Test chargeof function
   @test chargeof(e) == -1
