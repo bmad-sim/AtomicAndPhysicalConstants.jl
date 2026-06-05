@@ -2,7 +2,7 @@
 
 Complete index of all exported symbols.
 
-## Types
+## Internal Types
 
 ```@docs
 Species
@@ -11,10 +11,10 @@ AtomicAndPhysicalConstants.AtomicSpecies
 AtomicAndPhysicalConstants.CODATA_release
 ```
 
-## Species constructor
+## Species type and constructor
 
 ```@docs
-Species(::String)
+Species()
 ```
 
 ## Accessor functions
