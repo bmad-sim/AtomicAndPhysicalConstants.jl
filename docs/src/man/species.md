@@ -138,7 +138,4 @@ kindof(Species("Fe"))       == Kind.ATOM     # true
 Two dictionaries back the species constructor and are exported for
 advanced use.
 
-```@docs
-SUBATOMIC_SPECIES
-ATOMIC_SPECIES
-```
+See the [API Reference](@ref) for full docstrings of all internal reference dictionaries.
