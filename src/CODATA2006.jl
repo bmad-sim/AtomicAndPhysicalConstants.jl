@@ -14,8 +14,6 @@
 
 Fundamental constants from the 2006 CODATA release.
 """
-CODATA2006
-
 const CODATA2006 = CODATA_release(
 
 #######################################

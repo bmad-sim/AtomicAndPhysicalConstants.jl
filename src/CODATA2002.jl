@@ -13,8 +13,6 @@
 
 Fundamental constants from the 2002 CODATA release (earliest supported).
 """
-CODATA2002
-
 const CODATA2002 = CODATA_release(
 
 #######################################

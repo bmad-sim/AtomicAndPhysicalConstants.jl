@@ -69,8 +69,6 @@ Direct field access is disabled. Use [`chargeof`](@ref), [`massof`](@ref),
 [`atomicnumberof`](@ref), [`kindof`](@ref), [`isnullspecies`](@ref),
 [`Base.nameof`](@ref).
 """
-Species
-
 struct Species
   name::String # name of the particle to track
   charge::Int # charge of the particle (important to consider ionized atoms) in [e]
@@ -107,8 +105,6 @@ Instances are stored in [`SUBATOMIC_SPECIES`](@ref).
 - `spin::Float64` — spin in ħ.
 - `gspin::Float64` — spin g-factor.
 """
-SubatomicSpecies
-
 struct SubatomicSpecies
   speciesname::String  # common species_name of the particle
   charge::Int # charge on the particle in e
@@ -133,8 +129,6 @@ Instances are stored in [`ATOMIC_SPECIES`](@ref).
 - `mass::Dict{Int,Float64}` — isotope masses in atomic mass units (u), keyed by
   mass number.  The special key `−1` holds the abundance-averaged atomic mass.
 """
-AtomicSpecies
-
 struct AtomicSpecies
   Z::Int  # atomic number
   speciesname::String  # periodic table element symbol
@@ -148,7 +142,7 @@ end;
 
 
 
-@doc """
+"""
     CODATA_release
 
 Keyword-argument struct holding all fundamental constants from one CODATA
@@ -165,9 +159,6 @@ CODATA2018.M_ELECTRON   # electron mass from the 2018 release
 CODATA2014.C_LIGHT      # speed of light from the 2014 release
 ```
 """
-CODATA_release
-
-
 @kwdef struct CODATA_release
 
   #######################################

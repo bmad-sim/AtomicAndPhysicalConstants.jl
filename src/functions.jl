@@ -9,8 +9,6 @@
 Compute and return the value of g_s for a particle in [1/(T*s)] == [C/kg]
 For atomic particles, will currently return 0. Will be updated in a future patch
 """
-g_spin
-
 function g_spin(mass, moment, spin, charge)
 
   m_s = mass * G_PER_EV / 1e3 # mass in kg
@@ -29,32 +27,12 @@ end;
 
 
 
-
-# """
-#     g_nucleon(gs::Float64, Z::Int, mass::Float64)
-
-# Compute and deliver the gyromagnetic anomaly for a baryon given its g factor
-
-
-# """
-# g_nucleon
-
-# function g_nucleon(species::Species)
-
-#   m = getfield(species, :mass)
-#   gs = g_spin(species)
-  
-
-#   return gs * m_proton / m
-# end
-
-
 #####################################################################
 # species struct getter functions
 #####################################################################
 
 
-@doc """
+"""
     nameof(species::Species) -> String
 
 Return the canonical name of `species`.
@@ -71,8 +49,6 @@ nameof(Species("4He+2"))      # "#4He+2"
 nameof(Species("Li+"))        # "Li+1"
 ```
 """
-Base.nameof(::Species)
-
 function Base.nameof(species::Species)
   if getfield(species, :kind) != Kind.ATOM
     return getfield(species, :name)
@@ -98,7 +74,7 @@ function Base.nameof(species::Species)
   end
 end
 
-@doc """
+"""
     chargeof(species::Species; C::Bool = false) -> Union{Int, Float64}
 
 Return the net charge of `species`.
@@ -116,13 +92,11 @@ chargeof(Species("Li+3"))         # 3
 chargeof(Species("proton"), C=true)   # ≈ 1.602176634e-19
 ```
 """
-chargeof
-
 function chargeof(species::Species; C::Bool=false,)
    !C ? (return getfield(species, :charge)) : (return E_CHARGE * getfield(species, :charge))
 end
 
-@doc """
+"""
     massof(species::Species; AMU::Bool = false) -> Float64
 
 Return the rest mass of `species`.
@@ -140,14 +114,12 @@ massof(Species("H"), AMU = true)        # ≈ 1.00794  u
 massof(Species("4He"), AMU = true)      # ≈ 4.0026  u
 ```
 """
-massof
-
 function massof(species::Species; AMU::Bool=false)
 
   !AMU ? (return getfield(species, :mass)) : (getfield(species, :mass) / EV_PER_AMU)
 end
 
-@doc """
+"""
     spinof(species::Species) -> Float64
 
 Return the spin of `species` in units of the reduced Planck constant ħ.
@@ -160,13 +132,11 @@ spinof(Species("proton"))      # 0.5
 spinof(Species("photon"))      # 1.0
 ```
 """
-spinof
-
 function spinof(species::Species)
   return getfield(species, :spin)
 end
 
-@doc """
+"""
     gspin_of(species::Species; signed::Bool = false) -> Float64
 
 Return the spin g-factor of `species`.
@@ -186,15 +156,13 @@ gspin_of(Species("proton"))                 # 5.5856946893
 gspin_of(Species("H"))                      # 0.0
 ```
 """
-gspin_of
-
 function gspin_of(species::Species; signed::Bool = false)
 
   !signed ? (return abs(getfield(species, :gspin))) : (return getfield(species, :gspin))
 end
 
 
-@doc """
+"""
     gyromagnetic_anomaly(species::Species) -> Float64
 
 Compute and return the gyromagnetic anomaly
@@ -213,8 +181,6 @@ gyromagnetic_anomaly(Species("muon"))       # ≈  0.00116592062
 gyromagnetic_anomaly(Species("H"))          # 0.0
 ```
 """
-gyromagnetic_anomaly
-
 function gyromagnetic_anomaly(species::Species)
   kind = getfield(species, :kind)
   (kind == Kind.LEPTON || kind == Kind.HADRON) ? (return (gspin_of(species) - 2) / 2) : (return 0)
@@ -222,7 +188,7 @@ function gyromagnetic_anomaly(species::Species)
 end
 
 
-@doc """
+"""
     momentof(species::Species) -> Float64
 
 Return the magnetic dipole moment of `species` in **eV/T**.
@@ -238,8 +204,6 @@ momentof(Species("proton"))     # ≈  8.8043151136e-8  eV/T
 momentof(Species("H"))          # 0.0
 ```
 """
-momentof
-
 function momentof(species::Species) 
   if getfield(species, :kind) != Kind.ATOM && getfield(species, :kind) != Kind.NULL
     return getfield(species, :moment)
@@ -249,7 +213,7 @@ function momentof(species::Species)
 end
 
 
-@doc """
+"""
     iso_of(species::Species) -> Int
 
 Return the mass number (isotope) of `species`.
@@ -266,8 +230,6 @@ iso_of(Species("He"))           # -1  (abundance average)
 iso_of(Species("electron"))     # 0
 ```
 """
-iso_of
-
 function iso_of(species::Species) 
   if getfield(species, :kind) == Kind.ATOM
     return getfield(species, :iso)
@@ -275,7 +237,7 @@ function iso_of(species::Species)
   end
 end
 
-@doc """
+"""
     kindof(species::Species) -> Kind.T
 
 Return the particle classification of `species` as a `Kind.T` enum value.
@@ -293,14 +255,12 @@ kindof(Species("photon"))      # Kind.PHOTON
 kindof(Species())              # Kind.NULL
 ```
 """
-kindof
-
 function kindof(species::Species)
   return getfield(species, :kind)
 end
 
 
-@doc """
+"""
     atomicnumberof(species::Species) -> Int
 
 Return the atomic number (number of protons) of `species`.
@@ -315,8 +275,6 @@ atomicnumberof(Species("H+"))       # 1
 atomicnumberof(Species("electron")) # ERROR
 ```
 """
-atomicnumberof
-
 function atomicnumberof(species::Species)
   if getfield(species, :kind) != Kind.ATOM
     error("Particle species which are not atoms do not have atomic numbers.")
@@ -327,7 +285,7 @@ function atomicnumberof(species::Species)
 end
 
 
-@doc """
+"""
     isnullspecies(species::Species) -> Bool
 
 Return `true` if `species` is a null (placeholder) species, `false` otherwise.
@@ -338,15 +296,13 @@ isnullspecies(Species("null"))     # true
 isnullspecies(Species("proton"))   # false
 ```
 """
-isnullspecies
-
 isnullspecies(species::Species) = getfield(species, :kind) == Kind.NULL
 
 #####################################################################
 # Nuts and bolts functionality in more convenient packaging
 #####################################################################
 
-@doc """
+"""
     set_release(; year::String = "2022")
 
 Persistently set the CODATA release year used by AtomicAndPhysicalConstants.jl.
@@ -370,8 +326,6 @@ set_release()   # revert to 2022
 
 See also: [`RELEASE_YEAR`](@ref).
 """
-set_release
-
 function set_release(;year::String = "2022")
   if !haskey(CODATA_MAP, year)
     throw(ArgumentError("You have provided an invalid release year: 
@@ -395,7 +349,7 @@ function getproperty(obj::Species, field::Symbol)
 
 end; export getproperty
 
-@doc """
+"""
     SUPERSCRIPT_MAP
     A dictionary mapping superscript characters to their corresponding integer values.
     This is used to convert superscript numbers in species names to their integer values.
@@ -413,7 +367,7 @@ const SUPERSCRIPT_MAP = Dict{Char,Int}(
   '⁹' => 9,
 )
 
-@doc """
+"""
     find_superscript(num::Int64)
 
 ## Description:
@@ -421,8 +375,6 @@ Convert an integer to its superscript representation.
 This function takes an integer and returns a string containing the corresponding
 superscript characters for each digit in the integer.
 """
-find_superscript
-
 function find_superscript(num::Int)
   digs = reverse(digits(num))
   sup::String = ""
@@ -435,7 +387,7 @@ function find_superscript(num::Int)
 end
 
 
-@doc """
+"""
     normalize_superscripts(str::String)
 
 Turns a superscript string of digits `str` into a normal string of digits.

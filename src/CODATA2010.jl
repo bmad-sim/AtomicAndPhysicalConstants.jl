@@ -15,8 +15,6 @@
 Fundamental constants from the 2010 CODATA release.
 First release to include `G_HELION`, `ANOMALY_ELECTRON`, and `ANOMALY_MUON`.
 """
-CODATA2010
-
 const CODATA2010 = CODATA_release(
 
 #######################################

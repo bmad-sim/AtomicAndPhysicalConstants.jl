@@ -1,15 +1,13 @@
 # AtomicAndPhysicalConstants/src/species.jl
 
 
-@doc """
+"""
     subatomic_particle(name::String)
 
 ## Description:
 sub-constructor for struct Species: subatomic_particle generates a Species object 
 for a particle with openPMD identifier 'name'
 """
-subatomic_particle
-
 function subatomic_particle(name::String)::Species
   # write the particle out directly
 
@@ -47,7 +45,7 @@ function subatomic_particle(name::String)::Species
 end
 
 
-@doc """
+"""
     atomic_particle(name::String, charge::Int, iso::Int)
 
 ## Description:
@@ -58,8 +56,6 @@ for an atom with atomic symbol 'name', charge state 'charge', and mass number 'i
 - `charge::Int':           the net charge of the particle in units of [e]
 - `iso::Int':             the mass number of the isotope, -1 for the most abundant isotope
 """
-atomic_particle
-
 function atomic_particle(name::String, charge::Int, iso::Int;)
 
   # whether the atom is anti-atom

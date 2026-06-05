@@ -14,8 +14,6 @@
 
 Fundamental constants from the 2014 CODATA release.
 """
-CODATA2014
-
 const CODATA2014 = CODATA_release(
 
 #######################################

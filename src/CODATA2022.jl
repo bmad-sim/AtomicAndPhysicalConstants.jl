@@ -18,8 +18,6 @@ This is the default release used when no preference has been set.
 See [NIST 2022 CODATA](https://physics.nist.gov/cuu/Constants/) for the
 primary source values.
 """
-CODATA2022
-
 const CODATA2022 = CODATA_release(
 
 #######################################
