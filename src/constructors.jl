@@ -178,7 +178,7 @@ function Species(speciesname::String)
     left::String = name[1:index-1]
 
     #if the left string starts with #, delete the #
-    left[1] == '#' && left = left[2:end]
+    left[1] == '#' && (left = left[2:end])
     
     # convert the isotope to an integer
     iso = parse(Int, left)

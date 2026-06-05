@@ -7,7 +7,7 @@ makedocs(
     modules  = [AtomicAndPhysicalConstants],
     format   = Documenter.HTML(
         prettyurls       = get(ENV, "CI", nothing) == "true",
-        canonical        = "https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl",
+        canonical        = "https://rot4te.github.io/AtomicAndPhysicalConstants.jl",
         assets           = String[],
     ),
     pages = [
@@ -24,7 +24,7 @@ makedocs(
 )
 
 deploydocs(
-    repo   = "github.com/bmad-sim/AtomicAndPhysicalConstants.jl",
+    repo   = "github.com/rot4te/AtomicAndPhysicalConstants.jl",
     target = "build",
     branch = "gh-pages",
     devbranch = "main",
