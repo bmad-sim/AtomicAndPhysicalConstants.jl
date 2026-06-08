@@ -116,7 +116,7 @@ CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # R_ELECTRON * m_ele
   # Is same for all particles of charge +/- 1.
 
 BOLTZMANN_k = 8.6173303e-5,
-#k_B in eV/k_B
+#k_B in eV/K
 
 EPS_0 = 8.8541878188e-12,
 # Permittivity of free space in [F/m]
