@@ -207,6 +207,10 @@ const CLASSICAL_RADIUS_FACTOR::Float64 = get(CODATA_MAP, release, CODATA2022).CL
 # Is same for all particles of charge +/- 1.
 
 """
+OLTZMANN_k::Float64 - Boltzmann constant k_B in eV/K per the selected CODATA release.
+"""
+const BOLTZMANN_k::Float64 = get(CODATA_MAP, release, CODATA2022).BOLTZMANN_k
+"""
 EPS_0::Float64 - Permittivity of free space in F/m per the selected CODATA release.
 """
 const EPS_0::Float64 = get(CODATA_MAP, release, CODATA2022).EPS_0
