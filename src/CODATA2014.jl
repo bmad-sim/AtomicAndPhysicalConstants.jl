@@ -113,7 +113,10 @@ H_BAR = 6.582119514e-16,
 # h_planck/twopi [eV*s]
 CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # R_ELECTRON * m_electron,
 # e^2 / (4 pi eps_0) = classical_radius * mass * c^2.
-# Is same for all particles of charge +/- 1.
+  # Is same for all particles of charge +/- 1.
+
+BOLTZMANN_k = 8.6173303e-5,
+#k_B in eV/K
 
 EPS_0 = 8.8541878188e-12,
 # Permittivity of free space in [F/m]
