@@ -259,7 +259,7 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   # e^2 / (4 pi eps_0) = classical_radius*mass*c^2.
   # Is same for all particles of charge +/- 1.
 
-  BOLTZMANN_k::Float64
+  K_BOLTZMANN::Float64
   # Boltzmann factor k_B in eV/K
 
   EPS_0::Float64

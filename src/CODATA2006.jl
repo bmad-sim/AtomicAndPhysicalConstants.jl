@@ -113,7 +113,7 @@ CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # R_ELECTRON* m_elec
 # e^2 / (4 pi eps_0)::typeof() = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.
 
-BOLTZMANN_k=8.61734315e-5,
+K_BOLTZMANN=8.61734315e-5,
 #k_B in eV/K
 
 EPS_0 = 8.8541878188e-12,
