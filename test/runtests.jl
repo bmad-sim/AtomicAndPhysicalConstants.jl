@@ -43,6 +43,7 @@ using Test
   @test R_ELECTRON ≈ 2.8179403205e-15  # classical electron radius in m
   @test EPS_0 ≈ 8.8541878188e-12  # permittivity of free space in F/m
   @test MU_0 ≈ 1.25663706127e-6  # vacuum permeability in N/A^2
+  @test isapprox(K_BOLTZMANN, 8.61733e-5, atol=2e-10)
   @test RELEASE_YEAR == 2022
 end
 
