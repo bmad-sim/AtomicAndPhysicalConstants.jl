@@ -181,9 +181,9 @@ gyromagnetic_anomaly(Species("muon"))       # ≈  0.00116592062
 gyromagnetic_anomaly(Species("H"))          # 0.0
 ```
 """
-function gyromagnetic_anomaly(species::Species)
+function gyromagnetic_anomaly(species::Species)::Float64
   kind = getfield(species, :kind)
-  (kind == Kind.LEPTON || kind == Kind.HADRON) ? (return (gspin_of(species) - 2) / 2) : (return 0)
+  (kind == Kind.LEPTON || kind == Kind.HADRON) ? (return (gspin_of(species) - 2.0) / 2.0) : (return convert(Float64, NaN))
 
 end
 
