@@ -74,10 +74,10 @@ function atomic_particle(name::String, charge::Int, iso::Int;)
 
   mass::Float64 = begin
     if anti_atom == false
-      nmass + SUBATOMIC_SPECIES["electron"].mass * abs(charge)
+      nmass + SUBATOMIC_SPECIES["electron"].mass * (-charge)
       # for a nominal atom, add 1 electron mass for every - charge
     else
-      nmass + SUBATOMIC_SPECIES["positron"].mass * abs(charge)
+      nmass + SUBATOMIC_SPECIES["positron"].mass * charge
       # for an anti-atom, add 1 positron mass for every + charge
     end
   end
@@ -153,7 +153,7 @@ function Species(speciesname::String)
   index::Int = 0
   anti = occursin(anti_regEx, speciesname)
   # if the particle is an anti-particle, remove the prefix for easier lookup
-  !anti ? (name = speciesname) : (name = replace(name, anti_regEx => ""))
+  !anti ? (name = speciesname) : (name = replace(speciesname, anti_regEx => ""))
   
   name = normalize_superscripts(name)
 
@@ -198,9 +198,5 @@ function Species(speciesname::String)
   anti ? (return atomic_particle("anti-" * atom, charge, iso)) : (return atomic_particle(atom, charge, iso))
   
 
-  # Check for remaining characters
-  remaining != "" && error("You have entered too many characters: please try again.")
- 
 
-  return (symbol, iso, charge)
 end
