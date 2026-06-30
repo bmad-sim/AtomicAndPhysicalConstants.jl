@@ -53,7 +53,7 @@ function Base.nameof(species::Species)
   if getfield(species, :kind) != Kind.ATOM
     return getfield(species, :name)
   elseif getfield(species, :iso) == -1
-    charge = getfield(species, :charge)
+    charge = Int(getfield(species, :charge))
     if charge > 0
       return getfield(species, :name) * "+$charge"
     elseif charge < 0
@@ -63,7 +63,7 @@ function Base.nameof(species::Species)
     end
   else
     iso = getfield(species, :iso)
-    charge = getfield(species, :charge)
+    charge = Int(getfield(species, :charge))
     if charge > 0
       return "#$iso" * getfield(species, :name) * "+$charge"
     elseif charge < 0
@@ -75,25 +75,25 @@ function Base.nameof(species::Species)
 end
 
 """
-    chargeof(species::Species; C::Bool = false) -> Union{Int, Float64}
+    chargeof(species::Species; C::Bool = false) -> Float64
 
 Return the net charge of `species`.
 
-By default the charge is returned as an integer multiple of the elementary
-charge *e*.  Pass `C = true` to convert to coulombs using the active
-[`E_CHARGE`](@ref) constant.
+By default the charge is returned as a (whole-numbered) multiple of the
+elementary charge *e*.  Pass `C = true` to convert to coulombs using the
+active [`E_CHARGE`](@ref) constant.
 
 # Examples
 
 ```julia
-chargeof(Species("proton"))       # 1
-chargeof(Species("electron"))     # -1
-chargeof(Species("Li+3"))         # 3
+chargeof(Species("proton"))       # 1.0
+chargeof(Species("electron"))     # -1.0
+chargeof(Species("Li+3"))         # 3.0
 chargeof(Species("proton"), C=true)   # ≈ 1.602176634e-19
 ```
 """
-function chargeof(species::Species; C::Bool=false,)
-   !C ? (return getfield(species, :charge)) : (return E_CHARGE * getfield(species, :charge))
+function chargeof(species::Species; C::Bool=false)
+  !C ? (return getfield(species, :charge)) : (return E_CHARGE * getfield(species, :charge))
 end
 
 """
@@ -171,14 +171,15 @@ Compute and return the gyromagnetic anomaly
 a = \\frac{g - 2}{2}
 ```
 
-for leptons and hadrons.  Returns 0 for photons, atoms, and null species.
+for leptons and hadrons.  Returns `NaN` for photons, atoms, and null species,
+since the gyromagnetic anomaly is not defined for them.
 
 # Examples
 
 ```julia
 gyromagnetic_anomaly(Species("electron"))   # ≈  0.00115965218046
 gyromagnetic_anomaly(Species("muon"))       # ≈  0.00116592062
-gyromagnetic_anomaly(Species("H"))          # 0.0
+gyromagnetic_anomaly(Species("H"))          # NaN
 ```
 """
 function gyromagnetic_anomaly(species::Species)::Float64
@@ -199,16 +200,15 @@ these types).
 # Examples
 
 ```julia
-momentof(Species("electron"))   # ≈ -5.7883818060e-5  eV/T
+momentof(Species("electron"))   # ≈ -5.795094307320036e-5  eV/T
 momentof(Species("proton"))     # ≈  8.8043151136e-8  eV/T
 momentof(Species("H"))          # 0.0
 ```
 """
-function momentof(species::Species) 
+function momentof(species::Species)::Float64
   if getfield(species, :kind) != Kind.ATOM && getfield(species, :kind) != Kind.NULL
     return getfield(species, :moment)
-
-  else return 0
+  else return 0.0
   end
 end
 
@@ -265,6 +265,9 @@ end
 
 Return the atomic number (number of protons) of `species`.
 
+For an anti-atom, returns the *negative* of the atomic number (`-Z`), to
+distinguish it from the matter atom of the same symbol.
+
 Throws an error if `species` is not of kind `ATOM`.
 
 # Examples
@@ -272,6 +275,7 @@ Throws an error if `species` is not of kind `ATOM`.
 ```julia
 atomicnumberof(Species("Fe"))       # 26
 atomicnumberof(Species("H+"))       # 1
+atomicnumberof(Species("anti-H"))   # -1
 atomicnumberof(Species("electron")) # ERROR
 ```
 """
@@ -280,7 +284,12 @@ function atomicnumberof(species::Species)
     error("Particle species which are not atoms do not have atomic numbers.")
   else
     AS = getfield(species, :name)
-    return ATOMIC_SPECIES[AS].Z
+    if occursin(anti_regEx, AS)
+      AS = replace(AS, anti_regEx => "")
+      return -ATOMIC_SPECIES[AS].Z
+    else
+      return ATOMIC_SPECIES[AS].Z
+    end
   end
 end
 
@@ -347,7 +356,7 @@ function getproperty(obj::Species, field::Symbol)
   of Species objects: instead use the provided functions; 
   massof, chargeof, spinof, momentof, isotopeof, kindof, or nameof.")
 
-end; export getproperty
+end
 
 """
     SUPERSCRIPT_MAP
@@ -368,6 +377,15 @@ const SUPERSCRIPT_MAP = Dict{Char,Int}(
 )
 
 """
+    SUPER_LOOKUP
+
+The inverse of [`SUPERSCRIPT_MAP`](@ref): maps each digit `0`-`9` to its
+superscript character. Used by [`find_superscript`](@ref) for O(1) digit
+lookup instead of scanning `SUPERSCRIPT_MAP` for a matching value.
+"""
+const SUPER_LOOKUP = Dict{Int,Char}(v => k for (k, v) in SUPERSCRIPT_MAP)
+
+"""
     find_superscript(num::Int64)
 
 ## Description:
@@ -376,14 +394,11 @@ This function takes an integer and returns a string containing the corresponding
 superscript characters for each digit in the integer.
 """
 function find_superscript(num::Int)
-  digs = reverse(digits(num))
-  sup::String = ""
-  for n ∈ digs
-    for (k, v) in SUPERSCRIPT_MAP
-      n == v && (sup = sup * k)
-    end
+  buf = IOBuffer()
+  for d in reverse(digits(num))  # most-significant digit first
+    print(buf, SUPER_LOOKUP[d])
   end
-  return sup
+  return String(take!(buf))
 end
 
 
@@ -447,7 +462,7 @@ function Base.show(io::IO, ::MIME"text/plain", species::Species)
     print(io, "Species(Null)")
   else
     println(io, "Species: $(getfield(species, :name))")
-    println(io, "Charge: $(chargeof(species)) e")
+    println(io, "Charge: $(Int(chargeof(species))) e")
     println(io, "Mass: $(massof(species)) eV/c²")
     println(io, "Spin: $(spinof(species)) ħ")
     println(io, "Moment: $(momentof(species)) eV/T")

@@ -35,7 +35,7 @@ include("CODATA2014.jl")
 include("CODATA2018.jl")
 include("CODATA2022.jl")
 
-CODATA_MAP = Dict{String,CODATA_release}(
+const CODATA_MAP = Dict{String,CODATA_release}(
   "2002" => CODATA2002,
   "2006" => CODATA2006,
   "2010" => CODATA2010,

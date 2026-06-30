@@ -5,6 +5,7 @@
 [![Build Status](https://github.com/bmad-sim/AtomicAndPhysicalConstants.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/bmad-sim/AtomicAndPhysicalConstants.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
 
+
 ## Installation
 
 ```julia-repl
@@ -98,11 +99,6 @@ The following list of strings may be used as arguments to the `Species()` functi
 - `"deuteron"`, `"anti-deuteron"`
 - `"photon"`
 
-```julia
-julia> using Pkg
-julia> Pkg.add(url="https://github.com/ndwang/APClite")
-```
-
 ### Atomic Species
 
 Atomic numbers from 1 (`"H"`) to 118 (`"Og"`) are available with the `Species()` function.
@@ -161,7 +157,7 @@ julia> set_release(year = "2014")
 This will change the base constants of AtomicAndPhysicalConstants to their recorded value in the specified CODATA release.
 The change is persistent, so to revert back to the default constants, run
 ```julia-repl
-julia> set_releases()
+julia> set_release()
 ```
 
 ## Directly Exported Constants
@@ -185,7 +181,7 @@ Both Pion masses are obtained from PDG, rather than CODATA.
 - `MU_MUON`
 - `MU_DEUTERON`
 - `MU_HELION`
-- `MU_TRION`
+- `MU_TRITON`
 
 ### Dimensionless constants
 

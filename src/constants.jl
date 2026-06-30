@@ -254,4 +254,4 @@ const RELEASE_YEAR::Int = get(CODATA_MAP, release, CODATA2022).RELEASE_YEAR
 """
 KG_PER_MEV_C2::Float64 - Kilograms per MeV/c^2
 """
-const KG_PER_MEV_C2::Float64 = G_PER_EV * 1e-3
+const KG_PER_MEV_C2::Float64 = G_PER_EV * 1e3
