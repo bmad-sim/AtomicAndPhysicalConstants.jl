@@ -4,7 +4,7 @@ using Test
 
 include("values_test.jl")
 
-include("species_construction.jl")
+include("species_test.jl")
 
 include("function_test.jl")
 
