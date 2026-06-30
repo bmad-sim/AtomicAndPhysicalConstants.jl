@@ -1,7 +1,7 @@
-using APClite
+using AtomicAndPhysicalConstants
 using BenchmarkTools
 
-println("=== APClite Performance Benchmark ===")
+println("=== AtomicAndPhysicalConstants Performance Benchmark ===")
 println()
 
 # Test 1: Accessing physical constants
@@ -67,11 +67,11 @@ ion_benchmark = @benchmark begin
     he_plus_plus = Species("He++")
     c_plus = Species("C+")
     o_minus = Species("O-")
-    h1 = Species("H1")
-    c12 = Species("C12")
-    c13 = Species("C13")
-    u235 = Species("U235")
-    u238 = Species("U238")
+    h1 = Species("1H")
+    c12 = Species("12C")
+    c13 = Species("13C")
+    u235 = Species("235U")
+    u238 = Species("238U")
 end
 
 println("   Ions and isotopes creation time: $(round(minimum(ion_benchmark.times) / 1000, digits=3)) μs")
@@ -86,21 +86,21 @@ p = Species("proton")
 h = Species("H")
 
 property_benchmark = @benchmark begin
-    charge_e = $e.charge
-    mass_e = $e.mass
-    spin_e = $e.spin
-    kind_e = $e.kind
-    
-    charge_p = $p.charge
-    mass_p = $p.mass
-    spin_p = $p.spin
-    kind_p = $p.kind
-    
-    charge_h = $h.charge
-    mass_h = $h.mass
-    spin_h = $h.spin
-    kind_h = $h.kind
-    iso_h = $h.iso
+    charge_e = chargeof($e)
+    mass_e = massof($e)
+    spin_e = spinof($e)
+    kind_e = kindof($e)
+
+    charge_p = chargeof($p)
+    mass_p = massof($p)
+    spin_p = spinof($p)
+    kind_p = kindof($p)
+
+    charge_h = chargeof($h)
+    mass_h = massof($h)
+    spin_h = spinof($h)
+    kind_h = kindof($h)
+    iso_h = iso_of($h)
 end
 
 println("   Property access time: $(round(minimum(property_benchmark.times) / 1000, digits=3)) μs")
@@ -116,15 +116,15 @@ bulk_benchmark = @benchmark begin
         Species("muon"), Species("pion0"), Species("photon"),
         Species("H"), Species("He"), Species("C"), Species("O"),
         Species("H+"), Species("He++"), Species("C+"),
-        Species("H1"), Species("C12"), Species("U235")
+        Species("1H"), Species("12C"), Species("235U")
     ]
-    
+
     # Access all properties
-    for p in particles
-        $p.charge
-        $p.mass
-        $p.spin
-        $p.kind
+    for sp in particles
+        chargeof(sp)
+        massof(sp)
+        spinof(sp)
+        kindof(sp)
     end
 end
 
@@ -146,7 +146,7 @@ end
 println("   Memory allocation for 1000 electrons: $(round(minimum(memory_benchmark.memory) / 1024, digits=2)) KB")
 println()
 
-# Test 8: Comparison with direct field access (if we had it)
+# Test 8: Performance summary
 println("8. Performance Summary:")
 println("   - Constants access: $(round(minimum(const_benchmark.times) / 1000000, digits=3)) ns")
 println("   - Subatomic creation: $(round(minimum(subatomic_benchmark.times) / 1000, digits=3)) μs")
