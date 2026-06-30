@@ -1,8 +1,7 @@
 using AtomicAndPhysicalConstants
 using BenchmarkTools
 
-# Configure APC to expose Float constants and helper functions
-@APCdef
+
 
 println("=== AtomicAndPhysicalConstants Performance Benchmark (Float) ===")
 println()
@@ -12,15 +11,15 @@ println("1. Physical Constants Access:")
 println("   Testing speed of accessing CODATA 2022 constants...")
 
 const_benchmark = @benchmark begin
-    c = APC.C_LIGHT
-    h = APC.H_PLANCK
-    e = APC.E_CHARGE
-    fs = APC.FINE_STRUCTURE
-    av = APC.N_AVOGADRO
-    re = APC.R_E
-    rp = APC.R_P
-    eps = APC.EPS_0_VAC
-    mu0 = APC.MU_0_VAC
+    c = C_LIGHT
+    h = H_PLANCK
+    e = E_CHARGE
+    fs = FINE_STRUCTURE
+    av = AVOGADRO
+    re = R_ELECTRON
+    rp = R_PROTON
+    eps = EPS_0
+    mu0 = MU_0
 end
 
 println("   Constants access time: $(round(minimum(const_benchmark.times) / 1000, digits=3)) μs")
@@ -70,11 +69,11 @@ ion_benchmark = @benchmark begin
     he_plus_plus = Species("He++")
     c_plus = Species("C+")
     o_minus = Species("O-")
-    h1 = Species("H1")
-    c12 = Species("C12")
-    c13 = Species("C13")
-    u235 = Species("U235")
-    u238 = Species("U238")
+    h1 = Species("1H")
+    c12 = Species("12C")
+    c13 = Species("13C")
+    u235 = Species("235U")
+    u238 = Species("238U")
 end
 
 println("   Ions and isotopes creation time: $(round(minimum(ion_benchmark.times) / 1000, digits=3)) μs")
@@ -93,16 +92,16 @@ property_benchmark = @benchmark begin
     mass_e = massof(e)
     spin_e = spinof(e)
     kind_e = kindof(e)
-    
+
     charge_p = chargeof(p)
     mass_p = massof(p)
     spin_p = spinof(p)
     kind_p = kindof(p)
-    
+
     charge_h = chargeof(h)
     mass_h = massof(h)
     kind_h = kindof(h)
-    iso_h = isotopeof(h)
+    iso_h = iso_of(h)
 end
 
 println("   Property access time: $(round(minimum(property_benchmark.times) / 1000, digits=3)) μs")
@@ -118,7 +117,7 @@ bulk_benchmark = @benchmark begin
         Species("muon"), Species("pion0"), Species("photon"),
         Species("H"), Species("He"), Species("C"), Species("O"),
         Species("H+"), Species("He++"), Species("C+"),
-        Species("H1"), Species("C12"), Species("U235")
+        Species("1H"), Species("12C"), Species("235U")
     ]
     
     # Access all properties
