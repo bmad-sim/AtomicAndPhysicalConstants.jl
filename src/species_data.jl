@@ -31,7 +31,7 @@ const SUBATOMIC_SPECIES = Dict{String,SubatomicSpecies}(
   "muon" => SubatomicSpecies("muon", -1, M_MUON, MU_MUON, 0.5, G_MUON),
   "pion-" => SubatomicSpecies("pion-", -1, M_PION_CHARGED, 0.0, 0.0, g_spin(M_PION_CHARGED, 0.0, 0.0, -1.0)),
   "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, M_DEUTERON, MU_DEUTERON, 1.0, G_DEUTERON),
-  "anti-neutron" => SubatomicSpecies("anti-neutron", 0, M_NEUTRON, MU_NEUTRON, 0.5, G_ELECTRON)
+  "anti-neutron" => SubatomicSpecies("anti-neutron", 0, M_NEUTRON, MU_NEUTRON, 0.5, G_NEUTRON)
 )
 
 

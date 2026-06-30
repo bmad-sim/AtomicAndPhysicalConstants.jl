@@ -108,8 +108,8 @@ Instances are stored in [`SUBATOMIC_SPECIES`](@ref).
 struct SubatomicSpecies
   speciesname::String  # common species_name of the particle
   charge::Int # charge on the particle in e
-  mass::Float64 # mass of the particle in [MeV/c^2]
-  moment::Float64 # magnetic moment in J/T
+  mass::Float64 # mass of the particle in [eV/c^2]
+  moment::Float64 # magnetic moment in eV/T
   spin::Float64 # spin magnetic moment in [ħ]
   gspin::Float64
 end;

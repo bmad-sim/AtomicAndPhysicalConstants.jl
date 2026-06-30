@@ -264,6 +264,7 @@ end
     atomicnumberof(species::Species) -> Int
 
 Return the atomic number (number of protons) of `species`.
+If `species` is an anti-atom, returns a negative number.
 
 Throws an error if `species` is not of kind `ATOM`.
 
@@ -279,8 +280,9 @@ function atomicnumberof(species::Species)
   if getfield(species, :kind) != Kind.ATOM
     error("Particle species which are not atoms do not have atomic numbers.")
   else
-    AS = getfield(species, :name)
-    return ATOMIC_SPECIES[AS].Z
+    AS = replace(getfield(species, :name), anti_regEx => "")
+    # occursin(anti_regEx, AS) ? (AS/=anti_regEx) : AS = AS
+    return -ATOMIC_SPECIES[AS].Z
   end
 end
 
