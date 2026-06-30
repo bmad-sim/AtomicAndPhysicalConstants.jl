@@ -200,7 +200,7 @@ these types).
 # Examples
 
 ```julia
-momentof(Species("electron"))   # ≈ -5.7883818060e-5  eV/T
+momentof(Species("electron"))   # ≈ -5.795094307320036e-5  eV/T
 momentof(Species("proton"))     # ≈  8.8043151136e-8  eV/T
 momentof(Species("H"))          # 0.0
 ```
@@ -356,7 +356,7 @@ function getproperty(obj::Species, field::Symbol)
   of Species objects: instead use the provided functions; 
   massof, chargeof, spinof, momentof, isotopeof, kindof, or nameof.")
 
-end; export getproperty
+end
 
 """
     SUPERSCRIPT_MAP
