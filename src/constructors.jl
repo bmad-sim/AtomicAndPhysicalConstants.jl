@@ -46,17 +46,17 @@ end
 
 
 """
-    atomic_particle(name::String, charge::Int, iso::Int)
+    atomic_particle(name::String, charge::Float64, iso::Int)
 
 ## Description:
 sub-constructor for struct Species: atomic_particle generates a Species object 
 for an atom with atomic symbol 'name', charge state 'charge', and mass number 'iso'
 ## fields:
 - `name::String':         the atomic symbol, must be exact. anti-prefix specifies whether it is an anti-atom
-- `charge::Int':           the net charge of the particle in units of [e]
+- `charge::Float64':      the net charge of the particle in units of [e]
 - `iso::Int':             the mass number of the isotope, -1 for the most abundant isotope
 """
-function atomic_particle(name::String, charge::Int, iso::Int;)
+function atomic_particle(name::String, charge::Float64, iso::Int;)
 
   # whether the atom is anti-atom
   anti_atom::Bool = occursin(anti_regEx, name)
@@ -122,10 +122,9 @@ end
 
 
 # vector of Null names
-const nulls::Vector{String} = ["null", ""]
-# anti::Bool = false
+const nulls::Vector{String} = ["NULL", "Null", "null", ""]
 
-left::String = ""
+
 #####################################################################
 #####################################################################
 
@@ -195,7 +194,7 @@ function Species(speciesname::String)
   charge > ATOMIC_SPECIES[atom].Z && error("The element $atom does not contain $charge protons; the particle $atom with charge +$charge is not physical.")
   
 
-  anti ? (return atomic_particle("anti-" * atom, charge, iso)) : (return atomic_particle(atom, charge, iso))
+  anti ? (return atomic_particle("anti-" * atom, Float64(charge), iso)) : (return atomic_particle(atom, Float64(charge), iso))
   
 
 

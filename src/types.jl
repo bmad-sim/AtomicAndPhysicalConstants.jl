@@ -56,7 +56,7 @@ Species("anti-H")   # antihydrogen
 | Field | Type | Description |
 |-------|------|-------------|
 | `name` | `String` | Particle name or atomic symbol |
-| `charge` | `Int` | Net charge in units of *e* |
+| `charge` | `Float64` | Net charge in units of *e* |
 | `mass` | `Float64` | Rest mass in eV/c² |
 | `spin` | `Float64` | Spin in ħ |
 | `gspin` | `Float64` | Spin g-factor (0 for atoms) |
@@ -71,7 +71,7 @@ Direct field access is disabled. Use [`chargeof`](@ref), [`massof`](@ref),
 """
 struct Species
   name::String # name of the particle to track
-  charge::Int # charge of the particle (important to consider ionized atoms) in [e]
+  charge::Float64 # charge of the particle (important to consider ionized atoms) in [e]
   mass::Float64 # mass of the particle in [eV/c^2]
   spin::Float64 # spin of the particle in [ħ]
   gspin::Float64 # gyromagnetic factor (if particle is subatomic, otherwise 0)
@@ -79,13 +79,13 @@ struct Species
   iso::Int # if the particle is an atomic isotope this is the mass number, otherwise 0
   kind::Kind.T
 
-  function Species(name::String, charge::Int, mass::Float64, spin::Float64, gspin::Float64, moment::Float64, iso::Int, kind::Kind.T)
-    new(name, charge, mass, spin, gspin, moment, iso, kind)
+  function Species(name::String, charge::Real, mass::Float64, spin::Float64, gspin::Float64, moment::Float64, iso::Int, kind::Kind.T)
+    new(name, Float64(charge), mass, spin, gspin, moment, iso, kind)
   end
 
 
   # null constructor
-  Species() = new("Null", 0, 0.0, 0.0, 0.0, 0.0, 0, Kind.NULL)
+  Species() = new("Null", 0.0, 0.0, 0.0, 0.0, 0.0, 0, Kind.NULL)
 end;
 
 
@@ -99,7 +99,7 @@ Instances are stored in [`SUBATOMIC_SPECIES`](@ref).
 # Fields
 
 - `speciesname::String` — openPMD particle identifier.
-- `charge::Int` — charge in units of *e*.
+- `charge::Float64` — charge in units of *e*.
 - `mass::Float64` — mass in eV/c².
 - `moment::Float64` — magnetic dipole moment in eV/T.
 - `spin::Float64` — spin in ħ.
@@ -107,7 +107,7 @@ Instances are stored in [`SUBATOMIC_SPECIES`](@ref).
 """
 struct SubatomicSpecies
   speciesname::String  # common species_name of the particle
-  charge::Int # charge on the particle in e
+  charge::Float64 # charge on the particle in e
   mass::Float64 # mass of the particle in [eV/c^2]
   moment::Float64 # magnetic moment in eV/T
   spin::Float64 # spin magnetic moment in [ħ]
