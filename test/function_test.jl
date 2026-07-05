@@ -124,15 +124,6 @@ end
   @test ns("Li⁺") == "Li+"
   @test ns("Li⁻") == "Li-"
 
-  # g_spin: not used to derive any of the real SUBATOMIC_SPECIES g-factors
-  # (those are all stored as literals, including 0.0 for the spin-0 pions, to
-  # avoid the 0/0 = NaN this formula produces for zero spin/charge/moment), so
-  # we only check the properties that are guaranteed by its formula rather
-  # than asserting it reproduces a specific particle's published g-factor.
-  gs = AtomicAndPhysicalConstants.g_spin
-  @test isnan(gs(M_PION_0, 0.0, 0.0, 0.0))   # 0/0 is mathematically still NaN
-  @test gs(M_PROTON, 2.0, 0.5, 1.0) ≈ 2 * gs(M_PROTON, 1.0, 0.5, 1.0)  # linear in moment
-  @test gs(M_PROTON, 1.0, 0.5, 1.0) ≈ -gs(M_PROTON, 1.0, 0.5, -1.0)    # odd in charge
 end
 
 @testset "Base.show" begin

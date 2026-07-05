@@ -1,31 +1,5 @@
 # AtomicAndPhysicalConstants/src/helpers.jl
 
-#####################################################################
-# functions that produce the gyromagnetic constants
-#####################################################################
-"""
-    g_spin(species::Species)
-
-Compute and return the value of g_s for a particle in [1/(T*s)] == [C/kg]
-For atomic particles, will currently return 0. Will be updated in a future patch
-"""
-function g_spin(mass, moment, spin, charge)
-
-  m_s = mass * G_PER_EV / 1e3 # mass in kg
-  mu_s = moment # magnetic moment in J/T
-  spin_s = spin * H_BAR # spin in J*s
-
-  charge_s = charge * E_CHARGE # charge in C
-
-  # kg * ( J / T ) / (C * J * s) === kg / (T * C * s) === 1
-  gs = m_s * mu_s / (charge_s * spin_s)
-  return gs
-
-end;
-
-
-
-
 
 #####################################################################
 # species struct getter functions
@@ -432,26 +406,21 @@ Turn a user defined string `c` representing atomic charge state into an integer 
 """
 function chargeparse(c::String)
 
-  if c == ""
-    return 0
-  elseif c[1] == '+'
-    if c[end] == '+' && length(c) ≤ 3
-      return Int(length(c))
-    elseif occursin(mag_regEx, c)
-      return parse(Int, c)
-    else
-      error("The given charge $c is not formatted correctly.")
-    end
-  elseif c[1] == '-'
-    if c[end] == '-' && length(c) ≤ 3
-      return -1*Int(length(c))
-    elseif occursin(mag_regEx, c)
-      return parse(Int, c)
-    else
-      error("The given charge $c is not formatted correctly.")
-    end
+  isempty(c) && return 0
+
+  if occursin(r"^\++$", c)            # "+", "++", "+++"
+    length(c) ≤ 3 || error("The given charge $c is not formatted correctly.")
+    return length(c)
+
+  elseif occursin(r"^-+$", c)         # "-", "--", "---"
+    length(c) ≤ 3 || error("The given charge $c is not formatted correctly.")
+    return -length(c)
+
+  elseif occursin(r"^[+-]\d+$", c)    # "+n" / "-n"
+    return parse(Int, c)
+
   else
-    error("Charge specifier must begin with '+' or '-'")
+    error("The given charge $c is not formatted correctly.")
   end
 end
 

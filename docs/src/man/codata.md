@@ -40,6 +40,13 @@ and persists across Julia sessions until changed again.
     Constants are resolved at package load time, so a Julia session restart
     is required for the new release to take effect.
 
+!!! warning "Unsupported releases"
+    Only the years listed under **Supported releases** above are valid. If the
+    stored preference points at an unsupported release (for
+    example after hand-editing `LocalPreferences.toml`), the package raises an
+    error at load time listing the valid options rather than silently falling
+    back to the default.
+
 To revert to the default (2022):
 
 ```julia

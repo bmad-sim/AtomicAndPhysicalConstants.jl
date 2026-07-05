@@ -125,12 +125,12 @@ Positive charges with magnitude less than 4_e_ may be given with repeated plus s
 julia> chargeof(Species("Li+++"))
 3
 ```
-Similarly, negative charges with magnitude less than 4_e_ may be given with repeated plus symbols, _e.g._
+Similarly, negative charges with magnitude less than 4_e_ may be given with repeated minus symbols, _e.g._
 ```julia-repl
 julia> chargeof(Species("K---"))
 -3
 ```
-A single positive or negative sign followed by and integer may be used the same way, _e.g._
+A single positive or negative sign followed by an integer may be used the same way, _e.g._
 ```julia-repl
 julia> Species("Li+++") == Species("Li+3")
 true
