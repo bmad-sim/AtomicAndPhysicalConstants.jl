@@ -132,7 +132,6 @@ const nulls::Vector{String} = ["NULL", "Null", "null", ""]
 
 function Species(speciesname::String)
   
-  
   # if the name is "Null", return a null Species
   if speciesname in nulls
     return Species()
@@ -146,53 +145,37 @@ function Species(speciesname::String)
     end
   end
 
-  # the atomic symbol
-  atom::String = ""
-  # the first index of the atomic symbol
-  index::Int = 0
   anti = occursin(anti_regEx, speciesname)
-  # if the particle is an anti-particle, remove the prefix for easier lookup
+  # # if the particle is an anti-particle, remove the prefix for easier lookup
   !anti ? (name = speciesname) : (name = replace(speciesname, anti_regEx => ""))
   
   name = normalize_superscripts(name)
 
-  # if the particle is not in the subatomic species dictionary, check the atomic species dictionary
-  for k in sorted_list_of_atomic_symbols #  sort by length to find the longest match first
-    # whether the particle is in the atomic species dictionary
-    if occursin(k, name)
-      atom = k
-      index = findfirst(k, name).start  # find the first index of the atomic symbol
-      break
-    end
-  end
-  # atom should not be empty
-  atom != "" || error("you did not specify an atomic species or subatomic species in $speciesname")
 
-  # default isotope is abundance avg
+  m = match(r"^#?(\d+)?([A-Z][a-z]?)([+-].*)?$", name)   # This captures iso, species, charge as m.captures[1,2,3]
+
+  # Parse species
+  (m !== nothing && haskey(ATOMIC_SPECIES, m.captures[2])) ||
+    error("you did not specify an atomic species or subatomic species in $speciesname")
+
+  atom::String = m.captures[2]
+
+  # Parse iso
   iso::Int = -1
-  #check for the isotope 
-  #if the user choose to put isotope in the front
-  if index != 1
-    #the substring before the symbol
-    left::String = name[1:index-1]
-
-    #if the left string starts with #, delete the #
-    left[1] == '#' && (left = left[2:end])
-    
-    # convert the isotope to an integer
-    iso = parse(Int, left)
-    haskey(ATOMIC_SPECIES[atom].mass, iso) || error("$iso is not a valid isotope of $atom")
-
+  if m.captures[1] != ""
+    iso = m.captures[1] === nothing ? -1 : parse(Int, m.captures[1])
+    haskey(ATOMIC_SPECIES[atom].mass, iso) ||
+      error("$iso is not a valid isotope of $atom")
   end
 
-
-  # now try to parse the charge
-  right::String = name[index+length(atom):end]
-  !(occursin('+', right) && occursin('-', right)) || error("$speciesname has an ambiguously defined charge value.")
+  # Parse charge
+  charge_str::String = m.captures[3] === nothing ? "" : m.captures[3]
+  !(occursin('+', charge_str) && occursin('-', charge_str)) ||
+    error("$speciesname has an ambiguously defined charge value.")
+  charge::Int = chargeparse(charge_str)
   
-  charge::Int = chargeparse(right)
-  charge > ATOMIC_SPECIES[atom].Z && error("The element $atom does not contain $charge protons; the particle $atom with charge +$charge is not physical.")
-  
+  (!anti && charge > ATOMIC_SPECIES[atom].Z )&& error("The specified element cannot have the specified charge.")
+  (anti && charge < -ATOMIC_SPECIES[atom].Z) && error("The specified element cannot have the specified charge.")
 
   anti ? (return atomic_particle("anti-" * atom, Float64(charge), iso)) : (return atomic_particle(atom, Float64(charge), iso))
   
