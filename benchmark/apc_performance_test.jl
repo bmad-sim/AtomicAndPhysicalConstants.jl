@@ -1,7 +1,9 @@
 using AtomicAndPhysicalConstants
 using BenchmarkTools
 
-println("=== AtomicAndPhysicalConstants Performance Benchmark ===")
+
+
+println("=== AtomicAndPhysicalConstants Performance Benchmark (Float) ===")
 println()
 
 # Test 1: Accessing physical constants
@@ -86,21 +88,20 @@ p = Species("proton")
 h = Species("H")
 
 property_benchmark = @benchmark begin
-    charge_e = chargeof($e)
-    mass_e = massof($e)
-    spin_e = spinof($e)
-    kind_e = kindof($e)
+    charge_e = chargeof(e)
+    mass_e = massof(e)
+    spin_e = spinof(e)
+    kind_e = kindof(e)
 
-    charge_p = chargeof($p)
-    mass_p = massof($p)
-    spin_p = spinof($p)
-    kind_p = kindof($p)
+    charge_p = chargeof(p)
+    mass_p = massof(p)
+    spin_p = spinof(p)
+    kind_p = kindof(p)
 
-    charge_h = chargeof($h)
-    mass_h = massof($h)
-    spin_h = spinof($h)
-    kind_h = kindof($h)
-    iso_h = iso_of($h)
+    charge_h = chargeof(h)
+    mass_h = massof(h)
+    kind_h = kindof(h)
+    iso_h = iso_of(h)
 end
 
 println("   Property access time: $(round(minimum(property_benchmark.times) / 1000, digits=3)) μs")
@@ -118,12 +119,11 @@ bulk_benchmark = @benchmark begin
         Species("H+"), Species("He++"), Species("C+"),
         Species("1H"), Species("12C"), Species("235U")
     ]
-
+    
     # Access all properties
     for sp in particles
         chargeof(sp)
         massof(sp)
-        spinof(sp)
         kindof(sp)
     end
 end
@@ -148,10 +148,12 @@ println()
 
 # Test 8: Performance summary
 println("8. Performance Summary:")
-println("   - Constants access: $(round(minimum(const_benchmark.times) / 1000000, digits=3)) ns")
+println("   - Constants access: $(round(minimum(const_benchmark.times) / 1000, digits=3)) μs")
 println("   - Subatomic creation: $(round(minimum(subatomic_benchmark.times) / 1000, digits=3)) μs")
 println("   - Atomic creation: $(round(minimum(atomic_benchmark.times) / 1000, digits=3)) μs")
 println("   - Ion/isotope creation: $(round(minimum(ion_benchmark.times) / 1000, digits=3)) μs")
 println("   - Property access: $(round(minimum(property_benchmark.times) / 1000, digits=3)) μs")
 println("   - Bulk operations: $(round(minimum(bulk_benchmark.times) / 1000, digits=3)) μs")
 println()
+
+

@@ -1,141 +1,260 @@
+# AtomicAndPhysicalConstants/src/defaults.jl
 """
-Physical constants from CODATA 2022
-
-All constants are stored as plain Float64.
+release::String - The release year of the currently selected CODATA values.
 """
+const release::String = @load_preference("release", "2022")
+haskey(CODATA_MAP, release) || error(
+  "Invalid CODATA release \"$release\"; valid: $(sort(collect(keys(CODATA_MAP)))). Use set_release().")
+const _ACTIVE = CODATA_MAP[release]
+#######################################
+# constants with dimension [mass]
+#######################################
 
-# Release year
-const RELEASE_YEAR = 2022
+"""
+M_ELECTRON::Float64 - Mass of the electron in eV/c^2 from the selected CODATA release.
+"""
+const M_ELECTRON::Float64 = _ACTIVE.M_ELECTRON
 
-#####################################################################
-#  Mass constants
-#####################################################################
+"""
+M_PROTON::Float64 - Mass of the proton in eV/c^2 from the selected CODATA release.
+"""
+const M_PROTON::Float64 = _ACTIVE.M_PROTON
 
-# Electron mass [eV/c²]
-const M_ELECTRON = 0.51099895069e6
+"""
+M_NEUTRON::Float64 - Mass of the neutron in eV/c^2 from the selected CODATA release.
+"""
+const M_NEUTRON::Float64 = _ACTIVE.M_NEUTRON
 
-# Proton mass [eV/c²]
-const M_PROTON = 938.2720894300001e6
+"""
+M_MUON::Float64 - Mass of the muon in eV/c^2 from the selected CODATA release.
+"""
+const M_MUON::Float64 = _ACTIVE.M_MUON
+# Muon Mass [eV]/c^2
+"""
+M_HELION::Float64 - Mass of the helion in eV/c^2 from the selected CODATA release.
+"""
+const M_HELION::Float64 = _ACTIVE.M_HELION
+# Helion Mass He3 nucleus [eV]/c^2
+"""
+M_DEUTERON::Float64 - Mass of the deuteron in eV/c^2 from the selected CODATA release.
+"""
+const M_DEUTERON::Float64 = _ACTIVE.M_DEUTERON
+# Deuteron Mass [eV]/c^2
 
-# Neutron mass [eV/c²]
-const M_NEUTRON = 939.5654219399999e6
+# constants mysteriously missing from the release
+# picked up from PDG
+"""
+M_PION_0::Float64 - Mass of the neutral pion in eV/c^2 scraped from the particle data group.
+"""
+const M_PION_0::Float64 = _ACTIVE.M_PION_0
+# uncharged pion mass [eV]/c^2
+"""
+M_PION_CHARGED::Float64 - Mass of a charged pion in eV/c^2 scraped from the particle data group.
+"""
+const M_PION_CHARGED::Float64 = _ACTIVE.M_PION_CHARGED
+# charged pion mass [eV]/c^2
 
-# Muon mass [eV/c²]
-const M_MUON = 105.6583755e6
 
-# Pion⁰ mass [eV/c²]
-const M_PION_0 = 134.9768277676847e6
-
-# Charged pion mass [eV/c²]
-const M_PION_CHARGED = 139.57039098368132e6
-
-# Deuteron mass [eV/c²]
-const M_DEUTERON = 1875.612945e6
-
-# Helion mass (³He nucleus) [eV/c²]
-const M_HELION = 2808.39161112e6
-
-#####################################################################
-#  Fundamental constants
-#####################################################################
-
-# Elementary charge [C]
-const E_CHARGE = 1.602176634e-19
-
-# Speed of light in vacuum [m/s]
-const C_LIGHT = 2.99792458e8
-
-# Planck constant [eV⋅s]
-const H_PLANCK = 6.62607015e-34 / E_CHARGE
-
-# Reduced Planck constant [eV⋅s]
-const H_BAR = H_PLANCK / (2π)
-
-# Fine structure constant (dimensionless)
-const FINE_STRUCTURE = 0.0072973525643
-
-# Avogadro constant [mol⁻¹]
-const AVOGADRO = 6.02214076e23
-
-# Classical electron radius [m]
-const R_ELECTRON = 2.8179403205e-15
-
-# Classical proton radius [m]
-const R_PROTON = R_ELECTRON * M_ELECTRON / M_PROTON
-
-# Permittivity of free space [F/m]
-const EPS_0 = 8.8541878128e-12
-
-# Permeability of free space [N/A²]
-const MU_0 = 1.25663706212e-6
-
-#####################################################################
-#  Magnetic moment constants
-#####################################################################
-# Electron magnetic moment [eV/T]
-const MU_ELECTRON = -9.2847646917e-24 / E_CHARGE
-
-# Proton magnetic moment [eV/T]
-const MU_PROTON = 1.41060679545e-26 / E_CHARGE
-
-# Neutron magnetic moment [eV/T]
-const MU_NEUTRON = -9.6623653e-27 / E_CHARGE
-
-# Muon magnetic moment [eV/T]
-const MU_MUON = -4.4904483e-26 / E_CHARGE
-
-# Deuteron magnetic moment [eV/T]
-const MU_DEUTERON = 4.330735087e-27 / E_CHARGE
-
-# Helion magnetic moment [eV/T]
-const MU_HELION = -1.07461755198e-26 / E_CHARGE
-
-# Triton magnetic moment [eV/T]
-const MU_TRITON = 1.5046095178e-26 / E_CHARGE
-
-#####################################################################
-#  g-factor constants
-#####################################################################
-
-# Electron magnetic moment anomaly
-const ANOMALY_ELECTRON = 1.15965218046e-3
-
-# Muon magnetic moment anomaly
-const ANOMALY_MUON = 1.16592062e-3
-
-# Electron g-factor
-const G_ELECTRON = -2.00231930436092
-
-# Proton g-factor
-const G_PROTON = 5.5856946893
-
-# Neutron g-factor
-const G_NEUTRON = -3.82608552
-
-# Muon g-factor
-const G_MUON = -2.00233184123
-
-# Deuteron g-factor
-const G_DEUTERON = 0.8574382335
-
-# Helion g-factor
-const G_HELION = -4.2552506995
-
-# Triton g-factor
-const G_TRITON = 5.957924930
-
-#####################################################################
-#  Unit conversions
-#####################################################################
-
-# kg per atomic mass unit
-const KG_PER_AMU = 1.66053906892e-27
-
-# eV per atomic mass unit
-const EV_PER_AMU = 931.49410242e6
-
+#######################################
+"""
+EV_PER_J::Float64 - eV per Joule in the selected CODATA release.
+"""
+const EV_PER_J::Float64 = _ACTIVE.EV_PER_J
 # Joules per eV
-const J_PER_EV = 1.602176634e-19
+
+# constants with dimension [magnetic moment]
+#######################################
+
+
+"""
+MU_DEUTERON::Float64 - Magnetic moment of the deuteron in eV/T (converted) from the selected CODATA release.
+"""
+const MU_DEUTERON::Float64 = EV_PER_J*_ACTIVE.MU_DEUTERON
+# deuteron magnetic moment in [eV/T]
+"""
+MU_ELECTRON::Float64 - Magnetic moment of the electron in eV/T (converted) from the selected CODATA release.
+"""
+const MU_ELECTRON::Float64 = EV_PER_J*_ACTIVE.MU_ELECTRON
+# electron magnetic moment in [eV/T]
+"""
+MU_HELION::Float64 - Magnetic moment of the helion in eV/T (converted) from the selected CODATA release.
+"""
+const MU_HELION::Float64 = EV_PER_J*_ACTIVE.MU_HELION
+# helion magnetic moment in [eV/T],
+"""
+MU_MUON::Float64 - Magnetic moment of the muon in eV/T (converted) from the selected CODATA release.
+"""
+const MU_MUON::Float64 = EV_PER_J*_ACTIVE.MU_MUON
+# muon magnetic moment in [eV/T]
+"""
+MU_NEUTRON::Float64 - Magnetic moment of the neutron in eV/T (converted) from the selected CODATA release.
+"""
+const MU_NEUTRON::Float64 = EV_PER_J*_ACTIVE.MU_NEUTRON
+# neutron magnetic moment in [eV/T]
+"""
+MU_PROTON::Float64 - Magnetic moment of the proton in eV/T (converted) from the selected CODATA release.
+"""
+const MU_PROTON::Float64 = EV_PER_J*_ACTIVE.MU_PROTON
+# proton magnetic moment in [eV/T]
+"""
+MU_TRITON::Float64 - Magnetic moment of the triton in eV/T (converted) from the selected CODATA release.
+"""
+const MU_TRITON::Float64 = EV_PER_J*_ACTIVE.MU_TRITON
+# triton magnetic moment in [eV/T]
+
+
+#######################################
+# dimensionless constants
+#######################################
+
+
+"""
+AVOGADRO::Float64 - Avogadro's constant number/mol (exact)
+"""
+const AVOGADRO::Float64 = _ACTIVE.AVOGADRO
+# Avogadro's constant: Number / mole (exact)
+"""
+FINE_STRUCTURE::Float64 - Finse structure constant from the selected CODATA release.
+"""
+const FINE_STRUCTURE::Float64 = _ACTIVE.FINE_STRUCTURE
+# fine structure constant
+
+"""
+ANOMALY_ELECTRON::Float64 - The electron gyromagnetic anomaly per the selected CODATA release.
+"""
+const ANOMALY_ELECTRON::Float64 = _ACTIVE.ANOMALY_ELECTRON
+# electron magnetic moment anomaly
+"""
+ANOMALY_MUON::Float64 - The muon gyromagnetic anomaly per the selected CODATA release.
+"""
+const ANOMALY_MUON::Float64 = _ACTIVE.ANOMALY_MUON
+# muon magnetic moment anomaly
+
+"""
+G_DEUTERON::Float64 - The deuteron spin g-factor per the selected CODATA release.
+"""
+const G_DEUTERON::Float64 = _ACTIVE.G_DEUTERON
+# deuteron g factor 
+"""
+G_ELECTRON::Float64 - The electron spin g-factor per the selected CODATA release.
+"""
+const G_ELECTRON::Float64 = _ACTIVE.G_ELECTRON
+# electron g factor 
+"""
+G_HELION::Float64 - The helion spin g-factor per the selected CODATA release.
+"""
+const G_HELION::Float64 = _ACTIVE.G_HELION
+# helion g factor 
+"""
+G_MUON::Float64 - The muon spin g-factor per the selected CODATA release.
+"""
+const G_MUON::Float64 = _ACTIVE.G_MUON
+# muon g factor 
+"""
+G_NEUTRON::Float64 - The neutron spin g-factor per the selected CODATA release.
+"""
+const G_NEUTRON::Float64 = _ACTIVE.G_NEUTRON
+# neutron g factor 
+"""
+G_PROTON::Float64 - The proton spin g-factor per the selected CODATA release.
+"""
+const G_PROTON::Float64 = _ACTIVE.G_PROTON
+# proton g factor 
+"""
+G_TRITON::Float64 - The triton spin g-factor per the selected CODATA release.
+"""
+const G_TRITON::Float64 = _ACTIVE.G_TRITON
+# triton g factor
+
+
+#######################################
+# constants with miscellaneous dimension
+#######################################
+
+
+"""
+E_CHARGE::Float64 - magnitude of charge on the electron in C per the selected CODATA release.
+"""
+const E_CHARGE::Float64 = _ACTIVE.E_CHARGE
+# elementary charge [C]
+"""
+R_ELECTRON::Float64 - Classical electron radius in m per the selected CODATA release.
+"""
+const R_ELECTRON::Float64 = _ACTIVE.R_ELECTRON
+# classical electron radius [m],
+"""
+R_PROTON::Float64 - Classical proton radius in m per the selected CODATA release.
+"""
+const R_PROTON::Float64 = _ACTIVE.R_PROTON #R_ELECTRON * m_electron / m_proton,
+# classical proton radius [m]
+"""
+C_LIGHT::Float64 - Speed of light in m/s per the selected CODATA release.
+"""
+const C_LIGHT::Float64 = _ACTIVE.C_LIGHT
+# speed of light [m/s]
+"""
+H_PLANCK::Float64 - Planck's constant (h) in eV*s per the selected CODATA release.
+"""
+const H_PLANCK::Float64 = _ACTIVE.H_PLANCK
+# Planck's constant [eV*s]
+"""
+H_BAR::Float64 - Planck's reduced constant (ħ) in eV*s per the selected CODATA release.
+"""
+const H_BAR::Float64 = _ACTIVE.H_BAR
+# h_planck/twopi [eV*s]
+"""
+CLASSICAL_RADIUS_FACTOR::Float64 - Classical radius factor per the selected CODATA release.
+"""
+const CLASSICAL_RADIUS_FACTOR::Float64 = _ACTIVE.CLASSICAL_RADIUS_FACTOR # R_ELECTRON * m_electron,
+# e^2 / (4 pi eps_0)::Float64 = classical_radius * mass * c^2.
+# Is same for all particles of charge +/- 1.
+
+"""
+K_BOLTZMANN::Float64 - Boltzmann constant k_B in eV/K per the selected CODATA release.
+"""
+const K_BOLTZMANN::Float64 = _ACTIVE.K_BOLTZMANN
+"""
+EPS_0::Float64 - Permittivity of free space in F/m per the selected CODATA release.
+"""
+const EPS_0::Float64 = _ACTIVE.EPS_0
+# Permittivity of free space in [F/m]
+"""
+MU_0::Float64 - Vacuum permeability in N/A^2 per the selected CODATA release.
+"""
+const MU_0::Float64 = _ACTIVE.MU_0
+# Vacuum permeability in [N/A^2] (newtons per ampere squared)
+
+"""
+KG_PER_AMU::Float64 - Kilograms per Dalton conversion in the selected CODATA release.
+"""
+const KG_PER_AMU::Float64 = _ACTIVE.G_PER_AMU * 1e-3
+# grams per standard atomic mass unit (dalton)
+
+"""
+EV_PER_AMU::Float64 - eV/c^2 per Dalton conversion in the selected CODATA release.
+"""
+const EV_PER_AMU::Float64 = _ACTIVE.EV_PER_AMU
+# eV/c^2 per standard atomic mass unit (dalton)
+
+"""
+J_PER_EV::Float64 - Joules per eV in the selected CODATA release.
+"""
+const J_PER_EV::Float64 = _ACTIVE.J_PER_EV
+# Joules per eV
+
+"""
+G_PER_EV::Float64 - Grams per eV/c^2 in the selected CODATA release.
+"""
+const G_PER_EV::Float64 = _ACTIVE.G_PER_EV
+# grams per eV/c^2
+
+"""
+RELEASE_YEAR::Int - The release year of the currently selected CODATA values.
+"""
+const RELEASE_YEAR::Int = _ACTIVE.RELEASE_YEAR
 
 # kg per MeV/c²
-const KG_PER_MEV_C2 = EV_PER_AMU * KG_PER_AMU / (1e6 * C_LIGHT^2)
+"""
+KG_PER_MEV_C2::Float64 - Kilograms per MeV/c^2
+"""
+const KG_PER_MEV_C2::Float64 = G_PER_EV * 1e3

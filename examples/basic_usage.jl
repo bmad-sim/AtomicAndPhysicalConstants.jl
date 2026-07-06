@@ -1,19 +1,19 @@
 """
-Basic usage examples for APClite.jl
+Basic usage examples for AtomicAndPhysicalConstants.jl
 
-This script demonstrates the main features of APClite.
+This script demonstrates the main features of AtomicAndPhysicalConstants.jl.
 """
 
 using AtomicAndPhysicalConstants
 
-println("=== APClite.jl Basic Usage Examples ===\n")
+println("=== AtomicAndPhysicalConstants.jl Basic Usage Examples ===\n")
 
 # 1. Access physical constants
 println("1. Physical Constants:")
 println("Speed of light: ", C_LIGHT, " m/s")
-println("Planck constant: ", H_PLANCK, " J⋅s")
-println("Electron mass: ", M_ELECTRON, " MeV/c²")
-println("Proton mass: ", M_PROTON, " MeV/c²")
+println("Planck constant: ", H_PLANCK, " eV⋅s")
+println("Electron mass: ", M_ELECTRON, " eV/c²")
+println("Proton mass: ", M_PROTON, " eV/c²")
 println("Fine structure constant: ", FINE_STRUCTURE)
 println()
 
@@ -71,11 +71,11 @@ println()
 
 # 6. Create isotopes
 println("6. Isotopes:")
-h1 = Species("H1")
-c12 = Species("C12")
-c13 = Species("C13")
-u235 = Species("U235")
-u238 = Species("U238")
+h1 = Species("1H")
+c12 = Species("12C")
+c13 = Species("13C")
+u235 = Species("235U")
+u238 = Species("238U")
 
 println("¹H: ", h1)
 println("¹²C: ", c12)
@@ -84,25 +84,24 @@ println("²³⁵U: ", u235)
 println("²³⁸U: ", u238)
 println()
 
-# 7. Access properties using direct field access
+# 7. Access properties using the provided accessor functions
 println("7. Accessing Properties:")
 println("Electron properties:")
 println("  Name: ", nameof(electron))
-println("  Charge: ", electron.charge, " e")
-println("  Mass: ", electron.mass, " MeV/c²")
-println("  Spin: ", electron.spin, " ħ")
-println("  Magnetic moment: ", electron.moment, " J/T")
-println("  Kind: ", electron.kind)
+println("  Charge: ", chargeof(electron), " e")
+println("  Mass: ", massof(electron), " eV/c²")
+println("  Spin: ", spinof(electron), " ħ")
+println("  Magnetic moment: ", momentof(electron), " eV/T")
+println("  Kind: ", kindof(electron))
 println()
 
 println("Proton properties:")
 println("  Name: ", nameof(proton))
-println("  Charge: ", proton.charge, " e")
-println("  Mass: ", proton.mass, " MeV/c²")
-println("  Spin: ", proton.spin, " ħ")
-println("  Magnetic moment: ", proton.moment, " J/T")
-println("  Kind: ", proton.kind)
+println("  Charge: ", chargeof(proton), " e")
+println("  Mass: ", massof(proton), " eV/c²")
+println("  Spin: ", spinof(proton), " ħ")
+println("  Magnetic moment: ", momentof(proton), " eV/T")
+println("  Kind: ", kindof(proton))
 println()
 
 println("=== End of Examples ===")
-

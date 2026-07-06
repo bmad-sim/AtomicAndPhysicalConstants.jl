@@ -1,280 +1,184 @@
-"""
-Species constructors for APClite.jl
+# AtomicAndPhysicalConstants/src/species.jl
 
-This module provides constructors for creating Species objects from particle names.
-"""
-
-# Regular expression for anti-particles
-const ANTI_REGEX = r"anti-|anti|Anti-|Anti"
 
 """
-    Species(name::String)
+    subatomic_particle(name::String)
 
-Create a Species object from a particle name.
-
-# Arguments
-- `name::String`: Name of the particle (e.g., "electron", "proton", "H", "H+", "anti-proton")
-
-# Examples
-```julia
-julia> e = Species("electron")
-julia> p = Species("proton") 
-julia> h = Species("H")
-julia> h_ion = Species("H+")
-julia> anti_p = Species("anti-proton")
-```
-
-# Supported formats
-- Subatomic particles: "electron", "proton", "neutron", "muon", "pion+", "pion-", "pion0", "deuteron", "photon"
-- Anti-particles: "anti-electron", "anti-proton", "anti-neutron", "anti-muon", "anti-deuteron"
-- Atomic species: "H", "He", "C", "O", "Fe", "U", etc.
-- Ions: "H+", "He++", "C+", "O-", etc.
-- Isotopes: "H1", "C12", "U235", etc.
+## Description:
+sub-constructor for struct Species: subatomic_particle generates a Species object 
+for a particle with openPMD identifier 'name'
 """
-function Species(name::String)
-    # Handle null/empty names
-    if name == "" || lowercase(name) == "null"
-        return Species()
-    end
-    
-    # Check for anti-particles
-    is_anti = occursin(ANTI_REGEX, name)
-    if is_anti
-        # Remove anti- prefix for lookup
-        clean_name = replace(name, ANTI_REGEX => "")
-    else
-        clean_name = name
-    end
+function subatomic_particle(name::String)::Species
+  # write the particle out directly
 
-    # Check if it's a subatomic particle (exact match first)
-    if haskey(SUBATOMIC_SPECIES, clean_name)
-        pd = SUBATOMIC_SPECIES[clean_name]
+  particle = SUBATOMIC_SPECIES[name]
+  
+  name == "photon" && return Species(
+    name, 
+    particle.charge,
+    particle.mass,
+    particle.spin,
+    particle.gspin,
+    particle.moment,
+    Int(0), 
+    Kind.PHOTON)
+  name in leptons && return Species(
+    name, 
+    particle.charge,
+    particle.mass,
+    particle.spin,
+    particle.gspin,
+    particle.moment,
+    0, 
+    Kind.LEPTON)
 
-        # Calculate g-factor
-        if haskey(G_FACTOR_MAP, clean_name)
-            g_factor = G_FACTOR_MAP[clean_name]
-        else
-            g_factor = 0.0
-        end
-        return Species(
-            name,
-            is_anti ? -pd.charge : pd.charge,
-            pd.mass,
-            pd.spin,
-            is_anti ? -pd.moment : pd.moment,
-            g_factor,
-            0.0,
-            pd.kind
-        )
-        end
-    
-    # Try to parse as atomic species, but catch errors
-    try
-        return parse_atomic_species(name)
-    catch e
-        error("Species '$name' not found in subatomic or atomic species database: $e")
-    end
+  return Species(
+    name, 
+    particle.charge,
+    particle.mass,
+    particle.spin,
+    particle.gspin,
+    particle.moment,
+    0, 
+    Kind.HADRON)
+
 end
 
 
 """
-    parse_atomic_name(name::String) -> Tuple{String, Int, Int}
+    atomic_particle(name::String, charge::Float64, iso::Int)
 
-Parse a bare atomic name into `(symbol, iso, charge)` without handling any anti- prefix.
-
-Supported examples: "H", "H+", "12C", "235U++", "He-", "2O-".
+## Description:
+sub-constructor for struct Species: atomic_particle generates a Species object 
+for an atom with atomic symbol 'name', charge state 'charge', and mass number 'iso'
+## fields:
+- `name::String':         the atomic symbol, must be exact. anti-prefix specifies whether it is an anti-atom
+- `charge::Float64':      the net charge of the particle in units of [e]
+- `iso::Int':             the mass number of the isotope, -1 for the most abundant isotope
 """
-function parse_atomic_name(name::String)
-    # Regex patterns
-    rgas = r"[A-Z][a-z]|[A-Z]" # atomic symbol
+function atomic_particle(name::String, charge::Float64, iso::Int;)
 
-    charge = 0
-    iso = -1
+  # whether the atom is anti-atom
+  anti_atom::Bool = occursin(anti_regEx, name)
+  # if the particle is an anti-particle, remove the prefix for easier lookup
+  AS::String = replace(name, anti_regEx => "")
 
-    # Find the atomic symbol first
-    symbol_match = match(rgas, name)
-    if symbol_match === nothing
-        error("The specified particle name does not exist in this library.")
-    end
-    
-    symbol = symbol_match.match
-    symbol_start = symbol_match.offset
-    symbol_end = symbol_start + length(symbol) - 1
-    
-    # Parse what's on the left (isotope number)
-    left_part = name[1:symbol_start-1]
-    if left_part != ""
-        # Check if it starts with # and remove it
-        if startswith(left_part, "#")
-            left_part = left_part[2:end]
-        end
-        
-        # Try to parse as integer
-        iso_val = tryparse(Int, left_part)
-        if iso_val === nothing
-            error("Invalid isotope number format: \"$left_part\"")
-        end
-        iso = iso_val
-    end
-    
-    # Parse what's on the right (charge)
-    right_part = name[symbol_end+1:end]
-    if right_part != ""
-        if count('+', right_part) != 0 && count('-', right_part) != 0
-            error("You made a typo in \"$right_part\". You have both + and - in the name.")
-        elseif startswith(right_part, "+")
-            if right_part == "+"
-                charge = 1
-            elseif right_part == "++"
-                charge = 2
-            else
-                # Try to parse numeric charge like "+n"
-                charge_str = right_part[2:end]
-                charge_val = tryparse(Int, charge_str)
-                if charge_val === nothing
-                    error("Invalid charge format: \"$right_part\"")
-                end
-                charge = charge_val
-            end
-        elseif startswith(right_part, "-")
-            if right_part == "-"
-                charge = -1
-            elseif right_part == "--"
-                charge = -2
-            else
-                # Try to parse numeric charge like "-n"
-                charge_str = right_part[2:end]
-                charge_val = tryparse(Int, charge_str)
-                if charge_val === nothing
-                    error("Invalid charge format: \"$right_part\"")
-                end
-                charge = -charge_val
-            end
-        elseif endswith(right_part, "+")
-            # Handle "n+" format
-            charge_str = right_part[1:end-1]
-            charge_val = tryparse(Int, charge_str)
-            if charge_val === nothing
-                error("Invalid charge format: \"$right_part\"")
-            end
-            charge = charge_val
-        elseif endswith(right_part, "-")
-            # Handle "n-" format
-            charge_str = right_part[1:end-1]
-            charge_val = tryparse(Int, charge_str)
-            if charge_val === nothing
-                error("Invalid charge format: \"$right_part\"")
-            end
-            charge = -charge_val
-        else
-            error("Invalid characters after atomic symbol: \"$right_part\"")
-        end
-    end
+  haskey(ATOMIC_SPECIES, AS) || error("$AS is not a valid atomic species")
 
-    return (symbol, iso, charge)
-end
+  # grab the particular element from the stack
+  atom::AtomicSpecies = ATOMIC_SPECIES[AS]
+  # convert the mass of the selected isotope from amu to MeV
+  nmass::Float64 = atom.mass[iso] * EV_PER_AMU
 
-"""
-    parse_atomic_species(name::String) -> Species
+  spin::Float64 = 0.0
 
-Parse an atomic or anti-atomic species name and construct a `Species` object.
-
-Handles atomic symbols, isotopes, charge states, and anti-atoms. 
-Recognizes special names like "helion" and "triton". 
-Checks for valid element, isotope, and charge, and computes the mass and spin accordingly.
-
-# Arguments
-- `name::String`: Name of the atomic or anti-atomic species (e.g., "H", "He++", "C12", "anti-He3", "triton")
-
-# Returns
-- `Species`: The constructed Species object
-"""
-function parse_atomic_species(name::String)
-    anti_atom::Bool = false
-    local_name = name
-
-    # Handle anti-atoms
-    if occursin(ANTI_REGEX, local_name)
-        local_name = replace(local_name, ANTI_REGEX => "")
-        anti_atom = true
-    end
-
-    if local_name == "helion"
-        symbol = "He"
-        iso = 3
-        charge = 2
-    elseif local_name == "triton"
-        symbol = "H"
-        iso = 3
-        charge = 1
-    elseif local_name== "deuteron"
-        symbol = "H"
-        iso = 2
-        charge = 1
-    else
-        # Parse into components
-        symbol, iso, charge = parse_atomic_name(local_name)
-    end
-
-    # Check if element exists in atomic species database
-    if !haskey(ATOMIC_SPECIES, symbol)
-        error("Element $symbol not found in atomic species database")
-    end
-
-    atom_data = ATOMIC_SPECIES[symbol]
-    
-    # Error handling for isotope availability
-    if iso ∉ keys(atom_data.mass)
-        error("The isotope you specified is not available.")
-    end
-    
-    # Error handling for charge limits
-    if charge > atom_data.Z
-        error("You have specified a larger positive charge than the fully stripped $symbol atom has, which is unphysical.")
-    end
-    
-    # Calculate mass
-    mass = begin
-        if anti_atom == false
-            # Mass of the positively charged isotope in eV/c²
-            nmass = atom_data.mass[iso] * EV_PER_AMU
-            # Remove the electrons
-            nmass - M_ELECTRON * charge
-        else
-            # Mass of the positively charged isotope in eV/c²
-            nmass = atom_data.mass[iso] * EV_PER_AMU
-            # Remove the positrons
-            nmass + M_ELECTRON * charge
-        end
-    end
-    
-    # Calculate spin
-    if iso == -1 # if it's the average, make an educated guess at the spin
-        partonum = round(atom_data.mass[iso])
-        if anti_atom == false
-            spin = 0.5 * (partonum + (atom_data.Z - charge))
-        else
-            spin = 0.5 * (partonum + (atom_data.Z + charge))
-        end
-    else # otherwise, use the sum of proton and neutron spins
-        spin = 0.5 * iso
-    end
-    
-    # Calculate g-factor
-    if symbol == "He" && iso == 3 && charge == 2
-        g_factor = G_FACTOR_MAP["helion"] * M_HELION / (2 * M_PROTON)
-    elseif symbol == "H" && iso == 3 && charge == 1
-        g_factor = G_FACTOR_MAP["triton"] * M_TRITON / M_PROTON
-    elseif symbol == "H" && iso == 2 && charge == 1
-        g_factor = G_FACTOR_MAP["deuteron"] * M_DEUTERON / M_PROTON
-    else
-        g_factor = 0.0
-    end
-
-    # Return the object
+  mass::Float64 = begin
     if anti_atom == false
-        return Species(symbol, Float64(charge), mass, spin, 0.0, g_factor, Float64(iso), ATOM)
+      nmass + SUBATOMIC_SPECIES["electron"].mass * (-charge)
+      # for a nominal atom, add 1 electron mass for every - charge
     else
-        return Species("anti-" * symbol, Float64(charge), mass, spin, 0.0, g_factor, Float64(iso), ATOM)
+      nmass + SUBATOMIC_SPECIES["positron"].mass * charge
+      # for an anti-atom, add 1 positron mass for every + charge
     end
+  end
+  if iso == -1 # if it's the average, make an educated guess at the spin
+    partonum::Float64 = round(atom.mass[iso])
+    if anti_atom == false
+      spin = 0.5 * (partonum + (atom.Z - charge))
+    else
+      spin = 0.5 * (partonum + (atom.Z + charge))
+    end
+  else # otherwise, use the sum of proton and neutron spins
+    spin = 0.5 * iso
+  end
+  # return the object to track
+  if anti_atom == false
+    return Species(
+      AS, 
+      charge, 
+      mass,
+      spin, 
+      0.0,
+      0.0, 
+      iso, 
+      Kind.ATOM
+    )
+  else
+    return Species(
+      "anti-" * AS, 
+      charge, 
+      mass,
+      spin, 
+      0.0,
+      0.0, 
+      iso, 
+      Kind.ATOM
+    )
+  end
+
+end
+
+
+
+
+# vector of Null names
+const nulls::Vector{String} = ["NULL", "Null", "null", ""]
+
+
+#####################################################################
+#####################################################################
+
+
+
+function Species(speciesname::String)
+  
+  # if the name is "Null", return a null Species
+  if speciesname in nulls
+    return Species()
+  end
+
+
+  for (k, _) in SUBATOMIC_SPECIES
+    # whether the particle is in the subatomic species dictionary
+    if k == speciesname
+      return subatomic_particle(k)
+    end
+  end
+
+  anti = occursin(anti_regEx, speciesname)
+  # # if the particle is an anti-particle, remove the prefix for easier lookup
+  !anti ? (name = speciesname) : (name = replace(speciesname, anti_regEx => ""))
+  
+  name = normalize_superscripts(name)
+
+
+  m = match(r"^#?(\d+)?([A-Z][a-z]?)([+-].*)?$", name)   # This captures iso, species, charge as m.captures[1,2,3]
+
+  # Parse species
+  (m !== nothing && haskey(ATOMIC_SPECIES, m.captures[2])) ||
+    error("you did not specify an atomic species or subatomic species in $speciesname")
+
+  atom::String = m.captures[2]
+
+  # Parse iso
+  iso::Int = -1
+  if m.captures[1] != ""
+    iso = m.captures[1] === nothing ? -1 : parse(Int, m.captures[1])
+    haskey(ATOMIC_SPECIES[atom].mass, iso) ||
+      error("$iso is not a valid isotope of $atom")
+  end
+
+  # Parse charge
+  charge_str::String = m.captures[3] === nothing ? "" : m.captures[3]
+  !(occursin('+', charge_str) && occursin('-', charge_str)) ||
+    error("$speciesname has an ambiguously defined charge value.")
+  charge::Int = chargeparse(charge_str)
+  
+  (!anti && charge > ATOMIC_SPECIES[atom].Z )&& error("The specified element cannot have the specified charge.")
+  (anti && charge < -ATOMIC_SPECIES[atom].Z) && error("The specified element cannot have the specified charge.")
+
+  anti ? (return atomic_particle("anti-" * atom, Float64(charge), iso)) : (return atomic_particle(atom, Float64(charge), iso))
+  
+
+
 end
