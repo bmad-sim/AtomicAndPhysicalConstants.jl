@@ -1,7 +1,7 @@
 using AtomicAndPhysicalConstants
 using BenchmarkTools
 
-println("=== APClite Detailed Performance Analysis ===")
+println("=== AtomicAndPhysicalConstants Detailed Performance Analysis ===")
 println()
 
 # Test individual constant access
@@ -33,7 +33,7 @@ species_names = [
     "electron", "proton", "neutron", "muon", "photon",
     "H", "He", "C", "O", "Fe", "U",
     "H+", "He++", "C+", "O-",
-    "H1", "C12", "C13", "U235", "U238"
+    "1H", "12C", "13C", "235U", "238U"
 ]
 
 for name in species_names
@@ -49,10 +49,10 @@ println("Property Access Times by Species Type:")
 e = Species("electron")
 subatomic_props = @benchmark begin
     nameof($e)
-    $e.charge
-    $e.mass
-    $e.spin
-    $e.kind
+    chargeof($e)
+    massof($e)
+    spinof($e)
+    kindof($e)
 end
 println("   Subatomic particle (electron): $(round(minimum(subatomic_props.times) / 1000, digits=3)) μs")
 
@@ -60,11 +60,11 @@ println("   Subatomic particle (electron): $(round(minimum(subatomic_props.times
 h = Species("H")
 atomic_props = @benchmark begin
     nameof($h)
-    $h.charge
-    $h.mass
-    $h.spin
-    $h.kind
-    $h.iso
+    chargeof($h)
+    massof($h)
+    spinof($h)
+    kindof($h)
+    iso_of($h)
 end
 println("   Atomic species (H): $(round(minimum(atomic_props.times) / 1000, digits=3)) μs")
 
@@ -72,11 +72,11 @@ println("   Atomic species (H): $(round(minimum(atomic_props.times) / 1000, digi
 h_plus = Species("H+")
 ion_props = @benchmark begin
     nameof($h_plus)
-    $h_plus.charge
-    $h_plus.mass
-    $h_plus.spin
-    $h_plus.kind
-    $h_plus.iso
+    chargeof($h_plus)
+    massof($h_plus)
+    spinof($h_plus)
+    kindof($h_plus)
+    iso_of($h_plus)
 end
 println("   Ion (H+): $(round(minimum(ion_props.times) / 1000, digits=3)) μs")
 println()
@@ -118,7 +118,7 @@ species_types = [
     ("proton", Species("proton")),
     ("H", Species("H")),
     ("H+", Species("H+")),
-    ("C12", Species("C12"))
+    ("12C", Species("12C"))
 ]
 
 for (name, species) in species_types

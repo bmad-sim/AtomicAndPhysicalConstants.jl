@@ -1,49 +1,78 @@
-"""
-APClite.jl - A lightweight version of AtomicAndPhysicalConstants.jl
-
-This package provides atomic and physical constants as plain Float64 values
-without Unitful dependencies. It includes a simplified Species struct for
-representing particles and atoms.
-
-Key features:
-- Latest CODATA 2022 physical constants as plain floats
-- Simplified Species struct for particles and atoms
-- No macros or complex unit systems
-- Fast compile times and minimal dependencies
-"""
-
 module AtomicAndPhysicalConstants
 
-# Include all modules
+using EnumX
+using Preferences
+
+# kind enum stores the kind of particle
+# NULL is for null species (placeholder species)
+"""
+    Kind
+
+Classification of a particle species.
+
+| Value | Meaning |
+|-------|---------|
+| `Kind.LEPTON` | leptons: electron, positron, muon, anti-muon |
+| `Kind.HADRON` | hadrons: proton, neutron, pions, deuteron, … |
+| `Kind.PHOTON` | photon |
+| `Kind.ATOM` | any atomic or ionic species |
+| `Kind.NULL` | null placeholder species |
+
+The kind of a species is queried with [`kindof`](@ref).
+"""
+@enumx Kind ATOM HADRON LEPTON PHOTON NULL
+export Kind
+# precompile regEx
+const anti_regEx = r"anti\-|anti"
+const mag_regEx = r"[0-9]|[0-9][0-9]|[0-9][0-9][0-9]"
+
 include("types.jl")
+
+include("CODATA2002.jl")
+include("CODATA2006.jl")
+include("CODATA2010.jl")
+include("CODATA2014.jl")
+include("CODATA2018.jl")
+include("CODATA2022.jl")
+
+const CODATA_MAP = Dict{String,CODATA_release}(
+  "2002" => CODATA2002,
+  "2006" => CODATA2006,
+  "2010" => CODATA2010,
+  "2014" => CODATA2014,
+  "2018" => CODATA2018,
+  "2022" => CODATA2022)
+
+
 include("constants.jl")
-include("constructors.jl")
-include("species_data.jl")
 include("functions.jl")
+include("species_data.jl")
+include("constructors.jl")
 
-# Export main types and functions
-export Species
-export Kind, ATOM, HADRON, LEPTON, PHOTON, NULL
+# export the const pointers to values
+export M_ELECTRON, M_PROTON, M_NEUTRON, M_MUON, M_HELION, M_DEUTERON
+export M_PION_0, M_PION_CHARGED
+export EV_PER_J
+export MU_DEUTERON, MU_ELECTRON, MU_HELION, MU_MUON, MU_NEUTRON, MU_PROTON, MU_TRITON
 
-# Physical and fundamental constants
-export C_LIGHT, H_PLANCK, H_BAR, E_CHARGE
-export FINE_STRUCTURE, AVOGADRO
-export R_ELECTRON, R_PROTON, EPS_0, MU_0
-
-# Mass constants
-export M_ELECTRON, M_PROTON, M_NEUTRON, M_MUON, M_PION_0, M_PION_CHARGED, M_DEUTERON, M_HELION
-
-# Magnetic moments
-export MU_ELECTRON, MU_PROTON, MU_NEUTRON, MU_MUON, MU_DEUTERON, MU_HELION, MU_TRITON
-
-# g-factors and anomalies
+export AVOGADRO, FINE_STRUCTURE
 export ANOMALY_ELECTRON, ANOMALY_MUON
-export G_ELECTRON, G_PROTON, G_NEUTRON, G_MUON, G_DEUTERON, G_HELION, G_TRITON
+export G_DEUTERON, G_ELECTRON, G_HELION, G_MUON, G_NEUTRON, G_PROTON, G_TRITON
 
-# Unit conversions
-export KG_PER_AMU, EV_PER_AMU, J_PER_EV
+export E_CHARGE, R_ELECTRON, R_PROTON, C_LIGHT, H_PLANCK, H_BAR
+export CLASSICAL_RADIUS_FACTOR, K_BOLTZMANN, EPS_0, MU_0, RELEASE_YEAR
 
-# Functions
-export massof, chargeof, atomicnumberof, kindof, g_spin, gyromagnetic_anomaly, isnullspecies
+export KG_PER_AMU, EV_PER_AMU, J_PER_EV, G_PER_EV, RELEASE_YEAR, KG_PER_MEV_C2
+export CODATA2002, CODATA2006, CODATA2010, CODATA2014, CODATA2018, CODATA2022
 
-end # module
+# export the subatomic species dict
+export SUBATOMIC_SPECIES
+# export the atomic species dict
+export ATOMIC_SPECIES
+
+export Species
+
+export chargeof, massof, spinof, gspin_of, gyromagnetic_anomaly
+export momentof, iso_of, atomicnumberof, kindof, isnullspecies
+export set_release
+end
