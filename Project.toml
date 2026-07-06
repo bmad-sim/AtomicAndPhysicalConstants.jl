@@ -1,7 +1,7 @@
 name = "AtomicAndPhysicalConstants"
 uuid = "5c0d271c-5419-4163-b387-496237733d8b"
 version = "0.10.0"
-authors = ["David Sagan <david.sagan@cornell.edu> and contributors"]
+authors = ["David Sagan <david.sagan@cornell.edu>, Alex Coxe <rot4te@gmail.com>, and contributors"]
 
 [deps]
 EnumX = "4e289a0a-7415-4d19-859d-a7e5c4648b56"
