@@ -1,6 +1,6 @@
 # AtomicAndPhysicalConstants/src/types.jl
 
-# This module defines the core data structures used in APClite.
+# This module defines the core data structures used in APC.
 """
     Species(speciesname::String)
     Species()
