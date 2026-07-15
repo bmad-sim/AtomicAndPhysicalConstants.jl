@@ -263,9 +263,9 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   # Boltzmann factor k_B in eV/K
 
   EPS_0::Float64
-  # Permittivity of free space in [F/m]
+  # Permittivity of free space in [1/(eV*m)]
   MU_0::Float64
-  # Vacuum permeability in [N/A^2] (newtons per ampere squared)
+  # Vacuum permeability in [eV*s^2/m]
 
 
   #######################################

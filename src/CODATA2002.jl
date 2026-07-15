@@ -114,10 +114,10 @@ CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # R_ELECTRON* m_elec
 K_BOLTZMANN = 8.61734315e-5,
 #k_B in eV/K
 
-EPS_0= 8.8541878188e-12,
-# Permittivity of free space in [F/m]
-MU_0 = 1.25663706127e-6,
-# Vacuum permeability in [N/A^2] (newtons per ampere squared)
+EPS_0= 5.5263493618e7,
+# Permittivity of free space in [1/(eV*m)]
+MU_0 = 2.0133545370e-25,
+# Vacuum permeability in [eV*s^2/m]
 
 
 
