@@ -219,15 +219,15 @@ K_BOLTZMANN::Float64 - Boltzmann constant k_B in eV/K per the selected CODATA re
 """
 const K_BOLTZMANN::Float64 = _ACTIVE.K_BOLTZMANN
 """
-EPS_0::Float64 - Permittivity of free space in F/m per the selected CODATA release.
+EPS_0::Float64 - Permittivity of free space in 1/(eV*m) per the selected CODATA release.
 """
 const EPS_0::Float64 = _ACTIVE.EPS_0
-# Permittivity of free space in [F/m]
+# Permittivity of free space in [1/(eV*m)]
 """
-MU_0::Float64 - Vacuum permeability in N/A^2 per the selected CODATA release.
+MU_0::Float64 - Vacuum permeability in eV*s^2/m per the selected CODATA release.
 """
 const MU_0::Float64 = _ACTIVE.MU_0
-# Vacuum permeability in [N/A^2] (newtons per ampere squared)
+# Vacuum permeability in [eV*s^2/m]
 
 """
 KG_PER_AMU::Float64 - Kilograms per Dalton conversion in the selected CODATA release.

@@ -216,8 +216,8 @@ Both Pion masses are obtained from PDG, rather than CODATA.
 - `H_PLANCK`: Planck's constant in [eV⋅s]
 - `H_BAR`: Planck's reduced constant in [eV⋅s]
 - `CLASSICAL_RADIUS_FACTOR` 
-- `EPS_0`: Permittivity of free space in [F/m]
-- `MU_0`: Vacuum Permeability in [N/A^2]
+- `EPS_0`: Permittivity of free space in [1/(eV⋅m)]
+- `MU_0`: Vacuum Permeability in [eV⋅s²/m]
 
 
 ### Conversion Constants

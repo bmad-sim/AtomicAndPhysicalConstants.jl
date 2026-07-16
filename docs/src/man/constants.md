@@ -92,8 +92,8 @@ The gyromagnetic anomaly is defined as ``a = (g - 2)/2``.
 | `R_PROTON` | classical proton radius | m |
 | `CLASSICAL_RADIUS_FACTOR` | ``e^2 / (4\pi\varepsilon_0) = r_e m_e c^2`` | eV·m |
 | `K_BOLTZMANN` | Bolzmann's constant k<sub>B<sub> | eV/K |
-| `EPS_0` | permittivity of free space | F/m |
-| `MU_0` | vacuum permeability | N/A² |
+| `EPS_0` | permittivity of free space | 1/(eV·m) |
+| `MU_0` | vacuum permeability | eV·s²/m |
 | `AVOGADRO` | Avogadro's constant | mol⁻¹ |
 | `FINE_STRUCTURE` | fine-structure constant | dimensionless |
 | `RELEASE_YEAR` | active CODATA release year | — |
