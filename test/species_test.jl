@@ -18,9 +18,17 @@
     @test kindof(Species(name)) == Kind.LEPTON
   end
   for name in ("proton", "anti-proton", "neutron", "anti-neutron",
-               "pion0", "pion+", "pion-", "deuteron", "anti-deuteron")
+               "pion0", "pion+", "pion-", "deuteron", "anti-deuteron",
+               "triton", "anti-triton", "helion", "anti-helion")
     @test kindof(Species(name)) == Kind.HADRON
   end
+
+  # helion / anti-helion are doubly charged, and the anti-particle only flips
+  # the sign of the charge
+  @test chargeof(Species("helion")) == 2
+  @test chargeof(Species("anti-helion")) == -2
+  @test massof(Species("anti-helion")) == massof(Species("helion")) == M_HELION
+  @test gspin_of(Species("helion"); signed=true) == G_HELION
 
   # anti-neutron g-factor must match the neutron's, not the electron's
   @test AtomicAndPhysicalConstants.SUBATOMIC_SPECIES["anti-neutron"].gspin == G_NEUTRON
