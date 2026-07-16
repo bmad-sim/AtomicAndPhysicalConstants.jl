@@ -148,11 +148,18 @@ function Species(speciesname::String)
   anti = occursin(anti_regEx, speciesname)
   # # if the particle is an anti-particle, remove the prefix for easier lookup
   !anti ? (name = speciesname) : (name = replace(speciesname, anti_regEx => ""))
-  
+
+  # A leading run of Unicode superscript digits denotes the mass number (e.g. "⁴He").
+  # Rewrite it to the canonical `#`-prefixed form so that a mass number given as
+  # plain ASCII digits always requires an explicit `#` (e.g. "#4He", not "4He").
+  if !isempty(name) && haskey(SUPERSCRIPT_MAP, first(name))
+    name = "#" * name
+  end
+
   name = normalize_superscripts(name)
 
-
-  m = match(r"^#?(\d+)?([A-Z][a-z]?)([+-].*)?$", name)   # This captures iso, species, charge as m.captures[1,2,3]
+  # The `#` is mandatory whenever an (ASCII) mass number is given.
+  m = match(r"^(?:#(\d+))?([A-Z][a-z]?)([+-].*)?$", name)   # This captures iso, species, charge as m.captures[1,2,3]
 
   # Parse species
   (m !== nothing && haskey(ATOMIC_SPECIES, m.captures[2])) ||
