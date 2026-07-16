@@ -1,4 +1,4 @@
-# test/subatomic_construction.jl
+# test/species_test.jl
 
 @testset "Species construction: subatomic particles" begin
   # every entry in SUBATOMIC_SPECIES round-trips through Species(name)

@@ -167,17 +167,19 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
 
 
   M_ELECTRON::Float64
-  # Electron Mass [MeV]/c^2
+  # Electron Mass [eV]/c^2
   M_PROTON::Float64
-  # Proton Mass [MeV]/c^2
+  # Proton Mass [eV]/c^2
   M_NEUTRON::Float64
-  # Neutron Mass [MeV]/c^2
+  # Neutron Mass [eV]/c^2
   M_MUON::Float64
-  # Muon Mass [MeV]/c^2
+  # Muon Mass [eV]/c^2
   M_HELION::Float64
-  # Helion Mass He3 nucleus [MeV]/c^2
+  # Helion Mass He3 nucleus [eV]/c^2
   M_DEUTERON::Float64
-  # Deuteron Mass [MeV]/c^2
+  # Deuteron Mass [eV]/c^2
+  M_TRITON::Float64
+  # Triton Mass [eV]/c^2
 
   # constants mysteriously missing from the release
   # picked up from PDG

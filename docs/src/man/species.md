@@ -34,6 +34,8 @@ Pass the openPMD particle name exactly as it appears in the table below.
 | `"pion-"` | negative pion |
 | `"deuteron"` | deuteron |
 | `"anti-deuteron"` | antideuteron |
+| `"triton"` | triton |
+| `"anti-triton"` | antitriton |
 | `"photon"` | photon |
 
 ```julia

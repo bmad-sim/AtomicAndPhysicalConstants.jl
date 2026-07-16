@@ -43,6 +43,10 @@ M_HELION = 2.80839161112e9,
 M_DEUTERON = 1.875612945e9,
 # Deuteron Mass [eV]/c^2
 
+M_TRITON = 2.80892113668e9,
+# Triton Mass [eV]/c^2
+
+
 # constants mysteriously missing from the release
 # picked up from PDG
 M_PION_0 = 1.349768277676847e8,
