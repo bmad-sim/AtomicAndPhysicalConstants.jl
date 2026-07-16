@@ -54,13 +54,13 @@ The full format for an atomic species string is:
 
 where both `mass_number` and `charge` are optional.
 
-**Mass number** — may be written as ordinary ASCII digits, ASCII digits preceded
-by `#`, or Unicode superscript digits:
+**Mass number** — when given as ASCII digits it must be preceded by `#`; it may
+also be written with Unicode superscript digits (no `#` needed). A bare ASCII
+mass number such as `"4He"` is **not** accepted:
 
 ```julia
 Species("He")    # helium, abundance-averaged mass
-Species("4He")   # helium-4
-Species("#4He")  # helium-4  (# prefix is accepted)
+Species("#4He")  # helium-4  (# prefix is required for ASCII digits)
 Species("⁴He")   # helium-4  (Unicode superscript)
 ```
 

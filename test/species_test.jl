@@ -42,11 +42,12 @@ end
   @test massof(H, AMU=true) ≈ 1.0079407540557772
 
   # mass-number prefix notations are equivalent
-  he4_ascii = Species("4He")
   he4_hash = Species("#4He")
   he4_super = Species("⁴He")
-  @test massof(he4_ascii) == massof(he4_hash) == massof(he4_super)
-  @test iso_of(he4_ascii) == iso_of(he4_hash) == iso_of(he4_super) == 4
+  @test massof(he4_hash) == massof(he4_super)
+  @test iso_of(he4_hash) == iso_of(he4_super) == 4
+  # a bare ASCII mass number requires the `#` prefix
+  @test_throws ErrorException Species("4He")
 
   # multi-letter symbols and high-Z elements
   Fe = Species("Fe")
@@ -55,7 +56,7 @@ end
   @test atomicnumberof(Og) == 118
 
   # isotope mass is exact (12C defines the amu scale)
-  C12 = Species("12C")
+  C12 = Species("#12C")
   @test massof(C12, AMU=true) ≈ 12.0
   @test spinof(C12) == 6.0  # 0.5 * iso
 
@@ -75,7 +76,7 @@ end
   @test kindof(antiH) == Kind.ATOM
   @test nameof(antiH) == "anti-H"
   @test atomicnumberof(antiH) == -1  # negative Z distinguishes anti-atoms
-  @test atomicnumberof(Species("anti-4He")) == -2
+  @test atomicnumberof(Species("anti-#4He")) == -2
 end
 
 
@@ -96,7 +97,8 @@ end
 
 @testset "Species construction: errors" begin
   @test_throws ErrorException Species("Xx")              # not a known species
-  @test_throws ErrorException Species("999H")             # invalid isotope
+  @test_throws ErrorException Species("#999H")            # invalid isotope
+  @test_throws ErrorException Species("3He")              # ASCII mass number requires '#'
   @test_throws ErrorException Species("Li+-")              # ambiguous charge
   @test_throws ErrorException Species("H+2")               # charge exceeds Z
   @test_throws ErrorException Species("Li1")               # missing +/- specifier
