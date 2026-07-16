@@ -33,6 +33,8 @@ M_HELION = 2.80839161112e8,
 # Helion Mass He3 nucleus [eV]/c^2
 M_DEUTERON = 1.875612945e8,
 # Deuteron Mass [eV]/c^2
+M_TRITON = 2.808921112e9,
+# Triton Mass [eV]/c^2
 
 # constants mysteriously missing from the release
 # picked up from PDG
