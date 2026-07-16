@@ -19,8 +19,9 @@ convention:
 ```julia
 nameof(Species("electron"))   # "electron"
 nameof(Species("Fe"))         # "Fe"
-nameof(Species("4He+2"))      # "#4He+2"
+nameof(Species("#4He+2"))     # "#4He+2"
 nameof(Species("Li+"))        # "Li+1"
+nameof(Species("anti-#4He"))  # "anti-#4He"
 ```
 """
 function Base.nameof(species::Species)
@@ -38,12 +39,20 @@ function Base.nameof(species::Species)
   else
     iso = getfield(species, :iso)
     charge = Int(getfield(species, :charge))
-    if charge > 0
-      return "#$iso" * getfield(species, :name) * "+$charge"
-    elseif charge < 0
-      return "#$iso" * getfield(species, :name) * "$charge"
+    name = getfield(species, :name)
+    # For anti-atoms the stored name is "anti-<symbol>"; the mass-number prefix
+    # belongs on the symbol, giving "anti-#<iso><symbol>" (not "#<iso>anti-...").
+    if startswith(name, "anti-")
+      base = "anti-#$iso" * chopprefix(name, "anti-")
     else
-      return "#$iso" * getfield(species, :name)
+      base = "#$iso" * name
+    end
+    if charge > 0
+      return base * "+$charge"
+    elseif charge < 0
+      return base * "$charge"
+    else
+      return base
     end
   end
 end
