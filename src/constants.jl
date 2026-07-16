@@ -40,6 +40,11 @@ M_DEUTERON::Float64 - Mass of the deuteron in eV/c^2 from the selected CODATA re
 """
 const M_DEUTERON::Float64 = _ACTIVE.M_DEUTERON
 # Deuteron Mass [eV]/c^2
+"""
+M_TRITON::Float64 - Mass of the triton in eV/c^2 from the selected CODATA release.
+"""
+const M_TRITON::Float64 = _ACTIVE.M_TRITON
+# Triton Mass [eV]/c^2
 
 # constants mysteriously missing from the release
 # picked up from PDG

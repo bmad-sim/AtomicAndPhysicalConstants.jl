@@ -9,7 +9,7 @@ use at runtime.
 
 | Release | Notes |
 |---------|-------|
-| 2002 | earliest supported |
+| 2002 | earliest supported; `M_TRITON` is not tabulated in this release (`CODATA2002.M_TRITON == NaN`) |
 | 2006 | |
 | 2010 | first release with `G_HELION`, `ANOMALY_ELECTRON`, `ANOMALY_MUON` |
 | 2014 | |

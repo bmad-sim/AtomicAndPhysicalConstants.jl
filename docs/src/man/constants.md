@@ -21,11 +21,15 @@ Units: **eV/c²**
 | `M_MUON` | muon |
 | `M_DEUTERON` | deuteron |
 | `M_HELION` | helion (³He nucleus) |
+| `M_TRITON` | triton (³H nucleus) ‡ |
 | `M_PION_0` | neutral pion † |
 | `M_PION_CHARGED` | charged pion † |
 
 † Pion masses are taken from the Particle Data Group (PDG), not from CODATA,
 and are the same across all release years.
+
+‡ `M_TRITON` is not tabulated in the 2002 CODATA release; `CODATA2002.M_TRITON`
+is `NaN`.
 
 
 ---

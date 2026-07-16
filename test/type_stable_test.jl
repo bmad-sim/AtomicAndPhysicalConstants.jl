@@ -20,6 +20,6 @@
   @test (@inferred isnullspecies(e)) isa Bool
   @test (@inferred nameof(e)) isa String
   @test (@inferred Species("electron")) isa Species
-  @test (@inferred Species("4He")) isa Species
+  @test (@inferred Species("#4He")) isa Species
 end
 

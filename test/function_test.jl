@@ -4,7 +4,7 @@
 @testset "getfield tests" begin
   # Create test species
   e = Species("electron")
-  C = Species("12C")
+  C = Species("#12C")
   nas = Species()
 
   # Test nameof function
@@ -81,15 +81,18 @@ end
 @testset "nameof" begin
   @test nameof(Species("electron")) == "electron"
   @test nameof(Species("Fe")) == "Fe"
-  @test nameof(Species("4He+2")) == "#4He+2"
+  @test nameof(Species("#4He+2")) == "#4He+2"
+  @test nameof(Species("anti-#4He")) == "anti-#4He"  # mass number sits after "anti-"
+  @test nameof(Species("anti-#4He-2")) == "anti-#4He-2"
   @test nameof(Species("Li+")) == "Li+1"
   @test nameof(Species("K-2")) == "K-2"
   @test nameof(Species("H")) == "H"
 
   # round-trips through the string constructor for charged/isotope/anti species
-  for spec in ("H", "4He", "Li+3", "K-2", "Fe+10", "anti-H", "anti-4He")
+  for spec in ("H", "#4He", "Li+3", "K-2", "Fe+10", "anti-H", "anti-#4He")
     s = Species(spec)
     n = nameof(s)
+    @test n == spec  # these inputs are already in canonical form
     s2 = Species(n)
     @test nameof(s2) == n
     @test chargeof(s2) == chargeof(s)
@@ -134,6 +137,6 @@ end
   @test occursin("Charge: 3 e", out)  # displayed as an integer, not 3.0
   @test occursin("Kind: ATOM", out)
 
-  out_iso = sprint(show, MIME("text/plain"), Species("anti-4He"))
+  out_iso = sprint(show, MIME("text/plain"), Species("anti-#4He"))
   @test occursin("Atomic Number: -2", out_iso)  # does not crash for anti-atoms
 end

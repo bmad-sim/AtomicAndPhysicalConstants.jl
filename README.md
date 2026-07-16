@@ -97,6 +97,7 @@ The following list of strings may be used as arguments to the `Species()` functi
 - `"muon"`, `"anti-muon"`
 - `"pion0"`, `"pion+"`, `"pion-"`
 - `"deuteron"`, `"anti-deuteron"`
+- `"triton"`, `"anti-triton"`
 - `"photon"`
 
 ### Atomic Species
@@ -169,6 +170,8 @@ julia> set_release()
 - `M_MUON`
 - `M_DEUTERON`
 - `M_HELION`
+- `M_TRITON`
+  - This constant is not available from the 2002 CODATA release
 - `M_PION_0`
 - `M_PION_CHARGED`
 
