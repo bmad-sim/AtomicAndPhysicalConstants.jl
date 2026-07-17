@@ -98,6 +98,7 @@ The following list of strings may be used as arguments to the `Species()` functi
 - `"pion0"`, `"pion+"`, `"pion-"`
 - `"deuteron"`, `"anti-deuteron"`
 - `"triton"`, `"anti-triton"`
+- `"helion"`, `"anti-helion"`
 - `"photon"`
 
 ### Atomic Species
