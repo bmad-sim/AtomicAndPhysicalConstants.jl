@@ -44,7 +44,7 @@
   @test H_BAR ≈ 6.582119569e-16  # reduced Planck constant
   @test R_ELECTRON ≈ 2.8179403205e-15  # classical electron radius in m
   @test R_PROTON ≈ 1.5346982640795807e-18
-  @test CLASSICAL_RADIUS_FACTOR ≈ 1.4399645468825422e-15
+  @test CLASSICAL_RADIUS_FACTOR ≈ 1.4399645468825422e-9
   @test EPS_0 ≈ 5.5263493618e7  # permittivity of free space in 1/(eV*m)
   @test MU_0 ≈ 2.0133545370e-25  # vacuum permeability in eV*s^2/m
   @test isapprox(K_BOLTZMANN, 8.61733e-5, atol=2e-10)

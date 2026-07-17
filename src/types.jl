@@ -257,7 +257,7 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   # Planck's constant [J*s]
   H_BAR::Float64
   # h_planck/twopi [J*s]
-  CLASSICAL_RADIUS_FACTOR::Float64
+  # CLASSICAL_RADIUS_FACTOR::Float64
   # e^2 / (4 pi eps_0) = classical_radius*mass*c^2.
   # Is same for all particles of charge +/- 1.
 

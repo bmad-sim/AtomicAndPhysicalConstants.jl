@@ -111,7 +111,7 @@ H_PLANCK = 4.13566733e-15,
 # Planck's constant [eV*s]
 H_BAR = 6.58211899e-16,
 # h_planck/twopi [eV*s]
-CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # R_ELECTRON* m_electron,
+# CLASSICAL_RADIUS_FACTOR = 2.8179403205e-15 * 0.51099895069, # R_ELECTRON* m_electron,
 # e^2 / (4 pi eps_0)::typeof() = classical_radius * mass * c^2.
 # Is same for all particles of charge +/- 1.
 
