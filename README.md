@@ -216,7 +216,7 @@ Both Pion masses are obtained from PDG, rather than CODATA.
 - `C_LIGHT`: speed of light in [m/s]
 - `H_PLANCK`: Planck's constant in [eV⋅s]
 - `H_BAR`: Planck's reduced constant in [eV⋅s]
-- `CLASSICAL_RADIUS_FACTOR` 
+- `CLASSICAL_RADIUS_FACTOR`: classical radius factor e²/(4πε₀) = rₑmₑc² in [eV⋅m], derived as `R_ELECTRON * M_ELECTRON`
 - `EPS_0`: Permittivity of free space in [1/(eV⋅m)]
 - `MU_0`: Vacuum Permeability in [eV⋅s²/m]
 
