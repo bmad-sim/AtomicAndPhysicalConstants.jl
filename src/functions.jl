@@ -94,7 +94,7 @@ atomic species.
 massof(Species("electron"))              # 510998.95069  eV/c²
 massof(Species("proton"))               # 9.38272089430e8  eV/c²
 massof(Species("H"), AMU = true)        # ≈ 1.00794  u
-massof(Species("4He"), AMU = true)      # ≈ 4.0026  u
+massof(Species("#4He"), AMU = true)     # ≈ 4.0026  u
 ```
 """
 function massof(species::Species; AMU::Bool=false)
@@ -208,7 +208,7 @@ Return the mass number (isotope) of `species`.
 # Examples
 
 ```julia
-iso_of(Species("3He"))          # 3
+iso_of(Species("#3He"))         # 3
 iso_of(Species("He"))           # -1  (abundance average)
 iso_of(Species("electron"))     # 0
 ```

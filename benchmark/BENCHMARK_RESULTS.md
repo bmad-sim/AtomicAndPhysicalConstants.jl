@@ -75,11 +75,11 @@ Species("H+"): 0.540 μs
 Species("He++"): 0.571 μs
 Species("C+"): 0.537 μs
 Species("O-"): 0.585 μs
-Species("1H"): 0.492 μs
-Species("12C"): 0.501 μs
-Species("13C"): 0.500 μs
-Species("235U"): 0.519 μs
-Species("238U"): 0.515 μs
+Species("#1H"): 0.492 μs
+Species("#12C"): 0.501 μs
+Species("#13C"): 0.500 μs
+Species("#235U"): 0.519 μs
+Species("#238U"): 0.515 μs
 ```
 
 Atomic and ionic species generally take longer to construct than subatomic particles since parsing involves element symbol/mass-number/charge-state lookups; subatomic particles are simple dictionary lookups in `SUBATOMIC_SPECIES`. Species construction across the board is substantially faster than in the previous benchmark run, consistent with the constructor efficiency work in `constructors.jl`.

@@ -69,11 +69,11 @@ ion_benchmark = @benchmark begin
     he_plus_plus = Species("He++")
     c_plus = Species("C+")
     o_minus = Species("O-")
-    h1 = Species("1H")
-    c12 = Species("12C")
-    c13 = Species("13C")
-    u235 = Species("235U")
-    u238 = Species("238U")
+    h1 = Species("#1H")
+    c12 = Species("#12C")
+    c13 = Species("#13C")
+    u235 = Species("#235U")
+    u238 = Species("#238U")
 end
 
 println("   Ions and isotopes creation time: $(round(minimum(ion_benchmark.times) / 1000, digits=3)) μs")
@@ -117,7 +117,7 @@ bulk_benchmark = @benchmark begin
         Species("muon"), Species("pion0"), Species("photon"),
         Species("H"), Species("He"), Species("C"), Species("O"),
         Species("H+"), Species("He++"), Species("C+"),
-        Species("1H"), Species("12C"), Species("235U")
+        Species("#1H"), Species("#12C"), Species("#235U")
     ]
     
     # Access all properties

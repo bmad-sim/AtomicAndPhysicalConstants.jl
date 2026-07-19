@@ -28,16 +28,16 @@ Pass the openPMD name exactly:
 
 Atomic symbols `"H"` (Z=1) through `"Og"` (Z=118) are supported.
 
-**Mass number** — prefix the symbol with ASCII digits, `#`-prefixed digits, or
-Unicode superscripts. Omit for the abundance-averaged mass.
+**Mass number** — prefix the symbol with `#`-prefixed ASCII digits or
+Unicode superscripts. Omit for the abundance-averaged mass. A bare ASCII
+mass number (e.g. `"4He"`) is **not** accepted; the `#` is required.
 
 **Charge state** — append after the symbol. Repeated signs (`"++"`, `"---"`)
 or `"+n"` / `"-n"` notation are both accepted.
 
 ```julia
-Species("4He")      # helium-4, neutral
+Species("#4He")     # helium-4, neutral (# prefix required for ASCII digits)
 Species("⁴He")      # same, Unicode superscript
-Species("#4He")     # same, # prefix
 Species("Li+3")     # lithium, charge +3
 Species("Li+++")    # same
 Species("K-2")      # potassium, charge −2

@@ -47,7 +47,7 @@ julia> p = Species("proton"); # suppress the output for the rest of the definiti
 
 julia> h = Species("H"); # a neutral hydrogen atom
 
-julia> he = Species("3He"); # a neutral helium atom with mass number 3
+julia> he = Species("#3He"); # a neutral helium atom with mass number 3
 
 julia> h_ion = Species("H+"); # a hydrogen atom with one less electron than usual
 
@@ -107,10 +107,10 @@ Atomic numbers from 1 (`"H"`) to 118 (`"Og"`) are available with the `Species()`
 
 #### Mass Number Formatting
 
-To access different isotopes of a particular atomic element, two different syntax option are available:
+To access different isotopes of a particular atomic element, two different syntax options are available: a `#`-prefixed ASCII mass number, or a Unicode superscript mass number. A bare ASCII mass number (e.g. `"5He"`) is **not** accepted.
 
 ```julia-repl
-julia> he = Species("#5He"); he5 = Species("5He");
+julia> he = Species("#5He"); he5 = Species("⁵He");
 
 julia>  massof(he5, AMU=true)
 5.012057

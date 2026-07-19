@@ -71,11 +71,11 @@ println()
 
 # 6. Create isotopes
 println("6. Isotopes:")
-h1 = Species("1H")
-c12 = Species("12C")
-c13 = Species("13C")
-u235 = Species("235U")
-u238 = Species("238U")
+h1 = Species("#1H")
+c12 = Species("#12C")
+c13 = Species("#13C")
+u235 = Species("#235U")
+u238 = Species("#238U")
 
 println("¹H: ", h1)
 println("¹²C: ", c12)
