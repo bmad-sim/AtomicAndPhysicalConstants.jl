@@ -30,7 +30,7 @@ M_ELECTRON # 510998.95069  eV/c²
 e    = Species("electron")
 p    = Species("proton")
 h    = Species("H")          # neutral hydrogen, abundance-averaged mass
-he3  = Species("3He")        # neutral helium-3
+he3  = Species("#3He")       # neutral helium-3
 hion = Species("H+")         # singly-ionised hydrogen
 antip = Species("anti-proton")
 

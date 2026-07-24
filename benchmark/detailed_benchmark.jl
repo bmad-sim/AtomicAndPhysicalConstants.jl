@@ -118,7 +118,7 @@ species_types = [
     ("proton", Species("proton")),
     ("H", Species("H")),
     ("H+", Species("H+")),
-    ("12C", Species("12C"))
+    ("#12C", Species("#12C"))
 ]
 
 for (name, species) in species_types
