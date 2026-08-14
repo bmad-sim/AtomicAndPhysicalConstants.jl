@@ -5,19 +5,29 @@ on:
   push:
     branches:
       - main
+    tags: ["*"]
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
 jobs:
   docs:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write        # push to gh-pages
+      pull-requests: write   # post the preview link on the PR
+      statuses: write
     steps:
       - uses: actions/checkout@v4
 
       - uses: julia-actions/setup-julia@v2
         with:
           version: "1"
+
+      - uses: julia-actions/cache@v2
 
       - name: Install dependencies
         run: |
@@ -31,3 +41,28 @@ jobs:
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: julia --project=docs docs/make.jl
+
+      # Previews are only built for same-repo PRs: pull requests from forks get
+      # neither DOCUMENTER_KEY nor write access to gh-pages.
+      - name: Comment preview URL on the PR
+        if: >-
+          github.event_name == 'pull_request' &&
+          github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.number }}
+          URL: https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/previews/PR${{ github.event.number }}/
+        run: |
+          marker="<!-- docs-preview-link -->"
+          body="$marker
+          📖 Documentation preview for this PR: $URL
+
+          It is rebuilt on every push to this branch (allow a minute for GitHub Pages to publish) and removed when the PR is closed."
+
+          id=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate \
+                 --jq "map(select(.body | startswith(\"$marker\"))) | .[0].id // empty")
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$id" -f body="$body"
+          else
+            gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -f body="$body"
+          fi
