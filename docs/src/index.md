@@ -39,8 +39,8 @@ massof(e)                    # 510998.95069  eV/c²
 massof(h, AMU=true)          # mass in atomic mass units
 chargeof(hion)               # 1  (units of e)
 spinof(e)                    # 0.5  ħ
-gspin_of(e)                  # 2.00231930436092
-gyromagnetic_anomaly(e)      # ≈ 0.00115965…
+g_spin(e)                    # 2.00231930436092  (unsigned; signed=true for -2.0023…)
+gyromagnetic_anomaly(e)      # ≈ 0.00115965…  = (|g| - 2)/2
 momentof(p)                  # magnetic dipole moment  eV/T
 iso_of(he3)                  # 3  (mass number)
 ```

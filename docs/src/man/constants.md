@@ -61,16 +61,75 @@ Stored values are CODATA SI values (J/T) converted to eV/T via `EV_PER_J`.
 | `G_PROTON` | proton | all releases |
 | `G_NEUTRON` | neutron | all releases |
 | `G_MUON` | muon | all releases |
-| `G_DEUTERON` | deuteron | all releases |
-| `G_HELION` | helion | 2010 and later |
-| `G_TRITON` | triton | all releases |
+| `G_DEUTERON` | deuteron | all releases § |
+| `G_HELION` | helion | 2010 and later § |
+| `G_TRITON` | triton | all releases § |
+
+§ These three are **not** the raw CODATA values — see below.
+
+### Composite-nucleus g-factors are renormalized
+
+CODATA/NIST tabulates the deuteron, helion, and triton g-factors relative to the
+**nuclear magneton** ``\mu_N = e\hbar / 2m_p``, i.e. the published number is
+
+```math
+g_\text{NIST} = \frac{\mu}{I\,\mu_N}
+```
+
+so the proton mass — not the particle's own mass — sets the scale.  Used
+directly in ``a = (|g|-2)/2`` those values give a meaningless anomaly (for the
+deuteron, ``(0.857\ldots - 2)/2``).
+
+This package instead stores the g-factor in the convention
+``\boldsymbol{\mu} = g\,\frac{e}{2m}\,\mathbf{S}``, where the particle's *own*
+mass sets the scale, which is the convention the spin-precession (Thomas–BMT)
+equation and the gyromagnetic anomaly assume.  Converting between the two is a
+single mass ratio, applied at package-load time:
+
+```math
+g = g_\text{NIST}\,\frac{m}{m_p}
+```
+
+| Exported constant | Definition |
+|-------------------|------------|
+| `G_DEUTERON` | `G_DEUTERON_NUCLEAR * M_DEUTERON / M_PROTON` |
+| `G_HELION` | `G_HELION_NUCLEAR * M_HELION / M_PROTON` |
+| `G_TRITON` | `G_TRITON_NUCLEAR * M_TRITON / M_PROTON` |
+
+The `_NUCLEAR` suffix marks the nuclear-magneton normalization: those are the
+names the raw NIST values carry as fields of the release structs
+(`CODATA2022.G_DEUTERON_NUCLEAR`, …).  There is no exported top-level
+`G_*_NUCLEAR` constant; the active release's values are held as the internal
+`AtomicAndPhysicalConstants._G_DEUTERON`, `._G_HELION`, and `._G_TRITON`.
+
+The mass ratio uses the mass from the *same* active CODATA release as the
+g-factor, so switching releases with [`set_release`](@ref) renormalizes
+consistently.
+
+Only these three struct fields carry the `_NUCLEAR` suffix.  The electron, muon,
+proton, and neutron g-factors need no rescaling — CODATA already tabulates them
+against the magneton built from the particle's own mass — so `G_ELECTRON`,
+`G_MUON`, `G_PROTON`, and `G_NEUTRON` keep their plain names in the release
+structs and are exported exactly as published.
+
+Because the renormalization is folded into the constants themselves,
+[`g_spin`](@ref) and [`gyromagnetic_anomaly`](@ref) need no special-casing —
+``a = (|g|-2)/2`` applies uniformly to every subatomic species:
+
+```julia
+gyromagnetic_anomaly(Species("deuteron"))   # ≈ -0.1429872697
+```
 
 
 ---
 
 ## Gyromagnetic anomalies (dimensionless)
 
-The gyromagnetic anomaly is defined as ``a = (g - 2)/2``.
+The gyromagnetic anomaly is defined as ``a = (|g| - 2)/2``.
+[`gyromagnetic_anomaly`](@ref) takes the **unsigned** g-factor — the default of
+[`g_spin`](@ref) — so particles with a negative stored g-factor (electron, muon,
+neutron, helion) come out with the conventional positive anomaly rather than a
+value near ``-2``.
 
 | Constant | Particle | CODATA availability |
 |----------|----------|---------------------|

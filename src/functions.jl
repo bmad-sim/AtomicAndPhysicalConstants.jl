@@ -120,7 +120,7 @@ function spinof(species::Species)
 end
 
 """
-    gspin_of(species::Species; signed::Bool = false) -> Float64
+    g_spin(species::Species; signed::Bool = false) -> Float64
 
 Return the spin g-factor of `species`.
 
@@ -130,16 +130,18 @@ such as the electron).
 
 Returns 0 for atomic species, for which no g-factor is stored.
 
+[`gyromagnetic_anomaly`](@ref) is built on the default, unsigned value.
+
 # Examples
 
 ```julia
-gspin_of(Species("electron"))               # 2.00231930436092
-gspin_of(Species("electron"), signed=true)  # -2.00231930436092
-gspin_of(Species("proton"))                 # 5.5856946893
-gspin_of(Species("H"))                      # 0.0
+g_spin(Species("electron"))               # 2.00231930436092
+g_spin(Species("electron"), signed=true)  # -2.00231930436092
+g_spin(Species("proton"))                 # 5.5856946893
+g_spin(Species("H"))                      # 0.0
 ```
 """
-function gspin_of(species::Species; signed::Bool = false)
+function g_spin(species::Species; signed::Bool = false)
 
   !signed ? (return abs(getfield(species, :gspin))) : (return getfield(species, :gspin))
 end
@@ -151,24 +153,41 @@ end
 Compute and return the gyromagnetic anomaly
 
 ```math
-a = \\frac{g - 2}{2}
+a = \\frac{|g| - 2}{2}
 ```
 
 for leptons and hadrons.  Returns `NaN` for photons, atoms, and null species,
 since the gyromagnetic anomaly is not defined for them.
+
+The **unsigned** g-factor is used, i.e. [`g_spin`](@ref) is called with its default
+`signed = false`.  The sign of the stored g-factor records the orientation of the
+magnetic moment relative to the spin, not the size of the anomaly, so species whose
+g-factor is negative (electron, muon, neutron, helion) still get the conventional
+positive anomaly: the electron gives `+0.00115965…`, not `-2.0011…`.
+
+The stored g-factors are all in the convention `mu = g * (e / 2m) * S`, where the
+particle's own mass sets the magneton, so this formula applies uniformly.  For the
+deuteron, helion, and triton this required renormalizing the NIST values, which are
+tabulated against the nuclear magneton `e*hbar/(2*M_PROTON)`; `G_DEUTERON`,
+`G_HELION`, and `G_TRITON` carry the renormalized values (see the
+[Physical Constants](@ref man-constants) manual page).
 
 # Examples
 
 ```julia
 gyromagnetic_anomaly(Species("electron"))   # ≈  0.00115965218046
 gyromagnetic_anomaly(Species("muon"))       # ≈  0.00116592062
+gyromagnetic_anomaly(Species("neutron"))    # ≈  0.91304276
+gyromagnetic_anomaly(Species("deuteron"))   # ≈ -0.1429872697
 gyromagnetic_anomaly(Species("H"))          # NaN
 ```
 """
 function gyromagnetic_anomaly(species::Species)::Float64
   kind = getfield(species, :kind)
-  (kind == Kind.LEPTON || kind == Kind.HADRON) ? (return (gspin_of(species) - 2.0) / 2.0) : (return convert(Float64, NaN))
 
+
+  (kind == Kind.LEPTON || kind == Kind.HADRON) ? (return ((g_spin(species)-2.0)/2.0)) : (return convert(Float64, NaN))
+  
 end
 
 
@@ -444,7 +463,7 @@ function Base.show(io::IO, ::MIME"text/plain", species::Species)
     println(io, "Mass: $(massof(species)) eV/c²")
     println(io, "Spin: $(spinof(species)) ħ")
     println(io, "Moment: $(momentof(species)) eV/T")
-    println(io, "G-factor: $(gspin_of(species))")
+    println(io, "G-factor: $(g_spin(species))")
     if iso_of(species) > 0 
       println(io, "Mass number: $(iso_of(species))")
       println(io, "Atomic Number: $(atomicnumberof(species))")

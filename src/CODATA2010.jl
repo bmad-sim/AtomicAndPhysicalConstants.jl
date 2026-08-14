@@ -13,7 +13,7 @@
     CODATA2010 :: CODATA_release
 
 Fundamental constants from the 2010 CODATA release.
-First release to include `G_HELION`, `ANOMALY_ELECTRON`, and `ANOMALY_MUON`.
+First release to include `G_HELION_NUCLEAR`, `ANOMALY_ELECTRON`, and `ANOMALY_MUON`.
 """
 const CODATA2010 = CODATA_release(
 
@@ -81,11 +81,11 @@ ANOMALY_ELECTRON = 1.15965218076e-3,
 ANOMALY_MUON = 1.16592091e-3,
 # muon magnetic moment anomaly
 
-G_DEUTERON = 0.8574382308,
+G_DEUTERON_NUCLEAR = 0.8574382308,
 # deuteron g factor 
 G_ELECTRON = -2.00231930436153,
 # electron g factor 
-G_HELION = -4.255250613,
+G_HELION_NUCLEAR = -4.255250613,
 # helion g factor 
 G_MUON = -2.0023318418,
 # muon g factor 
@@ -93,7 +93,7 @@ G_NEUTRON = -3.82608545,
 # neutron g factor 
 G_PROTON = 5.585694713,
 # proton g factor 
-G_TRITON = 5.957924896,
+G_TRITON_NUCLEAR = 5.957924896,
 # triton g factor
 
 

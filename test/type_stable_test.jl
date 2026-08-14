@@ -10,7 +10,7 @@
   @test (@inferred massof(e)) isa Float64
   @test (@inferred massof(e; AMU=true)) isa Float64
   @test (@inferred spinof(e)) isa Float64
-  @test (@inferred gspin_of(e)) isa Float64
+  @test (@inferred g_spin(e)) isa Float64
   @test (@inferred gyromagnetic_anomaly(e)) isa Float64
   @test (@inferred momentof(e)) isa Float64
   @test (@inferred momentof(H)) isa Float64  # must not be Union{Float64,Int}

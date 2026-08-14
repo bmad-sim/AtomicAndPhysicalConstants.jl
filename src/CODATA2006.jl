@@ -75,7 +75,7 @@ AVOGADRO = 6.02214076e23,
 FINE_STRUCTURE = 0.0072973525643,
 # fine structure constant
 
-G_DEUTERON = 0.8574382308,
+G_DEUTERON_NUCLEAR = 0.8574382308,
 # deuteron g factor 
 G_ELECTRON = -2.0023193043622,
 # electron g factor 
@@ -85,13 +85,13 @@ G_NEUTRON = -3.82608545,
 # neutron g factor 
 G_PROTON = 5.585694713,
 # proton g factor 
-G_TRITON = 5.957924896,
+G_TRITON_NUCLEAR = 5.957924896,
 # triton g factor
 
 # the following dimensionless constants were not included in CODATA2006
 ANOMALY_ELECTRON = NaN,
 ANOMALY_MUON = NaN,
-G_HELION = NaN,
+G_HELION_NUCLEAR = NaN,
 
 
 #######################################

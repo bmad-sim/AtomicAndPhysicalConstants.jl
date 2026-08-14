@@ -33,9 +33,9 @@
   @test G_PROTON ≈ 5.5856946893
   @test G_NEUTRON ≈ -3.82608552
   @test G_MUON ≈ -2.00233184123
-  @test G_DEUTERON ≈ 0.8574382335
-  @test G_TRITON ≈ 5.957924930
-  @test G_HELION ≈ -4.2552506995
+  @test G_DEUTERON ≈ 0.8574382335 * M_DEUTERON / M_PROTON
+  @test G_TRITON ≈ 5.957924930 * M_TRITON / M_PROTON
+  @test G_HELION ≈ -4.2552506995 * M_HELION / M_PROTON
 
   # Test other physical constants
   @test E_CHARGE ≈ 1.602176634e-19  # elementary charge in C

@@ -72,7 +72,7 @@ export ATOMIC_SPECIES
 
 export Species
 
-export chargeof, massof, spinof, gspin_of, gyromagnetic_anomaly
+export chargeof, massof, spinof, g_spin, gyromagnetic_anomaly
 export momentof, iso_of, atomicnumberof, kindof, isnullspecies
 export set_release
 end

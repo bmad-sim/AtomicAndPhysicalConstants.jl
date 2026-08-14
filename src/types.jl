@@ -66,7 +66,7 @@ Species("anti-H")   # antihydrogen
 | `kind` | `Kind.T` | `LEPTON`, `HADRON`, `PHOTON`, `ATOM`, or `NULL` |
 
 Direct field access is disabled. Use [`chargeof`](@ref), [`massof`](@ref),
-[`spinof`](@ref), [`gspin_of`](@ref), [`momentof`](@ref), [`iso_of`](@ref),
+[`spinof`](@ref), [`g_spin`](@ref), [`momentof`](@ref), [`iso_of`](@ref),
 [`atomicnumberof`](@ref), [`kindof`](@ref), [`isnullspecies`](@ref),
 [`Base.nameof`](@ref).
 """
@@ -226,11 +226,11 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   ANOMALY_MUON::Float64
   # muon magnetic moment anomaly
 
-  G_DEUTERON::Float64
+  G_DEUTERON_NUCLEAR::Float64
   # deuteron g factor 
   G_ELECTRON::Float64
   # electron g factor 
-  G_HELION::Float64
+  G_HELION_NUCLEAR::Float64
   # helion g factor 
   G_MUON::Float64
   # muon g factor 
@@ -238,7 +238,7 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   # neutron g factor 
   G_PROTON::Float64
   # proton g factor 
-  G_TRITON::Float64
+  G_TRITON_NUCLEAR::Float64
   # triton g factor
 
 

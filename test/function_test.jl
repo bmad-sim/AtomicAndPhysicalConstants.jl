@@ -23,7 +23,7 @@
   @test spinof(e) == 0.5
   @test spinof(C) == 6.0
 
-  @test gspin_of(e, signed=true) ≈ G_ELECTRON
+  @test g_spin(e, signed=true) ≈ G_ELECTRON
 
   @test gyromagnetic_anomaly(e) ≈ ANOMALY_ELECTRON
 
@@ -56,10 +56,10 @@ end
   @test spinof(Species("photon")) == 1.0
   @test spinof(proton) == 0.5
 
-  # gspin_of: signed vs abs
-  @test gspin_of(e) ≈ abs(G_ELECTRON)
-  @test gspin_of(e; signed=true) ≈ G_ELECTRON
-  @test gspin_of(H) == 0.0  # atoms have no stored g-factor
+  # g_spin: signed vs abs
+  @test g_spin(e) ≈ abs(G_ELECTRON)
+  @test g_spin(e; signed=true) ≈ G_ELECTRON
+  @test g_spin(H) == 0.0  # atoms have no stored g-factor
 
   # momentof: subatomic vs atom/null (always Float64, never 0::Int)
   @test momentof(proton) ≈ MU_PROTON

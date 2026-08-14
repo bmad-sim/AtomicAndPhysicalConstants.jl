@@ -70,11 +70,13 @@ julia> massof(h, AMU=true) # or grab the mass of an atom in AMU (also called Dal
 julia> spinof(e) # spin projection of the particle in [ħ]
 0.5
 
-julia> gspin_of(e) # spin g-factor (dimensionless)
+julia> g_spin(e) # spin g-factor (dimensionless), absolute value by default
 2.00231930436092
 
+julia> g_spin(e, signed=true) # signed g-factor
+-2.00231930436092
 
-julia> gyromagnetic_anomaly(e)
+julia> gyromagnetic_anomaly(e) # (|g| - 2)/2
 0.0011596521804599913
 
 julia> momentof(p) # magnetic dipole moment in [eV/T] - errors for atoms

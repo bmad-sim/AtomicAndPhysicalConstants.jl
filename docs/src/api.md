@@ -23,7 +23,7 @@ Base.nameof(::Species)
 chargeof
 massof
 spinof
-gspin_of
+g_spin
 gyromagnetic_anomaly
 momentof
 iso_of

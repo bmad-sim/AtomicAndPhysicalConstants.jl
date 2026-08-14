@@ -87,9 +87,9 @@ G_PROTON = 5.585694701,
 # the following dimensionless constants were not included in CODATA2002
 ANOMALY_ELECTRON = NaN,
 ANOMALY_MUON = NaN,
-G_DEUTERON = NaN,
-G_HELION = NaN,
-G_TRITON = NaN,
+G_DEUTERON_NUCLEAR = NaN,
+G_HELION_NUCLEAR = NaN,
+G_TRITON_NUCLEAR = NaN,
 
 
 #######################################
