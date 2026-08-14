@@ -1,0 +1,34 @@
+name: Doc Preview Cleanup
+
+on:
+  pull_request_target:
+    types: [closed]
+
+concurrency:
+  group: doc-preview-cleanup
+  cancel-in-progress: false
+
+jobs:
+  doc-preview-cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Delete the preview directory for this PR
+        env:
+          PR: ${{ github.event.number }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -d "previews/PR$PR" ]; then
+            git rm -rf --quiet "previews/PR$PR"
+            git commit -m "delete preview for PR #$PR"
+            git push origin gh-pages
+          else
+            echo "No preview directory for PR #$PR; nothing to clean up."
+          fi
