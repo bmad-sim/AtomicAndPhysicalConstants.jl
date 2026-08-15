@@ -13,6 +13,24 @@
     @test nameof(s) == name
   end
 
+  # Spins are asserted against literal values, not against SUBATOMIC_SPECIES, so that
+  # a wrong table entry cannot satisfy the round-trip test above.
+  for (name, spin) in ("electron" => 0.5, "positron" => 0.5, "muon" => 0.5,
+                       "anti-muon" => 0.5, "proton" => 0.5, "anti-proton" => 0.5,
+                       "neutron" => 0.5, "anti-neutron" => 0.5,
+                       "pion0" => 0.0, "pion+" => 0.0, "pion-" => 0.0,
+                       "photon" => 1.0,
+                       "deuteron" => 1.0, "anti-deuteron" => 1.0,
+                       "triton" => 0.5, "anti-triton" => 0.5,
+                       "helion" => 0.5, "anti-helion" => 0.5)
+    @test spinof(Species(name)) == spin
+  end
+
+  # The composite nuclei must agree with the same nuclide built as an atomic ion.
+  @test spinof(Species("deuteron")) == spinof(Species("#2H+1"))
+  @test spinof(Species("triton")) == spinof(Species("#3H+1"))
+  @test spinof(Species("helion")) == spinof(Species("#3He+2"))
+
   @test kindof(Species("photon")) == Kind.PHOTON
   for name in ("electron", "positron", "muon", "anti-muon")
     @test kindof(Species(name)) == Kind.LEPTON
@@ -66,7 +84,32 @@ end
   # isotope mass is exact (12C defines the amu scale)
   C12 = Species("#12C")
   @test massof(C12, AMU=true) ≈ 12.0
-  @test spinof(C12) == 6.0  # 0.5 * iso
+
+  # Nuclear spins are the tabulated NUBASE2020 ground-state values, not a function
+  # of the mass number: nucleons pair off, so every even-even nucleus has spin 0.
+  @test spinof(C12) == 0.0
+  @test spinof(Species("#4He")) == 0.0
+  @test spinof(Species("#16O")) == 0.0
+  @test spinof(Species("#56Fe")) == 0.0
+  # odd-A nuclei have half-integer spin
+  @test spinof(Species("#3He")) == 0.5
+  @test spinof(Species("#13C")) == 0.5
+  @test spinof(Species("#7Li")) == 1.5
+  @test spinof(Species("#235U")) == 3.5
+  # odd-odd
+  @test spinof(Species("#2H")) == 1.0
+  @test spinof(Species("#14N")) == 1.0
+  # the deuteron/triton/helion nuclei agree with their subatomic counterparts
+  @test spinof(Species("#2H+1")) == spinof(Species("deuteron"))
+  @test spinof(Species("#3H+1")) == spinof(Species("triton"))
+  @test spinof(Species("#3He+2")) == spinof(Species("helion"))
+  # ionisation does not change the nucleus
+  @test spinof(Species("#4He+2")) == spinof(Species("#4He"))
+  # an anti-nucleus has the same spin as its mirror
+  @test spinof(Species("anti-#3He")) == spinof(Species("#3He"))
+  # the abundance average is not a nuclide, so it has no spin
+  @test isnan(spinof(Species("He")))
+  @test isnan(spinof(Species("C")))
 
   # charge notations
   @test chargeof(Species("Li+3")) == 3.0

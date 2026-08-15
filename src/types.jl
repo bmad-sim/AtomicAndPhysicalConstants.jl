@@ -61,7 +61,7 @@ Species("anti-H")   # antihydrogen
 | `name` | `String` | Particle name or atomic symbol |
 | `charge` | `Float64` | Net charge in units of *e* |
 | `mass` | `Float64` | Rest mass in eV/c² |
-| `spin` | `Float64` | Spin in ħ |
+| `spin` | `Float64` | Spin in ħ; for an atom the nuclear spin, `NaN` if undefined |
 | `gspin` | `Float64` | Spin g-factor (0 for atoms) |
 | `moment` | `Float64` | Magnetic dipole moment in eV/T (0 for atoms) |
 | `iso` | `Int` | Mass number; −1 for abundance average; 0 for subatomic particles |
@@ -122,7 +122,7 @@ end;
 """
     AtomicSpecies
 
-Internal struct storing isotope mass data for a chemical element.
+Internal struct storing isotope data for a chemical element.
 Instances are stored in [`ATOMIC_SPECIES`](@ref).
 
 # Fields
@@ -131,6 +131,11 @@ Instances are stored in [`ATOMIC_SPECIES`](@ref).
 - `speciesname::String` — standard atomic symbol (*e.g.* `"Fe"`).
 - `mass::Dict{Int,Float64}` — isotope masses in atomic mass units (u), keyed by
   mass number.  The special key `−1` holds the abundance-averaged atomic mass.
+- `spin::Dict{Int,Float64}` — ground-state nuclear spins in units of ħ, keyed by
+  mass number, taken from NUBASE2020.  `NaN` marks an isotope to which NUBASE
+  assigns no unambiguous spin.  There is deliberately no `−1` key: the
+  abundance average has no meaningful spin, because different isotopes of an
+  element have different ones.
 """
 struct AtomicSpecies
   Z::Int  # atomic number
@@ -141,6 +146,7 @@ struct AtomicSpecies
   keyvalue n ∈ {0} ∪ N is the mass number of the isotope
   	=> mass of that isotope [amu]
   =#
+  spin::Dict{Int,Float64}  # ground state nuclear spin in [ħ], keyed by mass number
 end;
 
 

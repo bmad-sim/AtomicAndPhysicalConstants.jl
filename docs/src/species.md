@@ -135,7 +135,7 @@ convention; those are shown in the last column alongside the default.
 | [`nameof`](@ref Base.nameof(::Species)) | canonical species name | `String`, in the `#mAS±c` form |
 | [`massof`](@ref) | rest mass | eV/c²; `massof(sp, AMU = true)` gives atomic mass units (daltons) |
 | [`chargeof`](@ref) | net charge | multiples of the elementary charge *e*; `chargeof(sp, C = true)` gives coulombs, using the active [`E_CHARGE`](@ref) |
-| [`spinof`](@ref) | spin | ħ |
+| [`spinof`](@ref) | spin; for an atom, the **nuclear** spin | ħ |
 | [`momentof`](@ref) | magnetic dipole moment | eV/T |
 | [`g_spin`](@ref) | spin g-factor | dimensionless \|g\|; `g_spin(sp, signed = true)` gives the signed value (negative for the electron, muon, neutron, and helion) |
 | [`gyromagnetic_anomaly`](@ref) | gyromagnetic anomaly *a* | dimensionless |
@@ -162,8 +162,51 @@ most accessors return a neutral value:
 | [`momentof`](@ref) | `0.0` for atoms and the null species |
 | [`g_spin`](@ref) | `0.0` for atomic species (no g-factor is stored) |
 | [`gyromagnetic_anomaly`](@ref) | `NaN` for photons, atoms, and the null species |
+| [`spinof`](@ref) | `NaN` for an atom given without a mass number, and for the few isotopes NUBASE leaves unassigned |
 | [`iso_of`](@ref) | `0` for subatomic particles; `-1` for an atom given without a mass number |
 | [`atomicnumberof`](@ref) | **throws an error** for anything that is not an atom |
+
+### Nuclear spin
+
+For an atomic species, [`spinof`](@ref) returns the **nuclear** spin, from the
+tabulated ground-state values of
+[NUBASE2020](https://www-nds.iaea.org/amdc/).  Electron spin is not included,
+since the total angular momentum of an atom depends on its electronic state,
+which `Species` does not model.  Two consequences follow: ionising an atom does
+not change its spin, and an anti-nucleus has the same spin as its mirror.
+
+Nuclear spin is **not** a function of the mass number.  Nucleons pair off with
+opposite spins, so every even-even nucleus has spin 0 and no closed formula in
+*A* reproduces the tabulated values:
+
+```jldoctest species-accessors
+julia> using AtomicAndPhysicalConstants
+
+julia> spinof(Species("#4He"))    # even-even: two paired protons, two paired neutrons
+0.0
+
+julia> spinof(Species("#3He"))    # one unpaired neutron
+0.5
+
+julia> spinof(Species("#12C"))
+0.0
+
+julia> spinof(Species("#235U"))
+3.5
+```
+
+An atom given without a mass number has no single nuclear spin — the abundance
+average runs over isotopes with differing spins — so `NaN` is returned:
+
+```jldoctest species-accessors
+julia> spinof(Species("He"))
+NaN
+```
+
+Every isotope that occurs naturally has a directly measured spin.  For nuclei
+far from stability the tabulated value may come from NUBASE systematics, and a
+small number of exotic isotopes carry no unambiguous assignment at all; those
+also return `NaN`.
 
 ### Worked example
 
@@ -249,7 +292,7 @@ Both are keyed by the same strings the constructor accepts.
 | Dictionary | Type | Contents |
 |------------|------|----------|
 | [`SUBATOMIC_SPECIES`](@ref) | `Dict{String, SubatomicSpecies}` | mass, charge, spin, moment, and g-factor of each subatomic particle |
-| [`ATOMIC_SPECIES`](@ref) | `Dict{String, AtomicSpecies}` | atomic number and a mass-number-keyed table of isotope masses, in daltons |
+| [`ATOMIC_SPECIES`](@ref) | `Dict{String, AtomicSpecies}` | atomic number, plus mass-number-keyed tables of isotope masses (in daltons) and ground-state nuclear spins (in ħ) |
 
 ```julia
 SUBATOMIC_SPECIES["electron"].mass   # 510998.95069  eV/c²
@@ -257,7 +300,12 @@ SUBATOMIC_SPECIES["electron"].mass   # 510998.95069  eV/c²
 ATOMIC_SPECIES["He"].Z               # 2
 ATOMIC_SPECIES["He"].mass[3]         # 3.0160293201  u  (helium-3)
 ATOMIC_SPECIES["He"].mass[-1]        # abundance-averaged mass
+ATOMIC_SPECIES["He"].spin[3]         # 0.5  ħ  (helium-3)
+ATOMIC_SPECIES["He"].spin[4]         # 0.0  ħ  (helium-4)
 ```
+
+The `spin` table has no `-1` key, because the abundance average has no
+meaningful nuclear spin.
 
 `SUBATOMIC_SPECIES` is built from the exported constants of the active CODATA
 release, so its values follow [`set_release`](@ref); the isotope masses in

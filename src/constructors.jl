@@ -81,15 +81,16 @@ function atomic_particle(name::String, charge::Float64, iso::Int;)
       # for an anti-atom, add 1 positron mass for every + charge
     end
   end
-  if iso == -1 # if it's the average, make an educated guess at the spin
-    partonum::Float64 = round(atom.mass[iso])
-    if anti_atom == false
-      spin = 0.5 * (partonum + (atom.Z - charge))
-    else
-      spin = 0.5 * (partonum + (atom.Z + charge))
-    end
-  else # otherwise, use the sum of proton and neutron spins
-    spin = 0.5 * iso
+  # Nuclear spin comes from the tabulated NUBASE2020 ground-state values; it is not
+  # computable from the mass number, because nucleons pair off with opposite spins
+  # (every even-even nucleus has spin 0, for instance).  An anti-nucleus has the same
+  # spin as its mirror by CPT, so the same table serves both.
+  if iso == -1
+    # The abundance average is a weighted mean over isotopes with differing spins,
+    # so no single value is meaningful.
+    spin = NaN
+  else
+    spin = get(atom.spin, iso, NaN)
   end
   # return the object to track
   if anti_atom == false
