@@ -13,6 +13,8 @@
 # This rewrites the ATOMIC_SPECIES literal in place, keeping every mass exactly as
 # it was and replacing only the spin dictionaries.  Run the test suite afterwards.
 
+include(joinpath(@__DIR__, "species_table.jl"))
+
 const NUBASE_URL = "https://www-nds.iaea.org/amdc/ame2020/nubase_4.mas20.txt"
 
 
@@ -84,70 +86,35 @@ function read_nubase(path::AbstractString)
 end
 
 
-# The literal is parsed with a local struct so this script does not need the
-# package loaded, and so it keeps working if the field list changes again.
-struct _Atom
-  Z::Int
-  speciesname::String
-  mass::Dict{Int,Float64}
-  spin::Dict{Int,Float64}
-end
-
-const _LITERAL_RE = r"const ATOMIC_SPECIES::Dict\{String,AtomicSpecies\} = Dict\(\n.*?\n\);"s
-
-function read_table(path::AbstractString)
-  m = match(_LITERAL_RE, read(path, String))
-  m === nothing && error("could not locate the ATOMIC_SPECIES literal in $path")
-  body = replace(m.match, "const ATOMIC_SPECIES::Dict{String,AtomicSpecies} = " => "",
-                 "AtomicSpecies(" => "_Atom(")
-  return eval(Meta.parse(rstrip(body, [';', '\n'])))::Dict{String,_Atom}
-end
-
-_fmt(x::Float64) = isnan(x) ? "NaN" : repr(x)
-
-function main(; src = joinpath(@__DIR__, "..", "src", "species_data.jl"))
+function main(; path = SPECIES_DATA)
   println("downloading $NUBASE_URL")
   nub = read_nubase(download(NUBASE_URL))
   println("ground states parsed: ", length(nub))
 
-  atoms = read_table(src)
-  length(atoms) == 118 || error("expected 118 elements, found $(length(atoms))")
-  byZ = Dict(a.Z => a for a in values(atoms))
-
+  byZ = read_table(path)
   stats = Dict(:measured => 0, :tentative => 0, :systematics => 0, :unknown => 0, :absent => 0)
-  lines = String[]
   for Z in 1:118
     atom = byZ[Z]
-    # Emit in sorted key order (-1, the abundance average, sorts first) so that the
-    # generated file is deterministic and re-running produces no spurious diff.
-    masses = join(("$k => $(_fmt(atom.mass[k]))" for k in sort(collect(keys(atom.mass)))), ", ")
-
-    spins = String[]
-    for A in sort([k for k in keys(atom.mass) if k != -1])
+    # The spins are keyed by the same mass numbers as the masses, which NIST
+    # owns; `update_isos.jl` is what adds or removes an isotope.
+    spin = Dict{Int,Float64}()
+    for A in keys(atom.mass)
+      A == -1 && continue
       J, q = get(nub, (Z, A), (NaN, :absent))
       stats[q] += 1
-      push!(spins, "$A => $(_fmt(J))")
+      spin[A] = J
     end
-
-    push!(lines, "    \"$(atom.speciesname)\" => AtomicSpecies($Z, \"$(atom.speciesname)\", " *
-                 "Dict{Int,Float64}($masses), Dict{Int,Float64}($(join(spins, ", ")))),")
+    byZ[Z] = Atom(Z, atom.speciesname, atom.mass, spin)
   end
 
-  literal = "const ATOMIC_SPECIES::Dict{String,AtomicSpecies} = Dict(\n" *
-            join(lines, "\n") * "\n);"
-
-  text = read(src, String)
-  occursin(_LITERAL_RE, text) || error("could not locate the ATOMIC_SPECIES literal in $src")
-  updated = replace(text, _LITERAL_RE => literal, count = 1)
-  # Re-running against unchanged NUBASE data is expected to be a no-op.
-  updated == text && println("(no change — the table already matches NUBASE)")
-  write(src, updated)
+  changed = write_table(byZ; path = path)
+  println(changed ? "\nwrote $path" : "\n(no change — the table already matches NUBASE)")
 
   println("\nisotopes written: ", sum(values(stats)))
   for q in (:measured, :tentative, :systematics, :unknown, :absent)
     println("  ", rpad(q, 13), stats[q])
   end
-  println("\nwrote $src — now run the test suite.")
+  println("\nnow run the test suite.")
 end
 
 if abspath(PROGRAM_FILE) == @__FILE__

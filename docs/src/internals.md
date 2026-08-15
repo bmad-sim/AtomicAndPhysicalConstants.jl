@@ -111,20 +111,23 @@ their output should be reviewed as a diff and committed like any other change.
 | `update/update_isos.jl` | isotope masses in `ATOMIC_SPECIES` | NIST compositions table |
 | `update/update_spins.jl` | nuclear spins in `ATOMIC_SPECIES` | NUBASE2020 |
 
+The last two rewrite the same `ATOMIC_SPECIES` literal, each replacing only the
+half it owns, so they can be run independently and in either order.  They share
+`update/species_table.jl`, which parses the literal and emits it again with
+sorted keys.  Sorting is what makes them deterministic: `Dict` iteration order is
+not stable across rebuilds, so an unsorted emission would reshuffle the whole
+table and bury the real change.  Re-running either against unchanged upstream
+data is a no-op.
+
+The mass numbers are NIST's: `update_isos.jl` is the script that adds or removes
+an isotope.  An isotope it adds arrives with a spin of `NaN`, and it says so —
+run `update_spins.jl` afterwards to fill the new entries in.  It also keeps the
+package's atomic symbols rather than NIST's, which names hydrogen's heavy
+isotopes `D` and `T`.
+
 `update_spins.jl` downloads `nubase_4.mas20.txt`, keeps the ground state of each
-nuclide (isomer index `0`), parses the `Jpi` column, and rewrites the
-`ATOMIC_SPECIES` literal with sorted keys.  Sorting is what makes it
-deterministic: `Dict` iteration order is not stable across rebuilds, so an
-unsorted emission would produce a large spurious diff.  Re-running it against
-unchanged NUBASE data is a no-op.
-
-NUBASE flags each spin assignment as directly measured, tentative (parenthesised),
-or extrapolated from systematics (`#`).  The package stores all three alike; only
-assignments NUBASE leaves blank become `NaN`.  Every naturally occurring isotope
-has a directly measured spin, so this distinction affects exotic nuclei only.
-
-!!! warning "`update_isos.jl` is out of date"
-    It constructs `AtomicSpecies` with three positional arguments and writes a
-    table with no `spin` field, both of which predate the nuclear-spin data.
-    Running it as-is will fail, and its writer would drop the spin dictionaries.
-    It needs updating before the isotope masses are next refreshed.
+nuclide (isomer index `0`), and parses the `Jpi` column.  NUBASE flags each
+assignment as directly measured, tentative (parenthesised), or extrapolated from
+systematics (`#`).  The package stores all three alike; only assignments NUBASE
+leaves blank or ambiguous become `NaN`.  Every naturally occurring isotope has a
+directly measured spin, so this distinction affects exotic nuclei only.

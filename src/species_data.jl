@@ -55,7 +55,7 @@ struct containing the atomic number, symbol, a dictionary of isotope masses in
 atomic mass units, and a dictionary of ground-state nuclear spins in units of ħ.
 
 Isotope masses come from NIST; nuclear spins come from NUBASE2020.  Regenerate
-the spin table with `update/update_spins.jl`.
+them with `update/update_isos.jl` and `update/update_spins.jl` respectively.
 """
 const ATOMIC_SPECIES::Dict{String,AtomicSpecies} = Dict(
     "H" => AtomicSpecies(1, "H", Dict{Int,Float64}(-1 => 1.0079407540557772, 1 => 1.00782503223, 2 => 2.01410177812, 3 => 3.0160492779, 4 => 4.02643, 5 => 5.035311, 6 => 6.04496, 7 => 7.0527), Dict{Int,Float64}(1 => 0.5, 2 => 1.0, 3 => 0.5, 4 => 2.0, 5 => 0.5, 6 => 2.0, 7 => 0.5)),
