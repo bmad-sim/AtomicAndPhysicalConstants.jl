@@ -37,13 +37,18 @@ antip = Species("anti-proton")
 # ── accessor functions ───────────────────────────────────────────────
 massof(e)                    # 510998.95069  eV/c²
 massof(h, AMU=true)          # mass in atomic mass units
-chargeof(hion)               # 1  (units of e)
+chargeof(hion)               # 1.0  (units of e)
 spinof(e)                    # 0.5  ħ
 g_spin(e)                    # 2.00231930436092  (unsigned; signed=true for -2.0023…)
 gyromagnetic_anomaly(e)      # ≈ 0.00115965…  = (|g| - 2)/2
 momentof(p)                  # magnetic dipole moment  eV/T
 iso_of(he3)                  # 3  (mass number)
 ```
+
+Species fields are read only through these accessors — `e.mass` raises an error
+on purpose.  See [Accessing species parameters](@ref man-species-accessors) for
+the complete list, the unit-switching keyword arguments, and what each accessor
+returns for species that do not carry the property.
 
 ## Package overview
 
