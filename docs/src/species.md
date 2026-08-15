@@ -284,37 +284,8 @@ kindof(Species("Fe"))       == Kind.ATOM     # true
 
 ---
 
-## Reference data dictionaries
+## Going further
 
-Two dictionaries back the species constructor and are exported for advanced use.
-Both are keyed by the same strings the constructor accepts.
-
-| Dictionary | Type | Contents |
-|------------|------|----------|
-| [`SUBATOMIC_SPECIES`](@ref) | `Dict{String, SubatomicSpecies}` | mass, charge, spin, moment, and g-factor of each subatomic particle |
-| [`ATOMIC_SPECIES`](@ref) | `Dict{String, AtomicSpecies}` | atomic number, plus mass-number-keyed tables of isotope masses (in daltons) and ground-state nuclear spins (in ħ) |
-
-```julia
-SUBATOMIC_SPECIES["electron"].mass   # 510998.95069  eV/c²
-
-ATOMIC_SPECIES["He"].Z               # 2
-ATOMIC_SPECIES["He"].mass[3]         # 3.0160293201  u  (helium-3)
-ATOMIC_SPECIES["He"].mass[-1]        # abundance-averaged mass
-ATOMIC_SPECIES["He"].spin[3]         # 0.5  ħ  (helium-3)
-ATOMIC_SPECIES["He"].spin[4]         # 0.0  ħ  (helium-4)
-```
-
-The `spin` table has no `-1` key, because the abundance average has no
-meaningful nuclear spin.
-
-`SUBATOMIC_SPECIES` is built from the exported constants of the active CODATA
-release, so its values follow [`set_release`](@ref); the isotope masses in
-`ATOMIC_SPECIES` are release-independent tabulated data.
-Constructing a [`Species`](@ref) is the supported way to
-get at these numbers; reach for the dictionaries only when you need data the
-accessors do not expose, such as the mass of an isotope you have not built a
-species for.
-
-See the [API Reference](@ref) for the full docstrings, including those of the
-[`SubatomicSpecies`](@ref AtomicAndPhysicalConstants.SubatomicSpecies) and
-[`AtomicSpecies`](@ref AtomicAndPhysicalConstants.AtomicSpecies) element types.
+The tables behind the constructor — isotope masses and nuclear spins — are
+exported as dictionaries, and the sources they are drawn from are described in
+[Internals](@ref man-internals-dicts).

@@ -16,6 +16,7 @@ makedocs(
         "Constants"          => "constants.md",
         "CODATA Releases"    => "codata.md",
         "API Reference"      => "api.md",
+        "Internals"          => "internals.md",
     ],
     checkdocs = :exports,   # warn on exported symbols without docstrings
     doctest   = true,
