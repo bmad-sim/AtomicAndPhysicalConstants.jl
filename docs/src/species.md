@@ -128,21 +128,21 @@ massof(p)     # 9.3827208943e8   eV/c²
 ### Quick reference
 
 Three of the accessors take a keyword argument that switches the unit or sign
-convention; those are shown in the last column alongside the default.
+convention; the signatures below show its default.  `sp` is any `Species`.
 
 | Function | Returns | Units / convention |
 |----------|---------|--------------------|
-| [`nameof`](@ref Base.nameof(::Species)) | canonical species name | `String`, in the `#mAS±c` form |
-| [`massof`](@ref) | rest mass | eV/c²; `massof(sp, AMU = true)` gives atomic mass units (daltons) |
-| [`chargeof`](@ref) | net charge | multiples of the elementary charge *e*; `chargeof(sp, C = true)` gives coulombs, using the active [`E_CHARGE`](@ref) |
-| [`spinof`](@ref) | spin; for an atom, the **nuclear** spin | ħ |
-| [`momentof`](@ref) | magnetic dipole moment | eV/T |
-| [`g_spin`](@ref) | spin g-factor | dimensionless \|g\|; `g_spin(sp, signed = true)` gives the signed value (negative for the electron, muon, neutron, and helion) |
-| [`gyromagnetic_anomaly`](@ref) | gyromagnetic anomaly *a* | dimensionless |
-| [`iso_of`](@ref) | mass number | integer |
-| [`atomicnumberof`](@ref) | atomic number *Z* | integer, negative for anti-atoms |
-| [`kindof`](@ref) | particle classification | [`Kind.T`](@ref AtomicAndPhysicalConstants.Kind) enum value |
-| [`isnullspecies`](@ref) | whether the species is a placeholder | `Bool` |
+| [`nameof(sp)`](@ref Base.nameof(::Species)) | canonical species name | `String`, in the `#mAS±c` form |
+| [`massof(sp; AMU = false)`](@ref massof) | rest mass | eV/c², or atomic mass units (daltons) with `AMU = true` |
+| [`chargeof(sp; C = false)`](@ref chargeof) | net charge | multiples of the elementary charge *e*, or coulombs with `C = true`, using the active [`E_CHARGE`](@ref) |
+| [`spinof(sp)`](@ref spinof) | spin; for an atom, the **nuclear** spin | ħ |
+| [`momentof(sp)`](@ref momentof) | magnetic dipole moment | eV/T |
+| [`g_spin(sp; signed = false)`](@ref g_spin) | spin g-factor | dimensionless \|g\|, or the signed value with `signed = true` (negative for the electron, muon, neutron, and helion) |
+| [`gyromagnetic_anomaly(sp)`](@ref gyromagnetic_anomaly) | gyromagnetic anomaly *a* | dimensionless |
+| [`iso_of(sp)`](@ref iso_of) | mass number | integer |
+| [`atomicnumberof(sp)`](@ref atomicnumberof) | atomic number *Z* | integer, negative for anti-atoms |
+| [`kindof(sp)`](@ref kindof) | particle classification | [`Kind.T`](@ref AtomicAndPhysicalConstants.Kind) enum value |
+| [`isnullspecies(sp)`](@ref isnullspecies) | whether the species is a placeholder | `Bool` |
 
 All of the numeric accessors return `Float64` except [`iso_of`](@ref) and
 [`atomicnumberof`](@ref), which return `Int`.
