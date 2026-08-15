@@ -16,16 +16,20 @@ AtomicAndPhysicalConstants.CODATA_release
 Species
 ```
 
-## Accessor functions
+## [Accessor functions](@id api-accessors)
+
+The [Species](@ref man-species-accessors) page describes the unit conventions
+these follow and what each one returns for a species that does not carry the
+property.
 
 ```@docs
 Base.nameof(::Species)
 chargeof
 massof
 spinof
+momentof
 g_spin
 gyromagnetic_anomaly
-momentof
 iso_of
 atomicnumberof
 kindof

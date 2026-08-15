@@ -354,9 +354,10 @@ import Base: getproperty
 
 function getproperty(obj::Species, field::Symbol)
   
-  error("Do not use the 'base.getproperty' syntax to access fields 
-  of Species objects: instead use the provided functions; 
-  massof, chargeof, spinof, momentof, isotopeof, kindof, or nameof.")
+  error("Do not use the '.' syntax to access fields of Species objects:
+  instead use the provided accessor functions; nameof, massof, chargeof,
+  spinof, momentof, g_spin, gyromagnetic_anomaly, iso_of, atomicnumberof,
+  kindof, or isnullspecies.")
 
 end
 

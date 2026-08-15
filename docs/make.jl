@@ -12,11 +12,9 @@ makedocs(
     ),
     pages = [
         "Home"               => "index.md",
-        "Manual" => [
-            "Species"        => "man/species.md",
-            "Constants"      => "man/constants.md",
-            "CODATA Releases"=> "man/codata.md",
-        ],
+        "Species"            => "species.md",
+        "Constants"          => "constants.md",
+        "CODATA Releases"    => "codata.md",
         "API Reference"      => "api.md",
     ],
     checkdocs = :exports,   # warn on exported symbols without docstrings

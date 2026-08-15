@@ -10,7 +10,7 @@
 
 ```julia-repl
 julia> using Pkg
-julia> Pkg.add("AtomicAndPhysicalConstants.jl")
+julia> Pkg.add("AtomicAndPhysicalConstants")
 ```
 
 ## Quick Start
@@ -59,7 +59,7 @@ julia> nameof(anti_p)
 "anti-proton"
 
 julia> chargeof(p) # charge of the particle in [e]
-1
+1.0
 
 julia> massof(e) # retrieve the mass of a particle in [eV/c²]
 510998.95069
@@ -79,13 +79,26 @@ julia> g_spin(e, signed=true) # signed g-factor
 julia> gyromagnetic_anomaly(e) # (|g| - 2)/2
 0.0011596521804599913
 
-julia> momentof(p) # magnetic dipole moment in [eV/T] - errors for atoms
+julia> momentof(p) # magnetic dipole moment in [eV/T] - 0.0 for atoms
 8.804315113647238e-8
 
-julia> iso_of(he) # mass number of the specified atom - errors for non-atoms
+julia> iso_of(he) # mass number of the specified atom - 0 for non-atoms
 3
 
+julia> atomicnumberof(he) # atomic number - errors for non-atoms
+2
+
+julia> kindof(e) # particle classification
+Kind.LEPTON = 2
+
 ```
+
+Fields of a `Species` are reachable only through these accessor functions;
+`e.mass` raises an error on purpose.  The
+[Species page](https://bmad-sim.github.io/AtomicAndPhysicalConstants.jl/dev/species/#man-species-accessors)
+of the documentation lists all of them, the keyword arguments that switch units
+(`AMU`, `C`, `signed`), and what each returns for a species that does not carry
+the property.
 
 ## Supported Particle Species
 
@@ -94,7 +107,7 @@ julia> iso_of(he) # mass number of the specified atom - errors for non-atoms
 The following list of strings may be used as arguments to the `Species()` function.
 
 - `"electron"`, `"positron"`
-- `"proton", `"anti-proton"`
+- `"proton"`, `"anti-proton"`
 - `"neutron"`, `"anti-neutron"`
 - `"muon"`, `"anti-muon"`
 - `"pion0"`, `"pion+"`, `"pion-"`
@@ -127,12 +140,12 @@ Charge state may be specified for atoms.
 Positive charges with magnitude less than 4_e_ may be given with repeated plus symbols, _e.g._
 ```julia-repl
 julia> chargeof(Species("Li+++"))
-3
+3.0
 ```
 Similarly, negative charges with magnitude less than 4_e_ may be given with repeated minus symbols, _e.g._
 ```julia-repl
 julia> chargeof(Species("K---"))
--3
+-3.0
 ```
 A single positive or negative sign followed by an integer may be used the same way, _e.g._
 ```julia-repl
@@ -219,13 +232,16 @@ Both Pion masses are obtained from PDG, rather than CODATA.
 - `H_PLANCK`: Planck's constant in [eV⋅s]
 - `H_BAR`: Planck's reduced constant in [eV⋅s]
 - `CLASSICAL_RADIUS_FACTOR`: classical radius factor e²/(4πε₀) = rₑmₑc² in [eV⋅m], derived as `R_ELECTRON * M_ELECTRON`
+- `K_BOLTZMANN`: Boltzmann's constant in [eV/K]
 - `EPS_0`: Permittivity of free space in [1/(eV⋅m)]
 - `MU_0`: Vacuum Permeability in [eV⋅s²/m]
+- `RELEASE_YEAR`: the CODATA release year currently in effect
 
 
 ### Conversion Constants
-- `KG_PER_AMU`:
-- `EV_PER_AMU`
-- `J_PER_EV`
-- `G_PER_EV`
-- `KG_PER_MEV_C2`
+- `KG_PER_AMU`: kilograms per dalton
+- `EV_PER_AMU`: eV/c² per dalton
+- `J_PER_EV`: joules per eV
+- `EV_PER_J`: eV per joule
+- `G_PER_EV`: grams per eV/c²
+- `KG_PER_MEV_C2`: kilograms per MeV/c²

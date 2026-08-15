@@ -22,6 +22,8 @@ Pass the openPMD name exactly:
 | `"muon"` / `"anti-muon"` | muon / antimuon |
 | `"pion0"` / `"pion+"` / `"pion-"` | pions |
 | `"deuteron"` / `"anti-deuteron"` | deuteron / antideuteron |
+| `"triton"` / `"anti-triton"` | triton / antitriton |
+| `"helion"` / `"anti-helion"` | helion / antihelion |
 | `"photon"` | photon |
 
 # Atomic species
