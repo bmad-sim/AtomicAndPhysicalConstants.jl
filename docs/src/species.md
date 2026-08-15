@@ -127,14 +127,17 @@ massof(p)     # 9.3827208943e8   eV/c²
 
 ### Quick reference
 
+Three of the accessors take a keyword argument that switches the unit or sign
+convention; those are shown in the last column alongside the default.
+
 | Function | Returns | Units / convention |
 |----------|---------|--------------------|
 | [`nameof`](@ref Base.nameof(::Species)) | canonical species name | `String`, in the `#mAS±c` form |
-| [`massof`](@ref) | rest mass | eV/c² (daltons with `AMU = true`) |
-| [`chargeof`](@ref) | net charge | multiples of *e* (coulombs with `C = true`) |
+| [`massof`](@ref) | rest mass | eV/c²; `massof(sp, AMU = true)` gives atomic mass units (daltons) |
+| [`chargeof`](@ref) | net charge | multiples of the elementary charge *e*; `chargeof(sp, C = true)` gives coulombs, using the active [`E_CHARGE`](@ref) |
 | [`spinof`](@ref) | spin | ħ |
 | [`momentof`](@ref) | magnetic dipole moment | eV/T |
-| [`g_spin`](@ref) | spin g-factor | dimensionless, absolute value by default |
+| [`g_spin`](@ref) | spin g-factor | dimensionless \|g\|; `g_spin(sp, signed = true)` gives the signed value (negative for the electron, muon, neutron, and helion) |
 | [`gyromagnetic_anomaly`](@ref) | gyromagnetic anomaly *a* | dimensionless |
 | [`iso_of`](@ref) | mass number | integer |
 | [`atomicnumberof`](@ref) | atomic number *Z* | integer, negative for anti-atoms |
@@ -143,19 +146,6 @@ massof(p)     # 9.3827208943e8   eV/c²
 
 All of the numeric accessors return `Float64` except [`iso_of`](@ref) and
 [`atomicnumberof`](@ref), which return `Int`.
-
-### Keyword arguments
-
-Three accessors take a keyword that switches the unit or sign convention:
-
-| Call | Result |
-|------|--------|
-| `massof(sp)` | mass in eV/c² |
-| `massof(sp, AMU = true)` | mass in atomic mass units (daltons) |
-| `chargeof(sp)` | charge in multiples of the elementary charge *e* |
-| `chargeof(sp, C = true)` | charge in coulombs, using the active [`E_CHARGE`](@ref) |
-| `g_spin(sp)` | \|g\|, the unsigned g-factor |
-| `g_spin(sp, signed = true)` | the signed g-factor (negative for the electron, muon, neutron, helion) |
 
 [`gyromagnetic_anomaly`](@ref) is built on the *unsigned* g-factor, so
 ``a = (|g| - 2)/2`` comes out positive for the particles whose stored g-factor
@@ -226,21 +216,8 @@ julia> nameof(Species("Li+"))
 "Li+1"
 ```
 
-### Reference
-
-```@docs
-Base.nameof(::Species)
-chargeof
-massof
-spinof
-momentof
-g_spin
-gyromagnetic_anomaly
-iso_of
-atomicnumberof
-kindof
-isnullspecies
-```
+The full docstring of each accessor is in the
+[API Reference](@ref api-accessors).
 
 ---
 

@@ -16,24 +16,25 @@ AtomicAndPhysicalConstants.CODATA_release
 Species
 ```
 
-## Accessor functions
+## [Accessor functions](@id api-accessors)
 
-The full docstrings for these live on the
-[Species](@ref man-species-accessors) page, next to the narrative description of
-the unit conventions and of what each one returns for species that do not carry
-the property:
+The [Species](@ref man-species-accessors) page describes the unit conventions
+these follow and what each one returns for a species that does not carry the
+property.
 
-- [`nameof`](@ref Base.nameof(::Species)) — canonical species name
-- [`chargeof`](@ref) — net charge, in units of *e* or in coulombs
-- [`massof`](@ref) — rest mass, in eV/c² or in daltons
-- [`spinof`](@ref) — spin, in ħ
-- [`momentof`](@ref) — magnetic dipole moment, in eV/T
-- [`g_spin`](@ref) — spin g-factor, unsigned or signed
-- [`gyromagnetic_anomaly`](@ref) — ``a = (|g| - 2)/2``
-- [`iso_of`](@ref) — mass number
-- [`atomicnumberof`](@ref) — atomic number *Z*
-- [`kindof`](@ref) — particle classification
-- [`isnullspecies`](@ref) — null-species test
+```@docs
+Base.nameof(::Species)
+chargeof
+massof
+spinof
+momentof
+g_spin
+gyromagnetic_anomaly
+iso_of
+atomicnumberof
+kindof
+isnullspecies
+```
 
 ## Configuration
 
