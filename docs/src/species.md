@@ -128,21 +128,21 @@ massof(p)     # 9.3827208943e8   eV/c²
 ### Quick reference
 
 Three of the accessors take a keyword argument that switches the unit or sign
-convention; those are shown in the last column alongside the default.
+convention; the signatures below show its default.  `sp` is any `Species`.
 
 | Function | Returns | Units / convention |
 |----------|---------|--------------------|
-| [`nameof`](@ref Base.nameof(::Species)) | canonical species name | `String`, in the `#mAS±c` form |
-| [`massof`](@ref) | rest mass | eV/c²; `massof(sp, AMU = true)` gives atomic mass units (daltons) |
-| [`chargeof`](@ref) | net charge | multiples of the elementary charge *e*; `chargeof(sp, C = true)` gives coulombs, using the active [`E_CHARGE`](@ref) |
-| [`spinof`](@ref) | spin | ħ |
-| [`momentof`](@ref) | magnetic dipole moment | eV/T |
-| [`g_spin`](@ref) | spin g-factor | dimensionless \|g\|; `g_spin(sp, signed = true)` gives the signed value (negative for the electron, muon, neutron, and helion) |
-| [`gyromagnetic_anomaly`](@ref) | gyromagnetic anomaly *a* | dimensionless |
-| [`iso_of`](@ref) | mass number | integer |
-| [`atomicnumberof`](@ref) | atomic number *Z* | integer, negative for anti-atoms |
-| [`kindof`](@ref) | particle classification | [`Kind.T`](@ref AtomicAndPhysicalConstants.Kind) enum value |
-| [`isnullspecies`](@ref) | whether the species is a placeholder | `Bool` |
+| [`nameof(sp)`](@ref Base.nameof(::Species)) | canonical species name | `String`, in the `#mAS±c` form |
+| [`massof(sp; AMU = false)`](@ref massof) | rest mass | eV/c², or atomic mass units (daltons) with `AMU = true` |
+| [`chargeof(sp; C = false)`](@ref chargeof) | net charge | multiples of the elementary charge *e*, or coulombs with `C = true`, using the active [`E_CHARGE`](@ref) |
+| [`spinof(sp)`](@ref spinof) | spin; for an atom, the **nuclear** spin | ħ |
+| [`momentof(sp)`](@ref momentof) | magnetic dipole moment | eV/T |
+| [`g_spin(sp; signed = false)`](@ref g_spin) | spin g-factor | dimensionless \|g\|, or the signed value with `signed = true` (negative for the electron, muon, neutron, and helion) |
+| [`gyromagnetic_anomaly(sp)`](@ref gyromagnetic_anomaly) | gyromagnetic anomaly *a* | dimensionless |
+| [`iso_of(sp)`](@ref iso_of) | mass number | integer |
+| [`atomicnumberof(sp)`](@ref atomicnumberof) | atomic number *Z* | integer, negative for anti-atoms |
+| [`kindof(sp)`](@ref kindof) | particle classification | [`Kind.T`](@ref AtomicAndPhysicalConstants.Kind) enum value |
+| [`isnullspecies(sp)`](@ref isnullspecies) | whether the species is a placeholder | `Bool` |
 
 All of the numeric accessors return `Float64` except [`iso_of`](@ref) and
 [`atomicnumberof`](@ref), which return `Int`.
@@ -162,8 +162,51 @@ most accessors return a neutral value:
 | [`momentof`](@ref) | `0.0` for atoms and the null species |
 | [`g_spin`](@ref) | `0.0` for atomic species (no g-factor is stored) |
 | [`gyromagnetic_anomaly`](@ref) | `NaN` for photons, atoms, and the null species |
+| [`spinof`](@ref) | `NaN` for an atom given without a mass number, and for the few isotopes NUBASE leaves unassigned |
 | [`iso_of`](@ref) | `0` for subatomic particles; `-1` for an atom given without a mass number |
 | [`atomicnumberof`](@ref) | **throws an error** for anything that is not an atom |
+
+### Nuclear spin
+
+For an atomic species, [`spinof`](@ref) returns the **nuclear** spin, from the
+tabulated ground-state values of
+[NUBASE2020](https://www-nds.iaea.org/amdc/).  Electron spin is not included,
+since the total angular momentum of an atom depends on its electronic state,
+which `Species` does not model.  Two consequences follow: ionising an atom does
+not change its spin, and an anti-nucleus has the same spin as its mirror.
+
+Nuclear spin is **not** a function of the mass number.  Nucleons pair off with
+opposite spins, so every even-even nucleus has spin 0 and no closed formula in
+*A* reproduces the tabulated values:
+
+```jldoctest species-accessors
+julia> using AtomicAndPhysicalConstants
+
+julia> spinof(Species("#4He"))    # even-even: two paired protons, two paired neutrons
+0.0
+
+julia> spinof(Species("#3He"))    # one unpaired neutron
+0.5
+
+julia> spinof(Species("#12C"))
+0.0
+
+julia> spinof(Species("#235U"))
+3.5
+```
+
+An atom given without a mass number has no single nuclear spin — the abundance
+average runs over isotopes with differing spins — so `NaN` is returned:
+
+```jldoctest species-accessors
+julia> spinof(Species("He"))
+NaN
+```
+
+Every isotope that occurs naturally has a directly measured spin.  For nuclei
+far from stability the tabulated value may come from NUBASE systematics, and a
+small number of exotic isotopes carry no unambiguous assignment at all; those
+also return `NaN`.
 
 ### Worked example
 
@@ -241,32 +284,8 @@ kindof(Species("Fe"))       == Kind.ATOM     # true
 
 ---
 
-## Reference data dictionaries
+## Going further
 
-Two dictionaries back the species constructor and are exported for advanced use.
-Both are keyed by the same strings the constructor accepts.
-
-| Dictionary | Type | Contents |
-|------------|------|----------|
-| [`SUBATOMIC_SPECIES`](@ref) | `Dict{String, SubatomicSpecies}` | mass, charge, spin, moment, and g-factor of each subatomic particle |
-| [`ATOMIC_SPECIES`](@ref) | `Dict{String, AtomicSpecies}` | atomic number and a mass-number-keyed table of isotope masses, in daltons |
-
-```julia
-SUBATOMIC_SPECIES["electron"].mass   # 510998.95069  eV/c²
-
-ATOMIC_SPECIES["He"].Z               # 2
-ATOMIC_SPECIES["He"].mass[3]         # 3.0160293201  u  (helium-3)
-ATOMIC_SPECIES["He"].mass[-1]        # abundance-averaged mass
-```
-
-`SUBATOMIC_SPECIES` is built from the exported constants of the active CODATA
-release, so its values follow [`set_release`](@ref); the isotope masses in
-`ATOMIC_SPECIES` are release-independent tabulated data.
-Constructing a [`Species`](@ref) is the supported way to
-get at these numbers; reach for the dictionaries only when you need data the
-accessors do not expose, such as the mass of an isotope you have not built a
-species for.
-
-See the [API Reference](@ref) for the full docstrings, including those of the
-[`SubatomicSpecies`](@ref AtomicAndPhysicalConstants.SubatomicSpecies) and
-[`AtomicSpecies`](@ref AtomicAndPhysicalConstants.AtomicSpecies) element types.
+The tables behind the constructor — isotope masses and nuclear spins — are
+exported as dictionaries, and the sources they are drawn from are described in
+[Internals](@ref man-internals-dicts).

@@ -107,12 +107,32 @@ end
 
 Return the spin of `species` in units of the reduced Planck constant ħ.
 
+For an atomic species this is the **nuclear** spin, taken from the tabulated
+NUBASE2020 ground-state values.  Electron spin is not included: the total
+angular momentum of an atom depends on its electronic state, which `Species`
+does not model.  Ionisation therefore does not change the result, and an
+anti-nucleus has the same spin as its mirror.
+
+Returns `NaN` when no spin is defined:
+
+- for an atom given without a mass number (*e.g.* `Species("He")`), because the
+  abundance average runs over isotopes with differing spins;
+- for the handful of exotic isotopes to which NUBASE assigns no unambiguous
+  ground-state spin.
+
+Note that spin is *not* a function of the mass number — nucleons pair off with
+opposite spins, so every even-even nucleus has spin 0.
+
 # Examples
 
 ```julia
 spinof(Species("electron"))    # 0.5
 spinof(Species("proton"))      # 0.5
 spinof(Species("photon"))      # 1.0
+spinof(Species("#4He"))        # 0.0   even-even nucleus
+spinof(Species("#3He"))        # 0.5
+spinof(Species("#3He+2"))      # 0.5   ionisation does not change the nucleus
+spinof(Species("He"))          # NaN   abundance average, no single value
 ```
 """
 function spinof(species::Species)
@@ -462,7 +482,16 @@ function Base.show(io::IO, ::MIME"text/plain", species::Species)
     println(io, "Species: $(getfield(species, :name))")
     println(io, "Charge: $(Int(chargeof(species))) e")
     println(io, "Mass: $(massof(species)) eV/c²")
-    println(io, "Spin: $(spinof(species)) ħ")
+    # spinof returns NaN where no nuclear spin is defined; printing "NaN ħ" would read
+    # as a defect rather than as "undefined", so say which of the two cases applies.
+    s = spinof(species)
+    println(io, if !isnan(s)
+      "Spin: $s ħ"
+    elseif iso_of(species) > 0
+      "Spin: undefined (not assigned in NUBASE2020)"
+    else
+      "Spin: undefined (no mass number given)"
+    end)
     println(io, "Moment: $(momentof(species)) eV/T")
     println(io, "G-factor: $(g_spin(species))")
     if iso_of(species) > 0 

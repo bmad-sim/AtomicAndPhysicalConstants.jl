@@ -58,3 +58,4 @@ returns for species that do not carry the property.
 | [Constants](@ref man-constants) | Exported physical constants |
 | [CODATA Releases](@ref man-codata) | Switching between CODATA release years |
 | [API Reference](@ref) | Complete docstring index |
+| [Internals](@ref man-internals) | Data sources, storage format, and maintainer scripts |

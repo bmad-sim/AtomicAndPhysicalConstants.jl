@@ -21,7 +21,7 @@
 
   # Test spinof function
   @test spinof(e) == 0.5
-  @test spinof(C) == 6.0
+  @test spinof(C) == 0.0  # 12C is even-even, so its ground-state nuclear spin is 0
 
   @test g_spin(e, signed=true) ≈ G_ELECTRON
 

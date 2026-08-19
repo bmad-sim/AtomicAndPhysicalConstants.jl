@@ -67,7 +67,10 @@ julia> massof(e) # retrieve the mass of a particle in [eV/c²]
 julia> massof(h, AMU=true) # or grab the mass of an atom in AMU (also called Daltons)
 1.0079407540557772
 
-julia> spinof(e) # spin projection of the particle in [ħ]
+julia> spinof(e) # spin of the particle in [ħ]
+0.5
+
+julia> spinof(he) # for an atom, the nuclear spin (NUBASE2020); NaN if no mass number is given
 0.5
 
 julia> g_spin(e) # spin g-factor (dimensionless), absolute value by default
