@@ -136,9 +136,8 @@ year.  The PDG REST API serves only the current edition, so both
 `update_constants.jl` and `update_pion_mass.jl` read PDG's `pdgall` SQLite
 database instead, which holds the Summary Table values of every past edition.
 It is about 70 MB; either script downloads the newest one listed at
-<https://pdg.lbl.gov/api> unless `--db` names a local copy.  Julia's standard
-library has no SQLite reader, so the `sqlite3` command-line tool must be
-installed (macOS ships it).  The shared code is in `update/release_files.jl`.
+<https://pdg.lbl.gov/api> unless `--db` names a local copy, and reads it with
+SQLite.jl.  The shared code is in `update/release_files.jl`.
 
 `update_constants.jl` sets the pion masses of each release file it writes.
 `update_pion_mass.jl` rewrites only the `M_PION_0` and `M_PION_CHARGED` lines

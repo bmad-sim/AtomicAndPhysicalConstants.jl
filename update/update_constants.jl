@@ -21,7 +21,7 @@
 # The pion masses are not CODATA quantities: they are taken from the PDG Review
 # of Particle Physics edition of the same year (see release_files.jl).  That
 # downloads PDG's historical database, about 70 MB, unless `--db` names a local
-# copy, and needs the `sqlite3` command-line tool.
+# copy.
 
 using AtomicAndPhysicalConstants
 include(joinpath(@__DIR__, "release_files.jl"))
@@ -373,7 +373,7 @@ function main(year::Int; force::Bool=false, db::Union{Nothing,AbstractString}=no
   println("quantities parsed: ", length(table))
   isempty(missing) || println("not tabulated in $year, written as NaN: ", join(missing, ", "))
 
-  pions = pdg_pion_masses(something(db, pdg_database()), [year])[year]
+  pions = pdg_pion_masses(db === nothing ? pdg_database() : db, [year])[year]
 
   known = AtomicAndPhysicalConstants.CODATA_MAP
 

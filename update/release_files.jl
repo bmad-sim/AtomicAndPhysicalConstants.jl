@@ -7,6 +7,7 @@
 # This file is `include`d by those scripts and is not meant to be run directly.
 
 import Downloads
+using SQLite
 
 const SRC = normpath(joinpath(@__DIR__, "..", "src"))
 
@@ -35,8 +36,7 @@ end
 #
 # The PDG REST API serves only the current edition, so the masses are read from
 # PDG's "pdgall" SQLite database, which also holds the Summary Table values of
-# every past edition.  Julia's standard library has no SQLite reader, so the
-# `sqlite3` command-line tool is used.
+# every past edition.
 
 const PDG_API_INDEX = "https://pdg.lbl.gov/api"
 
@@ -72,21 +72,26 @@ PDG database at `db`.  These are the Summary Table values, which are PDG's fit
 values (`value`), not the rounded numbers printed in the table (`value_text`).
 """
 function pdg_pion_masses(db::AbstractString, editions)
-  sqlite = Sys.which("sqlite3")
-  sqlite === nothing && error("the sqlite3 command-line tool is needed to read the PDG database")
+  # SQLite.DB creates an empty database at a path that does not exist.
+  isfile(db) || error("no PDG database at $db")
+  conn = SQLite.DB(db)
   masses = Dict(Int(e) => Dict{Symbol,Float64}() for e in editions)
-  for (field, pdgid) in PIONS
-    # %.17g prints every digit of the stored double, so the parse is exact.
-    query = "select edition, printf('%.17g', value), unit_text from pdgdata " *
-            "where pdgid = '$pdgid' and in_summary_table = 1;"
-    rows = [split(l, '|') for l in eachline(`$sqlite -readonly -separator '|' $db $query`)]
-    for e in editions
-      hits = filter(r -> r[1] == string(e), rows)
-      length(hits) == 1 || error("expected one Summary Table $pdgid value for the $e edition, found $(length(hits))")
-      _, value, unit = hits[1]
+  try
+    for (field, pdgid) in PIONS, e in editions
+      # A row is a view of the cursor, so its fields are read while iterating.
+      rows = [(Float64(r.value), r.unit_text) for r in DBInterface.execute(conn,
+        "select value, unit_text from pdgdata " *
+        "where pdgid = ? and edition = ? and in_summary_table = 1", (pdgid, string(e)))]
+      length(rows) == 1 ||
+        error("expected one Summary Table $pdgid value for the $e edition, found $(length(rows))")
+      value, unit = rows[1]
       unit == "MeV" || error("$pdgid in the $e edition is in $unit, expected MeV")
-      masses[e][field] = shift(value, 6)
+      # repr is the shortest decimal that reads back as the stored double, as the
+      # PDG API prints it; moving its decimal point to eV is then exact.
+      masses[e][field] = shift(repr(value), 6)
     end
+  finally
+    close(conn)
   end
   return masses
 end

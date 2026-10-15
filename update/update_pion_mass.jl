@@ -9,8 +9,7 @@
 #     julia --project=update update/update_pion_mass.jl --db pdgall-2026.0.sqlite
 #
 # Without `--db` this downloads PDG's historical database (about 70 MB); pass a
-# local copy to skip that.  Needs the `sqlite3` command-line tool.  This
-# rewrites the `M_PION_0` and `M_PION_CHARGED` lines in place and touches
+# local copy to skip that.  This rewrites the `M_PION_0` and `M_PION_CHARGED` lines in place and touches
 # nothing else.  `update_constants.jl` sets the pion masses of a release it
 # writes the same way, so this is only needed if PDG revises a past edition.
 # Then run the test suite.
@@ -49,7 +48,7 @@ function main(; db::Union{Nothing,AbstractString}=nothing, dir::AbstractString=S
   years = sort([parse(Int, m[1]) for m in (match(r"^CODATA(\d{4})\.jl$", f) for f in readdir(dir))
                 if m !== nothing])
   isempty(years) && error("no CODATA<year>.jl files in $dir")
-  masses = pdg_pion_masses(something(db, pdg_database()), years)
+  masses = pdg_pion_masses(db === nothing ? pdg_database() : db, years)
   for y in years
     println("  CODATA$y <- PDG $y: M_PION_0 = $(masses[y][:M_PION_0]), ",
             "M_PION_CHARGED = $(masses[y][:M_PION_CHARGED]) eV/c^2")
