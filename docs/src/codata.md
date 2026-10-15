@@ -68,8 +68,10 @@ CODATA2014.C_LIGHT       # speed of light from the 2014 release
 ## Constants not in CODATA
 
 The pion masses (`M_PION_0`, `M_PION_CHARGED`) are not published in any CODATA
-release.  They are taken from Particle Data Group (PDG) tables and remain
-constant regardless of the selected release year.
+release.  They are taken from Particle Data Group (PDG) tables, currently the
+2026 edition, and remain constant regardless of the selected release year.
+The stored values are PDG's fit values, which carry more digits than the
+rounded numbers in the PDG summary tables (134.9768 and 139.57039 MeV).
 
 `CLASSICAL_RADIUS_FACTOR` is derived rather than tabulated: it is computed as
 `R_ELECTRON * M_ELECTRON` from the active release.  It is therefore not a field

@@ -95,10 +95,22 @@ end
   @test RELEASE_YEAR == CODATA2022.RELEASE_YEAR
   @test M_ELECTRON == CODATA2022.M_ELECTRON
 
-  # set_release: invalid year is rejected, valid years do not throw
-  @test_throws ArgumentError set_release(year="9999")
-  @test set_release(year="2014") === nothing
-  @test set_release() === nothing  # reset to default
+  # set_release: invalid year is rejected, valid years do not throw.
+  # set_release writes LocalPreferences.toml beside the active project, and may
+  # list the package under [extras] in its Project.toml, so both files are put
+  # back exactly as they were, or removed if they did not exist.
+  project = Base.active_project()
+  snapshot = Dict(f => (isfile(f) ? read(f) : nothing) for f in
+    [project; [joinpath(dirname(project), n) for n in Base.preferences_names]])
+  try
+    @test_throws ArgumentError set_release(year="9999")
+    @test set_release(year="2014") === nothing
+    @test set_release() === nothing  # reset to default
+  finally
+    for (f, bytes) in snapshot
+      bytes === nothing ? rm(f; force=true) : write(f, bytes)
+    end
+  end
 end
 
 @testset "Kind enum" begin

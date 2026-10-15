@@ -121,6 +121,13 @@ release, and prints the docs and test edits that remain.  NIST renamed several
 quantities between releases; one a release does not tabulate is written as
 `NaN`.
 
+`update_pion_mass.jl` reads the neutral and charged pion masses from the PDG
+API and rewrites the `M_PION_0` and `M_PION_CHARGED` lines in every release
+file, which all carry the same values.  It stores PDG's fit value rather than
+the rounded summary-table number, moved from MeV to eV.  `update_constants.jl`
+copies the pion masses into a new release file from the latest existing one,
+so after a new PDG edition run `update_pion_mass.jl` first.
+
 The last two rewrite the same `ATOMIC_SPECIES` literal, each replacing only the
 half it owns, so they can be run independently and in either order.  They share
 `update/species_table.jl`, which parses the literal and emits it again with

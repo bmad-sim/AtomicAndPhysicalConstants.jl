@@ -45,7 +45,7 @@ M_TRITON = 2.808921112e9,
 # picked up from PDG
 M_PION_0 = 1.349768277676847e8,
 # uncharged pion mass [eV]/c^2
-M_PION_CHARGED = 1.3957039098368132e8,
+M_PION_CHARGED = 1.395703909836813e8,
 # charged pion mass [eV]/c^2
 
 
