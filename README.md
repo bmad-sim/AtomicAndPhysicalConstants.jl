@@ -175,10 +175,11 @@ julia> set_release(year = "2014")
 ```
 
 This will change the base constants of AtomicAndPhysicalConstants to their recorded value in the specified CODATA release.
-The change is persistent, so to revert back to the default constants, run
+The change is persistent.  By default the package uses the most recent CODATA release it ships, and moves to a newer one when the package adds it.  To go back to following the most recent release, run
 ```julia-repl
 julia> set_release()
 ```
+Setting a year explicitly, even the most recent one, keeps that year after newer releases are added.
 
 ## Directly Exported Constants
 

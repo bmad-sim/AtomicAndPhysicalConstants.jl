@@ -14,7 +14,7 @@ use at runtime.
 | 2010 | first release that tabulates every quantity the package uses |
 | 2014 | |
 | 2018 | |
-| 2022 | **default** |
+| 2022 | most recent, so the **default** |
 
 ## Checking the active release
 
@@ -47,11 +47,23 @@ and persists across Julia sessions until changed again.
     error at load time listing the valid options rather than silently falling
     back to the default.
 
-To revert to the default (2022):
+## The default release
+
+With no release set, the package uses the most recent release it ships,
+currently 2022.  When a newer release is added to the package, it becomes the
+default for every environment that has not set one.
+
+`set_release()` with no argument removes the setting, so the environment goes
+back to following the most recent release:
 
 ```julia
-set_release()          # no argument → defaults to "2022"
+set_release()
+# [ Info: The CODATA release now follows the most recent one, currently 2022.
+#         Restart your Julia session for this change to take effect.
 ```
+
+Setting a year explicitly, including the current most recent one, pins it:
+`set_release(year = "2022")` keeps 2022 after a newer release is added.
 
 
 ## Direct access to release structs

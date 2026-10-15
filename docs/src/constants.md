@@ -5,7 +5,7 @@ active CODATA release.  All values are `Float64` scalars in the units shown belo
 
 The active release is selected at package-load time via a
 [Preferences.jl](https://github.com/JuliaPackaging/Preferences.jl) setting
-(default: 2022).  See [CODATA Releases](@ref man-codata) for how to change it.
+(default: the most recent release the package ships, currently 2022).  See [CODATA Releases](@ref man-codata) for how to change it.
 
 ---
 

@@ -104,7 +104,10 @@ end
     @test codata.M_PION_CHARGED ≈ pions[year][2]
   end
 
-  # Currently active release matches CODATA2022 (the default)
+  # With no release preference set, the active release is the most recent one
+  @test AtomicAndPhysicalConstants._LATEST_RELEASE ==
+        string(maximum(parse.(Int, keys(AtomicAndPhysicalConstants.CODATA_MAP))))
+  @test AtomicAndPhysicalConstants._LATEST_RELEASE == "2022"
   @test RELEASE_YEAR == CODATA2022.RELEASE_YEAR
   @test M_ELECTRON == CODATA2022.M_ELECTRON
 
@@ -115,10 +118,22 @@ end
   project = Base.active_project()
   snapshot = Dict(f => (isfile(f) ? read(f) : nothing) for f in
     [project; [joinpath(dirname(project), n) for n in Base.preferences_names]])
+  # The preference as written to the active project's preferences file, which
+  # is where set_release writes; Preferences.load_preference would also see
+  # settings inherited from environments further up the load path.
+  function written_release()
+    files = filter(isfile, [joinpath(dirname(project), n) for n in Base.preferences_names])
+    isempty(files) && return nothing
+    prefs = TOML.parsefile(last(files))
+    return get(get(prefs, "AtomicAndPhysicalConstants", Dict()), "release", nothing)
+  end
   try
     @test_throws ArgumentError set_release(year="9999")
     @test set_release(year="2014") === nothing
-    @test set_release() === nothing  # reset to default
+    @test written_release() == "2014"
+    # no argument removes the setting, so the default (most recent) applies
+    @test set_release() === nothing
+    @test written_release() === nothing
   finally
     for (f, bytes) in snapshot
       bytes === nothing ? rm(f; force=true) : write(f, bytes)

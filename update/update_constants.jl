@@ -362,6 +362,32 @@ function register(years; path::AbstractString=MODULE_FILE)
 end
 
 
+"""
+    todo(year, latest) -> Vector{String}
+
+The edits that adding release `year` leaves to be made by hand.  `latest` is
+whether it is the most recent release, and so the new default.
+"""
+function todo(year::Int, latest::Bool)
+  items = [
+    "test/values_test.jl: add \"$year\" to the set of release years and to the pion table, " *
+    "and to the untabulated table if any field above is NaN",
+    "docs/src/codata.md: the supported releases table, the pion mass table, and the " *
+    "quantities missing from a release",
+    "the release lists in the CODATA_release docstring (src/types.jl), the set_release " *
+    "docstring (src/functions.jl), and README.md",
+  ]
+  latest && append!(items, [
+    "test/values_test.jl: the \"Constant Access and Values\" testset checks the default " *
+    "release's values, and _LATEST_RELEASE and the CODATA20xx comparisons under " *
+    "\"CODATA releases\" name it; change them to $year",
+    "the \"currently <year>\" default in docs/src/codata.md and docs/src/constants.md, " *
+    "and the year range in docs/src/index.md",
+  ])
+  return items
+end
+
+
 function main(year::Int; force::Bool=false, db::Union{Nothing,AbstractString}=nothing,
               outdir::AbstractString=SRC, register_release::Bool=true)
   path = joinpath(outdir, "CODATA$year.jl")
@@ -385,16 +411,12 @@ function main(year::Int; force::Bool=false, db::Union{Nothing,AbstractString}=no
   changed = register(years)
   println(changed ? "registered CODATA$year in $MODULE_FILE" : "CODATA$year was already registered")
   if !haskey(known, string(year))
-    println("""
-
-    still to do by hand:
-      - test/values_test.jl: add "$year" to the set of release years
-      - docs/src/codata.md: add $year to the supported releases table and
-        the pion mass table
-      - src/types.jl: add CODATA$year to the CODATA_release docstring
-      - to make $year the default, change "2022" in src/constants.jl,
-        set_release in src/functions.jl, the docs, and test/values_test.jl
-    then run the test suite.""")
+    latest = year == maximum(years)
+    latest && println("\nCODATA$year is the most recent release, so it is now the default for\n" *
+                      "every environment that has not set one with set_release.")
+    println("\nstill to do by hand:")
+    foreach(t -> println("  - ", t), todo(year, latest))
+    println("then run the test suite.")
   else
     println("now review the diff and run the test suite.")
   end
