@@ -91,6 +91,19 @@ end
   @test CODATA2014.G_PER_AMU ≈ 1.660539040e-24
   @test CODATA2018.M_ELECTRON ≈ 0.51099895000e6
 
+  # Pion masses come from the PDG edition of the same year (PDG fit values)
+  pions = Dict(
+    "2002" => (134.9766175723e6, 139.5701807883e6),
+    "2006" => (134.9766175723e6, 139.5701807883e6),
+    "2010" => (134.9766175723e6, 139.5701807883e6),
+    "2014" => (134.9766175723e6, 139.5701807883e6),
+    "2018" => (134.9770445889e6, 139.5706078049e6),
+    "2022" => (134.9768277677e6, 139.5703909837e6))
+  for (year, codata) in AtomicAndPhysicalConstants.CODATA_MAP
+    @test codata.M_PION_0 ≈ pions[year][1]
+    @test codata.M_PION_CHARGED ≈ pions[year][2]
+  end
+
   # Currently active release matches CODATA2022 (the default)
   @test RELEASE_YEAR == CODATA2022.RELEASE_YEAR
   @test M_ELECTRON == CODATA2022.M_ELECTRON

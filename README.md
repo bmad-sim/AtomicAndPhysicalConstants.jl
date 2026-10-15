@@ -194,7 +194,7 @@ julia> set_release()
 - `M_PION_0`
 - `M_PION_CHARGED`
 
-Both Pion masses are obtained from PDG, rather than CODATA.
+Both Pion masses are obtained from PDG, rather than CODATA, using the PDG edition of the same year as the CODATA release.
 
 ### Magnetic dipole moments with units [eV/T]
 - `MU_ELECTRON`

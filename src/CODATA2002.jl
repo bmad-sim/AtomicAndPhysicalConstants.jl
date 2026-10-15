@@ -42,11 +42,11 @@ M_TRITON = NaN,
 # not tabulated in the 2002 release
 # Triton Mass [eV]/c^2
 
-# constants mysteriously missing from the release
-# picked up from PDG
-M_PION_0 = 1.349768277676847e8,
+# not tabulated by CODATA; fit values from the 2002 edition of the
+# PDG Review of Particle Physics
+M_PION_0 = 1.34976617572303e8,
 # uncharged pion mass [eV]/c^2
-M_PION_CHARGED = 1.395703909836813e8,
+M_PION_CHARGED = 1.39570180788299e8,
 # charged pion mass [eV]/c^2
 
 

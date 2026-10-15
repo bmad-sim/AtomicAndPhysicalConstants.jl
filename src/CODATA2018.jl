@@ -41,11 +41,11 @@ M_DEUTERON = 1.87561294257e9,
 M_TRITON = 2.80892113298e9,
 # Triton Mass [eV]/c^2
 
-# constants mysteriously missing from the release
-# picked up from PDG
-M_PION_0 = 1.349768277676847e8,
+# not tabulated by CODATA; fit values from the 2018 edition of the
+# PDG Review of Particle Physics
+M_PION_0 = 1.349770445888749e8,
 # uncharged pion mass [eV]/c^2
-M_PION_CHARGED = 1.395703909836813e8,
+M_PION_CHARGED = 1.395706078048715e8,
 # charged pion mass [eV]/c^2
 
 

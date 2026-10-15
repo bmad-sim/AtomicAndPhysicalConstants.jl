@@ -7,6 +7,7 @@
 #
 #     julia --project=. update/update_constants.jl 2026            # add a release
 #     julia --project=. update/update_constants.jl 2018 --force    # regenerate one
+#     julia --project=. update/update_constants.jl 2026 --db pdgall-2026.0.sqlite
 #
 # NIST serves the newest release at Table/allascii.txt and moves it to
 # ArchiveASCII/allascii_<year>.txt once a newer one is published, so the archive
@@ -16,13 +17,15 @@
 # Adding a release also inserts it into the include list, `CODATA_MAP`, and the
 # exports in `src/AtomicAndPhysicalConstants.jl`.  It does not change the
 # default release; the script prints the remaining manual steps when it is done.
-# The pion masses are not CODATA quantities: they are carried over unchanged
-# from the latest release already in the package (see update_pion_mass.jl).
+#
+# The pion masses are not CODATA quantities: they are taken from the PDG Review
+# of Particle Physics edition of the same year (see release_files.jl).  That
+# downloads PDG's historical database, about 70 MB, unless `--db` names a local
+# copy, and needs the `sqlite3` command-line tool.
 
 using AtomicAndPhysicalConstants
-import Downloads
+include(joinpath(@__DIR__, "release_files.jl"))
 
-const SRC = normpath(joinpath(@__DIR__, "..", "src"))
 const MODULE_FILE = joinpath(SRC, "AtomicAndPhysicalConstants.jl")
 const ARCHIVE_URL = "https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_%s.txt"
 const CURRENT_URL = "https://physics.nist.gov/cuu/Constants/Table/allascii.txt"
@@ -142,19 +145,6 @@ const FIELDS = [
 
 
 """
-    shift(s, n) -> Float64
-
-Parse the float literal `s` times `10^n`, by moving its exponent rather than
-multiplying, so the result is the correctly rounded value of the decimal.
-"""
-function shift(s::AbstractString, n::Int)
-  parts = split(lowercase(s), 'e')
-  exponent = length(parts) == 2 ? parse(Int, parts[2]) : 0
-  return parse(Float64, "$(parts[1])e$(exponent + n)")
-end
-
-
-"""
     extract(table) -> (consts, missing)
 
 Read the `FIELDS` from a parsed table, converted to the package's units, and
@@ -229,11 +219,11 @@ M_DEUTERON = $(v(:M_DEUTERON))
 M_TRITON = $(v(:M_TRITON))
 # Triton Mass [eV]/c^2
 
-# constants mysteriously missing from the release
-# picked up from PDG
-M_PION_0 = $(repr(pions[1])),
+# not tabulated by CODATA; fit values from the $year edition of the
+# PDG Review of Particle Physics
+M_PION_0 = $(repr(pions[:M_PION_0])),
 # uncharged pion mass [eV]/c^2
-M_PION_CHARGED = $(repr(pions[2])),
+M_PION_CHARGED = $(repr(pions[:M_PION_CHARGED])),
 # charged pion mass [eV]/c^2
 
 
@@ -372,7 +362,8 @@ function register(years; path::AbstractString=MODULE_FILE)
 end
 
 
-function main(year::Int; force::Bool=false, outdir::AbstractString=SRC, register_release::Bool=true)
+function main(year::Int; force::Bool=false, db::Union{Nothing,AbstractString}=nothing,
+              outdir::AbstractString=SRC, register_release::Bool=true)
   path = joinpath(outdir, "CODATA$year.jl")
   isfile(path) && !force && error("$path exists; pass --force to regenerate it")
 
@@ -382,9 +373,9 @@ function main(year::Int; force::Bool=false, outdir::AbstractString=SRC, register
   println("quantities parsed: ", length(table))
   isempty(missing) || println("not tabulated in $year, written as NaN: ", join(missing, ", "))
 
+  pions = pdg_pion_masses(something(db, pdg_database()), [year])[year]
+
   known = AtomicAndPhysicalConstants.CODATA_MAP
-  latest = known[maximum(keys(known))]
-  pions = (latest.M_PION_0, latest.M_PION_CHARGED)
 
   write(path, render(year, consts, missing, pions))
   println("wrote $path")
@@ -398,7 +389,8 @@ function main(year::Int; force::Bool=false, outdir::AbstractString=SRC, register
 
     still to do by hand:
       - test/values_test.jl: add "$year" to the set of release years
-      - docs/src/codata.md: add $year to the supported releases table
+      - docs/src/codata.md: add $year to the supported releases table and
+        the pion mass table
       - src/types.jl: add CODATA$year to the CODATA_release docstring
       - to make $year the default, change "2022" in src/constants.jl,
         set_release in src/functions.jl, the docs, and test/values_test.jl
@@ -409,7 +401,10 @@ function main(year::Int; force::Bool=false, outdir::AbstractString=SRC, register
 end
 
 if abspath(PROGRAM_FILE) == @__FILE__
-  args = filter(a -> !startswith(a, "--"), ARGS)
-  length(args) == 1 || error("usage: julia --project=. update/update_constants.jl <year> [--force]")
-  main(parse(Int, args[1]); force="--force" in ARGS)
+  i = findfirst(==("--db"), ARGS)
+  db = i === nothing ? nothing : ARGS[i+1]
+  args = filter(a -> !startswith(a, "--") && a != db, ARGS)
+  length(args) == 1 ||
+    error("usage: julia --project=. update/update_constants.jl <year> [--force] [--db <pdgall.sqlite>]")
+  main(parse(Int, args[1]); force="--force" in ARGS, db=db)
 end

@@ -68,10 +68,24 @@ CODATA2014.C_LIGHT       # speed of light from the 2014 release
 ## Constants not in CODATA
 
 The pion masses (`M_PION_0`, `M_PION_CHARGED`) are not published in any CODATA
-release.  They are taken from Particle Data Group (PDG) tables, currently the
-2026 edition, and remain constant regardless of the selected release year.
-The stored values are PDG's fit values, which carry more digits than the
-rounded numbers in the PDG summary tables (134.9768 and 139.57039 MeV).
+release.  Each release carries the values from the Particle Data Group (PDG)
+Review of Particle Physics edition of the same year.  The PDG editions from
+the years the CODATA releases were published (2005, 2008, 2012, 2016, 2019,
+2024) give the same values.
+
+| Release | PDG edition | `M_PION_0` (MeV/c²) | `M_PION_CHARGED` (MeV/c²) |
+|---------|-------------|---------------------|---------------------------|
+| 2002 | 2002 | 134.9766 ± 0.0006 | 139.57018 ± 0.00035 |
+| 2006 | 2006 | 134.9766 ± 0.0006 | 139.57018 ± 0.00035 |
+| 2010 | 2010 | 134.9766 ± 0.0006 | 139.57018 ± 0.00035 |
+| 2014 | 2014 | 134.9766 ± 0.0006 | 139.57018 ± 0.00035 |
+| 2018 | 2018 | 134.9770 ± 0.0005 | 139.57061 ± 0.00024 |
+| 2022 | 2022 | 134.9768 ± 0.0005 | 139.57039 ± 0.00018 |
+
+The table shows the rounded Summary Table numbers.  The stored values are
+PDG's fit values, which carry more digits (for example
+`CODATA2022.M_PION_0 == 1.349768277676847e8` eV/c²), so they differ from the
+rounded numbers well within the quoted uncertainty.
 
 `CLASSICAL_RADIUS_FACTOR` is derived rather than tabulated: it is computed as
 `R_ELECTRON * M_ELECTRON` from the active release.  It is therefore not a field

@@ -25,8 +25,9 @@ Units: **eV/c²**
 | `M_PION_0` | neutral pion † |
 | `M_PION_CHARGED` | charged pion † |
 
-† Pion masses are taken from the Particle Data Group (PDG), not from CODATA,
-and are the same across all release years.
+† Pion masses are taken from the Particle Data Group (PDG), not from CODATA.
+Each release uses the PDG edition of the same year; see
+[Constants not in CODATA](@ref).
 
 ‡ `M_TRITON` is not tabulated in the 2002 CODATA release; `CODATA2002.M_TRITON`
 is `NaN`.
