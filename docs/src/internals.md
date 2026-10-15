@@ -104,6 +104,16 @@ from its upstream sources.  They are **not** part of the package module: they ar
 run by hand from the repository root and rewrite files in `src/` in place, so
 their output should be reviewed as a diff and committed like any other change.
 
+Like `docs/` and `test/`, `update/` has its own environment.  Its
+`Project.toml` points at the package in the repository root through
+`[sources]`, which needs Julia 1.11 or later.  Set it up once with
+
+```bash
+julia --project=update -e 'using Pkg; Pkg.instantiate()'
+```
+
+and run each script with `julia --project=update update/<script>.jl`.
+
 | Script | Refreshes | Upstream |
 |--------|-----------|----------|
 | `update/update_constants.jl` | the per-release constant files | NIST CODATA tables |
@@ -112,7 +122,7 @@ their output should be reviewed as a diff and committed like any other change.
 | `update/update_spins.jl` | nuclear spins in `ATOMIC_SPECIES` | NUBASE2020 |
 
 `update_constants.jl` takes a release year, e.g.
-`julia --project=. update/update_constants.jl 2026`.  It reads NIST's ASCII
+`julia --project=update update/update_constants.jl 2026`.  It reads NIST's ASCII
 table for that year (the archive copy, or the current table if that is the
 requested release), writes `src/CODATA<year>.jl`, and registers it in the
 include list, `CODATA_MAP`, and the exports.  It refuses to overwrite an

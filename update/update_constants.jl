@@ -5,9 +5,9 @@
 #
 # Usage, from the package root:
 #
-#     julia --project=. update/update_constants.jl 2026            # add a release
-#     julia --project=. update/update_constants.jl 2018 --force    # regenerate one
-#     julia --project=. update/update_constants.jl 2026 --db pdgall-2026.0.sqlite
+#     julia --project=update update/update_constants.jl 2026            # add a release
+#     julia --project=update update/update_constants.jl 2018 --force    # regenerate one
+#     julia --project=update update/update_constants.jl 2026 --db pdgall-2026.0.sqlite
 #
 # NIST serves the newest release at Table/allascii.txt and moves it to
 # ArchiveASCII/allascii_<year>.txt once a newer one is published, so the archive
@@ -405,6 +405,6 @@ if abspath(PROGRAM_FILE) == @__FILE__
   db = i === nothing ? nothing : ARGS[i+1]
   args = filter(a -> !startswith(a, "--") && a != db, ARGS)
   length(args) == 1 ||
-    error("usage: julia --project=. update/update_constants.jl <year> [--force] [--db <pdgall.sqlite>]")
+    error("usage: julia --project=update update/update_constants.jl <year> [--force] [--db <pdgall.sqlite>]")
   main(parse(Int, args[1]); force="--force" in ARGS, db=db)
 end

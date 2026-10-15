@@ -5,8 +5,8 @@
 #
 # Usage, from the package root:
 #
-#     julia --project=. update/update_pion_mass.jl
-#     julia --project=. update/update_pion_mass.jl --db pdgall-2026.0.sqlite
+#     julia --project=update update/update_pion_mass.jl
+#     julia --project=update update/update_pion_mass.jl --db pdgall-2026.0.sqlite
 #
 # Without `--db` this downloads PDG's historical database (about 70 MB); pass a
 # local copy to skip that.  Needs the `sqlite3` command-line tool.  This
