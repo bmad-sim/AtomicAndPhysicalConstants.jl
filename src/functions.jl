@@ -359,9 +359,9 @@ See also: [`RELEASE_YEAR`](@ref).
 """
 function set_release(;year::String = "2022")
   if !haskey(CODATA_MAP, year)
-    throw(ArgumentError("You have provided an invalid release year: 
-                         options are currently 
-                         2002, 2006, 2010, 2014, 2018, or 2022."))
+    throw(ArgumentError("You have provided an invalid release year:
+                         options are currently
+                         $(join(sort(collect(keys(CODATA_MAP))), ", "))."))
   end
   @set_preferences!("release" => year)
   @info("The default CODATA release is now $year. Restart your Julia session for this change to take effect.")

@@ -163,7 +163,7 @@ true
 
 AtomicAndPhysicalConstants.jl supports CODATA releases beginning in 2002.
 The available releases are from: 2002, 2006, 2010, 2014, 2018, and 2022.
-Note that not all constants in this package are supported before the 2010 release.
+The 2002 and 2006 releases do not tabulate every constant; the missing ones are `NaN` for those releases, as noted below.
 
 
 To change your CODATA release year to _e.g._ 2014, run:
@@ -203,7 +203,9 @@ Both Pion masses are obtained from PDG, rather than CODATA.
 - `MU_MUON`
 - `MU_DEUTERON`
 - `MU_HELION`
+  - This constant is not available from the 2002 or 2006 CODATA releases
 - `MU_TRITON`
+  - This constant is not available from the 2002 CODATA release
 
 ### Dimensionless constants
 
@@ -216,15 +218,15 @@ Both Pion masses are obtained from PDG, rather than CODATA.
 - `G_NEUTRON`
 - `G_MUON`
 - `G_DEUTERON`
+  - This constant is not available from the 2002 CODATA release
 - `G_HELION`
   - This constant is not available from CODATA releases prior to 2010
 - `G_TRITON`
+  - This constant is not available from the 2002 CODATA release
 
 #### Gyromagnetic Anomalies
 - `ANOMALY_ELECTRON`
-  - This constant is not available from CODATA releases prior to 2010
 - `ANOMALY_MUON`
-  - This constant is not available from CODATA releases prior to 2010
 
 
 ### Other Physical Constants

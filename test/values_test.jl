@@ -71,6 +71,26 @@ end
         Set(["2002", "2006", "2010", "2014", "2018", "2022"])
   @test isconst(AtomicAndPhysicalConstants, :CODATA_MAP)
 
+  # Exactly the quantities NIST does not tabulate for a release are NaN
+  # (docs/src/codata.md, "Quantities missing from a release")
+  untabulated = Dict(
+    "2002" => Set([:M_TRITON, :MU_HELION, :MU_TRITON,
+                   :G_DEUTERON_NUCLEAR, :G_HELION_NUCLEAR, :G_TRITON_NUCLEAR]),
+    "2006" => Set([:MU_HELION, :G_HELION_NUCLEAR]))
+  for (year, codata) in AtomicAndPhysicalConstants.CODATA_MAP
+    nan = Set(f for f in fieldnames(typeof(codata)) if getfield(codata, f) isa Float64 && isnan(getfield(codata, f)))
+    @test nan == get(untabulated, year, Set{Symbol}())
+  end
+
+  # Each release carries its own values, read from the NIST tables
+  @test CODATA2002.ANOMALY_ELECTRON ≈ 1.1596521859e-3
+  @test CODATA2002.E_CHARGE ≈ 1.60217653e-19
+  @test CODATA2006.M_ELECTRON ≈ 0.510998910e6
+  @test CODATA2014.M_HELION ≈ 2808.391586e6
+  @test CODATA2014.M_DEUTERON ≈ 1875.612928e6
+  @test CODATA2014.G_PER_AMU ≈ 1.660539040e-24
+  @test CODATA2018.M_ELECTRON ≈ 0.51099895000e6
+
   # Currently active release matches CODATA2022 (the default)
   @test RELEASE_YEAR == CODATA2022.RELEASE_YEAR
   @test M_ELECTRON == CODATA2022.M_ELECTRON

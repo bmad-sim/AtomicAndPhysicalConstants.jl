@@ -111,6 +111,16 @@ their output should be reviewed as a diff and committed like any other change.
 | `update/update_isos.jl` | isotope masses in `ATOMIC_SPECIES` | NIST compositions table |
 | `update/update_spins.jl` | nuclear spins in `ATOMIC_SPECIES` | NUBASE2020 |
 
+`update_constants.jl` takes a release year, e.g.
+`julia --project=. update/update_constants.jl 2026`.  It reads NIST's ASCII
+table for that year (the archive copy, or the current table if that is the
+requested release), writes `src/CODATA<year>.jl`, and registers it in the
+include list, `CODATA_MAP`, and the exports.  It refuses to overwrite an
+existing release file unless given `--force`, does not change the default
+release, and prints the docs and test edits that remain.  NIST renamed several
+quantities between releases; one a release does not tabulate is written as
+`NaN`.
+
 The last two rewrite the same `ATOMIC_SPECIES` literal, each replacing only the
 half it owns, so they can be run independently and in either order.  They share
 `update/species_table.jl`, which parses the literal and emits it again with

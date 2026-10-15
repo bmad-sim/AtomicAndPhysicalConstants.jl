@@ -31,6 +31,9 @@ and are the same across all release years.
 ‡ `M_TRITON` is not tabulated in the 2002 CODATA release; `CODATA2002.M_TRITON`
 is `NaN`.
 
+NIST does not tabulate particle masses in eV.  Each mass is NIST's "mass energy
+equivalent in MeV" value with the decimal point moved to eV, which is exact.
+
 
 ---
 
@@ -47,8 +50,12 @@ Stored values are CODATA SI values (J/T) converted to eV/T via `EV_PER_J`.
 | `MU_NEUTRON` | neutron |
 | `MU_MUON` | muon |
 | `MU_DEUTERON` | deuteron |
-| `MU_HELION` | helion |
-| `MU_TRITON` | triton |
+| `MU_HELION` | helion ‖ |
+| `MU_TRITON` | triton ‖ |
+
+‖ `MU_HELION` is `NaN` for the 2002 and 2006 releases and `MU_TRITON` for 2002,
+which do not tabulate them.  See
+[Quantities missing from a release](@ref).
 
 
 ---
@@ -61,9 +68,9 @@ Stored values are CODATA SI values (J/T) converted to eV/T via `EV_PER_J`.
 | `G_PROTON` | proton | all releases |
 | `G_NEUTRON` | neutron | all releases |
 | `G_MUON` | muon | all releases |
-| `G_DEUTERON` | deuteron | all releases § |
+| `G_DEUTERON` | deuteron | 2006 and later § |
 | `G_HELION` | helion | 2010 and later § |
-| `G_TRITON` | triton | all releases § |
+| `G_TRITON` | triton | 2006 and later § |
 
 § These three are **not** the raw CODATA values — see below.
 
@@ -133,8 +140,8 @@ value near ``-2``.
 
 | Constant | Particle | CODATA availability |
 |----------|----------|---------------------|
-| `ANOMALY_ELECTRON` | electron | 2010 and later |
-| `ANOMALY_MUON` | muon | 2010 and later |
+| `ANOMALY_ELECTRON` | electron | all releases |
+| `ANOMALY_MUON` | muon | all releases |
 
 
 ---
