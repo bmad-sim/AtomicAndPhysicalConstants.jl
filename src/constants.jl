@@ -1,8 +1,14 @@
 # AtomicAndPhysicalConstants/src/defaults.jl
 """
+_LATEST_RELEASE::String - The most recent CODATA release year in `CODATA_MAP`,
+used when no release preference is set.
+"""
+const _LATEST_RELEASE::String = string(maximum(parse.(Int, keys(CODATA_MAP))))
+
+"""
 release::String - The release year of the currently selected CODATA values.
 """
-const release::String = @load_preference("release", "2022")
+const release::String = @load_preference("release", _LATEST_RELEASE)
 haskey(CODATA_MAP, release) || error(
   "Invalid CODATA release \"$release\"; valid: $(sort(collect(keys(CODATA_MAP)))). Use set_release().")
 const _ACTIVE = CODATA_MAP[release]

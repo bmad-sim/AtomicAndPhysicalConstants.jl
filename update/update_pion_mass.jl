@@ -1,33 +1,70 @@
+# AtomicAndPhysicalConstants.jl/update/update_pion_mass.jl
+#
+# Set the pion masses in every `src/CODATA<year>.jl` to those of the PDG
+# Review of Particle Physics edition of the same year.
+#
+# Usage, from the package root:
+#
+#     julia --project=update update/update_pion_mass.jl
+#     julia --project=update update/update_pion_mass.jl --db pdgall-2026.0.sqlite
+#
+# Without `--db` this downloads PDG's historical database (about 70 MB); pass a
+# local copy to skip that.  This rewrites the `M_PION_0` and `M_PION_CHARGED` lines in place and touches
+# nothing else.  `update_constants.jl` sets the pion masses of a release it
+# writes the same way, so this is only needed if PDG revises a past edition.
+# Then run the test suite.
+
+include(joinpath(@__DIR__, "release_files.jl"))
+
 
 """
-pdg_pion_masses() gets the masses of pion from Particle Data Group.
-It returns the mass of pion 0, pion +, pion - in order as a tuple, the unit is eV/c^2
+    write_pions(masses; dir = SRC) -> Vector{String}
+
+Replace the pion mass lines in every `CODATA<year>.jl` in `dir` with
+`masses[year]`.  Returns the files that changed.
 """
-function download_pdg_pion_masses()
-    # extracting informations from the S009 json file
-    url = "https://pdgapi.lbl.gov/summaries/S009"
-    response = HTTP.get(url)
-    info = JSON.parse(String(response.body))
-
-    # the dictionary that maps the name of the particle to the mass unit is eV/c^2
-    mass = Dict{String, Float64}()
-
-    # the information of the mass is only at 1
-    for i in [1]
-        mass[info["summaries"]["properties"][i]["description"]] = info["summaries"]["properties"][i]["pdg_values"][1]["value"]
+function write_pions(masses::Dict{Int,Dict{Symbol,Float64}}; dir::AbstractString=SRC)
+  changed = String[]
+  for year in sort(collect(keys(masses)))
+    fields = masses[year]
+    path = joinpath(dir, "CODATA$year.jl")
+    text = read(path, String)
+    updated = text
+    for (field, m) in fields
+      re = Regex("^$field = .*,\$", "m")
+      length(collect(eachmatch(re, updated))) == 1 ||
+        error("expected exactly one $field line in $path; edit it by hand")
+      updated = replace(updated, re => "$field = $(repr(m)),")
     end
+    updated == text && continue
+    write(path, updated)
+    push!(changed, path)
+  end
+  return changed
+end
 
-    # extracting informations from the S008 json file
-    url = "https://pdgapi.lbl.gov/summaries/S008"
-    response = HTTP.get(url)
-    info= JSON.parse(String(response.body))
 
-    # the information of the mass is only at 1
-    for i in [1]
-        mass[info["summaries"]["properties"][i]["description"]] = info["summaries"]["properties"][i]["pdg_values"][1]["value"]
-    end
+function main(; db::Union{Nothing,AbstractString}=nothing, dir::AbstractString=SRC)
+  years = sort([parse(Int, m[1]) for m in (match(r"^CODATA(\d{4})\.jl$", f) for f in readdir(dir))
+                if m !== nothing])
+  isempty(years) && error("no CODATA<year>.jl files in $dir")
+  masses = pdg_pion_masses(db === nothing ? pdg_database() : db, years)
+  for y in years
+    println("  CODATA$y <- PDG $y: M_PION_0 = $(masses[y][:M_PION_0]), ",
+            "M_PION_CHARGED = $(masses[y][:M_PION_CHARGED]) eV/c^2")
+  end
 
-    # return the mass of pion 0, pion +, pion -
-    return [mass["pi0 MASS"]*u"MeV/c^2",mass["pi+- MASS"]*u"MeV/c^2"] 
+  changed = write_pions(masses; dir=dir)
+  if isempty(changed)
+    println("\n(no change — the release files already match PDG)")
+  else
+    println("\nwrote:")
+    foreach(p -> println("  ", p), changed)
+    println("now run the test suite.")
+  end
+end
 
+if abspath(PROGRAM_FILE) == @__FILE__
+  i = findfirst(==("--db"), ARGS)
+  main(; db=i === nothing ? nothing : ARGS[i+1])
 end
