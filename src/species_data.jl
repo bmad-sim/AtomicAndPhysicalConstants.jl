@@ -8,6 +8,9 @@
 const leptons::Vector{String} = ["electron", "positron", "muon", "anti-muon"]
 
 
+# An antiparticle has the opposite charge and, by CPT, a magnetic moment of the
+# opposite sign relative to its spin.  So both its moment and its g-factor (in
+# the convention mu = g (e/2m) S, with e > 0) are the negatives of the particle's.
 """
     SUBATOMIC_SPECIES :: Dict{String, SubatomicSpecies}
 
@@ -18,10 +21,6 @@ Supported keys: `"electron"`, `"positron"`, `"proton"`, `"anti-proton"`,
 `"pion-"`, `"deuteron"`, `"anti-deuteron"`, `"triton"`, `"anti-triton"`,
 `"helion"`, `"anti-helion"`, `"photon"`.
 """
-#
-# An antiparticle has the opposite charge and, by CPT, a magnetic moment of the
-# opposite sign relative to its spin.  So both its moment and its g-factor (in
-# the convention mu = g (e/2m) S, with e > 0) are the negatives of the particle's.
 const SUBATOMIC_SPECIES = Dict{String,SubatomicSpecies}(
   "pion0" => SubatomicSpecies("pion0", 0, M_PION_0, 0.0, 0.0, 0.0),
   "neutron" => SubatomicSpecies("neutron", 0, M_NEUTRON, MU_NEUTRON, 0.5, G_NEUTRON),
