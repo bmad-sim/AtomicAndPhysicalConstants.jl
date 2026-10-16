@@ -145,18 +145,18 @@ end
 Return the spin g-factor of `species`.
 
 By default the absolute value is returned.  Pass `signed = true` to get the
-signed g-factor (negative for particles with a negative gyromagnetic ratio,
-such as the electron).
+signed g-factor in the convention `mu = g * (e / 2m) * S` with `e > 0`, so the
+sign is that of the magnetic moment relative to the spin: negative for the
+electron, muon, neutron, and helion, and positive for their antiparticles.
 
 Returns 0 for atomic species, for which no g-factor is stored.
-
-[`gyromagnetic_anomaly`](@ref) is built on the default, unsigned value.
 
 # Examples
 
 ```julia
 g_spin(Species("electron"))               # 2.00231930436092
 g_spin(Species("electron"), signed=true)  # -2.00231930436092
+g_spin(Species("positron"), signed=true)  #  2.00231930436092
 g_spin(Species("proton"))                 # 5.5856946893
 g_spin(Species("H"))                      # 0.0
 ```
@@ -173,41 +173,45 @@ end
 Compute and return the gyromagnetic anomaly
 
 ```math
-a = \\frac{|g| - 2}{2}
+a = \\frac{g_q - 2}{2}, \\qquad g_q = g \\, \\frac{e}{q}
 ```
 
-for leptons and hadrons.  Returns `NaN` for photons, atoms, and null species,
-since the gyromagnetic anomaly is not defined for them.
+for charged leptons and hadrons, where ``g`` is the signed g-factor
+([`g_spin`](@ref) with `signed = true`) and ``q`` the particle's charge.
+``g_q`` is the g-factor normalized to the particle's own charge,
+``\\boldsymbol{\\mu} = g_q \\frac{q}{2m} \\mathbf{S}``, which is the anomaly that
+enters the Thomas–BMT spin-precession equation.  Returns `NaN` for neutral
+particles (neutron, anti-neutron, neutral pion), for which ``g_q`` is undefined,
+and for photons, atoms, and null species.
 
-The **unsigned** g-factor is used, i.e. [`g_spin`](@ref) is called with its default
-`signed = false`.  The sign of the stored g-factor records the orientation of the
-magnetic moment relative to the spin, not the size of the anomaly, so species whose
-g-factor is negative (electron, muon, neutron, helion) still get the conventional
-positive anomaly: the electron gives `+0.00115965…`, not `-2.0011…`.
+Dividing by the charge takes care of the sign: the electron (``g < 0``,
+``q = -e``) gets the conventional `+0.00115965…`, the same as the positron
+(``g > 0``, ``q = +e``).  It also takes care of the doubly charged helion, whose
+anomaly is `-4.1841537…` rather than the value `(|g| - 2)/2` would give.
 
 The stored g-factors are all in the convention `mu = g * (e / 2m) * S`, where the
-particle's own mass sets the magneton, so this formula applies uniformly.  For the
-deuteron, helion, and triton this required renormalizing the NIST values, which are
-tabulated against the nuclear magneton `e*hbar/(2*M_PROTON)`; `G_DEUTERON`,
-`G_HELION`, and `G_TRITON` carry the renormalized values (see the
-[Physical Constants](@ref man-constants) manual page).
+particle's own mass sets the magneton.  For the deuteron, helion, and triton this
+required renormalizing the NIST values, which are tabulated against the nuclear
+magneton `e*hbar/(2*M_PROTON)`; `G_DEUTERON`, `G_HELION`, and `G_TRITON` carry the
+renormalized values (see the [Physical Constants](@ref man-constants) manual page).
 
 # Examples
 
 ```julia
 gyromagnetic_anomaly(Species("electron"))   # ≈  0.00115965218046
 gyromagnetic_anomaly(Species("muon"))       # ≈  0.00116592062
-gyromagnetic_anomaly(Species("neutron"))    # ≈  0.91304276
 gyromagnetic_anomaly(Species("deuteron"))   # ≈ -0.1429872697
+gyromagnetic_anomaly(Species("helion"))     # ≈ -4.1841537
+gyromagnetic_anomaly(Species("neutron"))    # NaN
 gyromagnetic_anomaly(Species("H"))          # NaN
 ```
 """
 function gyromagnetic_anomaly(species::Species)::Float64
   kind = getfield(species, :kind)
-
-
-  (kind == Kind.LEPTON || kind == Kind.HADRON) ? (return ((g_spin(species)-2.0)/2.0)) : (return convert(Float64, NaN))
-  
+  q = getfield(species, :charge)
+  (kind == Kind.LEPTON || kind == Kind.HADRON) && q != 0 || return NaN
+  g_q = getfield(species, :gspin) / q
+  return (g_q - 2.0) / 2.0
 end
 
 
@@ -306,9 +310,8 @@ function atomicnumberof(species::Species)
     error("Particle species which are not atoms do not have atomic numbers.")
   else
     AS = getfield(species, :name)
-    if occursin(anti_regEx, AS)
-      AS = replace(AS, anti_regEx => "")
-      return -ATOMIC_SPECIES[AS].Z
+    if startswith(AS, "anti-")
+      return -ATOMIC_SPECIES[chopprefix(AS, "anti-")].Z
     else
       return ATOMIC_SPECIES[AS].Z
     end
@@ -479,7 +482,7 @@ function Base.show(io::IO, ::MIME"text/plain", species::Species)
   if isnullspecies(species) == true
     print(io, "Species(Null)")
   else
-    println(io, "Species: $(getfield(species, :name))")
+    println(io, "Species: $(nameof(species))")
     println(io, "Charge: $(Int(chargeof(species))) e")
     println(io, "Mass: $(massof(species)) eV/c²")
     # spinof returns NaN where no nuclear spin is defined; printing "NaN ħ" would read
