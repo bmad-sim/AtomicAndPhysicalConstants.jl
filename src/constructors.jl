@@ -59,14 +59,20 @@ for an atom with atomic symbol 'name', charge state 'charge', and mass number 'i
 function atomic_particle(name::String, charge::Float64, iso::Int;)
 
   # whether the atom is anti-atom
-  anti_atom::Bool = occursin(anti_regEx, name)
+  anti_atom::Bool = startswith(name, "anti-")
   # if the particle is an anti-particle, remove the prefix for easier lookup
-  AS::String = replace(name, anti_regEx => "")
+  AS::String = String(chopprefix(name, "anti-"))
 
   haskey(ATOMIC_SPECIES, AS) || error("$AS is not a valid atomic species")
 
   # grab the particular element from the stack
   atom::AtomicSpecies = ATOMIC_SPECIES[AS]
+  # An element with no stable isotopes has no standard atomic weight, and its
+  # abundance-average entry is a 0.0 placeholder; a mass number is required.
+  iso == -1 && atom.mass[-1] == 0.0 && error(
+    "$AS has no standard atomic weight (it has no stable isotopes); give a mass number " *
+    "A as \"#A$AS\", with A from $(minimum(k for k in keys(atom.mass) if k > 0)) " *
+    "to $(maximum(keys(atom.mass)))")
   # convert the mass of the selected isotope from amu to MeV
   nmass::Float64 = atom.mass[iso] * EV_PER_AMU
 
@@ -146,9 +152,9 @@ function Species(speciesname::String)
     end
   end
 
-  anti = occursin(anti_regEx, speciesname)
-  # # if the particle is an anti-particle, remove the prefix for easier lookup
-  !anti ? (name = speciesname) : (name = replace(speciesname, anti_regEx => ""))
+  # an anti-atom is written with the "anti-" prefix; remove it for easier lookup
+  anti = startswith(speciesname, "anti-")
+  name = String(chopprefix(speciesname, "anti-"))
 
   # A leading run of Unicode superscript digits denotes the mass number (e.g. "⁴He").
   # Rewrite it to the canonical `#`-prefixed form so that a mass number given as

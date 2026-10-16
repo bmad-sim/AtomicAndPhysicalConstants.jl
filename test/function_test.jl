@@ -71,8 +71,24 @@ end
   @test gyromagnetic_anomaly(Species("electron")) ≈ ANOMALY_ELECTRON
   @test gyromagnetic_anomaly(Species("muon")) ≈ ANOMALY_MUON
   @test gyromagnetic_anomaly(Species("proton")) ≈ (G_PROTON - 2.0) / 2.0
+  @test gyromagnetic_anomaly(Species("deuteron")) ≈ -0.1429872697 atol=1e-9
 
-  # not defined for photons, atoms, or the null species -> NaN
+  # the g-factor is normalized to the particle's own charge: the doubly charged
+  # helion's anomaly is (g/2 - 2)/2, Bmad's -4.1841537
+  @test gyromagnetic_anomaly(Species("helion")) ≈ (G_HELION / 2 - 2) / 2
+  @test gyromagnetic_anomaly(Species("helion")) ≈ -4.1841537 atol=1e-6
+
+  # an antiparticle has the same anomaly as its particle
+  for (p, ap) in ("electron" => "positron", "muon" => "anti-muon",
+                  "proton" => "anti-proton", "deuteron" => "anti-deuteron",
+                  "triton" => "anti-triton", "helion" => "anti-helion")
+    @test gyromagnetic_anomaly(Species(ap)) ≈ gyromagnetic_anomaly(Species(p))
+  end
+
+  # not defined for neutral particles, photons, atoms, or the null species -> NaN
+  for name in ("neutron", "anti-neutron", "pion0")
+    @test isnan(gyromagnetic_anomaly(Species(name)))
+  end
   @test isnan(gyromagnetic_anomaly(Species("photon")))
   @test isnan(gyromagnetic_anomaly(Species("H")))
   @test isnan(gyromagnetic_anomaly(Species()))
@@ -136,6 +152,9 @@ end
   @test occursin("Species: Li", out)
   @test occursin("Charge: 3 e", out)  # displayed as an integer, not 3.0
   @test occursin("Kind: ATOM", out)
+
+  # the header shows the full name, mass number included
+  @test occursin("Species: #2H\n", sprint(show, MIME("text/plain"), Species("#2H")))
 
   out_iso = sprint(show, MIME("text/plain"), Species("anti-#4He"))
   @test occursin("Atomic Number: -2", out_iso)  # does not crash for anti-atoms

@@ -8,6 +8,9 @@
 const leptons::Vector{String} = ["electron", "positron", "muon", "anti-muon"]
 
 
+# An antiparticle has the opposite charge and, by CPT, a magnetic moment of the
+# opposite sign relative to its spin.  So both its moment and its g-factor (in
+# the convention mu = g (e/2m) S, with e > 0) are the negatives of the particle's.
 """
     SUBATOMIC_SPECIES :: Dict{String, SubatomicSpecies}
 
@@ -25,18 +28,18 @@ const SUBATOMIC_SPECIES = Dict{String,SubatomicSpecies}(
   "triton" => SubatomicSpecies("triton", 1, M_TRITON, MU_TRITON, 0.5, G_TRITON),
   "helion" => SubatomicSpecies("helion", 2, M_HELION, MU_HELION, 0.5, G_HELION),
   "pion+" => SubatomicSpecies("pion+", 1, M_PION_CHARGED, 0.0, 0.0, 0.0),
-  "anti-muon" => SubatomicSpecies("anti-muon", 1, M_MUON, MU_MUON, 0.5, G_MUON),
+  "anti-muon" => SubatomicSpecies("anti-muon", 1, M_MUON, -MU_MUON, 0.5, -G_MUON),
   "proton" => SubatomicSpecies("proton", 1, M_PROTON, MU_PROTON, 0.5, G_PROTON),
-  "positron" => SubatomicSpecies("positron", 1, M_ELECTRON, MU_ELECTRON, 0.5, G_ELECTRON),
+  "positron" => SubatomicSpecies("positron", 1, M_ELECTRON, -MU_ELECTRON, 0.5, -G_ELECTRON),
   "photon" => SubatomicSpecies("photon", 0, 0.0, 0.0, 1.0, 0),
   "electron" => SubatomicSpecies("electron", -1, M_ELECTRON, MU_ELECTRON, 0.5, G_ELECTRON),
-  "anti-proton" => SubatomicSpecies("anti-proton", -1, M_PROTON, MU_PROTON, 0.5, G_PROTON),
+  "anti-proton" => SubatomicSpecies("anti-proton", -1, M_PROTON, -MU_PROTON, 0.5, -G_PROTON),
   "muon" => SubatomicSpecies("muon", -1, M_MUON, MU_MUON, 0.5, G_MUON),
   "pion-" => SubatomicSpecies("pion-", -1, M_PION_CHARGED, 0.0, 0.0, 0.0),
-  "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, M_DEUTERON, MU_DEUTERON, 1.0, G_DEUTERON),
-  "anti-triton" => SubatomicSpecies("anti-triton", -1, M_TRITON, MU_TRITON, 0.5, G_TRITON),
-  "anti-helion" => SubatomicSpecies("anti-helion", -2, M_HELION, MU_HELION, 0.5, G_HELION),
-  "anti-neutron" => SubatomicSpecies("anti-neutron", 0, M_NEUTRON, MU_NEUTRON, 0.5, G_NEUTRON)
+  "anti-deuteron" => SubatomicSpecies("anti-deuteron", -1, M_DEUTERON, -MU_DEUTERON, 1.0, -G_DEUTERON),
+  "anti-triton" => SubatomicSpecies("anti-triton", -1, M_TRITON, -MU_TRITON, 0.5, -G_TRITON),
+  "anti-helion" => SubatomicSpecies("anti-helion", -2, M_HELION, -MU_HELION, 0.5, -G_HELION),
+  "anti-neutron" => SubatomicSpecies("anti-neutron", 0, M_NEUTRON, -MU_NEUTRON, 0.5, -G_NEUTRON)
 )
 
 
