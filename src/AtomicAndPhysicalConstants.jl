@@ -22,9 +22,6 @@ The kind of a species is queried with [`kindof`](@ref).
 """
 @enumx Kind ATOM HADRON LEPTON PHOTON NULL
 export Kind
-# precompile regEx
-const anti_regEx = r"anti\-|anti"
-const mag_regEx = r"[0-9]|[0-9][0-9]|[0-9][0-9][0-9]"
 
 include("types.jl")
 

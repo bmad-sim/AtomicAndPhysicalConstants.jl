@@ -48,9 +48,23 @@
   @test massof(Species("anti-helion")) == massof(Species("helion")) == M_HELION
   @test g_spin(Species("helion"); signed=true) == G_HELION
 
-  # anti-neutron g-factor must match the neutron's, not the electron's
-  @test AtomicAndPhysicalConstants.SUBATOMIC_SPECIES["anti-neutron"].gspin == G_NEUTRON
-  @test g_spin(Species("anti-neutron"); signed=true) == G_NEUTRON
+  # An antiparticle's moment and signed g-factor are the negatives of its particle's
+  # (CPT), and its mass and spin magnitude are the same.
+  for (p, ap) in ("electron" => "positron", "muon" => "anti-muon",
+                  "proton" => "anti-proton", "neutron" => "anti-neutron",
+                  "deuteron" => "anti-deuteron", "triton" => "anti-triton",
+                  "helion" => "anti-helion")
+    @test chargeof(Species(ap)) == -chargeof(Species(p))
+    @test momentof(Species(ap)) == -momentof(Species(p))
+    @test g_spin(Species(ap); signed=true) == -g_spin(Species(p); signed=true)
+    @test g_spin(Species(ap)) == g_spin(Species(p))
+    @test massof(Species(ap)) == massof(Species(p))
+  end
+  # the magnetic moment points along the spin for the positron, against it for the electron
+  @test g_spin(Species("positron"); signed=true) > 0
+  @test momentof(Species("positron")) > 0
+  @test g_spin(Species("anti-proton"); signed=true) < 0
+  @test g_spin(Species("anti-neutron"); signed=true) == -G_NEUTRON
 
   # pions are spin-0, so their g-factor is conventionally 0, not NaN
   for name in ("pion0", "pion+", "pion-")
@@ -78,7 +92,7 @@ end
   # multi-letter symbols and high-Z elements
   Fe = Species("Fe")
   @test atomicnumberof(Fe) == 26
-  Og = Species("Og")
+  Og = Species("#294Og")  # no stable isotopes, so a mass number is required
   @test atomicnumberof(Og) == 118
 
   # isotope mass is exact (12C defines the amu scale)
@@ -122,6 +136,20 @@ end
   # ionization changes mass by exactly one electron mass per unit charge
   @test massof(Species("H+1")) ≈ massof(Species("H")) - M_ELECTRON atol=1e-6
 
+  # An element with no stable isotopes has no abundance average; a mass number is
+  # required, and its isotopes still work
+  for el in ("Tc", "Pm", "Po", "Rn", "Pu", "Og")
+    @test_throws ErrorException Species(el)
+    @test_throws ErrorException Species(el * "+1")
+  end
+  @test massof(Species("#209Po"), AMU=true) ≈ 208.9824308
+  @test iso_of(Species("#99Tc")) == 99
+  # every element that can be built without a mass number has a positive mass
+  for (sym, atom) in AtomicAndPhysicalConstants.ATOMIC_SPECIES
+    atom.mass[-1] == 0.0 && continue
+    @test massof(Species(sym)) > 0
+  end
+
   # anti-atoms
   antiH = Species("anti-H")
   @test kindof(antiH) == Kind.ATOM
@@ -153,6 +181,8 @@ end
   @test_throws ErrorException Species("Li+-")              # ambiguous charge
   @test_throws ErrorException Species("H+2")               # charge exceeds Z
   @test_throws ErrorException Species("Li1")               # missing +/- specifier
+  @test_throws ErrorException Species("antiSn")            # anti-atoms need "anti-"
+  @test_throws ErrorException Species("antiH")
   @test_throws ErrorException atomicnumberof(Species("electron"))  # non-atom
   @test_throws ErrorException Species("H").charge          # direct field access disabled
 end

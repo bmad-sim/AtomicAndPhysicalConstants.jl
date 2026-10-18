@@ -68,6 +68,10 @@ Species("#4He")  # helium-4  (# prefix is required for ASCII digits)
 Species("⁴He")   # helium-4  (Unicode superscript)
 ```
 
+An element with no stable isotopes (Tc, Pm, and Po onward, apart from Th, Pa,
+and U) has no standard atomic weight, so it must be given with a mass number:
+`Species("Po")` is an error, `Species("#209Po")` is not.
+
 **Charge state** — appended after the symbol:
 
 | Syntax | Meaning |
@@ -137,7 +141,7 @@ convention; the signatures below show its default.  `sp` is any `Species`.
 | [`chargeof(sp; C = false)`](@ref chargeof) | net charge | multiples of the elementary charge *e*, or coulombs with `C = true`, using the active [`E_CHARGE`](@ref) |
 | [`spinof(sp)`](@ref spinof) | spin; for an atom, the **nuclear** spin | ħ |
 | [`momentof(sp)`](@ref momentof) | magnetic dipole moment | eV/T |
-| [`g_spin(sp; signed = false)`](@ref g_spin) | spin g-factor | dimensionless \|g\|, or the signed value with `signed = true` (negative for the electron, muon, neutron, and helion) |
+| [`g_spin(sp; signed = false)`](@ref g_spin) | spin g-factor | dimensionless \|g\|, or the signed value with `signed = true` (negative for the electron, muon, neutron, and helion, positive for their antiparticles) |
 | [`gyromagnetic_anomaly(sp)`](@ref gyromagnetic_anomaly) | gyromagnetic anomaly *a* | dimensionless |
 | [`iso_of(sp)`](@ref iso_of) | mass number | integer |
 | [`atomicnumberof(sp)`](@ref atomicnumberof) | atomic number *Z* | integer, negative for anti-atoms |
@@ -147,10 +151,16 @@ convention; the signatures below show its default.  `sp` is any `Species`.
 All of the numeric accessors return `Float64` except [`iso_of`](@ref) and
 [`atomicnumberof`](@ref), which return `Int`.
 
-[`gyromagnetic_anomaly`](@ref) is built on the *unsigned* g-factor, so
-``a = (|g| - 2)/2`` comes out positive for the particles whose stored g-factor
-is negative.  See [Physical Constants](@ref man-constants) for why the deuteron,
-helion, and triton g-factors are renormalized before this formula is applied.
+The signed g-factor is in the convention ``\boldsymbol{\mu} = g\,\frac{e}{2m}\,\mathbf{S}``
+with ``e > 0``, so its sign is that of the magnetic moment relative to the spin.
+An antiparticle's moment and g-factor are the negatives of its particle's (CPT).
+
+[`gyromagnetic_anomaly`](@ref) is ``a = (g_q - 2)/2``, where
+``g_q = g\,e/q`` is the g-factor normalized to the particle's own charge *q*:
+the anomaly in the Thomas–BMT equation.  The electron and positron both get
+``+0.00115965…``, and the doubly charged helion ``-4.1841537…``.  See
+[Physical Constants](@ref man-constants) for why the deuteron, helion, and
+triton g-factors are renormalized before this formula is applied.
 
 ### Species that do not carry a given property
 
@@ -161,7 +171,7 @@ most accessors return a neutral value:
 |----------|--------------------|
 | [`momentof`](@ref) | `0.0` for atoms and the null species |
 | [`g_spin`](@ref) | `0.0` for atomic species (no g-factor is stored) |
-| [`gyromagnetic_anomaly`](@ref) | `NaN` for photons, atoms, and the null species |
+| [`gyromagnetic_anomaly`](@ref) | `NaN` for neutral particles (neutron, anti-neutron, neutral pion), photons, atoms, and the null species |
 | [`spinof`](@ref) | `NaN` for an atom given without a mass number, and for the few isotopes NUBASE leaves unassigned |
 | [`iso_of`](@ref) | `0` for subatomic particles; `-1` for an atom given without a mass number |
 | [`atomicnumberof`](@ref) | **throws an error** for anything that is not an atom |

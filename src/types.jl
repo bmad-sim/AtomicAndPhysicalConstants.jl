@@ -33,7 +33,9 @@ Atomic symbols `"H"` (Z=1) through `"Og"` (Z=118) are supported.
 **Mass number** — There are two ways to include the mass number: Before the atomic symbol,
 either prefix with a pound symbol `#` followed by the mass number or, prefix with a 
 Unicode superscript(s). A bare ASCII mass number (e.g. `"4He"`) is **not** accepted.
-Correct would be `"#4He"` or `"⁴He"`.
+Correct would be `"#4He"` or `"⁴He"`.  Without a mass number the
+abundance-averaged mass is used; an element with no stable isotopes has none,
+so for it (e.g. `"Po"`) a mass number is required.
 
 **Charge state** — append after the symbol. Repeated signs (`"++"`, `"---"`)
 or `"+n"` / `"-n"` notation are both accepted.

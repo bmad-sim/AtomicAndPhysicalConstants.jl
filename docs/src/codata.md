@@ -81,7 +81,7 @@ exist, only the exported top-level constant.
 `G_DEUTERON`, `G_HELION`, and `G_TRITON` are pulled from the NIST/CODATA tables
 but are **rescaled before export**.  NIST tabulates these g-factors against the
 nuclear magneton ``\mu_N = e\hbar/2m_p``; the package converts them to the
-particle's own magneton so that the gyromagnetic anomaly ``a = (|g|-2)/2`` comes
+particle's own magneton so that the gyromagnetic anomaly ``a = (g_q-2)/2`` comes
 out correct:
 
 ```julia
@@ -96,7 +96,7 @@ differs from it:
 ```julia
 CODATA2022.G_DEUTERON_NUCLEAR   # 0.8574382335  — as published by NIST
 CODATA2022.G_DEUTERON           # ERROR: no such field
-G_DEUTERON                      # 1.7140254606… — renormalized for a = (g-2)/2
+G_DEUTERON                      # 1.7140254606… — renormalized for the anomaly
 ```
 
 Both the mass and the g-factor come from the active release, so the conversion

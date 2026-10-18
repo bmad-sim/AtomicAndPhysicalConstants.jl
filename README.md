@@ -79,7 +79,7 @@ julia> g_spin(e) # spin g-factor (dimensionless), absolute value by default
 julia> g_spin(e, signed=true) # signed g-factor
 -2.00231930436092
 
-julia> gyromagnetic_anomaly(e) # (|g| - 2)/2
+julia> gyromagnetic_anomaly(e) # (g e/q - 2)/2, with g normalized to the charge q
 0.0011596521804599913
 
 julia> momentof(p) # magnetic dipole moment in [eV/T] - 0.0 for atoms

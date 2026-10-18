@@ -77,8 +77,8 @@ g_\text{NIST} = \frac{\mu}{I\,\mu_N}
 ```
 
 so the proton mass — not the particle's own mass — sets the scale.  Used
-directly in ``a = (|g|-2)/2`` those values give a meaningless anomaly (for the
-deuteron, ``(0.857\ldots - 2)/2``).
+directly in the anomaly ``a = (g_q-2)/2`` those values give a meaningless
+result (for the deuteron, ``(0.857\ldots - 2)/2``).
 
 This package instead stores the g-factor in the convention
 ``\boldsymbol{\mu} = g\,\frac{e}{2m}\,\mathbf{S}``, where the particle's *own*
@@ -114,7 +114,7 @@ structs and are exported exactly as published.
 
 Because the renormalization is folded into the constants themselves,
 [`g_spin`](@ref) and [`gyromagnetic_anomaly`](@ref) need no special-casing —
-``a = (|g|-2)/2`` applies uniformly to every subatomic species:
+``a = (g_q-2)/2`` applies uniformly to every charged subatomic species:
 
 ```julia
 gyromagnetic_anomaly(Species("deuteron"))   # ≈ -0.1429872697
@@ -125,11 +125,19 @@ gyromagnetic_anomaly(Species("deuteron"))   # ≈ -0.1429872697
 
 ## Gyromagnetic anomalies (dimensionless)
 
-The gyromagnetic anomaly is defined as ``a = (|g| - 2)/2``.
-[`gyromagnetic_anomaly`](@ref) takes the **unsigned** g-factor — the default of
-[`g_spin`](@ref) — so particles with a negative stored g-factor (electron, muon,
-neutron, helion) come out with the conventional positive anomaly rather than a
-value near ``-2``.
+The gyromagnetic anomaly is defined as
+
+```math
+a = \frac{g_q - 2}{2}, \qquad g_q = g\,\frac{e}{q},
+```
+
+where ``g`` is the signed g-factor in the convention
+``\boldsymbol{\mu} = g\,\frac{e}{2m}\,\mathbf{S}`` and ``g_q`` the g-factor
+normalized to the particle's own charge *q*, as in the Thomas–BMT equation.
+Dividing by *q* gives the electron (``g<0``, ``q=-e``) and the positron
+(``g>0``, ``q=+e``) the same positive anomaly, and the doubly charged helion
+``a = -4.1841537…``.  [`gyromagnetic_anomaly`](@ref) returns `NaN` for neutral
+particles, for which ``g_q`` is undefined.
 
 | Constant | Particle | CODATA availability |
 |----------|----------|---------------------|
