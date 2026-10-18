@@ -71,14 +71,74 @@ end
         Set(["2002", "2006", "2010", "2014", "2018", "2022"])
   @test isconst(AtomicAndPhysicalConstants, :CODATA_MAP)
 
-  # Currently active release matches CODATA2022 (the default)
+  # Exactly the quantities NIST does not tabulate for a release are NaN
+  # (docs/src/codata.md, "Quantities missing from a release")
+  untabulated = Dict(
+    "2002" => Set([:M_TRITON, :MU_HELION, :MU_TRITON,
+                   :G_DEUTERON_NUCLEAR, :G_HELION_NUCLEAR, :G_TRITON_NUCLEAR]),
+    "2006" => Set([:MU_HELION, :G_HELION_NUCLEAR]))
+  for (year, codata) in AtomicAndPhysicalConstants.CODATA_MAP
+    nan = Set(f for f in fieldnames(typeof(codata)) if getfield(codata, f) isa Float64 && isnan(getfield(codata, f)))
+    @test nan == get(untabulated, year, Set{Symbol}())
+  end
+
+  # Each release carries its own values, read from the NIST tables
+  @test CODATA2002.ANOMALY_ELECTRON ≈ 1.1596521859e-3
+  @test CODATA2002.E_CHARGE ≈ 1.60217653e-19
+  @test CODATA2006.M_ELECTRON ≈ 0.510998910e6
+  @test CODATA2014.M_HELION ≈ 2808.391586e6
+  @test CODATA2014.M_DEUTERON ≈ 1875.612928e6
+  @test CODATA2014.G_PER_AMU ≈ 1.660539040e-24
+  @test CODATA2018.M_ELECTRON ≈ 0.51099895000e6
+
+  # Pion masses come from the PDG edition of the same year (PDG fit values)
+  pions = Dict(
+    "2002" => (134.9766175723e6, 139.5701807883e6),
+    "2006" => (134.9766175723e6, 139.5701807883e6),
+    "2010" => (134.9766175723e6, 139.5701807883e6),
+    "2014" => (134.9766175723e6, 139.5701807883e6),
+    "2018" => (134.9770445889e6, 139.5706078049e6),
+    "2022" => (134.9768277677e6, 139.5703909837e6))
+  for (year, codata) in AtomicAndPhysicalConstants.CODATA_MAP
+    @test codata.M_PION_0 ≈ pions[year][1]
+    @test codata.M_PION_CHARGED ≈ pions[year][2]
+  end
+
+  # With no release preference set, the active release is the most recent one
+  @test AtomicAndPhysicalConstants._LATEST_RELEASE ==
+        string(maximum(parse.(Int, keys(AtomicAndPhysicalConstants.CODATA_MAP))))
+  @test AtomicAndPhysicalConstants._LATEST_RELEASE == "2022"
   @test RELEASE_YEAR == CODATA2022.RELEASE_YEAR
   @test M_ELECTRON == CODATA2022.M_ELECTRON
 
-  # set_release: invalid year is rejected, valid years do not throw
-  @test_throws ArgumentError set_release(year="9999")
-  @test set_release(year="2014") === nothing
-  @test set_release() === nothing  # reset to default
+  # set_release: invalid year is rejected, valid years do not throw.
+  # set_release writes LocalPreferences.toml beside the active project, and may
+  # list the package under [extras] in its Project.toml, so both files are put
+  # back exactly as they were, or removed if they did not exist.
+  project = Base.active_project()
+  snapshot = Dict(f => (isfile(f) ? read(f) : nothing) for f in
+    [project; [joinpath(dirname(project), n) for n in Base.preferences_names]])
+  # The preference as written to the active project's preferences file, which
+  # is where set_release writes; Preferences.load_preference would also see
+  # settings inherited from environments further up the load path.
+  function written_release()
+    files = filter(isfile, [joinpath(dirname(project), n) for n in Base.preferences_names])
+    isempty(files) && return nothing
+    prefs = TOML.parsefile(last(files))
+    return get(get(prefs, "AtomicAndPhysicalConstants", Dict()), "release", nothing)
+  end
+  try
+    @test_throws ArgumentError set_release(year="9999")
+    @test set_release(year="2014") === nothing
+    @test written_release() == "2014"
+    # no argument removes the setting, so the default (most recent) applies
+    @test set_release() === nothing
+    @test written_release() === nothing
+  finally
+    for (f, bytes) in snapshot
+      bytes === nothing ? rm(f; force=true) : write(f, bytes)
+    end
+  end
 end
 
 @testset "Kind enum" begin

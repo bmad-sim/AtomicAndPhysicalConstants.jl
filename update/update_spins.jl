@@ -8,7 +8,7 @@
 #
 # Usage, from the package root:
 #
-#     julia --project=. update/update_spins.jl
+#     julia --project=update update/update_spins.jl
 #
 # This rewrites the ATOMIC_SPECIES literal in place, keeping every mass exactly as
 # it was and replacing only the spin dictionaries.  Run the test suite afterwards.

@@ -337,7 +337,7 @@ isnullspecies(species::Species) = getfield(species, :kind) == Kind.NULL
 #####################################################################
 
 """
-    set_release(; year::String = "2022")
+    set_release(; year::Union{String,Nothing} = nothing)
 
 Persistently set the CODATA release year used by AtomicAndPhysicalConstants.jl.
 
@@ -345,8 +345,10 @@ The setting is stored via [Preferences.jl](https://github.com/JuliaPackaging/Pre
 in the active Julia environment and survives across sessions.  A Julia restart
 is required for the new constants to take effect.
 
-Valid values for `year`: `"2002"`, `"2006"`, `"2010"`, `"2014"`, `"2018"`,
-`"2022"`.  Calling with no arguments resets to the default (`"2022"`).
+Valid values for `year` are the keys of `CODATA_MAP`: `"2002"`, `"2006"`,
+`"2010"`, `"2014"`, `"2018"`, `"2022"`.  Calling with no arguments removes the
+setting, so the package uses its default: the most recent release it ships,
+which moves forward when a newer release is added.
 
 # Examples
 
@@ -355,16 +357,21 @@ set_release(year = "2014")
 # [ Info: The default CODATA release is now 2014.
 #         Restart your Julia session for this change to take effect.
 
-set_release()   # revert to 2022
+set_release()   # follow the most recent release again
 ```
 
 See also: [`RELEASE_YEAR`](@ref).
 """
-function set_release(;year::String = "2022")
+function set_release(; year::Union{String,Nothing}=nothing)
+  if year === nothing
+    @delete_preferences!("release")
+    @info("The CODATA release now follows the most recent one, currently $_LATEST_RELEASE. Restart your Julia session for this change to take effect.")
+    return nothing
+  end
   if !haskey(CODATA_MAP, year)
-    throw(ArgumentError("You have provided an invalid release year: 
-                         options are currently 
-                         2002, 2006, 2010, 2014, 2018, or 2022."))
+    throw(ArgumentError("You have provided an invalid release year:
+                         options are currently
+                         $(join(sort(collect(keys(CODATA_MAP))), ", "))."))
   end
   @set_preferences!("release" => year)
   @info("The default CODATA release is now $year. Restart your Julia session for this change to take effect.")

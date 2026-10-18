@@ -1,0 +1,11 @@
+[deps]
+AtomicAndPhysicalConstants = "5c0d271c-5419-4163-b387-496237733d8b"
+Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
+SQLite = "0aa819cd-b072-5ff4-a722-6bc24af294d9"
+
+[sources]
+AtomicAndPhysicalConstants = {path = ".."}
+
+[compat]
+SQLite = "1"
+julia = "1.11"
