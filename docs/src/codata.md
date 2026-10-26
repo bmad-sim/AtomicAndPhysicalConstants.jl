@@ -81,9 +81,7 @@ CODATA2014.C_LIGHT       # speed of light from the 2014 release
 
 The pion masses (`M_PION_0`, `M_PION_CHARGED`) are not published in any CODATA
 release.  Each release carries the values from the Particle Data Group (PDG)
-Review of Particle Physics edition of the same year.  The PDG editions from
-the years the CODATA releases were published (2005, 2008, 2012, 2016, 2019,
-2024) give the same values.
+Review of Particle Physics edition of the same year.
 
 | Release | PDG edition | `M_PION_0` (MeV/c²) | `M_PION_CHARGED` (MeV/c²) |
 |---------|-------------|---------------------|---------------------------|
