@@ -36,9 +36,10 @@ const CURRENT_URL = "https://physics.nist.gov/cuu/Constants/Table/allascii.txt"
 
 Read a NIST "allascii" table into the release year named in its header and a
 dictionary from quantity name to value string.  The value strings are cleaned
-to plain Julia float literals: digit-group spaces, the `...` that marks a
-truncated exact value, and the parenthesised uncertainty that the 2002 and 2006
-tables print inline are all dropped.
+to plain Julia float literals: digit-group spaces and the parenthesised
+uncertainty that the 2002 and 2006 tables print inline are dropped.  The `...`
+that marks an exact value NIST prints truncated is kept, so that `extract` can
+tell it apart from a complete one.
 
 The tables are fixed width, but the 2002 and 2006 headers do not line up with
 their data, so the value column is taken as the first one after a gap of two or
