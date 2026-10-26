@@ -384,8 +384,7 @@ function todo(year::Int, latest::Bool)
   ]
   latest && append!(items, [
     "test/values_test.jl: the \"Constant Access and Values\" testset checks the default " *
-    "release's values, and _LATEST_RELEASE and the CODATA20xx comparisons under " *
-    "\"CODATA releases\" name it; change them to $year",
+    "release's values; change them to those of $year",
     "the \"currently <year>\" default in docs/src/codata.md and docs/src/constants.md, " *
     "and the year range in docs/src/index.md",
   ])
