@@ -222,7 +222,7 @@ these types).
 # Examples
 
 ```julia
-momentof(Species("electron"))   # ≈ -5.795094307320036e-5  eV/T
+momentof(Species("electron"))   # ≈ -5.795094307747843e-5  eV/T
 momentof(Species("proton"))     # ≈  8.8043151136e-8  eV/T
 momentof(Species("H"))          # 0.0
 ```

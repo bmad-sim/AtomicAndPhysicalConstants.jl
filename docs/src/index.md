@@ -23,7 +23,7 @@ using AtomicAndPhysicalConstants
 
 # ── physical constants ──────────────────────────────────────────────
 C_LIGHT    # 2.99792458e8  m/s
-H_PLANCK   # 4.135667696e-15  eV·s
+H_PLANCK   # 4.135667696923859e-15  eV·s
 M_ELECTRON # 510998.95069  eV/c²
 
 # ── particle species ────────────────────────────────────────────────

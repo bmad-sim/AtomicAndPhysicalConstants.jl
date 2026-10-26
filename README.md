@@ -24,7 +24,7 @@ julia> C_LIGHT # in [m/s]
 2.99792458e8
 
 julia> H_PLANCK # in [eV⋅s]
-4.135667696e-15
+4.135667696923859e-15
 
 julia> M_ELECTRON # in [eV/c²]   
 510998.95069 
@@ -39,7 +39,7 @@ Species: electron
 Charge: -1 e
 Mass: 510998.95069 eV/c²
 Spin: 0.5 ħ
-Moment: -5.795094307320036e-5 eV/T
+Moment: -5.795094307747843e-5 eV/T
 G-factor: 2.00231930436092
 Kind: LEPTON
 
