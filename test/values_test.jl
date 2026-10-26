@@ -107,9 +107,25 @@ end
   # With no release preference set, the active release is the most recent one
   @test AtomicAndPhysicalConstants._LATEST_RELEASE ==
         string(maximum(parse.(Int, keys(AtomicAndPhysicalConstants.CODATA_MAP))))
-  @test AtomicAndPhysicalConstants._LATEST_RELEASE == "2022"
-  @test RELEASE_YEAR == CODATA2022.RELEASE_YEAR
-  @test M_ELECTRON == CODATA2022.M_ELECTRON
+  latest = AtomicAndPhysicalConstants.CODATA_MAP[AtomicAndPhysicalConstants._LATEST_RELEASE]
+  @test RELEASE_YEAR == latest.RELEASE_YEAR
+  @test M_ELECTRON == latest.M_ELECTRON
+
+  # Exact constants are the exact value rounded once, not the truncated digits
+  # NIST prints for them ("1.782 661 921... e-36")
+  e, h, k, c = big"1.602176634e-19", big"6.62607015e-34", big"1.380649e-23", big"299792458"
+  for (year, codata) in AtomicAndPhysicalConstants.CODATA_MAP
+    if codata.RELEASE_YEAR >= 2018  # 2019 SI: e, h, c, and k are exact
+      @test codata.H_PLANCK == Float64(h / e)
+      @test codata.H_BAR == Float64(h / (2 * big(pi) * e))
+      @test codata.K_BOLTZMANN == Float64(k / e)
+      @test codata.EV_PER_J == Float64(1 / e)
+      @test codata.G_PER_EV == Float64(1000 * e / c^2)
+    else            # before: mu_0 = 4 pi 1e-7 and eps_0 = 1/(mu_0 c^2) are exact
+      @test codata.MU_0 ≈ 4pi * 1e-7 * codata.E_CHARGE rtol = 4eps()
+      @test codata.EPS_0 ≈ 1 / (4pi * 1e-7 * codata.C_LIGHT^2 * codata.E_CHARGE) rtol = 4eps()
+    end
+  end
 
   # set_release: invalid year is rejected, valid years do not throw.
   # set_release writes LocalPreferences.toml beside the active project, and may
