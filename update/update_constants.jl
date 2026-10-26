@@ -62,7 +62,7 @@ function read_codata(path::AbstractString)
     vcol = something(vcol, col)
     col == vcol || error("value column misaligned in $path:\n$l")
     raw = split(l[col:end], r"\s{2,}")[1]
-    values[strip(row[1])] = replace(raw, r"\(\d+\)" => "", "..." => "", " " => "")
+    values[strip(row[1])] = replace(raw, r"\(\d+\)" => "", " " => "")
   end
   return year, values
 end
@@ -148,6 +148,20 @@ const FIELDS = [
   :G_PER_EV           => (["electron volt-kilogram relationship"], 3),
 ]
 
+# The exact values NIST prints truncated, each derived in BigFloat from the
+# release's defining constants and rounded once, in the package's units.  Before
+# the 2019 SI, mu_0 = 4 pi 1e-7 N/A^2 and eps_0 = 1/(mu_0 c^2) are exact; from
+# the 2018 release on, e, h, k, and c are.  `t(name)` is the table's value.
+const EXACT = Dict{Symbol,Function}(
+  :MU_0_SI     => t -> 4 * big(pi) * big"1e-7",
+  :EPS_0_SI    => t -> 1 / (4 * big(pi) * big"1e-7" * t("speed of light in vacuum")^2),
+  :H_PLANCK    => t -> t("Planck constant") / t("elementary charge"),
+  :H_BAR       => t -> t("Planck constant") / (2 * big(pi) * t("elementary charge")),
+  :K_BOLTZMANN => t -> t("Boltzmann constant") / t("elementary charge"),
+  :EV_PER_J    => t -> 1 / t("elementary charge"),
+  :G_PER_EV    => t -> 1000 * t("elementary charge") / t("speed of light in vacuum")^2,
+)
+
 
 """
     extract(table) -> (consts, missing)
@@ -158,9 +172,17 @@ that came out NaN.
 """
 function extract(table::Dict{String,String})
   consts = Dict{Symbol,Float64}()
+  t(name) = parse(BigFloat, table[name])
   for (field, (names, n)) in FIELDS
     i = findfirst(k -> haskey(table, k), names)
-    consts[field] = i === nothing ? NaN : shift(table[names[i]], n)
+    consts[field] = if i === nothing
+      NaN
+    elseif occursin("...", table[names[i]])
+      haskey(EXACT, field) || error("\"$(names[i])\" is printed truncated, and $field has no EXACT rule")
+      Float64(EXACT[field](t))
+    else
+      shift(table[names[i]], n)
+    end
   end
   e = consts[:E_CHARGE]
   # eps_0 [C^2/(J m)] / e [C^2] * e [J/eV] = eps_0 / e [1/(eV m)];
