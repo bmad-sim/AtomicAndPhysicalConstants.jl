@@ -68,10 +68,12 @@ g-factors are renormalized.  See
 ## How the active release is resolved
 
 The release year is a [Preferences.jl](https://github.com/JuliaPackaging/Preferences.jl)
-setting, read once at precompile time:
+setting, read once at precompile time.  When it is not set, the most recent
+release in `CODATA_MAP` is used:
 
 ```julia
-const release::String = @load_preference("release", "2022")
+const _LATEST_RELEASE::String = string(maximum(parse.(Int, keys(CODATA_MAP))))
+const release::String = @load_preference("release", _LATEST_RELEASE)
 const _ACTIVE = CODATA_MAP[release]
 const M_ELECTRON::Float64 = _ACTIVE.M_ELECTRON
 ```
@@ -103,15 +105,97 @@ The `update/` directory holds maintainer scripts that refresh the tabulated data
 from its upstream sources.  They are **not** part of the package module: they are
 run by hand from the repository root and rewrite files in `src/` in place, so
 their output should be reviewed as a diff and committed like any other change.
+They need network access to the upstream sources.
 
-| Script | Refreshes | Upstream |
-|--------|-----------|----------|
-| `update/update_constants.jl` | the per-release constant files | NIST CODATA tables |
-| `update/update_pion_mass.jl` | the pion masses | PDG API |
-| `update/update_isos.jl` | isotope masses in `ATOMIC_SPECIES` | NIST compositions table |
-| `update/update_spins.jl` | nuclear spins in `ATOMIC_SPECIES` | NUBASE2020 |
+### Setup
 
-The last two rewrite the same `ATOMIC_SPECIES` literal, each replacing only the
+Like `docs/` and `test/`, `update/` has its own environment.  Its
+`Project.toml` points at the package in the repository root through
+`[sources]`, which needs Julia 1.11 or later.  Set it up once, and again after
+its dependencies change:
+
+```bash
+julia --project=update -e 'using Pkg; Pkg.instantiate()'
+```
+
+### Scripts
+
+Each script is run from the repository root as
+`julia --project=update update/<script>.jl [arguments]`.
+
+| Script | Arguments | Rewrites | Upstream |
+|--------|-----------|----------|----------|
+| `update_constants.jl` | `<year>`, `--force`, `--db <file>` | `src/CODATA<year>.jl`, and registers it in `src/AtomicAndPhysicalConstants.jl` | NIST CODATA tables; PDG `pdgall` database |
+| `update_pion_mass.jl` | `--db <file>` | the pion mass lines of every `src/CODATA<year>.jl` | PDG `pdgall` database |
+| `update_isos.jl` | none | isotope masses in `ATOMIC_SPECIES` (`src/species_data.jl`) | NIST atomic weights and isotopic compositions |
+| `update_spins.jl` | none | nuclear spins in `ATOMIC_SPECIES` | NUBASE2020 |
+
+- `<year>`: the CODATA release to write.
+- `--force`: overwrite an existing `src/CODATA<year>.jl`; without it the script
+  refuses.
+- `--db <file>`: a local copy of PDG's `pdgall` SQLite database, to skip
+  downloading it (about 70 MB).
+
+Each script prints what it read and what it changed.  Run against unchanged
+upstream data, each leaves `src/` as it was; `update_constants.jl <year> --force`
+rewrites the file identically.  Two files hold code the scripts share and are
+not run on their own: `update/release_files.jl` (used by `update_constants.jl`
+and `update_pion_mass.jl`) and `update/species_table.jl` (used by
+`update_isos.jl` and `update_spins.jl`).
+
+After any script, run the test suite:
+
+```bash
+julia --project=. -e 'using Pkg; Pkg.test()'
+```
+
+### Adding a CODATA release
+
+1. Run `julia --project=update update/update_constants.jl <year>`.  If NIST
+   has not yet published that release, it stops with an error saying so.
+2. The script writes `src/CODATA<year>.jl` and adds the release to the include
+   list, `CODATA_MAP`, and the exports.  If it is the most recent release, it
+   is now the default for every environment that has not set one with
+   [`set_release`](@ref).
+3. Make the edits the script lists at the end.  They cover the tests (the set
+   of release years, the pion and untabulated tables, and, for a new most
+   recent release, the default values the tests check) and the docs (the
+   release tables here and in the README, the docstrings that list releases,
+   and the "currently" default year).
+4. Run the test suite and review the diff.
+
+### The CODATA values
+
+`update_constants.jl` reads NIST's ASCII table for the requested year.  NIST
+serves the newest release at `Table/allascii.txt` and moves it to
+`ArchiveASCII/allascii_<year>.txt` once a newer one is published, so the
+archive is tried first, and the current table is accepted only if its header
+names the requested year.  NIST renamed several quantities between releases;
+the script knows each name a quantity has had, and writes `NaN` for one a
+release does not tabulate under any of them (see
+[Quantities missing from a release](@ref)).  Masses are read from NIST's
+"energy equivalent in MeV" rows and the decimal point is moved to eV, which is
+exact.  An exact value NIST prints truncated (marked `...`) is computed from
+the release's defining constants instead, by the `EXACT` rules in the script.
+
+### Pion masses
+
+Each release file carries the pion masses of the PDG edition of the same
+year.  The PDG REST API serves only the current edition, so both
+`update_constants.jl` and `update_pion_mass.jl` read PDG's `pdgall` SQLite
+database instead, which holds the Summary Table values of every past edition.
+Unless `--db` names a local copy, either script downloads the newest database
+listed at <https://pdg.lbl.gov/api>, and reads it with SQLite.jl.
+
+`update_constants.jl` sets the pion masses of each release file it writes.
+`update_pion_mass.jl` rewrites only the `M_PION_0` and `M_PION_CHARGED` lines
+of every existing release file, which is needed only if PDG revises a past
+edition.  Both store PDG's fit value rather than the rounded Summary Table
+number, moved from MeV to eV.
+
+### Isotope masses and nuclear spins
+
+`update_isos.jl` and `update_spins.jl` rewrite the same `ATOMIC_SPECIES` literal, each replacing only the
 half it owns, so they can be run independently and in either order.  They share
 `update/species_table.jl`, which parses the literal and emits it again with
 sorted keys.  Sorting is what makes them deterministic: `Dict` iteration order is
@@ -131,3 +215,6 @@ assignment as directly measured, tentative (parenthesised), or extrapolated from
 systematics (`#`).  The package stores all three alike; only assignments NUBASE
 leaves blank or ambiguous become `NaN`.  Every naturally occurring isotope has a
 directly measured spin, so this distinction affects exotic nuclei only.
+
+The NUBASE edition is fixed by `NUBASE_URL` in `update_spins.jl`, currently
+NUBASE2020; using a later edition means changing that URL.

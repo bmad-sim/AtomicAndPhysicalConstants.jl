@@ -24,7 +24,7 @@ julia> C_LIGHT # in [m/s]
 2.99792458e8
 
 julia> H_PLANCK # in [eV⋅s]
-4.135667696e-15
+4.135667696923859e-15
 
 julia> M_ELECTRON # in [eV/c²]   
 510998.95069 
@@ -39,7 +39,7 @@ Species: electron
 Charge: -1 e
 Mass: 510998.95069 eV/c²
 Spin: 0.5 ħ
-Moment: -5.795094307320036e-5 eV/T
+Moment: -5.795094307747843e-5 eV/T
 G-factor: 2.00231930436092
 Kind: LEPTON
 
@@ -163,7 +163,7 @@ true
 
 AtomicAndPhysicalConstants.jl supports CODATA releases beginning in 2002.
 The available releases are from: 2002, 2006, 2010, 2014, 2018, and 2022.
-Note that not all constants in this package are supported before the 2010 release.
+The 2002 and 2006 releases do not tabulate every constant; the missing ones are `NaN` for those releases, as noted below.
 
 
 To change your CODATA release year to _e.g._ 2014, run:
@@ -175,10 +175,11 @@ julia> set_release(year = "2014")
 ```
 
 This will change the base constants of AtomicAndPhysicalConstants to their recorded value in the specified CODATA release.
-The change is persistent, so to revert back to the default constants, run
+The change is persistent.  By default the package uses the most recent CODATA release it ships, and moves to a newer one when the package adds it.  To go back to following the most recent release, run
 ```julia-repl
 julia> set_release()
 ```
+Setting a year explicitly, even the most recent one, keeps that year after newer releases are added.
 
 ## Directly Exported Constants
 
@@ -194,7 +195,7 @@ julia> set_release()
 - `M_PION_0`
 - `M_PION_CHARGED`
 
-Both Pion masses are obtained from PDG, rather than CODATA.
+Both Pion masses are obtained from PDG, rather than CODATA, using the PDG edition of the same year as the CODATA release.
 
 ### Magnetic dipole moments with units [eV/T]
 - `MU_ELECTRON`
@@ -203,7 +204,9 @@ Both Pion masses are obtained from PDG, rather than CODATA.
 - `MU_MUON`
 - `MU_DEUTERON`
 - `MU_HELION`
+  - This constant is not available from the 2002 or 2006 CODATA releases
 - `MU_TRITON`
+  - This constant is not available from the 2002 CODATA release
 
 ### Dimensionless constants
 
@@ -216,15 +219,15 @@ Both Pion masses are obtained from PDG, rather than CODATA.
 - `G_NEUTRON`
 - `G_MUON`
 - `G_DEUTERON`
+  - This constant is not available from the 2002 CODATA release
 - `G_HELION`
   - This constant is not available from CODATA releases prior to 2010
 - `G_TRITON`
+  - This constant is not available from the 2002 CODATA release
 
 #### Gyromagnetic Anomalies
 - `ANOMALY_ELECTRON`
-  - This constant is not available from CODATA releases prior to 2010
 - `ANOMALY_MUON`
-  - This constant is not available from CODATA releases prior to 2010
 
 
 ### Other Physical Constants

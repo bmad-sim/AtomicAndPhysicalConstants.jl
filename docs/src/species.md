@@ -244,7 +244,7 @@ julia> gyromagnetic_anomaly(e)
 0.0011596521804599913
 
 julia> momentof(e)          # eV/T
--5.795094307320036e-5
+-5.795094307747843e-5
 ```
 
 Atomic species carry a mass number and an atomic number, and their mass is often

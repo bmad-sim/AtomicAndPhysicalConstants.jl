@@ -5,7 +5,7 @@
 #
 # Usage, from the package root:
 #
-#     julia --project=. update/update_isos.jl
+#     julia --project=update update/update_isos.jl
 #
 # This rewrites the ATOMIC_SPECIES literal in place, replacing only the mass
 # dictionaries.  Nuclear spins are carried over unchanged; any isotope NIST has
