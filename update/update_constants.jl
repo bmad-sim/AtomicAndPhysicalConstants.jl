@@ -100,6 +100,10 @@ end
 # MeV"; the MeV row is used and moved to eV by `shift(..., 6)`, which is exact,
 # so the stored value is NIST's published digits and not a product of two
 # rounded quantities.
+#
+# The exception is an exact value that NIST prints truncated, marked `...`
+# (e.g. "1.782 661 921... e-36"): its digits are not the value, so it is derived
+# from the release's defining constants by `EXACT` instead.
 const FIELDS = [
   :M_ELECTRON         => (["electron mass energy equivalent in MeV"], 6),
   :M_PROTON           => (["proton mass energy equivalent in MeV"], 6),
