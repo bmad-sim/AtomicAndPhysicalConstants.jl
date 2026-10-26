@@ -175,7 +175,8 @@ the script knows each name a quantity has had, and writes `NaN` for one a
 release does not tabulate under any of them (see
 [Quantities missing from a release](@ref)).  Masses are read from NIST's
 "energy equivalent in MeV" rows and the decimal point is moved to eV, which is
-exact.
+exact.  An exact value NIST prints truncated (marked `...`) is computed from
+the release's defining constants instead, by the `EXACT` rules in the script.
 
 ### Pion masses
 
