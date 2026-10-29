@@ -48,7 +48,7 @@ equivalent in MeV" value with the decimal point moved to eV, which is exact.
 
 ## Magnetic dipole moments
 
-Units: **eV/T**
+APC Units: **eV/T**
 
 Each is the release's `MU_*_SI` field — the CODATA value in J/T — converted to
 eV/T.  The `_SI` suffix names the unit the published value is in;
@@ -71,19 +71,19 @@ the *shielded* helion moment, which is a different quantity.  See
 
 ---
 
-## Spin g-factors (dimensionless)
+## Spin g-factors 
+
+Units: dimensionless
 
 | CODATA Name | APC Name | Particle | CODATA availability |
 |-------------|----------|----------|---------------------|
 | `G_ELECTRON` | `G_ELECTRON` | electron | all releases |
 | `G_PROTON` | `G_PROTON` | proton | all releases |
-| `G_NEUTRON_NUCLEAR_MAGNETON` | `G_NEUTRON` | neutron | all releases § |
+| `G_NEUTRON_NUCLEAR_MAGNETON` | `G_NEUTRON` | neutron | all releases |
 | `G_MUON` | `G_MUON` | muon | all releases |
-| `G_DEUTERON_NUCLEAR_MAGNETON` | `G_DEUTERON` | deuteron | 2006 and later § |
-| `G_HELION_NUCLEAR_MAGNETON` | `G_HELION` | helion | 2010 and later § |
-| `G_TRITON_NUCLEAR_MAGNETON` | `G_TRITON` | triton | 2006 and later § |
-
-§ These four are **not** the raw CODATA values — see below.
+| `G_DEUTERON_NUCLEAR_MAGNETON` | `G_DEUTERON` | deuteron | 2006 and later |
+| `G_HELION_NUCLEAR_MAGNETON` | `G_HELION` | helion | 2010 and later |
+| `G_TRITON_NUCLEAR_MAGNETON` | `G_TRITON` | triton | 2006 and later |
 
 CODATA/NIST tabulates the neutron, deuteron, helion, and triton g-factors
 relative to the **nuclear magneton** ``\mu_N = e\hbar / 2m_p``. That is, the published number is
@@ -102,7 +102,9 @@ g_\text{APC} = g_\text{NIST}\,\frac{m_\text{particle}}{m_{proton}}
 
 ---
 
-## Gyromagnetic anomalies (dimensionless)
+## Gyromagnetic anomalies
+
+Units: dimensionless
 
 The gyromagnetic anomaly is defined as
 
@@ -145,11 +147,8 @@ particles, for which ``g_q`` is undefined.
 | `RELEASE_YEAR` | active CODATA release year | — |
 
 † `CLASSICAL_RADIUS_FACTOR` is not a tabulated CODATA value; it is computed as
-`R_ELECTRON * M_ELECTRON` from the active release.  It is the same for all
-particles of charge ±1.  Because it is derived, it is not a field of the
-`CODATA_release` structs (e.g. there is no `CODATA2022.CLASSICAL_RADIUS_FACTOR`).
-`KG_PER_AMU` and `KG_PER_MEV_C2` are derived in the same sense — see the note
-below the unit-conversion table.
+`R_ELECTRON * M_ELECTRON`.  It is the same for all
+particles of charge ±1.
 
 
 ---
