@@ -11,17 +11,14 @@ The tables below give two names for each quantity.  The **CODATA Name** is the
 field of the `CODATA_release` struct that holds the published value, as in
 `CODATA2022.MU_PROTON_SI`; the **APC Name** is the exported constant, as in
 `MU_PROTON`.  The two differ wherever APC converts the published value before
-exporting it — a unit change for the magnetic moments, the permittivity and
-permeability, and two of the conversion constants, a change of magneton for
-four of the g-factors — and are
-the same name otherwise.  An em dash in the CODATA Name column marks a constant
+exporting it.  An em dash in the CODATA Name column marks a constant
 CODATA does not tabulate.
 
 ---
 
 ## Particle masses
 
-Units: **eV/c²**
+APC Units: eV/c²
 
 | CODATA Name | APC Name | Particle | CODATA availability |
 |-------------|----------|----------|---------------------|
@@ -31,21 +28,17 @@ Units: **eV/c²**
 | `M_MUON` | `M_MUON` | muon | all releases |
 | `M_DEUTERON` | `M_DEUTERON` | deuteron | all releases |
 | `M_HELION` | `M_HELION` | helion (³He nucleus) | all releases |
-| `M_TRITON` | `M_TRITON` | triton (³H nucleus) | 2006 and later ‡ |
-| — | `M_PION_0` | neutral pion | not in CODATA † |
-| — | `M_PION_CHARGED` | charged pion | not in CODATA † |
+| `M_TRITON` | `M_TRITON` | triton (³H nucleus) | 2006 and later |
+| `M_PION_0` † | `M_PION_0` | neutral pion | from PDG |
+| `M_PION_CHARGED` † | `M_PION_CHARGED` | charged pion | from PDG |
 
-† Pion masses are taken from the Particle Data Group (PDG), not from CODATA,
-so they have no CODATA name.  Each release uses the PDG edition of the same
-year, and the release structs carry the values as `M_PION_0` and
-`M_PION_CHARGED`; see [Constants not in CODATA](@ref).
+† Taken from the Particle Data Group (PDG) and not from CODATA
+so technically there is no CODATA name but these parameters are carried in the release structs.
+A release struct carries the PDG value of the corresponding CODATA year.
 
-‡ A quantity a release does not tabulate is `NaN` rather than absent, so
-`CODATA2002.M_TRITON` is `NaN`.  See [Quantities missing from a release](@ref).
-
-NIST does not tabulate particle masses in eV.  Each mass is NIST's "mass energy
-equivalent in MeV" value with the decimal point moved to eV, which is exact.
-
+NIST tabulates particle masses in MeV/c².
+A quantity a release does not tabulate has a value of `NaN` in the release struct.
+For example, `M_TRITON` before 2006.
 
 ---
 
@@ -100,7 +93,7 @@ For this reason, to make code using g-factors cleaner, the APC values of the g-f
 are computed from ``\boldsymbol{\mu} = g\,\frac{e}{2m}\,\mathbf{S}``, where the particle's *own*
 mass sets the scale
 ```math
-g_\text{APC} = g_\text{NIST}\,\frac{m_\text{particle}}{m_{proton}}
+g_\text{APC} = g_\text{NIST}\,\frac{m_\text{particle}}{m_{\text{proton}}}
 ```
 
 ---
@@ -133,50 +126,33 @@ particles, for which ``g_q`` is undefined.
 
 ## Other physical constants
 
-| CODATA Name | APC Name | Description | Units |
+| CODATA Name | APC Name | Description | APC Units |
 |-------------|----------|-------------|-------|
 | `E_CHARGE` | `E_CHARGE` | elementary charge | C |
 | `C_LIGHT` | `C_LIGHT` | speed of light | m/s |
 | `H_PLANCK` | `H_PLANCK` | Planck's constant *h* | eV·s |
 | `H_BAR` | `H_BAR` | reduced Planck constant *ħ* | eV·s |
 | `R_ELECTRON` | `R_ELECTRON` | classical electron radius | m |
-| — | `R_PROTON` | classical proton radius † | m |
-| — | `CLASSICAL_RADIUS_FACTOR` | ``e^2 / (4\pi\varepsilon_0) = r_e m_e c^2`` † | eV·m |
+| — † | `R_PROTON` | classical proton radius | m |
+| — † | `CLASSICAL_RADIUS_FACTOR` | ``e^2 / (4\pi\varepsilon_0)`` | eV·m |
 | `K_BOLTZMANN` | `K_BOLTZMANN` | Boltzmann's constant ``k_B`` | eV/K |
-| `EPS_0_SI` ‡ | `EPS_0` | permittivity of free space | 1/(eV·m) |
-| `MU_0_SI` ‡ | `MU_0` | vacuum permeability | eV·s²/m |
+| `EPS_0_SI` | `EPS_0` | permittivity of free space | 1/(eV·m) |
+| `MU_0_SI` | `MU_0` | vacuum permeability | eV·s²/m |
 | `AVOGADRO` | `AVOGADRO` | Avogadro's constant | mol⁻¹ |
 | `FINE_STRUCTURE` | `FINE_STRUCTURE` | fine-structure constant | dimensionless |
 | `RELEASE_YEAR` | `RELEASE_YEAR` | active CODATA release year | — |
 
-† Neither is a tabulated CODATA value.  `CLASSICAL_RADIUS_FACTOR` is
-`R_ELECTRON * M_ELECTRON`, the same for all particles of charge ±1, and is
-computed when the package loads.  `R_PROTON` is
-`R_ELECTRON * M_ELECTRON / M_PROTON`, which `update/update_constants.jl`
-computes from the release's own values and writes into the release file, so
-unlike `CLASSICAL_RADIUS_FACTOR` it *is* a struct field: `CODATA2022.R_PROTON`
-exists.
-
-‡ These two fields hold the published SI values — `EPS_0_SI` in F/m and
-`MU_0_SI` in N/A² — which the exported constants convert with `E_CHARGE`, just as
-the `MU_*_SI` fields are converted for the magnetic moments.
-
+† Not a tabulated CODATA value.
 
 ---
 
 ## Unit-conversion constants
 
-| CODATA Name | APC Name | Conversion |
+| CODATA Name | APC Name | APC Units |
 |-------------|----------|------------|
-| `G_PER_AMU` † | `KG_PER_AMU` | kg per dalton |
-| `EV_PER_AMU` | `EV_PER_AMU` | eV/c² per dalton |
-| `J_PER_EV` | `J_PER_EV` | joules per eV |
-| `EV_PER_J` | `EV_PER_J` | eV per joule |
-| `G_PER_EV` | `G_PER_EV` | grams per eV/c² |
-| `G_PER_EV` † | `KG_PER_MEV_C2` | kg per MeV/c² |
-
-† These two have no field of their own.  The field named beside each holds the
-same quantity in a different unit: `KG_PER_AMU` is `G_PER_AMU * 1e-3` (grams per
-dalton to kg per dalton), and `KG_PER_MEV_C2` is `G_PER_EV * 1e3`.  `G_PER_EV`
-therefore backs two exported constants, and `G_PER_AMU` is not itself exported.
-
+| `G_PER_AMU` | `KG_PER_AMU` | kg/dalton |
+| `EV_PER_AMU` | `EV_PER_AMU` | eV/(c²·dalton) |
+| `J_PER_EV` | `J_PER_EV` | joules/eV |
+| `EV_PER_J` | `EV_PER_J` | eV/joule |
+| `G_PER_EV` | `G_PER_EV` | grams/(c²·eV) |
+| `G_PER_EV` | `KG_PER_MEV_C2` | kg/(c²·MeV) |
