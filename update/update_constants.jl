@@ -124,13 +124,13 @@ const FIELDS = [
   :FINE_STRUCTURE     => (["fine-structure constant"], 0),
   :ANOMALY_ELECTRON   => (["electron mag. mom. anomaly", "electron magnetic moment anomaly"], 0),
   :ANOMALY_MUON       => (["muon mag. mom. anomaly", "muon magnetic moment anomaly"], 0),
-  :G_DEUTERON_NUCLEAR => (["deuteron g factor"], 0),
+  :G_DEUTERON_NUCLEAR_MAGNETON => (["deuteron g factor"], 0),
   :G_ELECTRON         => (["electron g factor"], 0),
-  :G_HELION_NUCLEAR   => (["helion g factor"], 0),
+  :G_HELION_NUCLEAR_MAGNETON   => (["helion g factor"], 0),
   :G_MUON             => (["muon g factor"], 0),
-  :G_NEUTRON          => (["neutron g factor"], 0),
+  :G_NEUTRON_NUCLEAR_MAGNETON => (["neutron g factor"], 0),
   :G_PROTON           => (["proton g factor"], 0),
-  :G_TRITON_NUCLEAR   => (["triton g factor"], 0),
+  :G_TRITON_NUCLEAR_MAGNETON   => (["triton g factor"], 0),
   # The 2002 and 2006 tables list no bare "elementary charge"; 1 eV = e J, so the
   # eV-J relationship is the same number.
   :E_CHARGE           => (["elementary charge", "electron volt-joule relationship"], 0),
@@ -290,19 +290,19 @@ ANOMALY_ELECTRON = $(v(:ANOMALY_ELECTRON))
 ANOMALY_MUON = $(v(:ANOMALY_MUON))
 # muon magnetic moment anomaly
 
-G_DEUTERON_NUCLEAR = $(v(:G_DEUTERON_NUCLEAR))
+G_DEUTERON_NUCLEAR_MAGNETON = $(v(:G_DEUTERON_NUCLEAR_MAGNETON))
 # deuteron g factor
 G_ELECTRON = $(v(:G_ELECTRON))
 # electron g factor
-G_HELION_NUCLEAR = $(v(:G_HELION_NUCLEAR))
+G_HELION_NUCLEAR_MAGNETON = $(v(:G_HELION_NUCLEAR_MAGNETON))
 # helion g factor
 G_MUON = $(v(:G_MUON))
 # muon g factor
-G_NEUTRON = $(v(:G_NEUTRON))
+G_NEUTRON_NUCLEAR_MAGNETON = $(v(:G_NEUTRON_NUCLEAR_MAGNETON))
 # neutron g factor
 G_PROTON = $(v(:G_PROTON))
 # proton g factor
-G_TRITON_NUCLEAR = $(v(:G_TRITON_NUCLEAR))
+G_TRITON_NUCLEAR_MAGNETON = $(v(:G_TRITON_NUCLEAR_MAGNETON))
 # triton g factor
 
 

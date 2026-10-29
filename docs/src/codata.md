@@ -104,23 +104,24 @@ exist, only the exported top-level constant.
 
 ## Constants that differ from the tabulated release value
 
-`G_DEUTERON`, `G_HELION`, and `G_TRITON` are pulled from the NIST/CODATA tables
-but are **rescaled before export**.  NIST tabulates these g-factors against the
-nuclear magneton ``\mu_N = e\hbar/2m_p``; the package converts them to the
-particle's own magneton so that the gyromagnetic anomaly ``a = (g_q-2)/2`` comes
-out correct:
+`G_NEUTRON`, `G_DEUTERON`, `G_HELION`, and `G_TRITON` are pulled from the
+NIST/CODATA tables but are **rescaled before export**.  NIST tabulates these
+g-factors against the nuclear magneton ``\mu_N = e\hbar/2m_p``; the package
+converts them to the particle's own magneton so that the gyromagnetic anomaly
+``a = (g_q-2)/2`` comes out correct:
 
 ```julia
-G_DEUTERON == CODATA2022.G_DEUTERON_NUCLEAR * M_DEUTERON / M_PROTON   # active release
+G_DEUTERON == CODATA2022.G_DEUTERON_NUCLEAR_MAGNETON * M_DEUTERON / M_PROTON   # active release
 ```
 
-The release structs name these fields `G_DEUTERON_NUCLEAR`, `G_HELION_NUCLEAR`,
-and `G_TRITON_NUCLEAR` — the suffix flags the nuclear-magneton normalization, so
-no g-factor field shares a name with an exported constant that holds a different
-value:
+The release structs name these fields `G_NEUTRON_NUCLEAR_MAGNETON`,
+`G_DEUTERON_NUCLEAR_MAGNETON`, `G_HELION_NUCLEAR_MAGNETON`, and
+`G_TRITON_NUCLEAR_MAGNETON` — the suffix names the magneton the published value
+is referred to, so no g-factor field shares a name with an exported constant
+that holds a different value:
 
 ```julia
-CODATA2022.G_DEUTERON_NUCLEAR   # 0.8574382335  — as published by NIST
+CODATA2022.G_DEUTERON_NUCLEAR_MAGNETON   # 0.8574382335  — as published by NIST
 CODATA2022.G_DEUTERON           # ERROR: no such field
 G_DEUTERON                      # 1.7140254606… — renormalized for the anomaly
 ```
@@ -133,14 +134,16 @@ release's `G_PER_AMU` field, which is in grams.
 
 Both the mass and the g-factor come from the active release, so the conversion
 stays self-consistent when you call `set_release`.  The active release's
-unscaled values are also kept as the unexported `_G_DEUTERON`, `_G_HELION`, and
-`_G_TRITON`.  See [Physical Constants](@ref man-constants) for the full
+unscaled values are also kept as the unexported
+`_G_NEUTRON_NUCLEAR_MAGNETON`, `_G_DEUTERON_NUCLEAR_MAGNETON`,
+`_G_HELION_NUCLEAR_MAGNETON`, and `_G_TRITON_NUCLEAR_MAGNETON`.  See [Physical Constants](@ref man-constants) for the full
 explanation.
 
-The other g-factors (`G_ELECTRON`, `G_MUON`, `G_PROTON`, `G_NEUTRON`) are
-exported exactly as tabulated.  For the first three that is already the
-own-magneton convention; `G_NEUTRON` is the one place where it is not — see the
-warning under [Composite-nucleus g-factors are renormalized](@ref).
+The other g-factors (`G_ELECTRON`, `G_MUON`, `G_PROTON`) are exported exactly
+as tabulated, which for those three is already the own-magneton convention — the
+electron and muon against the Bohr magneton, and the proton against a nuclear
+magneton that is its own.  See
+[Nuclear-magneton g-factors are renormalized](@ref) for the details.
 
 
 ## Quantities missing from a release
@@ -151,8 +154,8 @@ rather than a value borrowed from another release:
 
 | Release | Fields that are `NaN` |
 |---------|------------------------|
-| 2002 | `M_TRITON`, `MU_HELION`, `MU_TRITON`, `G_DEUTERON_NUCLEAR`, `G_HELION_NUCLEAR`, `G_TRITON_NUCLEAR` |
-| 2006 | `MU_HELION`, `G_HELION_NUCLEAR` |
+| 2002 | `M_TRITON`, `MU_HELION`, `MU_TRITON`, `G_DEUTERON_NUCLEAR_MAGNETON`, `G_HELION_NUCLEAR_MAGNETON`, `G_TRITON_NUCLEAR_MAGNETON` |
+| 2006 | `MU_HELION`, `G_HELION_NUCLEAR_MAGNETON` |
 | 2010 and later | none |
 
 The 2002 and 2006 tables list only the *shielded* helion magnetic moment, which
