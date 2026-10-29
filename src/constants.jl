@@ -190,13 +190,13 @@ const ANOMALY_MUON::Float64 = _ACTIVE.ANOMALY_MUON
 # muon magnetic moment anomaly
 
 """
-    _G_DEUTERON::Float64
+    _G_DEUTERON_NUCLEAR_MAGNETON::Float64
 
 The deuteron spin g-factor exactly as tabulated by NIST for the selected
 CODATA release, i.e. normalized to the nuclear magneton `mu_N = e*hbar/(2*M_PROTON)`.
 Internal: use `G_DEUTERON` instead.
 """
-const _G_DEUTERON::Float64 = _ACTIVE.G_DEUTERON_NUCLEAR
+const _G_DEUTERON_NUCLEAR_MAGNETON::Float64 = _ACTIVE.G_DEUTERON_NUCLEAR_MAGNETON
 # deuteron g factor
 """
     G_DEUTERON::Float64
@@ -204,7 +204,7 @@ const _G_DEUTERON::Float64 = _ACTIVE.G_DEUTERON_NUCLEAR
 The deuteron spin g-factor renormalized to the deuteron magneton
 `e*hbar/(2*M_DEUTERON)`, the convention in which the gyromagnetic anomaly `a = (|g|-2)/2` holds.
 """
-const G_DEUTERON::Float64 = _G_DEUTERON * M_DEUTERON / M_PROTON
+const G_DEUTERON::Float64 = _G_DEUTERON_NUCLEAR_MAGNETON * M_DEUTERON / M_PROTON
 # deuteron g factor 
 """
     G_ELECTRON::Float64
@@ -214,13 +214,13 @@ The electron spin g-factor per the selected CODATA release.
 const G_ELECTRON::Float64 = _ACTIVE.G_ELECTRON
 # electron g factor 
 """
-    _G_HELION::Float64
+    _G_HELION_NUCLEAR_MAGNETON::Float64
 
 The helion spin g-factor exactly as tabulated by NIST for the selected
 CODATA release, i.e. normalized to the nuclear magneton `mu_N = e*hbar/(2*M_PROTON)`.
 Internal: use `G_HELION` instead.
 """
-const _G_HELION::Float64 = _ACTIVE.G_HELION_NUCLEAR
+const _G_HELION_NUCLEAR_MAGNETON::Float64 = _ACTIVE.G_HELION_NUCLEAR_MAGNETON
 # helion g factor
 """
     G_HELION::Float64
@@ -228,7 +228,7 @@ const _G_HELION::Float64 = _ACTIVE.G_HELION_NUCLEAR
 The helion spin g-factor renormalized to the helion magneton
 `e*hbar/(2*M_HELION)`, the convention in which the gyromagnetic anomaly `a = (|g|-2)/2` holds.
 """
-const G_HELION::Float64 = _G_HELION * M_HELION / M_PROTON
+const G_HELION::Float64 = _G_HELION_NUCLEAR_MAGNETON * M_HELION / M_PROTON
 # helion g factor 
 """
     G_MUON::Float64
@@ -238,11 +238,21 @@ The muon spin g-factor per the selected CODATA release.
 const G_MUON::Float64 = _ACTIVE.G_MUON
 # muon g factor 
 """
+    _G_NEUTRON_NUCLEAR_MAGNETON::Float64
+
+The neutron spin g-factor exactly as tabulated by NIST for the selected
+CODATA release, i.e. normalized to the nuclear magneton `mu_N = e*hbar/(2*M_PROTON)`.
+Internal: use `G_NEUTRON` instead.
+"""
+const _G_NEUTRON_NUCLEAR_MAGNETON::Float64 = _ACTIVE.G_NEUTRON_NUCLEAR_MAGNETON
+# neutron g factor
+"""
     G_NEUTRON::Float64
 
-The neutron spin g-factor per the selected CODATA release.
+The neutron spin g-factor renormalized to the neutron magneton
+`e*hbar/(2*M_NEUTRON)`, the convention in which the gyromagnetic anomaly `a = (|g|-2)/2` holds.
 """
-const G_NEUTRON::Float64 = _ACTIVE.G_NEUTRON
+const G_NEUTRON::Float64 = _G_NEUTRON_NUCLEAR_MAGNETON * M_NEUTRON / M_PROTON
 # neutron g factor 
 """
     G_PROTON::Float64
@@ -252,13 +262,13 @@ The proton spin g-factor per the selected CODATA release.
 const G_PROTON::Float64 = _ACTIVE.G_PROTON
 # proton g factor 
 """
-    _G_TRITON::Float64
+    _G_TRITON_NUCLEAR_MAGNETON::Float64
 
 The triton spin g-factor exactly as tabulated by NIST for the selected
 CODATA release, i.e. normalized to the nuclear magneton `mu_N = e*hbar/(2*M_PROTON)`.
 Internal: use `G_TRITON` instead.
 """
-const _G_TRITON::Float64 = _ACTIVE.G_TRITON_NUCLEAR
+const _G_TRITON_NUCLEAR_MAGNETON::Float64 = _ACTIVE.G_TRITON_NUCLEAR_MAGNETON
 # triton g factor
 """
     G_TRITON::Float64
@@ -266,7 +276,7 @@ const _G_TRITON::Float64 = _ACTIVE.G_TRITON_NUCLEAR
 The triton spin g-factor renormalized to the triton magneton
 `e*hbar/(2*M_TRITON)`, the convention in which the gyromagnetic anomaly `a = (|g|-2)/2` holds.
 """
-const G_TRITON::Float64 = _G_TRITON * M_TRITON / M_PROTON
+const G_TRITON::Float64 = _G_TRITON_NUCLEAR_MAGNETON * M_TRITON / M_PROTON
 # triton g factor
 
 

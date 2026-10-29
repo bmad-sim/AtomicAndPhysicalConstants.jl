@@ -86,20 +86,20 @@ ANOMALY_ELECTRON = 0.00115965218111,
 ANOMALY_MUON = 0.00116592069,
 # muon magnetic moment anomaly
 
-G_DEUTERON_NUCLEAR = 0.8574382308,
+G_DEUTERON_NUCLEAR_MAGNETON = 0.8574382308,
 # deuteron g factor
 G_ELECTRON = -2.0023193043622,
 # electron g factor
-G_HELION_NUCLEAR = NaN,
+G_HELION_NUCLEAR_MAGNETON = NaN,
 # not tabulated in the 2006 release
 # helion g factor
 G_MUON = -2.0023318414,
 # muon g factor
-G_NEUTRON = -3.82608545,
+G_NEUTRON_NUCLEAR_MAGNETON = -3.82608545,
 # neutron g factor
 G_PROTON = 5.585694713,
 # proton g factor
-G_TRITON_NUCLEAR = 5.957924896,
+G_TRITON_NUCLEAR_MAGNETON = 5.957924896,
 # triton g factor
 
 

@@ -238,19 +238,19 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   ANOMALY_MUON::Float64
   # muon magnetic moment anomaly
 
-  G_DEUTERON_NUCLEAR::Float64
+  G_DEUTERON_NUCLEAR_MAGNETON::Float64
   # deuteron g factor 
   G_ELECTRON::Float64
   # electron g factor 
-  G_HELION_NUCLEAR::Float64
+  G_HELION_NUCLEAR_MAGNETON::Float64
   # helion g factor 
   G_MUON::Float64
   # muon g factor 
-  G_NEUTRON::Float64
+  G_NEUTRON_NUCLEAR_MAGNETON::Float64
   # neutron g factor 
   G_PROTON::Float64
   # proton g factor 
-  G_TRITON_NUCLEAR::Float64
+  G_TRITON_NUCLEAR_MAGNETON::Float64
   # triton g factor
 
 
