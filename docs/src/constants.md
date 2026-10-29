@@ -114,11 +114,24 @@ The mass ratio uses the mass from the *same* active CODATA release as the
 g-factor, so switching releases with [`set_release`](@ref) renormalizes
 consistently.
 
-Only these three struct fields carry the `_NUCLEAR` suffix.  The electron, muon,
-proton, and neutron g-factors need no rescaling — CODATA already tabulates them
-against the magneton built from the particle's own mass — so `G_ELECTRON`,
-`G_MUON`, `G_PROTON`, and `G_NEUTRON` keep their plain names in the release
-structs and are exported exactly as published.
+Only these three struct fields carry the `_NUCLEAR` suffix.  The electron and
+muon g-factors need no rescaling — CODATA tabulates them against the Bohr
+magneton ``\mu_B = e\hbar/2m_e``, built from the particle's own mass — and for
+the proton the nuclear magneton *is* its own magneton, so `G_ELECTRON`,
+`G_MUON`, and `G_PROTON` keep their plain names in the release structs and are
+exported exactly as published.
+
+!!! warning "`G_NEUTRON` is still the nuclear-magneton value"
+    The neutron is the exception.  NIST tabulates its g-factor against the
+    nuclear magneton too, so `G_NEUTRON` is exported as published
+    (`-3.82608552` for 2022) and is **not** in the own-magneton convention the
+    rest of this page describes; that value would be
+    `G_NEUTRON * M_NEUTRON / M_PROTON`, or `-3.8313594707492573`.  Nothing the
+    package computes depends on the difference — the neutron is neutral, so
+    [`gyromagnetic_anomaly`](@ref) returns `NaN` for it — but
+    `g_spin(Species("neutron"))` is in the nuclear normalization.  This is a
+    known inconsistency, to be fixed by renaming the field to
+    `G_NEUTRON_NUCLEAR` and renormalizing like the other three.
 
 Because the renormalization is folded into the constants themselves,
 [`g_spin`](@ref) and [`gyromagnetic_anomaly`](@ref) need no special-casing —
@@ -177,6 +190,8 @@ particles, for which ``g_q`` is undefined.
 `R_ELECTRON * M_ELECTRON` from the active release.  It is the same for all
 particles of charge ±1.  Because it is derived, it is not a field of the
 `CODATA_release` structs (e.g. there is no `CODATA2022.CLASSICAL_RADIUS_FACTOR`).
+`KG_PER_AMU` and `KG_PER_MEV_C2` are derived in the same sense — see the note
+below the unit-conversion table.
 
 
 ---
@@ -185,10 +200,15 @@ particles of charge ±1.  Because it is derived, it is not a field of the
 
 | Constant | Conversion |
 |----------|------------|
-| `KG_PER_AMU` | kg per dalton |
+| `KG_PER_AMU` | kg per dalton † |
 | `EV_PER_AMU` | eV/c² per dalton |
 | `J_PER_EV` | joules per eV |
 | `EV_PER_J` | eV per joule |
 | `G_PER_EV` | grams per eV/c² |
-| `KG_PER_MEV_C2` | kg per MeV/c² |
+| `KG_PER_MEV_C2` | kg per MeV/c² † |
+
+† Two of these are derived rather than tabulated, so they are not fields of the
+release structs.  `KG_PER_AMU` is the release's `G_PER_AMU` field (grams per
+dalton) times `1e-3`, so the struct field and the exported constant differ in
+both name and unit; `KG_PER_MEV_C2` is `G_PER_EV * 1e3`.
 

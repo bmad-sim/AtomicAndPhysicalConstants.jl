@@ -30,12 +30,12 @@ Pass the openPMD name exactly:
 
 Atomic symbols `"H"` (Z=1) through `"Og"` (Z=118) are supported.
 
-**Mass number** — There are two ways to include the mass number: Before the atomic symbol,
-either prefix with a pound symbol `#` followed by the mass number or, prefix with a 
-Unicode superscript(s). A bare ASCII mass number (e.g. `"4He"`) is **not** accepted.
-Correct would be `"#4He"` or `"⁴He"`.  Without a mass number the
-abundance-averaged mass is used; an element with no stable isotopes has none,
-so for it (e.g. `"Po"`) a mass number is required.
+**Mass number** — give it before the atomic symbol, either as ASCII digits
+prefixed with `#` or as Unicode superscript digits: `"#4He"` or `"⁴He"`.  A bare
+ASCII mass number such as `"4He"` is **not** accepted.  Without a mass number
+the abundance-averaged mass is used; an element with no stable isotopes has no
+standard atomic weight, so for those (Tc, Pm, and Po onward, apart from Th, Pa,
+and U) a mass number is required and `"Po"` alone is an error.
 
 **Charge state** — append after the symbol. Repeated signs (`"++"`, `"---"`)
 or `"+n"` / `"-n"` notation are both accepted.
@@ -64,7 +64,7 @@ Species("anti-H")   # antihydrogen
 | `charge` | `Float64` | Net charge in units of *e* |
 | `mass` | `Float64` | Rest mass in eV/c² |
 | `spin` | `Float64` | Spin in ħ; for an atom the nuclear spin, `NaN` if undefined |
-| `gspin` | `Float64` | Spin g-factor (0 for atoms) |
+| `gspin` | `Float64` | *Signed* spin g-factor (0 for atoms); [`g_spin`](@ref) returns its absolute value by default |
 | `moment` | `Float64` | Magnetic dipole moment in eV/T (0 for atoms) |
 | `iso` | `Int` | Mass number; −1 for abundance average; 0 for subatomic particles |
 | `kind` | `Kind.T` | `LEPTON`, `HADRON`, `PHOTON`, `ATOM`, or `NULL` |
@@ -115,7 +115,7 @@ struct SubatomicSpecies
   charge::Float64 # charge on the particle in e
   mass::Float64 # mass of the particle in [eV/c^2]
   moment::Float64 # magnetic moment in eV/T
-  spin::Float64 # spin magnetic moment in [ħ]
+  spin::Float64 # spin in [ħ]
   gspin::Float64
 end;
 
@@ -192,8 +192,8 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   M_TRITON::Float64
   # Triton Mass [eV]/c^2
 
-  # constants mysteriously missing from the release
-  # picked up from PDG
+  # Not published in any CODATA release; taken from the Particle Data Group
+  # edition of the same year.
   M_PION_0::Float64
   # uncharged pion mass [eV]/c^2
   M_PION_CHARGED::Float64
@@ -205,6 +205,8 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   #######################################
 
 
+  # NOTE: these are the CODATA SI values.  The exported MU_* constants are these
+  # converted to eV/T via EV_PER_J, so field and constant differ by that factor.
   MU_DEUTERON::Float64
   # deuteron magnetic moment in [J/T]
   MU_ELECTRON::Float64
@@ -265,9 +267,9 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   C_LIGHT::Float64
   # speed of light [m/s]
   H_PLANCK::Float64
-  # Planck's constant [J*s]
+  # Planck's constant [eV*s]
   H_BAR::Float64
-  # h_planck/twopi [J*s]
+  # h_planck/twopi [eV*s]
   # CLASSICAL_RADIUS_FACTOR::Float64
   # e^2 / (4 pi eps_0) = classical_radius*mass*c^2.
   # Is same for all particles of charge +/- 1.

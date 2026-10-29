@@ -60,9 +60,12 @@ ordinary dot access.
 The atomic data is release-independent: only the constants in `src/constants.jl`
 and the subatomic species built from them change when you switch releases.
 
-A few exported constants are not copied straight out of the source tables —
-`CLASSICAL_RADIUS_FACTOR` is derived, and the deuteron, helion, and triton
-g-factors are renormalized.  See
+A few exported constants are not copied straight out of the source tables.
+`CLASSICAL_RADIUS_FACTOR` (`R_ELECTRON * M_ELECTRON`), `KG_PER_AMU`
+(`G_PER_AMU * 1e-3`), and `KG_PER_MEV_C2` (`G_PER_EV * 1e3`) are derived, so
+they are not fields of the release structs at all; the seven `MU_*` constants
+are the structs' SI values converted from J/T to eV/T; and the deuteron, helion,
+and triton g-factors are renormalized.  See
 [CODATA Releases](@ref man-codata) for the details.
 
 ## How the active release is resolved
@@ -160,8 +163,10 @@ julia --project=. -e 'using Pkg; Pkg.test()'
 3. Make the edits the script lists at the end.  They cover the tests (the set
    of release years, the pion and untabulated tables, and, for a new most
    recent release, the default values the tests check) and the docs (the
-   release tables here and in the README, the docstrings that list releases,
-   and the "currently" default year).
+   release tables here and in the README, the release structs listed in the
+   [API Reference](@ref) and in the `CODATA_release` docstring, and the
+   "currently" default year).  The year list in [`set_release`](@ref)'s own
+   docstring is interpolated from `CODATA_MAP` and needs no edit.
 4. Run the test suite and review the diff.
 
 ### The CODATA values

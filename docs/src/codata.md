@@ -116,14 +116,20 @@ G_DEUTERON == CODATA2022.G_DEUTERON_NUCLEAR * M_DEUTERON / M_PROTON   # active r
 
 The release structs name these fields `G_DEUTERON_NUCLEAR`, `G_HELION_NUCLEAR`,
 and `G_TRITON_NUCLEAR` — the suffix flags the nuclear-magneton normalization, so
-there is no field whose name matches the exported constant and whose value
-differs from it:
+no g-factor field shares a name with an exported constant that holds a different
+value:
 
 ```julia
 CODATA2022.G_DEUTERON_NUCLEAR   # 0.8574382335  — as published by NIST
 CODATA2022.G_DEUTERON           # ERROR: no such field
 G_DEUTERON                      # 1.7140254606… — renormalized for the anomaly
 ```
+
+One group of fields does share a name with an exported constant while holding a
+different value: the seven `MU_*` fields are the CODATA SI values in J/T, where
+the exported constants are in eV/T (converted via `EV_PER_J`).  And in the other
+direction, `KG_PER_AMU` has no field of its own at all — it is derived from the
+release's `G_PER_AMU` field, which is in grams.
 
 Both the mass and the g-factor come from the active release, so the conversion
 stays self-consistent when you call `set_release`.  The active release's
@@ -132,7 +138,9 @@ unscaled values are also kept as the unexported `_G_DEUTERON`, `_G_HELION`, and
 explanation.
 
 The other g-factors (`G_ELECTRON`, `G_MUON`, `G_PROTON`, `G_NEUTRON`) are
-exported exactly as tabulated.
+exported exactly as tabulated.  For the first three that is already the
+own-magneton convention; `G_NEUTRON` is the one place where it is not — see the
+warning under [Composite-nucleus g-factors are renormalized](@ref).
 
 
 ## Quantities missing from a release

@@ -16,12 +16,18 @@ For atomic species the name is assembled from the atomic symbol, mass number
 (if a specific isotope was requested), and charge state, using the `#mAS±c`
 convention:
 
-```julia
-nameof(Species("electron"))   # "electron"
-nameof(Species("Fe"))         # "Fe"
-nameof(Species("#4He+2"))     # "#4He+2"
-nameof(Species("Li+"))        # "Li+1"
-nameof(Species("anti-#4He"))  # "anti-#4He"
+```jldoctest
+julia> nameof(Species("electron"))
+"electron"
+
+julia> nameof(Species("#4He+2"))
+"#4He+2"
+
+julia> nameof(Species("Li+"))      # the charge is always spelled out
+"Li+1"
+
+julia> nameof(Species("anti-#4He"))
+"anti-#4He"
 ```
 """
 function Base.nameof(species::Species)
@@ -68,11 +74,18 @@ active [`E_CHARGE`](@ref) constant.
 
 # Examples
 
-```julia
-chargeof(Species("proton"))       # 1.0
-chargeof(Species("electron"))     # -1.0
-chargeof(Species("Li+3"))         # 3.0
-chargeof(Species("proton"), C=true)   # ≈ 1.602176634e-19
+```jldoctest
+julia> chargeof(Species("proton"))
+1.0
+
+julia> chargeof(Species("electron"))
+-1.0
+
+julia> chargeof(Species("Li+3"))
+3.0
+
+julia> chargeof(Species("proton"), C = true)   # coulombs
+1.602176634e-19
 ```
 """
 function chargeof(species::Species; C::Bool=false)
@@ -90,11 +103,18 @@ atomic species.
 
 # Examples
 
-```julia
-massof(Species("electron"))              # 510998.95069  eV/c²
-massof(Species("proton"))               # 9.38272089430e8  eV/c²
-massof(Species("H"), AMU = true)        # ≈ 1.00794  u
-massof(Species("#4He"), AMU = true)     # ≈ 4.0026  u
+```jldoctest
+julia> massof(Species("electron"))          # eV/c²
+510998.95069
+
+julia> massof(Species("proton"))
+9.3827208943e8
+
+julia> massof(Species("H"), AMU = true)     # daltons
+1.0079407540557772
+
+julia> massof(Species("#4He"), AMU = true)
+4.00260325413
 ```
 """
 function massof(species::Species; AMU::Bool=false)
@@ -125,14 +145,21 @@ opposite spins, so every even-even nucleus has spin 0.
 
 # Examples
 
-```julia
-spinof(Species("electron"))    # 0.5
-spinof(Species("proton"))      # 0.5
-spinof(Species("photon"))      # 1.0
-spinof(Species("#4He"))        # 0.0   even-even nucleus
-spinof(Species("#3He"))        # 0.5
-spinof(Species("#3He+2"))      # 0.5   ionisation does not change the nucleus
-spinof(Species("He"))          # NaN   abundance average, no single value
+```jldoctest
+julia> spinof(Species("electron"))
+0.5
+
+julia> spinof(Species("photon"))
+1.0
+
+julia> spinof(Species("#4He"))     # even-even nucleus
+0.0
+
+julia> spinof(Species("#3He+2"))   # ionisation does not change the nucleus
+0.5
+
+julia> spinof(Species("He"))       # abundance average, no single value
+NaN
 ```
 """
 function spinof(species::Species)
@@ -153,12 +180,21 @@ Returns 0 for atomic species, for which no g-factor is stored.
 
 # Examples
 
-```julia
-g_spin(Species("electron"))               # 2.00231930436092
-g_spin(Species("electron"), signed=true)  # -2.00231930436092
-g_spin(Species("positron"), signed=true)  #  2.00231930436092
-g_spin(Species("proton"))                 # 5.5856946893
-g_spin(Species("H"))                      # 0.0
+```jldoctest
+julia> g_spin(Species("electron"))
+2.00231930436092
+
+julia> g_spin(Species("electron"), signed = true)
+-2.00231930436092
+
+julia> g_spin(Species("positron"), signed = true)
+2.00231930436092
+
+julia> g_spin(Species("proton"))
+5.5856946893
+
+julia> g_spin(Species("H"))        # atoms carry no g-factor
+0.0
 ```
 """
 function g_spin(species::Species; signed::Bool = false)
@@ -197,13 +233,21 @@ renormalized values (see the [Physical Constants](@ref man-constants) manual pag
 
 # Examples
 
-```julia
-gyromagnetic_anomaly(Species("electron"))   # ≈  0.00115965218046
-gyromagnetic_anomaly(Species("muon"))       # ≈  0.00116592062
-gyromagnetic_anomaly(Species("deuteron"))   # ≈ -0.1429872697
-gyromagnetic_anomaly(Species("helion"))     # ≈ -4.1841537
-gyromagnetic_anomaly(Species("neutron"))    # NaN
-gyromagnetic_anomaly(Species("H"))          # NaN
+```jldoctest
+julia> gyromagnetic_anomaly(Species("electron"))
+0.0011596521804599913
+
+julia> gyromagnetic_anomaly(Species("muon"))
+0.0011659206150000934
+
+julia> gyromagnetic_anomaly(Species("deuteron"))
+-0.14298726968020148
+
+julia> gyromagnetic_anomaly(Species("helion"))    # doubly charged
+-4.184153749832893
+
+julia> gyromagnetic_anomaly(Species("neutron"))   # neutral
+NaN
 ```
 """
 function gyromagnetic_anomaly(species::Species)::Float64
@@ -225,10 +269,15 @@ these types).
 
 # Examples
 
-```julia
-momentof(Species("electron"))   # ≈ -5.795094307747843e-5  eV/T
-momentof(Species("proton"))     # ≈  8.8043151136e-8  eV/T
-momentof(Species("H"))          # 0.0
+```jldoctest
+julia> momentof(Species("electron"))   # eV/T
+-5.795094307747843e-5
+
+julia> momentof(Species("proton"))
+8.804315114297192e-8
+
+julia> momentof(Species("H"))          # atoms carry no moment
+0.0
 ```
 """
 function momentof(species::Species)::Float64
@@ -250,10 +299,15 @@ Return the mass number (isotope) of `species`.
 
 # Examples
 
-```julia
-iso_of(Species("#3He"))         # 3
-iso_of(Species("He"))           # -1  (abundance average)
-iso_of(Species("electron"))     # 0
+```jldoctest
+julia> iso_of(Species("#3He"))
+3
+
+julia> iso_of(Species("He"))        # abundance average
+-1
+
+julia> iso_of(Species("electron"))  # not an atom
+0
 ```
 """
 function iso_of(species::Species) 
@@ -273,12 +327,15 @@ Possible values: `Kind.LEPTON`, `Kind.HADRON`, `Kind.PHOTON`, `Kind.ATOM`,
 
 # Examples
 
-```julia
-kindof(Species("electron"))    # Kind.LEPTON
-kindof(Species("proton"))      # Kind.HADRON
-kindof(Species("H"))           # Kind.ATOM
-kindof(Species("photon"))      # Kind.PHOTON
-kindof(Species())              # Kind.NULL
+```jldoctest
+julia> kindof(Species("electron"))
+Kind.LEPTON = 2
+
+julia> kindof(Species("H"))
+Kind.ATOM = 0
+
+julia> kindof(Species())
+Kind.NULL = 4
 ```
 """
 function kindof(species::Species)
@@ -298,11 +355,15 @@ Throws an error if `species` is not of kind `ATOM`.
 
 # Examples
 
-```julia
-atomicnumberof(Species("Fe"))       # 26
-atomicnumberof(Species("H+"))       # 1
-atomicnumberof(Species("anti-H"))   # -1
-atomicnumberof(Species("electron")) # ERROR
+```jldoctest
+julia> atomicnumberof(Species("Fe"))
+26
+
+julia> atomicnumberof(Species("H+"))     # ionisation does not change Z
+1
+
+julia> atomicnumberof(Species("anti-H"))
+-1
 ```
 """
 function atomicnumberof(species::Species)
@@ -324,10 +385,15 @@ end
 
 Return `true` if `species` is a null (placeholder) species, `false` otherwise.
 
-```julia
-isnullspecies(Species())           # true
-isnullspecies(Species("null"))     # true
-isnullspecies(Species("proton"))   # false
+```jldoctest
+julia> isnullspecies(Species())
+true
+
+julia> isnullspecies(Species("null"))
+true
+
+julia> isnullspecies(Species("proton"))
+false
 ```
 """
 isnullspecies(species::Species) = getfield(species, :kind) == Kind.NULL
@@ -345,10 +411,10 @@ The setting is stored via [Preferences.jl](https://github.com/JuliaPackaging/Pre
 in the active Julia environment and survives across sessions.  A Julia restart
 is required for the new constants to take effect.
 
-Valid values for `year` are the keys of `CODATA_MAP`: `"2002"`, `"2006"`,
-`"2010"`, `"2014"`, `"2018"`, `"2022"`.  Calling with no arguments removes the
-setting, so the package uses its default: the most recent release it ships,
-which moves forward when a newer release is added.
+Valid values for `year` are the keys of `CODATA_MAP`, currently
+$(join(sort(collect(keys(CODATA_MAP))), ", ")), each given as a string.  Calling
+with no arguments removes the setting, so the package uses its default: the most
+recent release it ships, which moves forward when a newer release is added.
 
 # Examples
 
@@ -393,8 +459,9 @@ end
 
 """
     SUPERSCRIPT_MAP
-    A dictionary mapping superscript characters to their corresponding integer values.
-    This is used to convert superscript numbers in species names to their integer values.
+
+A dictionary mapping superscript characters to their corresponding integer
+values.  Used to convert superscript mass numbers in species names.
 """
 const SUPERSCRIPT_MAP = Dict{Char,Int}(
   '⁰' => 0,
@@ -419,12 +486,10 @@ lookup instead of scanning `SUPERSCRIPT_MAP` for a matching value.
 const SUPER_LOOKUP = Dict{Int,Char}(v => k for (k, v) in SUPERSCRIPT_MAP)
 
 """
-    find_superscript(num::Int64)
+    find_superscript(num::Int)
 
-## Description:
-Convert an integer to its superscript representation.
-This function takes an integer and returns a string containing the corresponding
-superscript characters for each digit in the integer.
+Convert an integer to its superscript representation, returning a string of the
+superscript character for each digit of `num`.
 """
 function find_superscript(num::Int)
   buf = IOBuffer()

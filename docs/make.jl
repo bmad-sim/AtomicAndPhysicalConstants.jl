@@ -1,6 +1,10 @@
 using Documenter
 using AtomicAndPhysicalConstants
 
+# Lets the `jldoctest` blocks in docstrings skip the `using` line.
+DocMeta.setdocmeta!(AtomicAndPhysicalConstants, :DocTestSetup,
+    :(using AtomicAndPhysicalConstants); recursive = true)
+
 makedocs(
     sitename = "AtomicAndPhysicalConstants.jl",
     authors  = "David Sagan and contributors",
