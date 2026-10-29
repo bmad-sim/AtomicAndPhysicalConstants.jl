@@ -104,29 +104,16 @@ exist, only the exported top-level constant.
 
 ## Constants that differ from the tabulated release value
 
-`G_NEUTRON`, `G_DEUTERON`, `G_HELION`, and `G_TRITON` are pulled from the
-NIST/CODATA tables but are **rescaled before export**.  NIST tabulates these
-g-factors against the nuclear magneton ``\mu_N = e\hbar/2m_p``; the package
-converts them to the particle's own magneton so that the gyromagnetic anomaly
-``a = (g_q-2)/2`` comes out correct:
-
+`G_NEUTRON_NUCLEAR_MAGNETON`, `G_DEUTERON_NUCLEAR_MAGNETON`, `G_HELION_NUCLEAR_MAGNETON`, 
+and `G_TRITON_NUCLEAR_MAGNETON` are pulled from the
+NIST/CODATA tables and are measured in terms of the nuclear magneton ``\mu_N = e\hbar/2m_p``.
+APC converts them to `G_NEUTRON`, `G_DEUTERON`, `G_HELION`, and `G_TRITON` so that the gyromagnetic anomaly
+``a = (g_q-2)/2`` comes out correct. For example:
 ```julia
 G_DEUTERON == CODATA2022.G_DEUTERON_NUCLEAR_MAGNETON * M_DEUTERON / M_PROTON   # active release
-```
-
-The release structs name these fields `G_NEUTRON_NUCLEAR_MAGNETON`,
-`G_DEUTERON_NUCLEAR_MAGNETON`, `G_HELION_NUCLEAR_MAGNETON`, and
-`G_TRITON_NUCLEAR_MAGNETON`. The suffix indicates that the values are
-scaled by the nuclear magneton.
-
-```julia
-CODATA2022.G_DEUTERON_NUCLEAR_MAGNETON   # 0.8574382335  — as published by NIST
-CODATA2022.G_DEUTERON           # ERROR: no such field
-G_DEUTERON                      # 1.7140254606… — renormalized for the anomaly
-```
 
 The magnetic moments `MU_PROTON_SI`, `MU_ELECTRON_SI`, … , hold the CODATA values in
-SI units (J/T), which the exported `MU_*` constants (without a `_SI` suffix) convert to eV/T.
+SI units (J/T), which are converted to the exported `MU_*` constants (without a `_SI` suffix) in eV/T.
 
 ## Quantities missing from a release
 
