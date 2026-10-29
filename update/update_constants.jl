@@ -184,11 +184,8 @@ function extract(table::Dict{String,String})
       shift(table[names[i]], n)
     end
   end
-  e = consts[:E_CHARGE]
-  # eps_0 [C^2/(J m)] / e [C^2] * e [J/eV] = eps_0 / e [1/(eV m)];
-  # mu_0 [J s^2/(C^2 m)] * e^2 [C^2] / e [J/eV] = mu_0 * e [eV s^2/m].
-  consts[:EPS_0] = pop!(consts, :EPS_0_SI) / e
-  consts[:MU_0] = pop!(consts, :MU_0_SI) * e
+  # EPS_0_SI [F/m] and MU_0_SI [N/A^2] are stored as published; src/constants.jl
+  # divides and multiplies by E_CHARGE to export them in 1/(eV m) and eV s^2/m.
   consts[:R_PROTON] = consts[:R_ELECTRON] * consts[:M_ELECTRON] / consts[:M_PROTON]
   missing = sort([f for (f, v) in consts if isnan(v)])
   return consts, missing
@@ -327,10 +324,10 @@ H_BAR = $(v(:H_BAR))
 K_BOLTZMANN = $(v(:K_BOLTZMANN))
 #k_B in eV/K
 
-EPS_0 = $(v(:EPS_0))
-# Permittivity of free space in [1/(eV*m)]
-MU_0 = $(v(:MU_0))
-# Vacuum permeability in [eV*s^2/m]
+EPS_0_SI = $(v(:EPS_0_SI))
+# Permittivity of free space in [F/m]
+MU_0_SI = $(v(:MU_0_SI))
+# Vacuum permeability in [N/A^2]
 
 
 G_PER_AMU = $(v(:G_PER_AMU))

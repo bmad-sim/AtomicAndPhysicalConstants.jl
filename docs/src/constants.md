@@ -11,8 +11,11 @@ The tables below give two names for each quantity.  The **CODATA Name** is the
 field of the `CODATA_release` struct that holds the published value, as in
 `CODATA2022.MU_PROTON_SI`; the **APC Name** is the exported constant, as in
 `MU_PROTON`.  The two differ wherever APC converts the published value before
-exporting it — a unit change for the magnetic moments, a change of magneton for
-four of the g-factors — and are the same name otherwise.
+exporting it — a unit change for the magnetic moments, the permittivity and
+permeability, and two of the conversion constants, a change of magneton for
+four of the g-factors — and are
+the same name otherwise.  An em dash in the CODATA Name column marks a constant
+CODATA does not tabulate.
 
 ---
 
@@ -130,42 +133,50 @@ particles, for which ``g_q`` is undefined.
 
 ## Other physical constants
 
-| Constant | Description | Units |
-|----------|-------------|-------|
-| `E_CHARGE` | elementary charge | C |
-| `C_LIGHT` | speed of light | m/s |
-| `H_PLANCK` | Planck's constant *h* | eV·s |
-| `H_BAR` | reduced Planck constant *ħ* | eV·s |
-| `R_ELECTRON` | classical electron radius | m |
-| `R_PROTON` | classical proton radius | m |
-| `CLASSICAL_RADIUS_FACTOR` | ``e^2 / (4\pi\varepsilon_0) = r_e m_e c^2`` † | eV·m |
-| `K_BOLTZMANN` | Boltzmann's constant ``k_B`` | eV/K |
-| `EPS_0` | permittivity of free space | 1/(eV·m) |
-| `MU_0` | vacuum permeability | eV·s²/m |
-| `AVOGADRO` | Avogadro's constant | mol⁻¹ |
-| `FINE_STRUCTURE` | fine-structure constant | dimensionless |
-| `RELEASE_YEAR` | active CODATA release year | — |
+| CODATA Name | APC Name | Description | Units |
+|-------------|----------|-------------|-------|
+| `E_CHARGE` | `E_CHARGE` | elementary charge | C |
+| `C_LIGHT` | `C_LIGHT` | speed of light | m/s |
+| `H_PLANCK` | `H_PLANCK` | Planck's constant *h* | eV·s |
+| `H_BAR` | `H_BAR` | reduced Planck constant *ħ* | eV·s |
+| `R_ELECTRON` | `R_ELECTRON` | classical electron radius | m |
+| — | `R_PROTON` | classical proton radius † | m |
+| — | `CLASSICAL_RADIUS_FACTOR` | ``e^2 / (4\pi\varepsilon_0) = r_e m_e c^2`` † | eV·m |
+| `K_BOLTZMANN` | `K_BOLTZMANN` | Boltzmann's constant ``k_B`` | eV/K |
+| `EPS_0_SI` ‡ | `EPS_0` | permittivity of free space | 1/(eV·m) |
+| `MU_0_SI` ‡ | `MU_0` | vacuum permeability | eV·s²/m |
+| `AVOGADRO` | `AVOGADRO` | Avogadro's constant | mol⁻¹ |
+| `FINE_STRUCTURE` | `FINE_STRUCTURE` | fine-structure constant | dimensionless |
+| `RELEASE_YEAR` | `RELEASE_YEAR` | active CODATA release year | — |
 
-† `CLASSICAL_RADIUS_FACTOR` is not a tabulated CODATA value; it is computed as
-`R_ELECTRON * M_ELECTRON`.  It is the same for all
-particles of charge ±1.
+† Neither is a tabulated CODATA value.  `CLASSICAL_RADIUS_FACTOR` is
+`R_ELECTRON * M_ELECTRON`, the same for all particles of charge ±1, and is
+computed when the package loads.  `R_PROTON` is
+`R_ELECTRON * M_ELECTRON / M_PROTON`, which `update/update_constants.jl`
+computes from the release's own values and writes into the release file, so
+unlike `CLASSICAL_RADIUS_FACTOR` it *is* a struct field: `CODATA2022.R_PROTON`
+exists.
+
+‡ These two fields hold the published SI values — `EPS_0_SI` in F/m and
+`MU_0_SI` in N/A² — which the exported constants convert with `E_CHARGE`, just as
+the `MU_*_SI` fields are converted for the magnetic moments.
 
 
 ---
 
 ## Unit-conversion constants
 
-| Constant | Conversion |
-|----------|------------|
-| `KG_PER_AMU` | kg per dalton † |
-| `EV_PER_AMU` | eV/c² per dalton |
-| `J_PER_EV` | joules per eV |
-| `EV_PER_J` | eV per joule |
-| `G_PER_EV` | grams per eV/c² |
-| `KG_PER_MEV_C2` | kg per MeV/c² † |
+| CODATA Name | APC Name | Conversion |
+|-------------|----------|------------|
+| `G_PER_AMU` † | `KG_PER_AMU` | kg per dalton |
+| `EV_PER_AMU` | `EV_PER_AMU` | eV/c² per dalton |
+| `J_PER_EV` | `J_PER_EV` | joules per eV |
+| `EV_PER_J` | `EV_PER_J` | eV per joule |
+| `G_PER_EV` | `G_PER_EV` | grams per eV/c² |
+| `G_PER_EV` † | `KG_PER_MEV_C2` | kg per MeV/c² |
 
-† Two of these are derived rather than tabulated, so they are not fields of the
-release structs.  `KG_PER_AMU` is the release's `G_PER_AMU` field (grams per
-dalton) times `1e-3`, so the struct field and the exported constant differ in
-both name and unit; `KG_PER_MEV_C2` is `G_PER_EV * 1e3`.
+† These two have no field of their own.  The field named beside each holds the
+same quantity in a different unit: `KG_PER_AMU` is `G_PER_AMU * 1e-3` (grams per
+dalton to kg per dalton), and `KG_PER_MEV_C2` is `G_PER_EV * 1e3`.  `G_PER_EV`
+therefore backs two exported constants, and `G_PER_AMU` is not itself exported.
 

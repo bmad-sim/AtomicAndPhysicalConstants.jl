@@ -122,10 +122,10 @@ H_BAR = 6.58211928e-16,
 K_BOLTZMANN = 8.6173324e-5,
 #k_B in eV/K
 
-EPS_0 = 5.526349599065811e7,
-# Permittivity of free space in [1/(eV*m)]
-MU_0 = 2.013354450543092e-25,
-# Vacuum permeability in [eV*s^2/m]
+EPS_0_SI = 8.854187817620389e-12,
+# Permittivity of free space in [F/m]
+MU_0_SI = 1.2566370614359173e-6,
+# Vacuum permeability in [N/A^2]
 
 
 G_PER_AMU = 1.660538921e-24,

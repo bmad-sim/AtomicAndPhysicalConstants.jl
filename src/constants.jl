@@ -351,14 +351,14 @@ const K_BOLTZMANN::Float64 = _ACTIVE.K_BOLTZMANN
 
 Permittivity of free space in 1/(eV·m) per the selected CODATA release.
 """
-const EPS_0::Float64 = _ACTIVE.EPS_0
+const EPS_0::Float64 = _ACTIVE.EPS_0_SI / E_CHARGE
 # Permittivity of free space in [1/(eV*m)]
 """
     MU_0::Float64
 
 Vacuum permeability in eV·s²/m per the selected CODATA release.
 """
-const MU_0::Float64 = _ACTIVE.MU_0
+const MU_0::Float64 = _ACTIVE.MU_0_SI * E_CHARGE
 # Vacuum permeability in [eV*s^2/m]
 
 """

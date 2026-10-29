@@ -123,8 +123,8 @@ end
       @test codata.EV_PER_J == Float64(1 / e)
       @test codata.G_PER_EV == Float64(1000 * e / c^2)
     else            # before: mu_0 = 4 pi 1e-7 and eps_0 = 1/(mu_0 c^2) are exact
-      @test codata.MU_0 ≈ 4pi * 1e-7 * codata.E_CHARGE rtol = 4eps()
-      @test codata.EPS_0 ≈ 1 / (4pi * 1e-7 * codata.C_LIGHT^2 * codata.E_CHARGE) rtol = 4eps()
+      @test codata.MU_0_SI == Float64(4 * big(pi) * big"1e-7")
+      @test codata.EPS_0_SI == Float64(1 / (4 * big(pi) * big"1e-7" * c^2))
     end
   end
 

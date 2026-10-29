@@ -115,6 +115,8 @@ G_DEUTERON == CODATA2022.G_DEUTERON_NUCLEAR_MAGNETON * M_DEUTERON / M_PROTON   #
 
 The magnetic moments `MU_PROTON_SI`, `MU_ELECTRON_SI`, … , hold the CODATA values in
 SI units (J/T), which are converted to the exported `MU_*` constants (without a `_SI` suffix) in eV/T.
+The permittivity and permeability work the same way: `EPS_0_SI` (F/m) and
+`MU_0_SI` (N/A²) become the exported `EPS_0` in 1/(eV·m) and `MU_0` in eV·s²/m.
 
 ## Quantities missing from a release
 

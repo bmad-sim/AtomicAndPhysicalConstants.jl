@@ -278,10 +278,13 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   K_BOLTZMANN::Float64
   # Boltzmann factor k_B in eV/K
 
-  EPS_0::Float64
-  # Permittivity of free space in [1/(eV*m)]
-  MU_0::Float64
-  # Vacuum permeability in [eV*s^2/m]
+  # The `_SI` suffix marks the unit, as it does for the magnetic moments above:
+  # these hold the CODATA values in F/m and N/A^2, which the exported EPS_0 and
+  # MU_0 convert to 1/(eV*m) and eV*s^2/m with E_CHARGE.
+  EPS_0_SI::Float64
+  # Permittivity of free space in [F/m]
+  MU_0_SI::Float64
+  # Vacuum permeability in [N/A^2]
 
 
   #######################################
