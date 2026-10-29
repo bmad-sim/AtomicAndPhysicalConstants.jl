@@ -557,15 +557,15 @@ function Base.show(io::IO, ::MIME"text/plain", species::Species)
     println(io, "Species: $(nameof(species))")
     println(io, "Charge: $(Int(chargeof(species))) e")
     println(io, "Mass: $(massof(species)) eV/c²")
-    # spinof returns NaN where no nuclear spin is defined; printing "NaN ħ" would read
-    # as a defect rather than as "undefined", so say which of the two cases applies.
+    # spinof returns NaN where no nuclear spin is defined; print that value and say
+    # which of the two cases applies, so it does not read as a defect.
     s = spinof(species)
     println(io, if !isnan(s)
-      "Spin: $s ħ"
+      "Spin: $s ħ  # Absolute value from spinof(species)"
     elseif iso_of(species) > 0
-      "Spin: undefined (not assigned in NUBASE2020)"
+      "Spin: NaN (undefined, not assigned in NUBASE2020)"
     else
-      "Spin: undefined (no mass number given)"
+      "Spin: NaN (undefined, no mass number given)"
     end)
     println(io, "Moment: $(momentof(species)) eV/T")
     println(io, "G-factor: $(g_spin(species))")

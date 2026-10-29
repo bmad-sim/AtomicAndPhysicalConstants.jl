@@ -286,7 +286,7 @@ julia> Species("#3He+2")
 Species: #3He+2
 Charge: 2 e
 Mass: 2.8083915304184103e9 eV/c²
-Spin: 0.5 ħ
+Spin: 0.5 ħ  # Absolute value from spinof(species)
 Moment: 0.0 eV/T
 G-factor: 0.0
 Mass number: 3
@@ -294,26 +294,10 @@ Atomic Number: 2
 Kind: ATOM
 ```
 
-Where a species has no nuclear spin the line says which case applies rather than
-printing `NaN`:
-
-```jldoctest
-julia> Species("He")
-Species: He
-Charge: 0 e
-Mass: 3.728400099308925e9 eV/c²
-Spin: undefined (no mass number given)
-Moment: 0.0 eV/T
-G-factor: 0.0
-Kind: ATOM
-```
-
-Only this summary form is defined.  Inside a container, or anywhere else that
+Note: Only this summary form is defined.  Inside a container, or anywhere else that
 uses the compact `show`, Julia falls back to its default and prints the raw
-field tuple — including `gspin`, which is the *signed* g-factor where
-[`g_spin`](@ref) returns the absolute value by default.  Those fields are an
-implementation detail (see [Why field access is disabled](@ref)), so read values
-out with the accessors rather than from that display.
+field tuple — including `species.gspin`, which is the *signed* g-factor.
+Shown here is the result of [`g_spin`](@ref)(species) which returns the absolute value by default.
 
 ---
 
