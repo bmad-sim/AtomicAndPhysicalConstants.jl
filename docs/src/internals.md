@@ -64,8 +64,9 @@ A few exported constants are not copied straight out of the source tables.
 `CLASSICAL_RADIUS_FACTOR` (`R_ELECTRON * M_ELECTRON`), `KG_PER_AMU`
 (`G_PER_AMU * 1e-3`), and `KG_PER_MEV_C2` (`G_PER_EV * 1e3`) are derived, so
 they are not fields of the release structs at all; the seven `MU_*` constants
-are the structs' SI values converted from J/T to eV/T; and the deuteron, helion,
-and triton g-factors are renormalized.  See
+are the structs' `MU_*_SI` fields converted from J/T to eV/T; and the neutron,
+deuteron, helion, and triton g-factors are renormalized from their
+`G_*_NUCLEAR_MAGNETON` fields.  See
 [CODATA Releases](@ref man-codata) for the details.
 
 ## How the active release is resolved

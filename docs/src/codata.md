@@ -126,11 +126,24 @@ CODATA2022.G_DEUTERON           # ERROR: no such field
 G_DEUTERON                      # 1.7140254606… — renormalized for the anomaly
 ```
 
-One group of fields does share a name with an exported constant while holding a
-different value: the seven `MU_*` fields are the CODATA SI values in J/T, where
-the exported constants are in eV/T (converted via `EV_PER_J`).  And in the other
-direction, `KG_PER_AMU` has no field of its own at all — it is derived from the
-release's `G_PER_AMU` field, which is in grams.
+The magnetic moments are marked the same way, by unit rather than by magneton:
+the fields are `MU_PROTON_SI`, `MU_ELECTRON_SI`, … , holding the CODATA values in
+J/T, which the exported `MU_*` constants convert to eV/T via `EV_PER_J`.  `_SI`
+is the suffix the generator already uses for a published value it converts before
+storing, as it does for `EPS_0` and `MU_0`.
+
+Together with the g-factor suffixes this makes one rule hold throughout:
+
+!!! note "Field and constant of the same name hold the same number"
+    Wherever a `CODATA_release` field and an exported constant share a name, they
+    are the same value.  A field whose value differs from the constant users
+    reach for is named differently — `G_*_NUCLEAR_MAGNETON` for a different
+    magneton, `MU_*_SI` for a different unit — so `CODATA2022.MU_PROTON` and
+    `CODATA2022.G_DEUTERON` are errors rather than quietly different numbers.
+
+The converse does not hold: a constant need not have a field.  `KG_PER_AMU` has
+none at all — it is derived from the release's `G_PER_AMU` field, which is in
+grams.
 
 Both the mass and the g-factor come from the active release, so the conversion
 stays self-consistent when you call `set_release`.  The active release's

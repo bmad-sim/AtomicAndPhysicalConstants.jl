@@ -113,13 +113,13 @@ const FIELDS = [
   :M_HELION           => (["helion mass energy equivalent in MeV"], 6),
   :M_DEUTERON         => (["deuteron mass energy equivalent in MeV"], 6),
   :M_TRITON           => (["triton mass energy equivalent in MeV"], 6),
-  :MU_DEUTERON        => (["deuteron mag. mom.", "deuteron magnetic moment"], 0),
-  :MU_ELECTRON        => (["electron mag. mom.", "electron magnetic moment"], 0),
-  :MU_HELION          => (["helion mag. mom.", "helion magnetic moment"], 0),
-  :MU_MUON            => (["muon mag. mom.", "muon magnetic moment"], 0),
-  :MU_NEUTRON         => (["neutron mag. mom.", "neutron magnetic moment"], 0),
-  :MU_PROTON          => (["proton mag. mom.", "proton magnetic moment"], 0),
-  :MU_TRITON          => (["triton mag. mom.", "triton magnetic moment"], 0),
+  :MU_DEUTERON_SI        => (["deuteron mag. mom.", "deuteron magnetic moment"], 0),
+  :MU_ELECTRON_SI        => (["electron mag. mom.", "electron magnetic moment"], 0),
+  :MU_HELION_SI          => (["helion mag. mom.", "helion magnetic moment"], 0),
+  :MU_MUON_SI            => (["muon mag. mom.", "muon magnetic moment"], 0),
+  :MU_NEUTRON_SI         => (["neutron mag. mom.", "neutron magnetic moment"], 0),
+  :MU_PROTON_SI          => (["proton mag. mom.", "proton magnetic moment"], 0),
+  :MU_TRITON_SI          => (["triton mag. mom.", "triton magnetic moment"], 0),
   :AVOGADRO           => (["Avogadro constant"], 0),
   :FINE_STRUCTURE     => (["fine-structure constant"], 0),
   :ANOMALY_ELECTRON   => (["electron mag. mom. anomaly", "electron magnetic moment anomaly"], 0),
@@ -259,19 +259,19 @@ M_PION_CHARGED = $(repr(pions[:M_PION_CHARGED])),
 #######################################
 
 
-MU_DEUTERON = $(v(:MU_DEUTERON))
+MU_DEUTERON_SI = $(v(:MU_DEUTERON_SI))
 # deuteron magnetic moment in [J/T]
-MU_ELECTRON = $(v(:MU_ELECTRON))
+MU_ELECTRON_SI = $(v(:MU_ELECTRON_SI))
 # electron magnetic moment in [J/T]
-MU_HELION = $(v(:MU_HELION))
+MU_HELION_SI = $(v(:MU_HELION_SI))
 # helion magnetic moment in [J/T]
-MU_MUON = $(v(:MU_MUON))
+MU_MUON_SI = $(v(:MU_MUON_SI))
 # muon magnetic moment in [J/T]
-MU_NEUTRON = $(v(:MU_NEUTRON))
+MU_NEUTRON_SI = $(v(:MU_NEUTRON_SI))
 # neutron magnetic moment in [J/T]
-MU_PROTON = $(v(:MU_PROTON))
+MU_PROTON_SI = $(v(:MU_PROTON_SI))
 # proton magnetic moment in [J/T]
-MU_TRITON = $(v(:MU_TRITON))
+MU_TRITON_SI = $(v(:MU_TRITON_SI))
 # triton magnetic moment in [J/T]
 
 

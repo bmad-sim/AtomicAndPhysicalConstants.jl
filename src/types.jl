@@ -205,21 +205,22 @@ CODATA2014.C_LIGHT      # speed of light from the 2014 release
   #######################################
 
 
-  # NOTE: these are the CODATA SI values.  The exported MU_* constants are these
-  # converted to eV/T via EV_PER_J, so field and constant differ by that factor.
-  MU_DEUTERON::Float64
+  # The `_SI` suffix marks the unit: these are the CODATA values in J/T, which
+  # the exported MU_* constants convert to eV/T via EV_PER_J.  No field shares a
+  # name with an exported constant holding a different number.
+  MU_DEUTERON_SI::Float64
   # deuteron magnetic moment in [J/T]
-  MU_ELECTRON::Float64
+  MU_ELECTRON_SI::Float64
   # electron magnetic moment in [J/T]
-  MU_HELION::Float64
+  MU_HELION_SI::Float64
   # helion magnetic moment in [J/T]
-  MU_MUON::Float64
+  MU_MUON_SI::Float64
   # muon magnetic moment in [J/T]
-  MU_NEUTRON::Float64
+  MU_NEUTRON_SI::Float64
   # neutron magnetic moment in [J/T]
-  MU_PROTON::Float64
+  MU_PROTON_SI::Float64
   # proton magnetic moment in [J/T]
-  MU_TRITON::Float64
+  MU_TRITON_SI::Float64
   # triton magnetic moment in [J/T]
 
 

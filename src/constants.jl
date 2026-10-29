@@ -108,49 +108,49 @@ const EV_PER_J::Float64 = _ACTIVE.EV_PER_J
 
 Magnetic moment of the deuteron in eV/T (converted) from the selected CODATA release.
 """
-const MU_DEUTERON::Float64 = EV_PER_J*_ACTIVE.MU_DEUTERON
+const MU_DEUTERON::Float64 = EV_PER_J*_ACTIVE.MU_DEUTERON_SI
 # deuteron magnetic moment in [eV/T]
 """
     MU_ELECTRON::Float64
 
 Magnetic moment of the electron in eV/T (converted) from the selected CODATA release.
 """
-const MU_ELECTRON::Float64 = EV_PER_J*_ACTIVE.MU_ELECTRON
+const MU_ELECTRON::Float64 = EV_PER_J*_ACTIVE.MU_ELECTRON_SI
 # electron magnetic moment in [eV/T]
 """
     MU_HELION::Float64
 
 Magnetic moment of the helion in eV/T (converted) from the selected CODATA release.
 """
-const MU_HELION::Float64 = EV_PER_J*_ACTIVE.MU_HELION
+const MU_HELION::Float64 = EV_PER_J*_ACTIVE.MU_HELION_SI
 # helion magnetic moment in [eV/T],
 """
     MU_MUON::Float64
 
 Magnetic moment of the muon in eV/T (converted) from the selected CODATA release.
 """
-const MU_MUON::Float64 = EV_PER_J*_ACTIVE.MU_MUON
+const MU_MUON::Float64 = EV_PER_J*_ACTIVE.MU_MUON_SI
 # muon magnetic moment in [eV/T]
 """
     MU_NEUTRON::Float64
 
 Magnetic moment of the neutron in eV/T (converted) from the selected CODATA release.
 """
-const MU_NEUTRON::Float64 = EV_PER_J*_ACTIVE.MU_NEUTRON
+const MU_NEUTRON::Float64 = EV_PER_J*_ACTIVE.MU_NEUTRON_SI
 # neutron magnetic moment in [eV/T]
 """
     MU_PROTON::Float64
 
 Magnetic moment of the proton in eV/T (converted) from the selected CODATA release.
 """
-const MU_PROTON::Float64 = EV_PER_J*_ACTIVE.MU_PROTON
+const MU_PROTON::Float64 = EV_PER_J*_ACTIVE.MU_PROTON_SI
 # proton magnetic moment in [eV/T]
 """
     MU_TRITON::Float64
 
 Magnetic moment of the triton in eV/T (converted) from the selected CODATA release.
 """
-const MU_TRITON::Float64 = EV_PER_J*_ACTIVE.MU_TRITON
+const MU_TRITON::Float64 = EV_PER_J*_ACTIVE.MU_TRITON_SI
 # triton magnetic moment in [eV/T]
 
 

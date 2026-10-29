@@ -74,10 +74,10 @@ end
   # Exactly the quantities NIST does not tabulate for a release are NaN
   # (docs/src/codata.md, "Quantities missing from a release")
   untabulated = Dict(
-    "2002" => Set([:M_TRITON, :MU_HELION, :MU_TRITON,
+    "2002" => Set([:M_TRITON, :MU_HELION_SI, :MU_TRITON_SI,
                    :G_DEUTERON_NUCLEAR_MAGNETON, :G_HELION_NUCLEAR_MAGNETON,
                    :G_TRITON_NUCLEAR_MAGNETON]),
-    "2006" => Set([:MU_HELION, :G_HELION_NUCLEAR_MAGNETON]))
+    "2006" => Set([:MU_HELION_SI, :G_HELION_NUCLEAR_MAGNETON]))
   for (year, codata) in AtomicAndPhysicalConstants.CODATA_MAP
     nan = Set(f for f in fieldnames(typeof(codata)) if getfield(codata, f) isa Float64 && isnan(getfield(codata, f)))
     @test nan == get(untabulated, year, Set{Symbol}())

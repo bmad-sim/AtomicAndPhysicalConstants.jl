@@ -54,20 +54,20 @@ M_PION_CHARGED = 1.395701807882995e8,
 #######################################
 
 
-MU_DEUTERON = 4.33073465e-27,
+MU_DEUTERON_SI = 4.33073465e-27,
 # deuteron magnetic moment in [J/T]
-MU_ELECTRON = -9.28476377e-24,
+MU_ELECTRON_SI = -9.28476377e-24,
 # electron magnetic moment in [J/T]
-MU_HELION = NaN,
+MU_HELION_SI = NaN,
 # not tabulated in the 2006 release
 # helion magnetic moment in [J/T]
-MU_MUON = -4.49044786e-26,
+MU_MUON_SI = -4.49044786e-26,
 # muon magnetic moment in [J/T]
-MU_NEUTRON = -9.6623641e-27,
+MU_NEUTRON_SI = -9.6623641e-27,
 # neutron magnetic moment in [J/T]
-MU_PROTON = 1.410606662e-26,
+MU_PROTON_SI = 1.410606662e-26,
 # proton magnetic moment in [J/T]
-MU_TRITON = 1.504609361e-26,
+MU_TRITON_SI = 1.504609361e-26,
 # triton magnetic moment in [J/T]
 
 
