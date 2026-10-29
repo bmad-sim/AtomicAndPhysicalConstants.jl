@@ -118,10 +118,10 @@ Dividing by *q* gives the electron (``g<0``, ``q=-e``) and the positron
 ``a = -4.1841537…``.  [`gyromagnetic_anomaly`](@ref) returns `NaN` for neutral
 particles, for which ``g_q`` is undefined.
 
-| Constant | Particle | CODATA availability |
-|----------|----------|---------------------|
-| `ANOMALY_ELECTRON` | electron | all releases |
-| `ANOMALY_MUON` | muon | all releases |
+| CODATA Name | APC Name | Particle | CODATA availability |
+|-------------|----------|----------|---------------------|
+| `ANOMALY_ELECTRON` | `ANOMALY_ELECTRON` | electron | all releases |
+| `ANOMALY_MUON` | `ANOMALY_MUON` | muon | all releases |
 
 
 ---
@@ -137,7 +137,7 @@ particles, for which ``g_q`` is undefined.
 | `R_ELECTRON` | classical electron radius | m |
 | `R_PROTON` | classical proton radius | m |
 | `CLASSICAL_RADIUS_FACTOR` | ``e^2 / (4\pi\varepsilon_0) = r_e m_e c^2`` † | eV·m |
-| `K_BOLTZMANN` | Boltzmann's constant k<sub>B</sub> | eV/K |
+| `K_BOLTZMANN` | Boltzmann's constant ``k_B`` | eV/K |
 | `EPS_0` | permittivity of free space | 1/(eV·m) |
 | `MU_0` | vacuum permeability | eV·s²/m |
 | `AVOGADRO` | Avogadro's constant | mol⁻¹ |
