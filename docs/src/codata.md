@@ -116,9 +116,8 @@ G_DEUTERON == CODATA2022.G_DEUTERON_NUCLEAR_MAGNETON * M_DEUTERON / M_PROTON   #
 
 The release structs name these fields `G_NEUTRON_NUCLEAR_MAGNETON`,
 `G_DEUTERON_NUCLEAR_MAGNETON`, `G_HELION_NUCLEAR_MAGNETON`, and
-`G_TRITON_NUCLEAR_MAGNETON` — the suffix names the magneton the published value
-is referred to, so no g-factor field shares a name with an exported constant
-that holds a different value:
+`G_TRITON_NUCLEAR_MAGNETON`. The suffix indicates that the values are
+scaled by the nuclear magneton.
 
 ```julia
 CODATA2022.G_DEUTERON_NUCLEAR_MAGNETON   # 0.8574382335  — as published by NIST
@@ -126,38 +125,8 @@ CODATA2022.G_DEUTERON           # ERROR: no such field
 G_DEUTERON                      # 1.7140254606… — renormalized for the anomaly
 ```
 
-The magnetic moments are marked the same way, by unit rather than by magneton:
-the fields are `MU_PROTON_SI`, `MU_ELECTRON_SI`, … , holding the CODATA values in
-J/T, which the exported `MU_*` constants convert to eV/T via `EV_PER_J`.  `_SI`
-is the suffix the generator already uses for a published value it converts before
-storing, as it does for `EPS_0` and `MU_0`.
-
-Together with the g-factor suffixes this makes one rule hold throughout:
-
-!!! note "Field and constant of the same name hold the same number"
-    Wherever a `CODATA_release` field and an exported constant share a name, they
-    are the same value.  A field whose value differs from the constant users
-    reach for is named differently — `G_*_NUCLEAR_MAGNETON` for a different
-    magneton, `MU_*_SI` for a different unit — so `CODATA2022.MU_PROTON` and
-    `CODATA2022.G_DEUTERON` are errors rather than quietly different numbers.
-
-The converse does not hold: a constant need not have a field.  `KG_PER_AMU` has
-none at all — it is derived from the release's `G_PER_AMU` field, which is in
-grams.
-
-Both the mass and the g-factor come from the active release, so the conversion
-stays self-consistent when you call `set_release`.  The active release's
-unscaled values are also kept as the unexported
-`_G_NEUTRON_NUCLEAR_MAGNETON`, `_G_DEUTERON_NUCLEAR_MAGNETON`,
-`_G_HELION_NUCLEAR_MAGNETON`, and `_G_TRITON_NUCLEAR_MAGNETON`.  See [Physical Constants](@ref man-constants) for the full
-explanation.
-
-The other g-factors (`G_ELECTRON`, `G_MUON`, `G_PROTON`) are exported exactly
-as tabulated, which for those three is already the own-magneton convention — the
-electron and muon against the Bohr magneton, and the proton against a nuclear
-magneton that is its own.  See
-[Nuclear-magneton g-factors are renormalized](@ref) for the details.
-
+The magnetic moments `MU_PROTON_SI`, `MU_ELECTRON_SI`, … , hold the CODATA values in
+SI units (J/T), which the exported `MU_*` constants (without a `_SI` suffix) convert to eV/T.
 
 ## Quantities missing from a release
 

@@ -43,7 +43,7 @@ equivalent in MeV" value with the decimal point moved to eV, which is exact.
 Units: **eV/T**
 
 Each is the release's `MU_*_SI` field — the CODATA value in J/T — converted to
-eV/T via `EV_PER_J`.  The `_SI` suffix names the unit the published value is in;
+eV/T.  The `_SI` suffix names the unit the published value is in;
 see [Constants that differ from the tabulated release value](@ref).
 
 | Constant | Particle |
