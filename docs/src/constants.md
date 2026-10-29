@@ -7,27 +7,35 @@ The active release is selected at package-load time via a
 [Preferences.jl](https://github.com/JuliaPackaging/Preferences.jl) setting
 (default: the most recent release the package ships, currently 2022).  See [CODATA Releases](@ref man-codata) for how to change it.
 
+The tables below give two names for each quantity.  The **CODATA Name** is the
+field of the `CODATA_release` struct that holds the published value, as in
+`CODATA2022.MU_PROTON_SI`; the **APC Name** is the exported constant, as in
+`MU_PROTON`.  The two differ wherever APC converts the published value before
+exporting it — a unit change for the magnetic moments, a change of magneton for
+four of the g-factors — and are the same name otherwise.
+
 ---
 
 ## Particle masses
 
 Units: **eV/c²**
 
-| Constant | Particle | CODATA availability |
-|----------|----------|---------------------|
-| `M_ELECTRON` | electron | all releases |
-| `M_PROTON` | proton | all releases |
-| `M_NEUTRON` | neutron | all releases |
-| `M_MUON` | muon | all releases |
-| `M_DEUTERON` | deuteron | all releases |
-| `M_HELION` | helion (³He nucleus) | all releases |
-| `M_TRITON` | triton (³H nucleus) | 2006 and later ‡ |
-| `M_PION_0` | neutral pion | not in CODATA † |
-| `M_PION_CHARGED` | charged pion | not in CODATA † |
+| CODATA Name | APC Name | Particle | CODATA availability |
+|-------------|----------|----------|---------------------|
+| `M_ELECTRON` | `M_ELECTRON` | electron | all releases |
+| `M_PROTON` | `M_PROTON` | proton | all releases |
+| `M_NEUTRON` | `M_NEUTRON` | neutron | all releases |
+| `M_MUON` | `M_MUON` | muon | all releases |
+| `M_DEUTERON` | `M_DEUTERON` | deuteron | all releases |
+| `M_HELION` | `M_HELION` | helion (³He nucleus) | all releases |
+| `M_TRITON` | `M_TRITON` | triton (³H nucleus) | 2006 and later ‡ |
+| — | `M_PION_0` | neutral pion | not in CODATA † |
+| — | `M_PION_CHARGED` | charged pion | not in CODATA † |
 
-† Pion masses are taken from the Particle Data Group (PDG), not from CODATA.
-Each release uses the PDG edition of the same year; see
-[Constants not in CODATA](@ref).
+† Pion masses are taken from the Particle Data Group (PDG), not from CODATA,
+so they have no CODATA name.  Each release uses the PDG edition of the same
+year, and the release structs carry the values as `M_PION_0` and
+`M_PION_CHARGED`; see [Constants not in CODATA](@ref).
 
 ‡ A quantity a release does not tabulate is `NaN` rather than absent, so
 `CODATA2002.M_TRITON` is `NaN`.  See [Quantities missing from a release](@ref).
@@ -46,15 +54,15 @@ Each is the release's `MU_*_SI` field — the CODATA value in J/T — converted 
 eV/T.  The `_SI` suffix names the unit the published value is in;
 see [Constants that differ from the tabulated release value](@ref).
 
-| Constant | Particle | CODATA availability |
-|----------|----------|---------------------|
-| `MU_ELECTRON` | electron | all releases |
-| `MU_PROTON` | proton | all releases |
-| `MU_NEUTRON` | neutron | all releases |
-| `MU_MUON` | muon | all releases |
-| `MU_DEUTERON` | deuteron | all releases |
-| `MU_HELION` | helion | 2010 and later ‖ |
-| `MU_TRITON` | triton | 2006 and later ‖ |
+| CODATA Name | APC Name | Particle | CODATA availability |
+|-------------|----------|----------|---------------------|
+| `MU_ELECTRON_SI` | `MU_ELECTRON` | electron | all releases |
+| `MU_PROTON_SI` | `MU_PROTON` | proton | all releases |
+| `MU_NEUTRON_SI` | `MU_NEUTRON` | neutron | all releases |
+| `MU_MUON_SI` | `MU_MUON` | muon | all releases |
+| `MU_DEUTERON_SI` | `MU_DEUTERON` | deuteron | all releases |
+| `MU_HELION_SI` | `MU_HELION` | helion | 2010 and later ‖ |
+| `MU_TRITON_SI` | `MU_TRITON` | triton | 2006 and later ‖ |
 
 ‖ For the releases not listed the field is `NaN`; the earlier tables give only
 the *shielded* helion moment, which is a different quantity.  See
@@ -65,15 +73,15 @@ the *shielded* helion moment, which is a different quantity.  See
 
 ## Spin g-factors (dimensionless)
 
-| Constant | Particle | CODATA availability |
-|----------|----------|---------------------|
-| `G_ELECTRON` | electron | all releases |
-| `G_PROTON` | proton | all releases |
-| `G_NEUTRON` | neutron | all releases § |
-| `G_MUON` | muon | all releases |
-| `G_DEUTERON` | deuteron | 2006 and later § |
-| `G_HELION` | helion | 2010 and later § |
-| `G_TRITON` | triton | 2006 and later § |
+| CODATA Name | APC Name | Particle | CODATA availability |
+|-------------|----------|----------|---------------------|
+| `G_ELECTRON` | `G_ELECTRON` | electron | all releases |
+| `G_PROTON` | `G_PROTON` | proton | all releases |
+| `G_NEUTRON_NUCLEAR_MAGNETON` | `G_NEUTRON` | neutron | all releases § |
+| `G_MUON` | `G_MUON` | muon | all releases |
+| `G_DEUTERON_NUCLEAR_MAGNETON` | `G_DEUTERON` | deuteron | 2006 and later § |
+| `G_HELION_NUCLEAR_MAGNETON` | `G_HELION` | helion | 2010 and later § |
+| `G_TRITON_NUCLEAR_MAGNETON` | `G_TRITON` | triton | 2006 and later § |
 
 § These four are **not** the raw CODATA values — see below.
 
