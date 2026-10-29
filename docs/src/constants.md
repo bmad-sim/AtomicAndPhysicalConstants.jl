@@ -11,8 +11,8 @@ The tables below give two names for each quantity.  The **CODATA Name** is the
 field of the `CODATA_release` struct that holds the published value, as in
 `CODATA2022.MU_PROTON_SI`; the **APC Name** is the exported constant, as in
 `MU_PROTON`.  The two differ wherever APC converts the published value before
-exporting it.  An dash in the CODATA Name column marks a constant
-CODATA does not tabulate.
+exporting it.  A dash in the CODATA Name column marks a constant APC derives
+from other constants rather than reading from a published table.
 
 ---
 
@@ -154,5 +154,5 @@ particles, for which ``g_q`` is undefined.
 | `EV_PER_AMU` | `EV_PER_AMU` | eV/(c²·dalton) |
 | `J_PER_EV` | `J_PER_EV` | joules/eV |
 | `EV_PER_J` | `EV_PER_J` | eV/joule |
-| `G_PER_EV` | `G_PER_EV` | grams/(c²·eV) |
-| `G_PER_EV` | `KG_PER_MEV_C2` | kg/(c²·MeV) |
+| `G_PER_EV` | `G_PER_EV` | grams·c²/eV |
+| `G_PER_EV` | `KG_PER_MEV_C2` | kg·c²/MeV |
