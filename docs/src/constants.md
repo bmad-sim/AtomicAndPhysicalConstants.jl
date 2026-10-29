@@ -13,24 +13,24 @@ The active release is selected at package-load time via a
 
 Units: **eV/c²**
 
-| Constant | Particle |
-|----------|----------|
-| `M_ELECTRON` | electron |
-| `M_PROTON` | proton |
-| `M_NEUTRON` | neutron |
-| `M_MUON` | muon |
-| `M_DEUTERON` | deuteron |
-| `M_HELION` | helion (³He nucleus) |
-| `M_TRITON` | triton (³H nucleus) ‡ |
-| `M_PION_0` | neutral pion † |
-| `M_PION_CHARGED` | charged pion † |
+| Constant | Particle | CODATA availability |
+|----------|----------|---------------------|
+| `M_ELECTRON` | electron | all releases |
+| `M_PROTON` | proton | all releases |
+| `M_NEUTRON` | neutron | all releases |
+| `M_MUON` | muon | all releases |
+| `M_DEUTERON` | deuteron | all releases |
+| `M_HELION` | helion (³He nucleus) | all releases |
+| `M_TRITON` | triton (³H nucleus) | 2006 and later ‡ |
+| `M_PION_0` | neutral pion | not in CODATA † |
+| `M_PION_CHARGED` | charged pion | not in CODATA † |
 
 † Pion masses are taken from the Particle Data Group (PDG), not from CODATA.
 Each release uses the PDG edition of the same year; see
 [Constants not in CODATA](@ref).
 
-‡ `M_TRITON` is not tabulated in the 2002 CODATA release; `CODATA2002.M_TRITON`
-is `NaN`.
+‡ A quantity a release does not tabulate is `NaN` rather than absent, so
+`CODATA2002.M_TRITON` is `NaN`.  See [Quantities missing from a release](@ref).
 
 NIST does not tabulate particle masses in eV.  Each mass is NIST's "mass energy
 equivalent in MeV" value with the decimal point moved to eV, which is exact.
@@ -46,18 +46,18 @@ Each is the release's `MU_*_SI` field — the CODATA value in J/T — converted 
 eV/T.  The `_SI` suffix names the unit the published value is in;
 see [Constants that differ from the tabulated release value](@ref).
 
-| Constant | Particle |
-|----------|----------|
-| `MU_ELECTRON` | electron |
-| `MU_PROTON` | proton |
-| `MU_NEUTRON` | neutron |
-| `MU_MUON` | muon |
-| `MU_DEUTERON` | deuteron |
-| `MU_HELION` | helion ‖ |
-| `MU_TRITON` | triton ‖ |
+| Constant | Particle | CODATA availability |
+|----------|----------|---------------------|
+| `MU_ELECTRON` | electron | all releases |
+| `MU_PROTON` | proton | all releases |
+| `MU_NEUTRON` | neutron | all releases |
+| `MU_MUON` | muon | all releases |
+| `MU_DEUTERON` | deuteron | all releases |
+| `MU_HELION` | helion | 2010 and later ‖ |
+| `MU_TRITON` | triton | 2006 and later ‖ |
 
-‖ `MU_HELION` is `NaN` for the 2002 and 2006 releases and `MU_TRITON` for 2002,
-which do not tabulate them.  See
+‖ For the releases not listed the field is `NaN`; the earlier tables give only
+the *shielded* helion moment, which is a different quantity.  See
 [Quantities missing from a release](@ref).
 
 

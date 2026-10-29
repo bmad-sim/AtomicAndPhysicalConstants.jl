@@ -111,6 +111,7 @@ APC converts them to `G_NEUTRON`, `G_DEUTERON`, `G_HELION`, and `G_TRITON` so th
 ``a = (g_q-2)/2`` comes out correct. For example:
 ```julia
 G_DEUTERON == CODATA2022.G_DEUTERON_NUCLEAR_MAGNETON * M_DEUTERON / M_PROTON   # active release
+```
 
 The magnetic moments `MU_PROTON_SI`, `MU_ELECTRON_SI`, … , hold the CODATA values in
 SI units (J/T), which are converted to the exported `MU_*` constants (without a `_SI` suffix) in eV/T.
@@ -123,12 +124,12 @@ rather than a value borrowed from another release:
 
 | Release | Fields that are `NaN` |
 |---------|------------------------|
-| 2002 | `M_TRITON`, `MU_HELION`, `MU_TRITON`, `G_DEUTERON_NUCLEAR_MAGNETON`, `G_HELION_NUCLEAR_MAGNETON`, `G_TRITON_NUCLEAR_MAGNETON` |
-| 2006 | `MU_HELION`, `G_HELION_NUCLEAR_MAGNETON` |
+| 2002 | `M_TRITON`, `MU_HELION_SI`, `MU_TRITON_SI`, `G_DEUTERON_NUCLEAR_MAGNETON`, `G_HELION_NUCLEAR_MAGNETON`, `G_TRITON_NUCLEAR_MAGNETON` |
+| 2006 | `MU_HELION_SI`, `G_HELION_NUCLEAR_MAGNETON` |
 | 2010 and later | none |
 
 The 2002 and 2006 tables list only the *shielded* helion magnetic moment, which
-is a different quantity, so it is not used in place of `MU_HELION`.
+is a different quantity, so it is not used in place of `MU_HELION_SI`.
 
 The `NaN` carries through to everything computed from the field when that
 release is active.  With 2002 active, for example, `G_DEUTERON`, `G_HELION`,
