@@ -131,11 +131,8 @@ end
 # vector of Null names
 const nulls::Vector{String} = ["NULL", "Null", "null", ""]
 
-
 #####################################################################
 #####################################################################
-
-
 
 function Species(speciesname::String)
   
@@ -170,14 +167,14 @@ function Species(speciesname::String)
 
   # Parse species
   (m !== nothing && haskey(ATOMIC_SPECIES, m.captures[2])) ||
-    error("you did not specify an atomic species or subatomic species in $speciesname")
+    error("\"$speciesname\" is not a recognized particle species")
 
   atom::String = m.captures[2]
 
   # Parse iso
   iso::Int = -1
-  if m.captures[1] != ""
-    iso = m.captures[1] === nothing ? -1 : parse(Int, m.captures[1])
+  if m.captures[1] !== nothing
+    iso = parse(Int, m.captures[1])
     haskey(ATOMIC_SPECIES[atom].mass, iso) ||
       error("$iso is not a valid isotope of $atom")
   end
@@ -192,7 +189,4 @@ function Species(speciesname::String)
   (anti && charge < -ATOMIC_SPECIES[atom].Z) && error("The specified element cannot have the specified charge.")
 
   anti ? (return atomic_particle("anti-" * atom, Float64(charge), iso)) : (return atomic_particle(atom, Float64(charge), iso))
-  
-
-
 end
