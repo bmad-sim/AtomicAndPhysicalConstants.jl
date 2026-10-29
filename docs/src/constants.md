@@ -11,7 +11,7 @@ The tables below give two names for each quantity.  The **CODATA Name** is the
 field of the `CODATA_release` struct that holds the published value, as in
 `CODATA2022.MU_PROTON_SI`; the **APC Name** is the exported constant, as in
 `MU_PROTON`.  The two differ wherever APC converts the published value before
-exporting it.  An em dash in the CODATA Name column marks a constant
+exporting it.  An dash in the CODATA Name column marks a constant
 CODATA does not tabulate.
 
 ---
