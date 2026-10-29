@@ -85,73 +85,20 @@ the *shielded* helion moment, which is a different quantity.  See
 
 § These four are **not** the raw CODATA values — see below.
 
-### Nuclear-magneton g-factors are renormalized
-
 CODATA/NIST tabulates the neutron, deuteron, helion, and triton g-factors
-relative to the **nuclear magneton** ``\mu_N = e\hbar / 2m_p``, i.e. the published number is
-
+relative to the **nuclear magneton** ``\mu_N = e\hbar / 2m_p``. That is, the published number is
 ```math
 g_\text{NIST} = \frac{\mu}{I\,\mu_N}
 ```
 
-so the proton mass — not the particle's own mass — sets the scale.  Used
-directly in the anomaly ``a = (g_q-2)/2`` those values give a meaningless
-result (for the deuteron, ``(0.857\ldots - 2)/2``).
-
-This package instead stores the g-factor in the convention
-``\boldsymbol{\mu} = g\,\frac{e}{2m}\,\mathbf{S}``, where the particle's *own*
-mass sets the scale, which is the convention the spin-precession (Thomas–BMT)
-equation and the gyromagnetic anomaly assume.  Converting between the two is a
-single mass ratio, applied at package-load time:
-
+so the proton mass — not the particle's own mass — sets the scale.
+This means that the equation ``a = (g_q-2)/2`` is not valid for these quantities.
+For this reason, to make code using g-factors cleaner, the APC values of the g-factor 
+are computed from ``\boldsymbol{\mu} = g\,\frac{e}{2m}\,\mathbf{S}``, where the particle's *own*
+mass sets the scale
 ```math
-g = g_\text{NIST}\,\frac{m}{m_p}
+g_\text{APC} = g_\text{NIST}\,\frac{m_\text{particle}}{m_{proton}}
 ```
-
-| Exported constant | Definition |
-|-------------------|------------|
-| `G_NEUTRON` | `G_NEUTRON_NUCLEAR_MAGNETON * M_NEUTRON / M_PROTON` |
-| `G_DEUTERON` | `G_DEUTERON_NUCLEAR_MAGNETON * M_DEUTERON / M_PROTON` |
-| `G_HELION` | `G_HELION_NUCLEAR_MAGNETON * M_HELION / M_PROTON` |
-| `G_TRITON` | `G_TRITON_NUCLEAR_MAGNETON * M_TRITON / M_PROTON` |
-
-The `_NUCLEAR_MAGNETON` suffix names the normalization the raw NIST value
-carries, and those are the names the release-struct fields use
-(`CODATA2022.G_DEUTERON_NUCLEAR_MAGNETON`, …).  There is no exported top-level
-`G_*_NUCLEAR_MAGNETON` constant; the active release's values are held as the
-internal `AtomicAndPhysicalConstants._G_NEUTRON_NUCLEAR_MAGNETON`,
-`._G_DEUTERON_NUCLEAR_MAGNETON`, `._G_HELION_NUCLEAR_MAGNETON`, and
-`._G_TRITON_NUCLEAR_MAGNETON`.
-
-The mass ratio uses the mass from the *same* active CODATA release as the
-g-factor, so switching releases with [`set_release`](@ref) renormalizes
-consistently.
-
-Only these four struct fields carry the `_NUCLEAR_MAGNETON` suffix.  The
-electron and muon g-factors need no rescaling — CODATA tabulates them against the Bohr
-magneton ``\mu_B = e\hbar/2m_e``, built from the particle's own mass — and for
-the proton the nuclear magneton *is* its own magneton, so `G_ELECTRON`,
-`G_MUON`, and `G_PROTON` keep their plain names in the release structs and are
-exported exactly as published.
-
-!!! note "The neutron correction is small but real"
-    The neutron is the one uncharged particle in the list, so it is easy to
-    overlook: NIST tabulates its g-factor against the nuclear magneton just as
-    it does the three composite nuclei.  The ratio ``m_n/m_p = 1.0013784`` makes
-    `G_NEUTRON` `-3.8313594707492573` where NIST publishes `-3.82608552`, a
-    difference of 0.14 %.  [`gyromagnetic_anomaly`](@ref) returns `NaN` for the
-    neutron either way, since ``g_q`` needs a charge, but
-    `g_spin(Species("neutron"))` is now in the same convention as every other
-    species.
-
-Because the renormalization is folded into the constants themselves,
-[`g_spin`](@ref) and [`gyromagnetic_anomaly`](@ref) need no special-casing —
-``a = (g_q-2)/2`` applies uniformly to every charged subatomic species:
-
-```julia
-gyromagnetic_anomaly(Species("deuteron"))   # ≈ -0.1429872697
-```
-
 
 ---
 
