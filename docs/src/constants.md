@@ -7,131 +7,100 @@ The active release is selected at package-load time via a
 [Preferences.jl](https://github.com/JuliaPackaging/Preferences.jl) setting
 (default: the most recent release the package ships, currently 2022).  See [CODATA Releases](@ref man-codata) for how to change it.
 
+The tables below give two names for each quantity.  The **CODATA Name** is the
+field of the `CODATA_release` struct that holds the published value, as in
+`CODATA2022.MU_PROTON_SI`; the **APC Name** is the exported constant, as in
+`MU_PROTON`.  The two differ wherever APC converts the published value before
+exporting it.  A dash in the CODATA Name column marks a constant APC derives
+from other constants rather than reading from a published table.
+
 ---
 
 ## Particle masses
 
-Units: **eV/c²**
+APC Units: eV/c²
 
-| Constant | Particle |
-|----------|----------|
-| `M_ELECTRON` | electron |
-| `M_PROTON` | proton |
-| `M_NEUTRON` | neutron |
-| `M_MUON` | muon |
-| `M_DEUTERON` | deuteron |
-| `M_HELION` | helion (³He nucleus) |
-| `M_TRITON` | triton (³H nucleus) ‡ |
-| `M_PION_0` | neutral pion † |
-| `M_PION_CHARGED` | charged pion † |
+| CODATA Name | APC Name | Particle | CODATA availability |
+|-------------|----------|----------|---------------------|
+| `M_ELECTRON` | `M_ELECTRON` | electron | all releases |
+| `M_PROTON` | `M_PROTON` | proton | all releases |
+| `M_NEUTRON` | `M_NEUTRON` | neutron | all releases |
+| `M_MUON` | `M_MUON` | muon | all releases |
+| `M_DEUTERON` | `M_DEUTERON` | deuteron | all releases |
+| `M_HELION` | `M_HELION` | helion (³He nucleus) | all releases |
+| `M_TRITON` | `M_TRITON` | triton (³H nucleus) | 2006 and later |
+| `M_PION_0` † | `M_PION_0` | neutral pion | from PDG |
+| `M_PION_CHARGED` † | `M_PION_CHARGED` | charged pion | from PDG |
 
-† Pion masses are taken from the Particle Data Group (PDG), not from CODATA.
-Each release uses the PDG edition of the same year; see
-[Constants not in CODATA](@ref).
+† Taken from the Particle Data Group (PDG) and not from CODATA
+so technically there is no CODATA name but these parameters are carried in the release structs.
+A release struct carries the PDG value of the corresponding CODATA year.
 
-‡ `M_TRITON` is not tabulated in the 2002 CODATA release; `CODATA2002.M_TRITON`
-is `NaN`.
-
-NIST does not tabulate particle masses in eV.  Each mass is NIST's "mass energy
-equivalent in MeV" value with the decimal point moved to eV, which is exact.
-
+NIST tabulates particle masses in MeV/c².
+A quantity a release does not tabulate has a value of `NaN` in the release struct.
+For example, `M_TRITON` before 2006.
 
 ---
 
 ## Magnetic dipole moments
 
-Units: **eV/T**
+APC Units: **eV/T**
 
-Stored values are CODATA SI values (J/T) converted to eV/T via `EV_PER_J`.
+Each is the release's `MU_*_SI` field — the CODATA value in J/T — converted to
+eV/T.  The `_SI` suffix names the unit the published value is in;
+see [Constants that differ from the tabulated release value](@ref).
 
-| Constant | Particle |
-|----------|----------|
-| `MU_ELECTRON` | electron |
-| `MU_PROTON` | proton |
-| `MU_NEUTRON` | neutron |
-| `MU_MUON` | muon |
-| `MU_DEUTERON` | deuteron |
-| `MU_HELION` | helion ‖ |
-| `MU_TRITON` | triton ‖ |
+| CODATA Name | APC Name | Particle | CODATA availability |
+|-------------|----------|----------|---------------------|
+| `MU_ELECTRON_SI` | `MU_ELECTRON` | electron | all releases |
+| `MU_PROTON_SI` | `MU_PROTON` | proton | all releases |
+| `MU_NEUTRON_SI` | `MU_NEUTRON` | neutron | all releases |
+| `MU_MUON_SI` | `MU_MUON` | muon | all releases |
+| `MU_DEUTERON_SI` | `MU_DEUTERON` | deuteron | all releases |
+| `MU_HELION_SI` | `MU_HELION` | helion | 2010 and later ‖ |
+| `MU_TRITON_SI` | `MU_TRITON` | triton | 2006 and later ‖ |
 
-‖ `MU_HELION` is `NaN` for the 2002 and 2006 releases and `MU_TRITON` for 2002,
-which do not tabulate them.  See
+‖ For the releases not listed the field is `NaN`; the earlier tables give only
+the *shielded* helion moment, which is a different quantity.  See
 [Quantities missing from a release](@ref).
 
 
 ---
 
-## Spin g-factors (dimensionless)
+## Spin g-factors 
 
-| Constant | Particle | CODATA availability |
-|----------|----------|---------------------|
-| `G_ELECTRON` | electron | all releases |
-| `G_PROTON` | proton | all releases |
-| `G_NEUTRON` | neutron | all releases |
-| `G_MUON` | muon | all releases |
-| `G_DEUTERON` | deuteron | 2006 and later § |
-| `G_HELION` | helion | 2010 and later § |
-| `G_TRITON` | triton | 2006 and later § |
+Units: dimensionless
 
-§ These three are **not** the raw CODATA values — see below.
+| CODATA Name | APC Name | Particle | CODATA availability |
+|-------------|----------|----------|---------------------|
+| `G_ELECTRON` | `G_ELECTRON` | electron | all releases |
+| `G_PROTON` | `G_PROTON` | proton | all releases |
+| `G_NEUTRON_NUCLEAR_MAGNETON` | `G_NEUTRON` | neutron | all releases |
+| `G_MUON` | `G_MUON` | muon | all releases |
+| `G_DEUTERON_NUCLEAR_MAGNETON` | `G_DEUTERON` | deuteron | 2006 and later |
+| `G_HELION_NUCLEAR_MAGNETON` | `G_HELION` | helion | 2010 and later |
+| `G_TRITON_NUCLEAR_MAGNETON` | `G_TRITON` | triton | 2006 and later |
 
-### Composite-nucleus g-factors are renormalized
-
-CODATA/NIST tabulates the deuteron, helion, and triton g-factors relative to the
-**nuclear magneton** ``\mu_N = e\hbar / 2m_p``, i.e. the published number is
-
+CODATA/NIST tabulates the neutron, deuteron, helion, and triton g-factors
+relative to the **nuclear magneton** ``\mu_N = e\hbar / 2m_p``. That is, the published number is
 ```math
 g_\text{NIST} = \frac{\mu}{I\,\mu_N}
 ```
 
-so the proton mass — not the particle's own mass — sets the scale.  Used
-directly in the anomaly ``a = (g_q-2)/2`` those values give a meaningless
-result (for the deuteron, ``(0.857\ldots - 2)/2``).
-
-This package instead stores the g-factor in the convention
-``\boldsymbol{\mu} = g\,\frac{e}{2m}\,\mathbf{S}``, where the particle's *own*
-mass sets the scale, which is the convention the spin-precession (Thomas–BMT)
-equation and the gyromagnetic anomaly assume.  Converting between the two is a
-single mass ratio, applied at package-load time:
-
+so the proton mass — not the particle's own mass — sets the scale.
+This means that the equation ``a = (g_q-2)/2`` is not valid for these quantities.
+For this reason, to make code using g-factors cleaner, the APC values of the g-factor 
+are computed from ``\boldsymbol{\mu} = g\,\frac{e}{2m}\,\mathbf{S}``, where the particle's *own*
+mass sets the scale
 ```math
-g = g_\text{NIST}\,\frac{m}{m_p}
+g_\text{APC} = g_\text{NIST}\,\frac{m_\text{particle}}{m_{\text{proton}}}
 ```
-
-| Exported constant | Definition |
-|-------------------|------------|
-| `G_DEUTERON` | `G_DEUTERON_NUCLEAR * M_DEUTERON / M_PROTON` |
-| `G_HELION` | `G_HELION_NUCLEAR * M_HELION / M_PROTON` |
-| `G_TRITON` | `G_TRITON_NUCLEAR * M_TRITON / M_PROTON` |
-
-The `_NUCLEAR` suffix marks the nuclear-magneton normalization: those are the
-names the raw NIST values carry as fields of the release structs
-(`CODATA2022.G_DEUTERON_NUCLEAR`, …).  There is no exported top-level
-`G_*_NUCLEAR` constant; the active release's values are held as the internal
-`AtomicAndPhysicalConstants._G_DEUTERON`, `._G_HELION`, and `._G_TRITON`.
-
-The mass ratio uses the mass from the *same* active CODATA release as the
-g-factor, so switching releases with [`set_release`](@ref) renormalizes
-consistently.
-
-Only these three struct fields carry the `_NUCLEAR` suffix.  The electron, muon,
-proton, and neutron g-factors need no rescaling — CODATA already tabulates them
-against the magneton built from the particle's own mass — so `G_ELECTRON`,
-`G_MUON`, `G_PROTON`, and `G_NEUTRON` keep their plain names in the release
-structs and are exported exactly as published.
-
-Because the renormalization is folded into the constants themselves,
-[`g_spin`](@ref) and [`gyromagnetic_anomaly`](@ref) need no special-casing —
-``a = (g_q-2)/2`` applies uniformly to every charged subatomic species:
-
-```julia
-gyromagnetic_anomaly(Species("deuteron"))   # ≈ -0.1429872697
-```
-
 
 ---
 
-## Gyromagnetic anomalies (dimensionless)
+## Gyromagnetic anomalies
+
+Units: dimensionless
 
 The gyromagnetic anomaly is defined as
 
@@ -147,48 +116,43 @@ Dividing by *q* gives the electron (``g<0``, ``q=-e``) and the positron
 ``a = -4.1841537…``.  [`gyromagnetic_anomaly`](@ref) returns `NaN` for neutral
 particles, for which ``g_q`` is undefined.
 
-| Constant | Particle | CODATA availability |
-|----------|----------|---------------------|
-| `ANOMALY_ELECTRON` | electron | all releases |
-| `ANOMALY_MUON` | muon | all releases |
+| CODATA Name | APC Name | Particle | CODATA availability |
+|-------------|----------|----------|---------------------|
+| `ANOMALY_ELECTRON` | `ANOMALY_ELECTRON` | electron | all releases |
+| `ANOMALY_MUON` | `ANOMALY_MUON` | muon | all releases |
 
 
 ---
 
 ## Other physical constants
 
-| Constant | Description | Units |
-|----------|-------------|-------|
-| `E_CHARGE` | elementary charge | C |
-| `C_LIGHT` | speed of light | m/s |
-| `H_PLANCK` | Planck's constant *h* | eV·s |
-| `H_BAR` | reduced Planck constant *ħ* | eV·s |
-| `R_ELECTRON` | classical electron radius | m |
-| `R_PROTON` | classical proton radius | m |
-| `CLASSICAL_RADIUS_FACTOR` | ``e^2 / (4\pi\varepsilon_0) = r_e m_e c^2`` † | eV·m |
-| `K_BOLTZMANN` | Boltzmann's constant k<sub>B</sub> | eV/K |
-| `EPS_0` | permittivity of free space | 1/(eV·m) |
-| `MU_0` | vacuum permeability | eV·s²/m |
-| `AVOGADRO` | Avogadro's constant | mol⁻¹ |
-| `FINE_STRUCTURE` | fine-structure constant | dimensionless |
-| `RELEASE_YEAR` | active CODATA release year | — |
+| CODATA Name | APC Name | Description | APC Units |
+|-------------|----------|-------------|-------|
+| `E_CHARGE` | `E_CHARGE` | elementary charge | C |
+| `C_LIGHT` | `C_LIGHT` | speed of light | m/s |
+| `H_PLANCK` | `H_PLANCK` | Planck's constant *h* | eV·s |
+| `H_BAR` | `H_BAR` | reduced Planck constant *ħ* | eV·s |
+| `R_ELECTRON` | `R_ELECTRON` | classical electron radius | m |
+| — † | `R_PROTON` | classical proton radius | m |
+| — † | `CLASSICAL_RADIUS_FACTOR` | ``e^2 / (4\pi\varepsilon_0)`` | eV·m |
+| `K_BOLTZMANN` | `K_BOLTZMANN` | Boltzmann's constant ``k_B`` | eV/K |
+| `EPS_0_SI` | `EPS_0` | permittivity of free space | 1/(eV·m) |
+| `MU_0_SI` | `MU_0` | vacuum permeability | eV·s²/m |
+| `AVOGADRO` | `AVOGADRO` | Avogadro's constant | mol⁻¹ |
+| `FINE_STRUCTURE` | `FINE_STRUCTURE` | fine-structure constant | dimensionless |
+| `RELEASE_YEAR` | `RELEASE_YEAR` | active CODATA release year | — |
 
-† `CLASSICAL_RADIUS_FACTOR` is not a tabulated CODATA value; it is computed as
-`R_ELECTRON * M_ELECTRON` from the active release.  It is the same for all
-particles of charge ±1.  Because it is derived, it is not a field of the
-`CODATA_release` structs (e.g. there is no `CODATA2022.CLASSICAL_RADIUS_FACTOR`).
-
+† Not a tabulated CODATA value.
 
 ---
 
 ## Unit-conversion constants
 
-| Constant | Conversion |
-|----------|------------|
-| `KG_PER_AMU` | kg per dalton |
-| `EV_PER_AMU` | eV/c² per dalton |
-| `J_PER_EV` | joules per eV |
-| `EV_PER_J` | eV per joule |
-| `G_PER_EV` | grams per eV/c² |
-| `KG_PER_MEV_C2` | kg per MeV/c² |
-
+| CODATA Name | APC Name | APC Units |
+|-------------|----------|------------|
+| `G_PER_AMU` | `KG_PER_AMU` | kg/dalton |
+| `EV_PER_AMU` | `EV_PER_AMU` | eV/(c²·dalton) |
+| `J_PER_EV` | `J_PER_EV` | joules/eV |
+| `EV_PER_J` | `EV_PER_J` | eV/joule |
+| `G_PER_EV` | `G_PER_EV` | grams·c²/eV |
+| `G_PER_EV` | `KG_PER_MEV_C2` | kg·c²/MeV |

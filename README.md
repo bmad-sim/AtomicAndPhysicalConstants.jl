@@ -40,7 +40,7 @@ Charge: -1 e
 Mass: 510998.95069 eV/c²
 Spin: 0.5 ħ
 Moment: -5.795094307747843e-5 eV/T
-G-factor: 2.00231930436092
+G-factor: 2.00231930436092  # Absolute value from g_spin(species)
 Kind: LEPTON
 
 julia> p = Species("proton"); # suppress the output for the rest of the definitions
@@ -83,7 +83,7 @@ julia> gyromagnetic_anomaly(e) # (g e/q - 2)/2, with g normalized to the charge 
 0.0011596521804599913
 
 julia> momentof(p) # magnetic dipole moment in [eV/T] - 0.0 for atoms
-8.804315113647238e-8
+8.804315114297192e-8
 
 julia> iso_of(he) # mass number of the specified atom - 0 for non-atoms
 3
@@ -125,27 +125,27 @@ Atomic numbers from 1 (`"H"`) to 118 (`"Og"`) are available with the `Species()`
 
 #### Mass Number Formatting
 
-To access different isotopes of a particular atomic element, two different syntax options are available: a `#`-prefixed ASCII mass number, or a Unicode superscript mass number. A bare ASCII mass number (e.g. `"5He"`) is **not** accepted.
+To access different isotopes of a particular atomic element, two different syntax options are available: a `#`-prefixed ASCII mass number, or a Unicode superscript mass number. A bare ASCII mass number (e.g. `"4He"`) is **not** accepted.
 
 ```julia-repl
-julia> he = Species("#5He"); he5 = Species("⁵He");
+julia> he4 = Species("#4He"); he4_super = Species("⁴He");
 
-julia>  massof(he5, AMU=true)
-5.012057
+julia> massof(he4, AMU=true)
+4.00260325413
 
-julia> he == he5
+julia> he4 == he4_super
 true
 ```
 
 #### Charge State Specification
 
 Charge state may be specified for atoms.
-Positive charges with magnitude less than 4_e_ may be given with repeated plus symbols, _e.g._
+Positive charges with magnitude less than 4*e* may be given with repeated plus symbols, _e.g._
 ```julia-repl
 julia> chargeof(Species("Li+++"))
 3.0
 ```
-Similarly, negative charges with magnitude less than 4_e_ may be given with repeated minus symbols, _e.g._
+Similarly, negative charges with magnitude less than 4*e* may be given with repeated minus symbols, _e.g._
 ```julia-repl
 julia> chargeof(Species("K---"))
 -3.0

@@ -54,19 +54,19 @@ M_PION_CHARGED = 1.395703909836813e8,
 #######################################
 
 
-MU_DEUTERON = 4.330735087e-27,
+MU_DEUTERON_SI = 4.330735087e-27,
 # deuteron magnetic moment in [J/T]
-MU_ELECTRON = -9.2847646917e-24,
+MU_ELECTRON_SI = -9.2847646917e-24,
 # electron magnetic moment in [J/T]
-MU_HELION = -1.07461755198e-26,
+MU_HELION_SI = -1.07461755198e-26,
 # helion magnetic moment in [J/T]
-MU_MUON = -4.4904483e-26,
+MU_MUON_SI = -4.4904483e-26,
 # muon magnetic moment in [J/T]
-MU_NEUTRON = -9.6623653e-27,
+MU_NEUTRON_SI = -9.6623653e-27,
 # neutron magnetic moment in [J/T]
-MU_PROTON = 1.41060679545e-26,
+MU_PROTON_SI = 1.41060679545e-26,
 # proton magnetic moment in [J/T]
-MU_TRITON = 1.5046095178e-26,
+MU_TRITON_SI = 1.5046095178e-26,
 # triton magnetic moment in [J/T]
 
 
@@ -85,19 +85,19 @@ ANOMALY_ELECTRON = 0.00115965218046,
 ANOMALY_MUON = 0.00116592062,
 # muon magnetic moment anomaly
 
-G_DEUTERON_NUCLEAR = 0.8574382335,
+G_DEUTERON_NUCLEAR_MAGNETON = 0.8574382335,
 # deuteron g factor
 G_ELECTRON = -2.00231930436092,
 # electron g factor
-G_HELION_NUCLEAR = -4.2552506995,
+G_HELION_NUCLEAR_MAGNETON = -4.2552506995,
 # helion g factor
 G_MUON = -2.00233184123,
 # muon g factor
-G_NEUTRON = -3.82608552,
+G_NEUTRON_NUCLEAR_MAGNETON = -3.82608552,
 # neutron g factor
 G_PROTON = 5.5856946893,
 # proton g factor
-G_TRITON_NUCLEAR = 5.95792493,
+G_TRITON_NUCLEAR_MAGNETON = 5.95792493,
 # triton g factor
 
 
@@ -122,10 +122,10 @@ H_BAR = 6.582119569509066e-16,
 K_BOLTZMANN = 8.617333262145177e-5,
 #k_B in eV/K
 
-EPS_0 = 5.5263493618020155e7,
-# Permittivity of free space in [1/(eV*m)]
-MU_0 = 2.0133545369852204e-25,
-# Vacuum permeability in [eV*s^2/m]
+EPS_0_SI = 8.8541878188e-12,
+# Permittivity of free space in [F/m]
+MU_0_SI = 1.25663706127e-6,
+# Vacuum permeability in [N/A^2]
 
 
 G_PER_AMU = 1.66053906892e-24,

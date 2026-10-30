@@ -104,36 +104,19 @@ exist, only the exported top-level constant.
 
 ## Constants that differ from the tabulated release value
 
-`G_DEUTERON`, `G_HELION`, and `G_TRITON` are pulled from the NIST/CODATA tables
-but are **rescaled before export**.  NIST tabulates these g-factors against the
-nuclear magneton ``\mu_N = e\hbar/2m_p``; the package converts them to the
-particle's own magneton so that the gyromagnetic anomaly ``a = (g_q-2)/2`` comes
-out correct:
-
+`G_NEUTRON_NUCLEAR_MAGNETON`, `G_DEUTERON_NUCLEAR_MAGNETON`, `G_HELION_NUCLEAR_MAGNETON`, 
+and `G_TRITON_NUCLEAR_MAGNETON` are pulled from the
+NIST/CODATA tables and are measured in terms of the nuclear magneton ``\mu_N = e\hbar/2m_p``.
+APC converts them to `G_NEUTRON`, `G_DEUTERON`, `G_HELION`, and `G_TRITON` so that the gyromagnetic anomaly
+``a = (g_q-2)/2`` comes out correct. For example:
 ```julia
-G_DEUTERON == CODATA2022.G_DEUTERON_NUCLEAR * M_DEUTERON / M_PROTON   # active release
+G_DEUTERON == CODATA2022.G_DEUTERON_NUCLEAR_MAGNETON * M_DEUTERON / M_PROTON   # active release
 ```
 
-The release structs name these fields `G_DEUTERON_NUCLEAR`, `G_HELION_NUCLEAR`,
-and `G_TRITON_NUCLEAR` — the suffix flags the nuclear-magneton normalization, so
-there is no field whose name matches the exported constant and whose value
-differs from it:
-
-```julia
-CODATA2022.G_DEUTERON_NUCLEAR   # 0.8574382335  — as published by NIST
-CODATA2022.G_DEUTERON           # ERROR: no such field
-G_DEUTERON                      # 1.7140254606… — renormalized for the anomaly
-```
-
-Both the mass and the g-factor come from the active release, so the conversion
-stays self-consistent when you call `set_release`.  The active release's
-unscaled values are also kept as the unexported `_G_DEUTERON`, `_G_HELION`, and
-`_G_TRITON`.  See [Physical Constants](@ref man-constants) for the full
-explanation.
-
-The other g-factors (`G_ELECTRON`, `G_MUON`, `G_PROTON`, `G_NEUTRON`) are
-exported exactly as tabulated.
-
+The magnetic moments `MU_PROTON_SI`, `MU_ELECTRON_SI`, … , hold the CODATA values in
+SI units (J/T), which are converted to the exported `MU_*` constants (without a `_SI` suffix) in eV/T.
+The permittivity and permeability work the same way: `EPS_0_SI` (F/m) and
+`MU_0_SI` (N/A²) become the exported `EPS_0` in 1/(eV·m) and `MU_0` in eV·s²/m.
 
 ## Quantities missing from a release
 
@@ -143,12 +126,12 @@ rather than a value borrowed from another release:
 
 | Release | Fields that are `NaN` |
 |---------|------------------------|
-| 2002 | `M_TRITON`, `MU_HELION`, `MU_TRITON`, `G_DEUTERON_NUCLEAR`, `G_HELION_NUCLEAR`, `G_TRITON_NUCLEAR` |
-| 2006 | `MU_HELION`, `G_HELION_NUCLEAR` |
+| 2002 | `M_TRITON`, `MU_HELION_SI`, `MU_TRITON_SI`, `G_DEUTERON_NUCLEAR_MAGNETON`, `G_HELION_NUCLEAR_MAGNETON`, `G_TRITON_NUCLEAR_MAGNETON` |
+| 2006 | `MU_HELION_SI`, `G_HELION_NUCLEAR_MAGNETON` |
 | 2010 and later | none |
 
 The 2002 and 2006 tables list only the *shielded* helion magnetic moment, which
-is a different quantity, so it is not used in place of `MU_HELION`.
+is a different quantity, so it is not used in place of `MU_HELION_SI`.
 
 The `NaN` carries through to everything computed from the field when that
 release is active.  With 2002 active, for example, `G_DEUTERON`, `G_HELION`,

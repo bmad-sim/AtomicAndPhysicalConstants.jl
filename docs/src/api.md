@@ -1,14 +1,7 @@
 # API Reference
 
-Complete index of all exported symbols.
-
-## Internal Types
-
-```@docs
-AtomicAndPhysicalConstants.SubatomicSpecies
-AtomicAndPhysicalConstants.AtomicSpecies
-AtomicAndPhysicalConstants.CODATA_release
-```
+Complete index of the exported symbols, followed by the internal types they
+refer to.
 
 ## Species type and constructor
 
@@ -45,7 +38,7 @@ set_release
 ## Particle kind enum
 
 ```@docs
-AtomicAndPhysicalConstants.Kind
+Kind
 ```
 
 ## Particle data dictionaries
@@ -113,4 +106,16 @@ J_PER_EV
 EV_PER_J
 G_PER_EV
 KG_PER_MEV_C2
+```
+
+## Internal types
+
+Not exported, and documented here only because the exported dictionaries and
+release structs are built from them.  Unlike [`Species`](@ref), these are plain
+structs with ordinary dot access.
+
+```@docs
+AtomicAndPhysicalConstants.SubatomicSpecies
+AtomicAndPhysicalConstants.AtomicSpecies
+AtomicAndPhysicalConstants.CODATA_release
 ```

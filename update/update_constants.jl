@@ -113,24 +113,24 @@ const FIELDS = [
   :M_HELION           => (["helion mass energy equivalent in MeV"], 6),
   :M_DEUTERON         => (["deuteron mass energy equivalent in MeV"], 6),
   :M_TRITON           => (["triton mass energy equivalent in MeV"], 6),
-  :MU_DEUTERON        => (["deuteron mag. mom.", "deuteron magnetic moment"], 0),
-  :MU_ELECTRON        => (["electron mag. mom.", "electron magnetic moment"], 0),
-  :MU_HELION          => (["helion mag. mom.", "helion magnetic moment"], 0),
-  :MU_MUON            => (["muon mag. mom.", "muon magnetic moment"], 0),
-  :MU_NEUTRON         => (["neutron mag. mom.", "neutron magnetic moment"], 0),
-  :MU_PROTON          => (["proton mag. mom.", "proton magnetic moment"], 0),
-  :MU_TRITON          => (["triton mag. mom.", "triton magnetic moment"], 0),
+  :MU_DEUTERON_SI        => (["deuteron mag. mom.", "deuteron magnetic moment"], 0),
+  :MU_ELECTRON_SI        => (["electron mag. mom.", "electron magnetic moment"], 0),
+  :MU_HELION_SI          => (["helion mag. mom.", "helion magnetic moment"], 0),
+  :MU_MUON_SI            => (["muon mag. mom.", "muon magnetic moment"], 0),
+  :MU_NEUTRON_SI         => (["neutron mag. mom.", "neutron magnetic moment"], 0),
+  :MU_PROTON_SI          => (["proton mag. mom.", "proton magnetic moment"], 0),
+  :MU_TRITON_SI          => (["triton mag. mom.", "triton magnetic moment"], 0),
   :AVOGADRO           => (["Avogadro constant"], 0),
   :FINE_STRUCTURE     => (["fine-structure constant"], 0),
   :ANOMALY_ELECTRON   => (["electron mag. mom. anomaly", "electron magnetic moment anomaly"], 0),
   :ANOMALY_MUON       => (["muon mag. mom. anomaly", "muon magnetic moment anomaly"], 0),
-  :G_DEUTERON_NUCLEAR => (["deuteron g factor"], 0),
+  :G_DEUTERON_NUCLEAR_MAGNETON => (["deuteron g factor"], 0),
   :G_ELECTRON         => (["electron g factor"], 0),
-  :G_HELION_NUCLEAR   => (["helion g factor"], 0),
+  :G_HELION_NUCLEAR_MAGNETON   => (["helion g factor"], 0),
   :G_MUON             => (["muon g factor"], 0),
-  :G_NEUTRON          => (["neutron g factor"], 0),
+  :G_NEUTRON_NUCLEAR_MAGNETON => (["neutron g factor"], 0),
   :G_PROTON           => (["proton g factor"], 0),
-  :G_TRITON_NUCLEAR   => (["triton g factor"], 0),
+  :G_TRITON_NUCLEAR_MAGNETON   => (["triton g factor"], 0),
   # The 2002 and 2006 tables list no bare "elementary charge"; 1 eV = e J, so the
   # eV-J relationship is the same number.
   :E_CHARGE           => (["elementary charge", "electron volt-joule relationship"], 0),
@@ -184,11 +184,8 @@ function extract(table::Dict{String,String})
       shift(table[names[i]], n)
     end
   end
-  e = consts[:E_CHARGE]
-  # eps_0 [C^2/(J m)] / e [C^2] * e [J/eV] = eps_0 / e [1/(eV m)];
-  # mu_0 [J s^2/(C^2 m)] * e^2 [C^2] / e [J/eV] = mu_0 * e [eV s^2/m].
-  consts[:EPS_0] = pop!(consts, :EPS_0_SI) / e
-  consts[:MU_0] = pop!(consts, :MU_0_SI) * e
+  # EPS_0_SI [F/m] and MU_0_SI [N/A^2] are stored as published; src/constants.jl
+  # divides and multiplies by E_CHARGE to export them in 1/(eV m) and eV s^2/m.
   consts[:R_PROTON] = consts[:R_ELECTRON] * consts[:M_ELECTRON] / consts[:M_PROTON]
   missing = sort([f for (f, v) in consts if isnan(v)])
   return consts, missing
@@ -259,19 +256,19 @@ M_PION_CHARGED = $(repr(pions[:M_PION_CHARGED])),
 #######################################
 
 
-MU_DEUTERON = $(v(:MU_DEUTERON))
+MU_DEUTERON_SI = $(v(:MU_DEUTERON_SI))
 # deuteron magnetic moment in [J/T]
-MU_ELECTRON = $(v(:MU_ELECTRON))
+MU_ELECTRON_SI = $(v(:MU_ELECTRON_SI))
 # electron magnetic moment in [J/T]
-MU_HELION = $(v(:MU_HELION))
+MU_HELION_SI = $(v(:MU_HELION_SI))
 # helion magnetic moment in [J/T]
-MU_MUON = $(v(:MU_MUON))
+MU_MUON_SI = $(v(:MU_MUON_SI))
 # muon magnetic moment in [J/T]
-MU_NEUTRON = $(v(:MU_NEUTRON))
+MU_NEUTRON_SI = $(v(:MU_NEUTRON_SI))
 # neutron magnetic moment in [J/T]
-MU_PROTON = $(v(:MU_PROTON))
+MU_PROTON_SI = $(v(:MU_PROTON_SI))
 # proton magnetic moment in [J/T]
-MU_TRITON = $(v(:MU_TRITON))
+MU_TRITON_SI = $(v(:MU_TRITON_SI))
 # triton magnetic moment in [J/T]
 
 
@@ -290,19 +287,19 @@ ANOMALY_ELECTRON = $(v(:ANOMALY_ELECTRON))
 ANOMALY_MUON = $(v(:ANOMALY_MUON))
 # muon magnetic moment anomaly
 
-G_DEUTERON_NUCLEAR = $(v(:G_DEUTERON_NUCLEAR))
+G_DEUTERON_NUCLEAR_MAGNETON = $(v(:G_DEUTERON_NUCLEAR_MAGNETON))
 # deuteron g factor
 G_ELECTRON = $(v(:G_ELECTRON))
 # electron g factor
-G_HELION_NUCLEAR = $(v(:G_HELION_NUCLEAR))
+G_HELION_NUCLEAR_MAGNETON = $(v(:G_HELION_NUCLEAR_MAGNETON))
 # helion g factor
 G_MUON = $(v(:G_MUON))
 # muon g factor
-G_NEUTRON = $(v(:G_NEUTRON))
+G_NEUTRON_NUCLEAR_MAGNETON = $(v(:G_NEUTRON_NUCLEAR_MAGNETON))
 # neutron g factor
 G_PROTON = $(v(:G_PROTON))
 # proton g factor
-G_TRITON_NUCLEAR = $(v(:G_TRITON_NUCLEAR))
+G_TRITON_NUCLEAR_MAGNETON = $(v(:G_TRITON_NUCLEAR_MAGNETON))
 # triton g factor
 
 
@@ -327,10 +324,10 @@ H_BAR = $(v(:H_BAR))
 K_BOLTZMANN = $(v(:K_BOLTZMANN))
 #k_B in eV/K
 
-EPS_0 = $(v(:EPS_0))
-# Permittivity of free space in [1/(eV*m)]
-MU_0 = $(v(:MU_0))
-# Vacuum permeability in [eV*s^2/m]
+EPS_0_SI = $(v(:EPS_0_SI))
+# Permittivity of free space in [F/m]
+MU_0_SI = $(v(:MU_0_SI))
+# Vacuum permeability in [N/A^2]
 
 
 G_PER_AMU = $(v(:G_PER_AMU))

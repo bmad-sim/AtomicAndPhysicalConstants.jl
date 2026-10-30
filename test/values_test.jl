@@ -31,7 +31,7 @@
   # Test g-factors
   @test G_ELECTRON ≈ -2.00231930436092
   @test G_PROTON ≈ 5.5856946893
-  @test G_NEUTRON ≈ -3.82608552
+  @test G_NEUTRON ≈ -3.82608552 * M_NEUTRON / M_PROTON
   @test G_MUON ≈ -2.00233184123
   @test G_DEUTERON ≈ 0.8574382335 * M_DEUTERON / M_PROTON
   @test G_TRITON ≈ 5.957924930 * M_TRITON / M_PROTON
@@ -74,9 +74,10 @@ end
   # Exactly the quantities NIST does not tabulate for a release are NaN
   # (docs/src/codata.md, "Quantities missing from a release")
   untabulated = Dict(
-    "2002" => Set([:M_TRITON, :MU_HELION, :MU_TRITON,
-                   :G_DEUTERON_NUCLEAR, :G_HELION_NUCLEAR, :G_TRITON_NUCLEAR]),
-    "2006" => Set([:MU_HELION, :G_HELION_NUCLEAR]))
+    "2002" => Set([:M_TRITON, :MU_HELION_SI, :MU_TRITON_SI,
+                   :G_DEUTERON_NUCLEAR_MAGNETON, :G_HELION_NUCLEAR_MAGNETON,
+                   :G_TRITON_NUCLEAR_MAGNETON]),
+    "2006" => Set([:MU_HELION_SI, :G_HELION_NUCLEAR_MAGNETON]))
   for (year, codata) in AtomicAndPhysicalConstants.CODATA_MAP
     nan = Set(f for f in fieldnames(typeof(codata)) if getfield(codata, f) isa Float64 && isnan(getfield(codata, f)))
     @test nan == get(untabulated, year, Set{Symbol}())
@@ -122,8 +123,8 @@ end
       @test codata.EV_PER_J == Float64(1 / e)
       @test codata.G_PER_EV == Float64(1000 * e / c^2)
     else            # before: mu_0 = 4 pi 1e-7 and eps_0 = 1/(mu_0 c^2) are exact
-      @test codata.MU_0 ≈ 4pi * 1e-7 * codata.E_CHARGE rtol = 4eps()
-      @test codata.EPS_0 ≈ 1 / (4pi * 1e-7 * codata.C_LIGHT^2 * codata.E_CHARGE) rtol = 4eps()
+      @test codata.MU_0_SI == Float64(4 * big(pi) * big"1e-7")
+      @test codata.EPS_0_SI == Float64(1 / (4 * big(pi) * big"1e-7" * c^2))
     end
   end
 

@@ -1,3 +1,7 @@
+```@meta
+DocTestSetup = :(using AtomicAndPhysicalConstants)
+```
+
 # [Species](@id man-species)
 
 A [`Species`](@ref) is the central data structure of AtomicAndPhysicalConstants.jl.
@@ -145,7 +149,7 @@ convention; the signatures below show its default.  `sp` is any `Species`.
 | [`gyromagnetic_anomaly(sp)`](@ref gyromagnetic_anomaly) | gyromagnetic anomaly *a* | dimensionless |
 | [`iso_of(sp)`](@ref iso_of) | mass number | integer |
 | [`atomicnumberof(sp)`](@ref atomicnumberof) | atomic number *Z* | integer, negative for anti-atoms |
-| [`kindof(sp)`](@ref kindof) | particle classification | [`Kind.T`](@ref AtomicAndPhysicalConstants.Kind) enum value |
+| [`kindof(sp)`](@ref kindof) | particle classification | [`Kind.T`](@ref Kind) enum value |
 | [`isnullspecies(sp)`](@ref isnullspecies) | whether the species is a placeholder | `Bool` |
 
 All of the numeric accessors return `Float64` except [`iso_of`](@ref) and
@@ -271,6 +275,29 @@ julia> nameof(Species("Li+"))
 
 The full docstring of each accessor is in the
 [API Reference](@ref api-accessors).
+
+### How a species displays
+
+At the REPL a `Species` prints a labelled summary, which is the intended way to
+look one over:
+
+```jldoctest
+julia> Species("#3He+2")
+Species: #3He+2
+Charge: 2 e
+Mass: 2.8083915304184103e9 eV/c²
+Spin: 0.5 ħ
+Moment: 0.0 eV/T
+G-factor: 0.0  # Absolute value from g_spin(species)
+Mass number: 3
+Atomic Number: 2
+Kind: ATOM
+```
+
+Note: Only this summary form is defined.  Inside a container, or anywhere else that
+uses the compact `show`, Julia falls back to its default and prints the raw
+field tuple — including `species.gspin`, which is the *signed* g-factor.
+Shown here is the result of [`g_spin`](@ref)(species) which returns the absolute value by default.
 
 ---
 
