@@ -234,3 +234,16 @@ end
   @test ci.code[1].val isa Float64
   @test ci.code[1].val == massof(_P) * MKS.mass
 end
+
+@testset "examples/units.jl runs" begin
+  # The example script is the usage walkthrough, so it has to keep working.
+  # Run it in a module of its own, with its printing swallowed.
+  script = joinpath(@__DIR__, "..", "examples", "units.jl")
+  @test isfile(script)
+  mktemp() do _, io
+    redirect_stdout(io) do
+      Base.include(Module(:UnitsExampleRun), script)
+    end
+  end
+  @test true   # reached only if the script threw nothing
+end
