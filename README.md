@@ -40,7 +40,7 @@ Charge: -1 e
 Mass: 510998.95069 eV/c²
 Spin: 0.5 ħ
 Moment: -5.795094307747843e-5 eV/T
-G-factor: 2.00231930436092
+G-factor: 2.00231930436092  # Absolute value from g_spin(species)
 Kind: LEPTON
 
 julia> p = Species("proton"); # suppress the output for the rest of the definitions

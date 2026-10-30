@@ -561,14 +561,14 @@ function Base.show(io::IO, ::MIME"text/plain", species::Species)
     # which of the two cases applies, so it does not read as a defect.
     s = spinof(species)
     println(io, if !isnan(s)
-      "Spin: $s ħ  # Absolute value from spinof(species)"
+      "Spin: $s ħ"
     elseif iso_of(species) > 0
       "Spin: NaN (undefined, not assigned in NUBASE2020)"
     else
       "Spin: NaN (undefined, no mass number given)"
     end)
     println(io, "Moment: $(momentof(species)) eV/T")
-    println(io, "G-factor: $(g_spin(species))")
+    println(io, "G-factor: $(g_spin(species))  # Absolute value from g_spin(species)")
     if iso_of(species) > 0 
       println(io, "Mass number: $(iso_of(species))")
       println(io, "Atomic Number: $(atomicnumberof(species))")

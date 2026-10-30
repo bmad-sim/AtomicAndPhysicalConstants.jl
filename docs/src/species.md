@@ -286,9 +286,9 @@ julia> Species("#3He+2")
 Species: #3He+2
 Charge: 2 e
 Mass: 2.8083915304184103e9 eV/c²
-Spin: 0.5 ħ  # Absolute value from spinof(species)
+Spin: 0.5 ħ
 Moment: 0.0 eV/T
-G-factor: 0.0
+G-factor: 0.0  # Absolute value from g_spin(species)
 Mass number: 3
 Atomic Number: 2
 Kind: ATOM
