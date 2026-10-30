@@ -45,6 +45,7 @@ include("constants.jl")
 include("functions.jl")
 include("species_data.jl")
 include("constructors.jl")
+include("units.jl")
 
 # export the const pointers to values
 export M_ELECTRON, M_PROTON, M_NEUTRON, M_MUON, M_HELION, M_DEUTERON, M_TRITON
@@ -72,4 +73,7 @@ export Species
 export chargeof, massof, spinof, g_spin, gyromagnetic_anomaly
 export momentof, iso_of, atomicnumberof, kindof, isnullspecies
 export set_release
+
+# unit selection
+export UnitSystem, ACCELERATOR, MKS, SI, CGS, constants, @apc_units
 end

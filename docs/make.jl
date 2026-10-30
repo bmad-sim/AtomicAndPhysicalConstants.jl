@@ -18,6 +18,7 @@ makedocs(
         "Home"               => "index.md",
         "Species"            => "species.md",
         "Constants"          => "constants.md",
+        "Units"              => "units.md",
         "CODATA Releases"    => "codata.md",
         "API Reference"      => "api.md",
         "Internals"          => "internals.md",

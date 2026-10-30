@@ -11,4 +11,6 @@ include("function_test.jl")
 
 include("type_stable_test.jl")
 
+include("units_test.jl")
+
 end  # module

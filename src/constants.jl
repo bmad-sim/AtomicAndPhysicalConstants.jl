@@ -349,17 +349,25 @@ const K_BOLTZMANN::Float64 = _ACTIVE.K_BOLTZMANN
 """
     EPS_0::Float64
 
-Permittivity of free space in 1/(eV·m) per the selected CODATA release.
+Permittivity of free space in e²/(eV·m) per the selected CODATA release.
+
+The charge unit is the elementary charge, so the e² is 1 and the value reads as
+though it were 1/(eV·m); it is not, and the e² matters when converting to a
+system that measures charge in coulombs or statcoulombs.  The convention is
+fixed by `FINE_STRUCTURE == 1/(4π*EPS_0*H_BAR*C_LIGHT)`.
 """
 const EPS_0::Float64 = _ACTIVE.EPS_0_SI / E_CHARGE
-# Permittivity of free space in [1/(eV*m)]
+# Permittivity of free space in [e^2/(eV*m)]
 """
     MU_0::Float64
 
-Vacuum permeability in eV·s²/m per the selected CODATA release.
+Vacuum permeability in eV·s²/(e²·m) per the selected CODATA release.
+
+As with [`EPS_0`](@ref), the charge unit is the elementary charge, so the e⁻² is
+invisible in the value but is part of the dimension.
 """
 const MU_0::Float64 = _ACTIVE.MU_0_SI * E_CHARGE
-# Vacuum permeability in [eV*s^2/m]
+# Vacuum permeability in [eV*s^2/(e^2*m)]
 
 """
     KG_PER_AMU::Float64
